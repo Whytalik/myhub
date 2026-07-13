@@ -553,6 +553,26 @@ exports.Prisma.SetLogScalarFieldEnum = {
   order: 'order'
 };
 
+exports.Prisma.ThoughtStatusScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  color: 'color',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ThoughtScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  statusId: 'statusId',
+  content: 'content',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -663,7 +683,9 @@ exports.Prisma.ModelName = {
   TrainingDay: 'TrainingDay',
   TrainingDayExercise: 'TrainingDayExercise',
   TrainingSession: 'TrainingSession',
-  SetLog: 'SetLog'
+  SetLog: 'SetLog',
+  ThoughtStatus: 'ThoughtStatus',
+  Thought: 'Thought'
 };
 
 /**

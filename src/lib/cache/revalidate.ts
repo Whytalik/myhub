@@ -63,3 +63,8 @@ export function invalidateProductMappingCache() {
 export function invalidateGiftedGroceryCache() {
   revalidateTag("gifted-grocery", INVALIDATE_PROFILE);
 }
+
+export function invalidateThoughtCache(userId: string) {
+  revalidateTag(cacheTags.thoughtStatuses(userId), INVALIDATE_PROFILE);
+  revalidateTag("thought-board", INVALIDATE_PROFILE);
+}

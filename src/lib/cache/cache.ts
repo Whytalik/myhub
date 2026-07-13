@@ -9,6 +9,7 @@ import { trainingPlanRepository } from "@/features/health/training/repositories/
 import { trainingSessionRepository } from "@/features/health/training/repositories/training-session.repository";
 import { productMappingRepository } from "@/features/health/nutrition/repositories/product-mapping.repository";
 import { giftedGroceryRepository } from "@/features/health/nutrition/repositories/gifted-grocery.repository";
+import { thoughtStatusRepository } from "@/features/life/repositories/thought-status.repository";
 
 export const cacheTags = {
   spheres: (userId: string) => `spheres:${userId}`,
@@ -20,6 +21,7 @@ export const cacheTags = {
   exercises: (userId: string) => `exercises:${userId}`,
   trainingPlans: (userId: string) => `training-plans:${userId}`,
   trainingSessions: (userId: string) => `training-sessions:${userId}`,
+  thoughtStatuses: (userId: string) => `thought-statuses:${userId}`,
 };
 
 export const getCachedSpheres = unstable_cache(
@@ -122,4 +124,10 @@ export const getCachedGiftedGroceries = unstable_cache(
   () => giftedGroceryRepository.findAll(),
   [],
   { tags: ["gifted-grocery"] },
+);
+
+export const getCachedThoughtBoard = unstable_cache(
+  (userId: string) => thoughtStatusRepository.findAll(userId),
+  [],
+  { tags: ["thought-board"] },
 );

@@ -37,6 +37,8 @@ model User {
   trainingDayExercises    TrainingDayExercise[]
   trainingSessions        TrainingSession[]
   setLogs                 SetLog[]
+  thoughtStatuses         ThoughtStatus[]
+  thoughts                Thought[]
 }
 
 model WeekTemplate {
@@ -676,4 +678,33 @@ model SetLog {
   @@index([userId])
   @@index([sessionId])
   @@index([exerciseId])
+}
+
+model ThoughtStatus {
+  id        String    @id @default(cuid())
+  userId    String
+  name      String
+  color     String    @default("#6fbfbf")
+  order     Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  thoughts  Thought[]
+
+  @@index([userId])
+}
+
+model Thought {
+  id        String        @id @default(cuid())
+  userId    String
+  statusId  String
+  content   String
+  order     Int           @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    ThoughtStatus @relation(fields: [statusId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([statusId])
 }

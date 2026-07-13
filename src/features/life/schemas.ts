@@ -46,6 +46,17 @@ export const habitChainSchema = z.object({
   archived: z.boolean().optional(),
 });
 
+export const thoughtStatusSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  color: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Invalid color"),
+});
+
+export const thoughtSchema = z.object({
+  content: z.string().min(1, "Content is required"),
+});
+
 export type HabitFormData = z.infer<typeof habitSchema>;
 export type SphereFormData = z.infer<typeof sphereSchema>;
 export type HabitChainFormData = z.infer<typeof habitChainSchema>;
+export type ThoughtStatusFormData = z.infer<typeof thoughtStatusSchema>;
+export type ThoughtFormData = z.infer<typeof thoughtSchema>;

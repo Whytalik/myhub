@@ -342,6 +342,39 @@ export interface WeeklyTrendPoint {
   value: number | null;
 }
 
+export interface ThoughtData {
+  id: string;
+  statusId: string;
+  content: string;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ThoughtStatusData {
+  id: string;
+  name: string;
+  color: string;
+  order: number;
+  createdAt: Date;
+  updatedAt: Date;
+  thoughts: ThoughtData[];
+}
+
+export interface UpsertThoughtStatusInput {
+  id?: string;
+  name?: string;
+  color?: string;
+  order?: number;
+}
+
+export interface UpsertThoughtInput {
+  id?: string;
+  statusId?: string;
+  content?: string;
+  order?: number;
+}
+
 export interface UpsertHabitInput {
   id?: string;
   name?: string;

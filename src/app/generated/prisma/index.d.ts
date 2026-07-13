@@ -173,6 +173,16 @@ export type TrainingSession = $Result.DefaultSelection<Prisma.$TrainingSessionPa
  * 
  */
 export type SetLog = $Result.DefaultSelection<Prisma.$SetLogPayload>
+/**
+ * Model ThoughtStatus
+ * 
+ */
+export type ThoughtStatus = $Result.DefaultSelection<Prisma.$ThoughtStatusPayload>
+/**
+ * Model Thought
+ * 
+ */
+export type Thought = $Result.DefaultSelection<Prisma.$ThoughtPayload>
 
 /**
  * Enums
@@ -728,6 +738,26 @@ export class PrismaClient<
     * ```
     */
   get setLog(): Prisma.SetLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.thoughtStatus`: Exposes CRUD operations for the **ThoughtStatus** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ThoughtStatuses
+    * const thoughtStatuses = await prisma.thoughtStatus.findMany()
+    * ```
+    */
+  get thoughtStatus(): Prisma.ThoughtStatusDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.thought`: Exposes CRUD operations for the **Thought** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Thoughts
+    * const thoughts = await prisma.thought.findMany()
+    * ```
+    */
+  get thought(): Prisma.ThoughtDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1193,7 +1223,9 @@ export namespace Prisma {
     TrainingDay: 'TrainingDay',
     TrainingDayExercise: 'TrainingDayExercise',
     TrainingSession: 'TrainingSession',
-    SetLog: 'SetLog'
+    SetLog: 'SetLog',
+    ThoughtStatus: 'ThoughtStatus',
+    Thought: 'Thought'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1209,7 +1241,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "weekTemplate" | "pushSubscription" | "fatSecretAccount" | "productFatSecretMapping" | "fatSecretSavedMeal" | "giftedGroceryItem" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog"
+      modelProps: "user" | "weekTemplate" | "pushSubscription" | "fatSecretAccount" | "productFatSecretMapping" | "fatSecretSavedMeal" | "giftedGroceryItem" | "account" | "session" | "verificationToken" | "lifeSphere" | "task" | "dailyEntry" | "habit" | "habitChain" | "habitCompletion" | "vision" | "annualCompass" | "milestone" | "sprint" | "objective" | "keyResult" | "project" | "tactic" | "tacticCompletion" | "sprintReview" | "exercise" | "trainingPlan" | "trainingDay" | "trainingDayExercise" | "trainingSession" | "setLog" | "thoughtStatus" | "thought"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3581,6 +3613,154 @@ export namespace Prisma {
           }
         }
       }
+      ThoughtStatus: {
+        payload: Prisma.$ThoughtStatusPayload<ExtArgs>
+        fields: Prisma.ThoughtStatusFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ThoughtStatusFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ThoughtStatusFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>
+          }
+          findFirst: {
+            args: Prisma.ThoughtStatusFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ThoughtStatusFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>
+          }
+          findMany: {
+            args: Prisma.ThoughtStatusFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>[]
+          }
+          create: {
+            args: Prisma.ThoughtStatusCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>
+          }
+          createMany: {
+            args: Prisma.ThoughtStatusCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ThoughtStatusCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>[]
+          }
+          delete: {
+            args: Prisma.ThoughtStatusDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>
+          }
+          update: {
+            args: Prisma.ThoughtStatusUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>
+          }
+          deleteMany: {
+            args: Prisma.ThoughtStatusDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ThoughtStatusUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ThoughtStatusUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>[]
+          }
+          upsert: {
+            args: Prisma.ThoughtStatusUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtStatusPayload>
+          }
+          aggregate: {
+            args: Prisma.ThoughtStatusAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateThoughtStatus>
+          }
+          groupBy: {
+            args: Prisma.ThoughtStatusGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ThoughtStatusGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ThoughtStatusCountArgs<ExtArgs>
+            result: $Utils.Optional<ThoughtStatusCountAggregateOutputType> | number
+          }
+        }
+      }
+      Thought: {
+        payload: Prisma.$ThoughtPayload<ExtArgs>
+        fields: Prisma.ThoughtFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ThoughtFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ThoughtFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>
+          }
+          findFirst: {
+            args: Prisma.ThoughtFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ThoughtFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>
+          }
+          findMany: {
+            args: Prisma.ThoughtFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>[]
+          }
+          create: {
+            args: Prisma.ThoughtCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>
+          }
+          createMany: {
+            args: Prisma.ThoughtCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ThoughtCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>[]
+          }
+          delete: {
+            args: Prisma.ThoughtDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>
+          }
+          update: {
+            args: Prisma.ThoughtUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>
+          }
+          deleteMany: {
+            args: Prisma.ThoughtDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ThoughtUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ThoughtUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>[]
+          }
+          upsert: {
+            args: Prisma.ThoughtUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ThoughtPayload>
+          }
+          aggregate: {
+            args: Prisma.ThoughtAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateThought>
+          }
+          groupBy: {
+            args: Prisma.ThoughtGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ThoughtGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ThoughtCountArgs<ExtArgs>
+            result: $Utils.Optional<ThoughtCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3721,6 +3901,8 @@ export namespace Prisma {
     trainingDayExercise?: TrainingDayExerciseOmit
     trainingSession?: TrainingSessionOmit
     setLog?: SetLogOmit
+    thoughtStatus?: ThoughtStatusOmit
+    thought?: ThoughtOmit
   }
 
   /* Types for Logging */
@@ -3820,6 +4002,8 @@ export namespace Prisma {
     trainingDayExercises: number
     trainingSessions: number
     setLogs: number
+    thoughtStatuses: number
+    thoughts: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3842,6 +4026,8 @@ export namespace Prisma {
     trainingDayExercises?: boolean | UserCountOutputTypeCountTrainingDayExercisesArgs
     trainingSessions?: boolean | UserCountOutputTypeCountTrainingSessionsArgs
     setLogs?: boolean | UserCountOutputTypeCountSetLogsArgs
+    thoughtStatuses?: boolean | UserCountOutputTypeCountThoughtStatusesArgs
+    thoughts?: boolean | UserCountOutputTypeCountThoughtsArgs
   }
 
   // Custom InputTypes
@@ -3986,6 +4172,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSetLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SetLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountThoughtStatusesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ThoughtStatusWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountThoughtsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ThoughtWhereInput
   }
 
 
@@ -4465,6 +4665,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type ThoughtStatusCountOutputType
+   */
+
+  export type ThoughtStatusCountOutputType = {
+    thoughts: number
+  }
+
+  export type ThoughtStatusCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    thoughts?: boolean | ThoughtStatusCountOutputTypeCountThoughtsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ThoughtStatusCountOutputType without action
+   */
+  export type ThoughtStatusCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatusCountOutputType
+     */
+    select?: ThoughtStatusCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ThoughtStatusCountOutputType without action
+   */
+  export type ThoughtStatusCountOutputTypeCountThoughtsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ThoughtWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -4691,6 +4922,8 @@ export namespace Prisma {
     trainingDayExercises?: boolean | User$trainingDayExercisesArgs<ExtArgs>
     trainingSessions?: boolean | User$trainingSessionsArgs<ExtArgs>
     setLogs?: boolean | User$setLogsArgs<ExtArgs>
+    thoughtStatuses?: boolean | User$thoughtStatusesArgs<ExtArgs>
+    thoughts?: boolean | User$thoughtsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4754,6 +4987,8 @@ export namespace Prisma {
     trainingDayExercises?: boolean | User$trainingDayExercisesArgs<ExtArgs>
     trainingSessions?: boolean | User$trainingSessionsArgs<ExtArgs>
     setLogs?: boolean | User$setLogsArgs<ExtArgs>
+    thoughtStatuses?: boolean | User$thoughtStatusesArgs<ExtArgs>
+    thoughts?: boolean | User$thoughtsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4781,6 +5016,8 @@ export namespace Prisma {
       trainingDayExercises: Prisma.$TrainingDayExercisePayload<ExtArgs>[]
       trainingSessions: Prisma.$TrainingSessionPayload<ExtArgs>[]
       setLogs: Prisma.$SetLogPayload<ExtArgs>[]
+      thoughtStatuses: Prisma.$ThoughtStatusPayload<ExtArgs>[]
+      thoughts: Prisma.$ThoughtPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5206,6 +5443,8 @@ export namespace Prisma {
     trainingDayExercises<T extends User$trainingDayExercisesArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingDayExercisesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingDayExercisePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     trainingSessions<T extends User$trainingSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$trainingSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrainingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     setLogs<T extends User$setLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$setLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SetLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    thoughtStatuses<T extends User$thoughtStatusesArgs<ExtArgs> = {}>(args?: Subset<T, User$thoughtStatusesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    thoughts<T extends User$thoughtsArgs<ExtArgs> = {}>(args?: Subset<T, User$thoughtsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6091,6 +6330,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SetLogScalarFieldEnum | SetLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.thoughtStatuses
+   */
+  export type User$thoughtStatusesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    where?: ThoughtStatusWhereInput
+    orderBy?: ThoughtStatusOrderByWithRelationInput | ThoughtStatusOrderByWithRelationInput[]
+    cursor?: ThoughtStatusWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ThoughtStatusScalarFieldEnum | ThoughtStatusScalarFieldEnum[]
+  }
+
+  /**
+   * User.thoughts
+   */
+  export type User$thoughtsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    where?: ThoughtWhereInput
+    orderBy?: ThoughtOrderByWithRelationInput | ThoughtOrderByWithRelationInput[]
+    cursor?: ThoughtWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ThoughtScalarFieldEnum | ThoughtScalarFieldEnum[]
   }
 
   /**
@@ -42688,6 +42975,2290 @@ export namespace Prisma {
 
 
   /**
+   * Model ThoughtStatus
+   */
+
+  export type AggregateThoughtStatus = {
+    _count: ThoughtStatusCountAggregateOutputType | null
+    _avg: ThoughtStatusAvgAggregateOutputType | null
+    _sum: ThoughtStatusSumAggregateOutputType | null
+    _min: ThoughtStatusMinAggregateOutputType | null
+    _max: ThoughtStatusMaxAggregateOutputType | null
+  }
+
+  export type ThoughtStatusAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ThoughtStatusSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ThoughtStatusMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    color: string | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ThoughtStatusMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    name: string | null
+    color: string | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ThoughtStatusCountAggregateOutputType = {
+    id: number
+    userId: number
+    name: number
+    color: number
+    order: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ThoughtStatusAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type ThoughtStatusSumAggregateInputType = {
+    order?: true
+  }
+
+  export type ThoughtStatusMinAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    color?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ThoughtStatusMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    color?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ThoughtStatusCountAggregateInputType = {
+    id?: true
+    userId?: true
+    name?: true
+    color?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ThoughtStatusAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ThoughtStatus to aggregate.
+     */
+    where?: ThoughtStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ThoughtStatuses to fetch.
+     */
+    orderBy?: ThoughtStatusOrderByWithRelationInput | ThoughtStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ThoughtStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ThoughtStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ThoughtStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ThoughtStatuses
+    **/
+    _count?: true | ThoughtStatusCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ThoughtStatusAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ThoughtStatusSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ThoughtStatusMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ThoughtStatusMaxAggregateInputType
+  }
+
+  export type GetThoughtStatusAggregateType<T extends ThoughtStatusAggregateArgs> = {
+        [P in keyof T & keyof AggregateThoughtStatus]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateThoughtStatus[P]>
+      : GetScalarType<T[P], AggregateThoughtStatus[P]>
+  }
+
+
+
+
+  export type ThoughtStatusGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ThoughtStatusWhereInput
+    orderBy?: ThoughtStatusOrderByWithAggregationInput | ThoughtStatusOrderByWithAggregationInput[]
+    by: ThoughtStatusScalarFieldEnum[] | ThoughtStatusScalarFieldEnum
+    having?: ThoughtStatusScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ThoughtStatusCountAggregateInputType | true
+    _avg?: ThoughtStatusAvgAggregateInputType
+    _sum?: ThoughtStatusSumAggregateInputType
+    _min?: ThoughtStatusMinAggregateInputType
+    _max?: ThoughtStatusMaxAggregateInputType
+  }
+
+  export type ThoughtStatusGroupByOutputType = {
+    id: string
+    userId: string
+    name: string
+    color: string
+    order: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ThoughtStatusCountAggregateOutputType | null
+    _avg: ThoughtStatusAvgAggregateOutputType | null
+    _sum: ThoughtStatusSumAggregateOutputType | null
+    _min: ThoughtStatusMinAggregateOutputType | null
+    _max: ThoughtStatusMaxAggregateOutputType | null
+  }
+
+  type GetThoughtStatusGroupByPayload<T extends ThoughtStatusGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ThoughtStatusGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ThoughtStatusGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ThoughtStatusGroupByOutputType[P]>
+            : GetScalarType<T[P], ThoughtStatusGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ThoughtStatusSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    color?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    thoughts?: boolean | ThoughtStatus$thoughtsArgs<ExtArgs>
+    _count?: boolean | ThoughtStatusCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thoughtStatus"]>
+
+  export type ThoughtStatusSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    color?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thoughtStatus"]>
+
+  export type ThoughtStatusSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    color?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thoughtStatus"]>
+
+  export type ThoughtStatusSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    name?: boolean
+    color?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ThoughtStatusOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "color" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["thoughtStatus"]>
+  export type ThoughtStatusInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    thoughts?: boolean | ThoughtStatus$thoughtsArgs<ExtArgs>
+    _count?: boolean | ThoughtStatusCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ThoughtStatusIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ThoughtStatusIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ThoughtStatusPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ThoughtStatus"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      thoughts: Prisma.$ThoughtPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      name: string
+      color: string
+      order: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["thoughtStatus"]>
+    composites: {}
+  }
+
+  type ThoughtStatusGetPayload<S extends boolean | null | undefined | ThoughtStatusDefaultArgs> = $Result.GetResult<Prisma.$ThoughtStatusPayload, S>
+
+  type ThoughtStatusCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ThoughtStatusFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ThoughtStatusCountAggregateInputType | true
+    }
+
+  export interface ThoughtStatusDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ThoughtStatus'], meta: { name: 'ThoughtStatus' } }
+    /**
+     * Find zero or one ThoughtStatus that matches the filter.
+     * @param {ThoughtStatusFindUniqueArgs} args - Arguments to find a ThoughtStatus
+     * @example
+     * // Get one ThoughtStatus
+     * const thoughtStatus = await prisma.thoughtStatus.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ThoughtStatusFindUniqueArgs>(args: SelectSubset<T, ThoughtStatusFindUniqueArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ThoughtStatus that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ThoughtStatusFindUniqueOrThrowArgs} args - Arguments to find a ThoughtStatus
+     * @example
+     * // Get one ThoughtStatus
+     * const thoughtStatus = await prisma.thoughtStatus.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ThoughtStatusFindUniqueOrThrowArgs>(args: SelectSubset<T, ThoughtStatusFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ThoughtStatus that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtStatusFindFirstArgs} args - Arguments to find a ThoughtStatus
+     * @example
+     * // Get one ThoughtStatus
+     * const thoughtStatus = await prisma.thoughtStatus.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ThoughtStatusFindFirstArgs>(args?: SelectSubset<T, ThoughtStatusFindFirstArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ThoughtStatus that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtStatusFindFirstOrThrowArgs} args - Arguments to find a ThoughtStatus
+     * @example
+     * // Get one ThoughtStatus
+     * const thoughtStatus = await prisma.thoughtStatus.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ThoughtStatusFindFirstOrThrowArgs>(args?: SelectSubset<T, ThoughtStatusFindFirstOrThrowArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ThoughtStatuses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtStatusFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ThoughtStatuses
+     * const thoughtStatuses = await prisma.thoughtStatus.findMany()
+     * 
+     * // Get first 10 ThoughtStatuses
+     * const thoughtStatuses = await prisma.thoughtStatus.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const thoughtStatusWithIdOnly = await prisma.thoughtStatus.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ThoughtStatusFindManyArgs>(args?: SelectSubset<T, ThoughtStatusFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ThoughtStatus.
+     * @param {ThoughtStatusCreateArgs} args - Arguments to create a ThoughtStatus.
+     * @example
+     * // Create one ThoughtStatus
+     * const ThoughtStatus = await prisma.thoughtStatus.create({
+     *   data: {
+     *     // ... data to create a ThoughtStatus
+     *   }
+     * })
+     * 
+     */
+    create<T extends ThoughtStatusCreateArgs>(args: SelectSubset<T, ThoughtStatusCreateArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ThoughtStatuses.
+     * @param {ThoughtStatusCreateManyArgs} args - Arguments to create many ThoughtStatuses.
+     * @example
+     * // Create many ThoughtStatuses
+     * const thoughtStatus = await prisma.thoughtStatus.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ThoughtStatusCreateManyArgs>(args?: SelectSubset<T, ThoughtStatusCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ThoughtStatuses and returns the data saved in the database.
+     * @param {ThoughtStatusCreateManyAndReturnArgs} args - Arguments to create many ThoughtStatuses.
+     * @example
+     * // Create many ThoughtStatuses
+     * const thoughtStatus = await prisma.thoughtStatus.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ThoughtStatuses and only return the `id`
+     * const thoughtStatusWithIdOnly = await prisma.thoughtStatus.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ThoughtStatusCreateManyAndReturnArgs>(args?: SelectSubset<T, ThoughtStatusCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ThoughtStatus.
+     * @param {ThoughtStatusDeleteArgs} args - Arguments to delete one ThoughtStatus.
+     * @example
+     * // Delete one ThoughtStatus
+     * const ThoughtStatus = await prisma.thoughtStatus.delete({
+     *   where: {
+     *     // ... filter to delete one ThoughtStatus
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ThoughtStatusDeleteArgs>(args: SelectSubset<T, ThoughtStatusDeleteArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ThoughtStatus.
+     * @param {ThoughtStatusUpdateArgs} args - Arguments to update one ThoughtStatus.
+     * @example
+     * // Update one ThoughtStatus
+     * const thoughtStatus = await prisma.thoughtStatus.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ThoughtStatusUpdateArgs>(args: SelectSubset<T, ThoughtStatusUpdateArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ThoughtStatuses.
+     * @param {ThoughtStatusDeleteManyArgs} args - Arguments to filter ThoughtStatuses to delete.
+     * @example
+     * // Delete a few ThoughtStatuses
+     * const { count } = await prisma.thoughtStatus.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ThoughtStatusDeleteManyArgs>(args?: SelectSubset<T, ThoughtStatusDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ThoughtStatuses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtStatusUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ThoughtStatuses
+     * const thoughtStatus = await prisma.thoughtStatus.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ThoughtStatusUpdateManyArgs>(args: SelectSubset<T, ThoughtStatusUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ThoughtStatuses and returns the data updated in the database.
+     * @param {ThoughtStatusUpdateManyAndReturnArgs} args - Arguments to update many ThoughtStatuses.
+     * @example
+     * // Update many ThoughtStatuses
+     * const thoughtStatus = await prisma.thoughtStatus.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ThoughtStatuses and only return the `id`
+     * const thoughtStatusWithIdOnly = await prisma.thoughtStatus.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ThoughtStatusUpdateManyAndReturnArgs>(args: SelectSubset<T, ThoughtStatusUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ThoughtStatus.
+     * @param {ThoughtStatusUpsertArgs} args - Arguments to update or create a ThoughtStatus.
+     * @example
+     * // Update or create a ThoughtStatus
+     * const thoughtStatus = await prisma.thoughtStatus.upsert({
+     *   create: {
+     *     // ... data to create a ThoughtStatus
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ThoughtStatus we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ThoughtStatusUpsertArgs>(args: SelectSubset<T, ThoughtStatusUpsertArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ThoughtStatuses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtStatusCountArgs} args - Arguments to filter ThoughtStatuses to count.
+     * @example
+     * // Count the number of ThoughtStatuses
+     * const count = await prisma.thoughtStatus.count({
+     *   where: {
+     *     // ... the filter for the ThoughtStatuses we want to count
+     *   }
+     * })
+    **/
+    count<T extends ThoughtStatusCountArgs>(
+      args?: Subset<T, ThoughtStatusCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ThoughtStatusCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ThoughtStatus.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtStatusAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ThoughtStatusAggregateArgs>(args: Subset<T, ThoughtStatusAggregateArgs>): Prisma.PrismaPromise<GetThoughtStatusAggregateType<T>>
+
+    /**
+     * Group by ThoughtStatus.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtStatusGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ThoughtStatusGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ThoughtStatusGroupByArgs['orderBy'] }
+        : { orderBy?: ThoughtStatusGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ThoughtStatusGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetThoughtStatusGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ThoughtStatus model
+   */
+  readonly fields: ThoughtStatusFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ThoughtStatus.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ThoughtStatusClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    thoughts<T extends ThoughtStatus$thoughtsArgs<ExtArgs> = {}>(args?: Subset<T, ThoughtStatus$thoughtsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ThoughtStatus model
+   */
+  interface ThoughtStatusFieldRefs {
+    readonly id: FieldRef<"ThoughtStatus", 'String'>
+    readonly userId: FieldRef<"ThoughtStatus", 'String'>
+    readonly name: FieldRef<"ThoughtStatus", 'String'>
+    readonly color: FieldRef<"ThoughtStatus", 'String'>
+    readonly order: FieldRef<"ThoughtStatus", 'Int'>
+    readonly createdAt: FieldRef<"ThoughtStatus", 'DateTime'>
+    readonly updatedAt: FieldRef<"ThoughtStatus", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ThoughtStatus findUnique
+   */
+  export type ThoughtStatusFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which ThoughtStatus to fetch.
+     */
+    where: ThoughtStatusWhereUniqueInput
+  }
+
+  /**
+   * ThoughtStatus findUniqueOrThrow
+   */
+  export type ThoughtStatusFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which ThoughtStatus to fetch.
+     */
+    where: ThoughtStatusWhereUniqueInput
+  }
+
+  /**
+   * ThoughtStatus findFirst
+   */
+  export type ThoughtStatusFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which ThoughtStatus to fetch.
+     */
+    where?: ThoughtStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ThoughtStatuses to fetch.
+     */
+    orderBy?: ThoughtStatusOrderByWithRelationInput | ThoughtStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ThoughtStatuses.
+     */
+    cursor?: ThoughtStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ThoughtStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ThoughtStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ThoughtStatuses.
+     */
+    distinct?: ThoughtStatusScalarFieldEnum | ThoughtStatusScalarFieldEnum[]
+  }
+
+  /**
+   * ThoughtStatus findFirstOrThrow
+   */
+  export type ThoughtStatusFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which ThoughtStatus to fetch.
+     */
+    where?: ThoughtStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ThoughtStatuses to fetch.
+     */
+    orderBy?: ThoughtStatusOrderByWithRelationInput | ThoughtStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ThoughtStatuses.
+     */
+    cursor?: ThoughtStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ThoughtStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ThoughtStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ThoughtStatuses.
+     */
+    distinct?: ThoughtStatusScalarFieldEnum | ThoughtStatusScalarFieldEnum[]
+  }
+
+  /**
+   * ThoughtStatus findMany
+   */
+  export type ThoughtStatusFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * Filter, which ThoughtStatuses to fetch.
+     */
+    where?: ThoughtStatusWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ThoughtStatuses to fetch.
+     */
+    orderBy?: ThoughtStatusOrderByWithRelationInput | ThoughtStatusOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ThoughtStatuses.
+     */
+    cursor?: ThoughtStatusWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ThoughtStatuses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ThoughtStatuses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ThoughtStatuses.
+     */
+    distinct?: ThoughtStatusScalarFieldEnum | ThoughtStatusScalarFieldEnum[]
+  }
+
+  /**
+   * ThoughtStatus create
+   */
+  export type ThoughtStatusCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ThoughtStatus.
+     */
+    data: XOR<ThoughtStatusCreateInput, ThoughtStatusUncheckedCreateInput>
+  }
+
+  /**
+   * ThoughtStatus createMany
+   */
+  export type ThoughtStatusCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ThoughtStatuses.
+     */
+    data: ThoughtStatusCreateManyInput | ThoughtStatusCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ThoughtStatus createManyAndReturn
+   */
+  export type ThoughtStatusCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * The data used to create many ThoughtStatuses.
+     */
+    data: ThoughtStatusCreateManyInput | ThoughtStatusCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ThoughtStatus update
+   */
+  export type ThoughtStatusUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ThoughtStatus.
+     */
+    data: XOR<ThoughtStatusUpdateInput, ThoughtStatusUncheckedUpdateInput>
+    /**
+     * Choose, which ThoughtStatus to update.
+     */
+    where: ThoughtStatusWhereUniqueInput
+  }
+
+  /**
+   * ThoughtStatus updateMany
+   */
+  export type ThoughtStatusUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ThoughtStatuses.
+     */
+    data: XOR<ThoughtStatusUpdateManyMutationInput, ThoughtStatusUncheckedUpdateManyInput>
+    /**
+     * Filter which ThoughtStatuses to update
+     */
+    where?: ThoughtStatusWhereInput
+    /**
+     * Limit how many ThoughtStatuses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ThoughtStatus updateManyAndReturn
+   */
+  export type ThoughtStatusUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * The data used to update ThoughtStatuses.
+     */
+    data: XOR<ThoughtStatusUpdateManyMutationInput, ThoughtStatusUncheckedUpdateManyInput>
+    /**
+     * Filter which ThoughtStatuses to update
+     */
+    where?: ThoughtStatusWhereInput
+    /**
+     * Limit how many ThoughtStatuses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ThoughtStatus upsert
+   */
+  export type ThoughtStatusUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ThoughtStatus to update in case it exists.
+     */
+    where: ThoughtStatusWhereUniqueInput
+    /**
+     * In case the ThoughtStatus found by the `where` argument doesn't exist, create a new ThoughtStatus with this data.
+     */
+    create: XOR<ThoughtStatusCreateInput, ThoughtStatusUncheckedCreateInput>
+    /**
+     * In case the ThoughtStatus was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ThoughtStatusUpdateInput, ThoughtStatusUncheckedUpdateInput>
+  }
+
+  /**
+   * ThoughtStatus delete
+   */
+  export type ThoughtStatusDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+    /**
+     * Filter which ThoughtStatus to delete.
+     */
+    where: ThoughtStatusWhereUniqueInput
+  }
+
+  /**
+   * ThoughtStatus deleteMany
+   */
+  export type ThoughtStatusDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ThoughtStatuses to delete
+     */
+    where?: ThoughtStatusWhereInput
+    /**
+     * Limit how many ThoughtStatuses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ThoughtStatus.thoughts
+   */
+  export type ThoughtStatus$thoughtsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    where?: ThoughtWhereInput
+    orderBy?: ThoughtOrderByWithRelationInput | ThoughtOrderByWithRelationInput[]
+    cursor?: ThoughtWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ThoughtScalarFieldEnum | ThoughtScalarFieldEnum[]
+  }
+
+  /**
+   * ThoughtStatus without action
+   */
+  export type ThoughtStatusDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ThoughtStatus
+     */
+    select?: ThoughtStatusSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ThoughtStatus
+     */
+    omit?: ThoughtStatusOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtStatusInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Thought
+   */
+
+  export type AggregateThought = {
+    _count: ThoughtCountAggregateOutputType | null
+    _avg: ThoughtAvgAggregateOutputType | null
+    _sum: ThoughtSumAggregateOutputType | null
+    _min: ThoughtMinAggregateOutputType | null
+    _max: ThoughtMaxAggregateOutputType | null
+  }
+
+  export type ThoughtAvgAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ThoughtSumAggregateOutputType = {
+    order: number | null
+  }
+
+  export type ThoughtMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    statusId: string | null
+    content: string | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ThoughtMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    statusId: string | null
+    content: string | null
+    order: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ThoughtCountAggregateOutputType = {
+    id: number
+    userId: number
+    statusId: number
+    content: number
+    order: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ThoughtAvgAggregateInputType = {
+    order?: true
+  }
+
+  export type ThoughtSumAggregateInputType = {
+    order?: true
+  }
+
+  export type ThoughtMinAggregateInputType = {
+    id?: true
+    userId?: true
+    statusId?: true
+    content?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ThoughtMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    statusId?: true
+    content?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ThoughtCountAggregateInputType = {
+    id?: true
+    userId?: true
+    statusId?: true
+    content?: true
+    order?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ThoughtAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Thought to aggregate.
+     */
+    where?: ThoughtWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Thoughts to fetch.
+     */
+    orderBy?: ThoughtOrderByWithRelationInput | ThoughtOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ThoughtWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Thoughts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Thoughts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Thoughts
+    **/
+    _count?: true | ThoughtCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ThoughtAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ThoughtSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ThoughtMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ThoughtMaxAggregateInputType
+  }
+
+  export type GetThoughtAggregateType<T extends ThoughtAggregateArgs> = {
+        [P in keyof T & keyof AggregateThought]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateThought[P]>
+      : GetScalarType<T[P], AggregateThought[P]>
+  }
+
+
+
+
+  export type ThoughtGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ThoughtWhereInput
+    orderBy?: ThoughtOrderByWithAggregationInput | ThoughtOrderByWithAggregationInput[]
+    by: ThoughtScalarFieldEnum[] | ThoughtScalarFieldEnum
+    having?: ThoughtScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ThoughtCountAggregateInputType | true
+    _avg?: ThoughtAvgAggregateInputType
+    _sum?: ThoughtSumAggregateInputType
+    _min?: ThoughtMinAggregateInputType
+    _max?: ThoughtMaxAggregateInputType
+  }
+
+  export type ThoughtGroupByOutputType = {
+    id: string
+    userId: string
+    statusId: string
+    content: string
+    order: number
+    createdAt: Date
+    updatedAt: Date
+    _count: ThoughtCountAggregateOutputType | null
+    _avg: ThoughtAvgAggregateOutputType | null
+    _sum: ThoughtSumAggregateOutputType | null
+    _min: ThoughtMinAggregateOutputType | null
+    _max: ThoughtMaxAggregateOutputType | null
+  }
+
+  type GetThoughtGroupByPayload<T extends ThoughtGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ThoughtGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ThoughtGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ThoughtGroupByOutputType[P]>
+            : GetScalarType<T[P], ThoughtGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ThoughtSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    statusId?: boolean
+    content?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thought"]>
+
+  export type ThoughtSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    statusId?: boolean
+    content?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thought"]>
+
+  export type ThoughtSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    statusId?: boolean
+    content?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["thought"]>
+
+  export type ThoughtSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    statusId?: boolean
+    content?: boolean
+    order?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ThoughtOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "statusId" | "content" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["thought"]>
+  export type ThoughtInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+  }
+  export type ThoughtIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+  }
+  export type ThoughtIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    status?: boolean | ThoughtStatusDefaultArgs<ExtArgs>
+  }
+
+  export type $ThoughtPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Thought"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      status: Prisma.$ThoughtStatusPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      statusId: string
+      content: string
+      order: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["thought"]>
+    composites: {}
+  }
+
+  type ThoughtGetPayload<S extends boolean | null | undefined | ThoughtDefaultArgs> = $Result.GetResult<Prisma.$ThoughtPayload, S>
+
+  type ThoughtCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ThoughtFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ThoughtCountAggregateInputType | true
+    }
+
+  export interface ThoughtDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Thought'], meta: { name: 'Thought' } }
+    /**
+     * Find zero or one Thought that matches the filter.
+     * @param {ThoughtFindUniqueArgs} args - Arguments to find a Thought
+     * @example
+     * // Get one Thought
+     * const thought = await prisma.thought.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ThoughtFindUniqueArgs>(args: SelectSubset<T, ThoughtFindUniqueArgs<ExtArgs>>): Prisma__ThoughtClient<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Thought that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ThoughtFindUniqueOrThrowArgs} args - Arguments to find a Thought
+     * @example
+     * // Get one Thought
+     * const thought = await prisma.thought.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ThoughtFindUniqueOrThrowArgs>(args: SelectSubset<T, ThoughtFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ThoughtClient<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Thought that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtFindFirstArgs} args - Arguments to find a Thought
+     * @example
+     * // Get one Thought
+     * const thought = await prisma.thought.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ThoughtFindFirstArgs>(args?: SelectSubset<T, ThoughtFindFirstArgs<ExtArgs>>): Prisma__ThoughtClient<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Thought that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtFindFirstOrThrowArgs} args - Arguments to find a Thought
+     * @example
+     * // Get one Thought
+     * const thought = await prisma.thought.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ThoughtFindFirstOrThrowArgs>(args?: SelectSubset<T, ThoughtFindFirstOrThrowArgs<ExtArgs>>): Prisma__ThoughtClient<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Thoughts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Thoughts
+     * const thoughts = await prisma.thought.findMany()
+     * 
+     * // Get first 10 Thoughts
+     * const thoughts = await prisma.thought.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const thoughtWithIdOnly = await prisma.thought.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ThoughtFindManyArgs>(args?: SelectSubset<T, ThoughtFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Thought.
+     * @param {ThoughtCreateArgs} args - Arguments to create a Thought.
+     * @example
+     * // Create one Thought
+     * const Thought = await prisma.thought.create({
+     *   data: {
+     *     // ... data to create a Thought
+     *   }
+     * })
+     * 
+     */
+    create<T extends ThoughtCreateArgs>(args: SelectSubset<T, ThoughtCreateArgs<ExtArgs>>): Prisma__ThoughtClient<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Thoughts.
+     * @param {ThoughtCreateManyArgs} args - Arguments to create many Thoughts.
+     * @example
+     * // Create many Thoughts
+     * const thought = await prisma.thought.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ThoughtCreateManyArgs>(args?: SelectSubset<T, ThoughtCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Thoughts and returns the data saved in the database.
+     * @param {ThoughtCreateManyAndReturnArgs} args - Arguments to create many Thoughts.
+     * @example
+     * // Create many Thoughts
+     * const thought = await prisma.thought.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Thoughts and only return the `id`
+     * const thoughtWithIdOnly = await prisma.thought.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ThoughtCreateManyAndReturnArgs>(args?: SelectSubset<T, ThoughtCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Thought.
+     * @param {ThoughtDeleteArgs} args - Arguments to delete one Thought.
+     * @example
+     * // Delete one Thought
+     * const Thought = await prisma.thought.delete({
+     *   where: {
+     *     // ... filter to delete one Thought
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ThoughtDeleteArgs>(args: SelectSubset<T, ThoughtDeleteArgs<ExtArgs>>): Prisma__ThoughtClient<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Thought.
+     * @param {ThoughtUpdateArgs} args - Arguments to update one Thought.
+     * @example
+     * // Update one Thought
+     * const thought = await prisma.thought.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ThoughtUpdateArgs>(args: SelectSubset<T, ThoughtUpdateArgs<ExtArgs>>): Prisma__ThoughtClient<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Thoughts.
+     * @param {ThoughtDeleteManyArgs} args - Arguments to filter Thoughts to delete.
+     * @example
+     * // Delete a few Thoughts
+     * const { count } = await prisma.thought.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ThoughtDeleteManyArgs>(args?: SelectSubset<T, ThoughtDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Thoughts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Thoughts
+     * const thought = await prisma.thought.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ThoughtUpdateManyArgs>(args: SelectSubset<T, ThoughtUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Thoughts and returns the data updated in the database.
+     * @param {ThoughtUpdateManyAndReturnArgs} args - Arguments to update many Thoughts.
+     * @example
+     * // Update many Thoughts
+     * const thought = await prisma.thought.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Thoughts and only return the `id`
+     * const thoughtWithIdOnly = await prisma.thought.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ThoughtUpdateManyAndReturnArgs>(args: SelectSubset<T, ThoughtUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Thought.
+     * @param {ThoughtUpsertArgs} args - Arguments to update or create a Thought.
+     * @example
+     * // Update or create a Thought
+     * const thought = await prisma.thought.upsert({
+     *   create: {
+     *     // ... data to create a Thought
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Thought we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ThoughtUpsertArgs>(args: SelectSubset<T, ThoughtUpsertArgs<ExtArgs>>): Prisma__ThoughtClient<$Result.GetResult<Prisma.$ThoughtPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Thoughts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtCountArgs} args - Arguments to filter Thoughts to count.
+     * @example
+     * // Count the number of Thoughts
+     * const count = await prisma.thought.count({
+     *   where: {
+     *     // ... the filter for the Thoughts we want to count
+     *   }
+     * })
+    **/
+    count<T extends ThoughtCountArgs>(
+      args?: Subset<T, ThoughtCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ThoughtCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Thought.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ThoughtAggregateArgs>(args: Subset<T, ThoughtAggregateArgs>): Prisma.PrismaPromise<GetThoughtAggregateType<T>>
+
+    /**
+     * Group by Thought.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ThoughtGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ThoughtGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ThoughtGroupByArgs['orderBy'] }
+        : { orderBy?: ThoughtGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ThoughtGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetThoughtGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Thought model
+   */
+  readonly fields: ThoughtFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Thought.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ThoughtClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    status<T extends ThoughtStatusDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ThoughtStatusDefaultArgs<ExtArgs>>): Prisma__ThoughtStatusClient<$Result.GetResult<Prisma.$ThoughtStatusPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Thought model
+   */
+  interface ThoughtFieldRefs {
+    readonly id: FieldRef<"Thought", 'String'>
+    readonly userId: FieldRef<"Thought", 'String'>
+    readonly statusId: FieldRef<"Thought", 'String'>
+    readonly content: FieldRef<"Thought", 'String'>
+    readonly order: FieldRef<"Thought", 'Int'>
+    readonly createdAt: FieldRef<"Thought", 'DateTime'>
+    readonly updatedAt: FieldRef<"Thought", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Thought findUnique
+   */
+  export type ThoughtFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * Filter, which Thought to fetch.
+     */
+    where: ThoughtWhereUniqueInput
+  }
+
+  /**
+   * Thought findUniqueOrThrow
+   */
+  export type ThoughtFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * Filter, which Thought to fetch.
+     */
+    where: ThoughtWhereUniqueInput
+  }
+
+  /**
+   * Thought findFirst
+   */
+  export type ThoughtFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * Filter, which Thought to fetch.
+     */
+    where?: ThoughtWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Thoughts to fetch.
+     */
+    orderBy?: ThoughtOrderByWithRelationInput | ThoughtOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Thoughts.
+     */
+    cursor?: ThoughtWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Thoughts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Thoughts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Thoughts.
+     */
+    distinct?: ThoughtScalarFieldEnum | ThoughtScalarFieldEnum[]
+  }
+
+  /**
+   * Thought findFirstOrThrow
+   */
+  export type ThoughtFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * Filter, which Thought to fetch.
+     */
+    where?: ThoughtWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Thoughts to fetch.
+     */
+    orderBy?: ThoughtOrderByWithRelationInput | ThoughtOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Thoughts.
+     */
+    cursor?: ThoughtWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Thoughts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Thoughts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Thoughts.
+     */
+    distinct?: ThoughtScalarFieldEnum | ThoughtScalarFieldEnum[]
+  }
+
+  /**
+   * Thought findMany
+   */
+  export type ThoughtFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * Filter, which Thoughts to fetch.
+     */
+    where?: ThoughtWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Thoughts to fetch.
+     */
+    orderBy?: ThoughtOrderByWithRelationInput | ThoughtOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Thoughts.
+     */
+    cursor?: ThoughtWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Thoughts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Thoughts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Thoughts.
+     */
+    distinct?: ThoughtScalarFieldEnum | ThoughtScalarFieldEnum[]
+  }
+
+  /**
+   * Thought create
+   */
+  export type ThoughtCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Thought.
+     */
+    data: XOR<ThoughtCreateInput, ThoughtUncheckedCreateInput>
+  }
+
+  /**
+   * Thought createMany
+   */
+  export type ThoughtCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Thoughts.
+     */
+    data: ThoughtCreateManyInput | ThoughtCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Thought createManyAndReturn
+   */
+  export type ThoughtCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * The data used to create many Thoughts.
+     */
+    data: ThoughtCreateManyInput | ThoughtCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Thought update
+   */
+  export type ThoughtUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Thought.
+     */
+    data: XOR<ThoughtUpdateInput, ThoughtUncheckedUpdateInput>
+    /**
+     * Choose, which Thought to update.
+     */
+    where: ThoughtWhereUniqueInput
+  }
+
+  /**
+   * Thought updateMany
+   */
+  export type ThoughtUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Thoughts.
+     */
+    data: XOR<ThoughtUpdateManyMutationInput, ThoughtUncheckedUpdateManyInput>
+    /**
+     * Filter which Thoughts to update
+     */
+    where?: ThoughtWhereInput
+    /**
+     * Limit how many Thoughts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Thought updateManyAndReturn
+   */
+  export type ThoughtUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * The data used to update Thoughts.
+     */
+    data: XOR<ThoughtUpdateManyMutationInput, ThoughtUncheckedUpdateManyInput>
+    /**
+     * Filter which Thoughts to update
+     */
+    where?: ThoughtWhereInput
+    /**
+     * Limit how many Thoughts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Thought upsert
+   */
+  export type ThoughtUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Thought to update in case it exists.
+     */
+    where: ThoughtWhereUniqueInput
+    /**
+     * In case the Thought found by the `where` argument doesn't exist, create a new Thought with this data.
+     */
+    create: XOR<ThoughtCreateInput, ThoughtUncheckedCreateInput>
+    /**
+     * In case the Thought was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ThoughtUpdateInput, ThoughtUncheckedUpdateInput>
+  }
+
+  /**
+   * Thought delete
+   */
+  export type ThoughtDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+    /**
+     * Filter which Thought to delete.
+     */
+    where: ThoughtWhereUniqueInput
+  }
+
+  /**
+   * Thought deleteMany
+   */
+  export type ThoughtDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Thoughts to delete
+     */
+    where?: ThoughtWhereInput
+    /**
+     * Limit how many Thoughts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Thought without action
+   */
+  export type ThoughtDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Thought
+     */
+    select?: ThoughtSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Thought
+     */
+    omit?: ThoughtOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ThoughtInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -43230,6 +45801,32 @@ export namespace Prisma {
   export type SetLogScalarFieldEnum = (typeof SetLogScalarFieldEnum)[keyof typeof SetLogScalarFieldEnum]
 
 
+  export const ThoughtStatusScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    name: 'name',
+    color: 'color',
+    order: 'order',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ThoughtStatusScalarFieldEnum = (typeof ThoughtStatusScalarFieldEnum)[keyof typeof ThoughtStatusScalarFieldEnum]
+
+
+  export const ThoughtScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    statusId: 'statusId',
+    content: 'content',
+    order: 'order',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ThoughtScalarFieldEnum = (typeof ThoughtScalarFieldEnum)[keyof typeof ThoughtScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -43501,6 +46098,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseListRelationFilter
     trainingSessions?: TrainingSessionListRelationFilter
     setLogs?: SetLogListRelationFilter
+    thoughtStatuses?: ThoughtStatusListRelationFilter
+    thoughts?: ThoughtListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -43533,6 +46132,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseOrderByRelationAggregateInput
     trainingSessions?: TrainingSessionOrderByRelationAggregateInput
     setLogs?: SetLogOrderByRelationAggregateInput
+    thoughtStatuses?: ThoughtStatusOrderByRelationAggregateInput
+    thoughts?: ThoughtOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -43568,6 +46169,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseListRelationFilter
     trainingSessions?: TrainingSessionListRelationFilter
     setLogs?: SetLogListRelationFilter
+    thoughtStatuses?: ThoughtStatusListRelationFilter
+    thoughts?: ThoughtListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -46308,6 +48911,146 @@ export namespace Prisma {
     order?: IntWithAggregatesFilter<"SetLog"> | number
   }
 
+  export type ThoughtStatusWhereInput = {
+    AND?: ThoughtStatusWhereInput | ThoughtStatusWhereInput[]
+    OR?: ThoughtStatusWhereInput[]
+    NOT?: ThoughtStatusWhereInput | ThoughtStatusWhereInput[]
+    id?: StringFilter<"ThoughtStatus"> | string
+    userId?: StringFilter<"ThoughtStatus"> | string
+    name?: StringFilter<"ThoughtStatus"> | string
+    color?: StringFilter<"ThoughtStatus"> | string
+    order?: IntFilter<"ThoughtStatus"> | number
+    createdAt?: DateTimeFilter<"ThoughtStatus"> | Date | string
+    updatedAt?: DateTimeFilter<"ThoughtStatus"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    thoughts?: ThoughtListRelationFilter
+  }
+
+  export type ThoughtStatusOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    color?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    thoughts?: ThoughtOrderByRelationAggregateInput
+  }
+
+  export type ThoughtStatusWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ThoughtStatusWhereInput | ThoughtStatusWhereInput[]
+    OR?: ThoughtStatusWhereInput[]
+    NOT?: ThoughtStatusWhereInput | ThoughtStatusWhereInput[]
+    userId?: StringFilter<"ThoughtStatus"> | string
+    name?: StringFilter<"ThoughtStatus"> | string
+    color?: StringFilter<"ThoughtStatus"> | string
+    order?: IntFilter<"ThoughtStatus"> | number
+    createdAt?: DateTimeFilter<"ThoughtStatus"> | Date | string
+    updatedAt?: DateTimeFilter<"ThoughtStatus"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    thoughts?: ThoughtListRelationFilter
+  }, "id">
+
+  export type ThoughtStatusOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    color?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ThoughtStatusCountOrderByAggregateInput
+    _avg?: ThoughtStatusAvgOrderByAggregateInput
+    _max?: ThoughtStatusMaxOrderByAggregateInput
+    _min?: ThoughtStatusMinOrderByAggregateInput
+    _sum?: ThoughtStatusSumOrderByAggregateInput
+  }
+
+  export type ThoughtStatusScalarWhereWithAggregatesInput = {
+    AND?: ThoughtStatusScalarWhereWithAggregatesInput | ThoughtStatusScalarWhereWithAggregatesInput[]
+    OR?: ThoughtStatusScalarWhereWithAggregatesInput[]
+    NOT?: ThoughtStatusScalarWhereWithAggregatesInput | ThoughtStatusScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ThoughtStatus"> | string
+    userId?: StringWithAggregatesFilter<"ThoughtStatus"> | string
+    name?: StringWithAggregatesFilter<"ThoughtStatus"> | string
+    color?: StringWithAggregatesFilter<"ThoughtStatus"> | string
+    order?: IntWithAggregatesFilter<"ThoughtStatus"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"ThoughtStatus"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ThoughtStatus"> | Date | string
+  }
+
+  export type ThoughtWhereInput = {
+    AND?: ThoughtWhereInput | ThoughtWhereInput[]
+    OR?: ThoughtWhereInput[]
+    NOT?: ThoughtWhereInput | ThoughtWhereInput[]
+    id?: StringFilter<"Thought"> | string
+    userId?: StringFilter<"Thought"> | string
+    statusId?: StringFilter<"Thought"> | string
+    content?: StringFilter<"Thought"> | string
+    order?: IntFilter<"Thought"> | number
+    createdAt?: DateTimeFilter<"Thought"> | Date | string
+    updatedAt?: DateTimeFilter<"Thought"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    status?: XOR<ThoughtStatusScalarRelationFilter, ThoughtStatusWhereInput>
+  }
+
+  export type ThoughtOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    statusId?: SortOrder
+    content?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    status?: ThoughtStatusOrderByWithRelationInput
+  }
+
+  export type ThoughtWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ThoughtWhereInput | ThoughtWhereInput[]
+    OR?: ThoughtWhereInput[]
+    NOT?: ThoughtWhereInput | ThoughtWhereInput[]
+    userId?: StringFilter<"Thought"> | string
+    statusId?: StringFilter<"Thought"> | string
+    content?: StringFilter<"Thought"> | string
+    order?: IntFilter<"Thought"> | number
+    createdAt?: DateTimeFilter<"Thought"> | Date | string
+    updatedAt?: DateTimeFilter<"Thought"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    status?: XOR<ThoughtStatusScalarRelationFilter, ThoughtStatusWhereInput>
+  }, "id">
+
+  export type ThoughtOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    statusId?: SortOrder
+    content?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ThoughtCountOrderByAggregateInput
+    _avg?: ThoughtAvgOrderByAggregateInput
+    _max?: ThoughtMaxOrderByAggregateInput
+    _min?: ThoughtMinOrderByAggregateInput
+    _sum?: ThoughtSumOrderByAggregateInput
+  }
+
+  export type ThoughtScalarWhereWithAggregatesInput = {
+    AND?: ThoughtScalarWhereWithAggregatesInput | ThoughtScalarWhereWithAggregatesInput[]
+    OR?: ThoughtScalarWhereWithAggregatesInput[]
+    NOT?: ThoughtScalarWhereWithAggregatesInput | ThoughtScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Thought"> | string
+    userId?: StringWithAggregatesFilter<"Thought"> | string
+    statusId?: StringWithAggregatesFilter<"Thought"> | string
+    content?: StringWithAggregatesFilter<"Thought"> | string
+    order?: IntWithAggregatesFilter<"Thought"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Thought"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Thought"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name?: string | null
@@ -46338,6 +49081,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -46370,6 +49115,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -46402,6 +49149,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -46434,6 +49183,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -49459,6 +52210,147 @@ export namespace Prisma {
     order?: IntFieldUpdateOperationsInput | number
   }
 
+  export type ThoughtStatusCreateInput = {
+    id?: string
+    name: string
+    color?: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutThoughtStatusesInput
+    thoughts?: ThoughtCreateNestedManyWithoutStatusInput
+  }
+
+  export type ThoughtStatusUncheckedCreateInput = {
+    id?: string
+    userId: string
+    name: string
+    color?: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutStatusInput
+  }
+
+  export type ThoughtStatusUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutThoughtStatusesNestedInput
+    thoughts?: ThoughtUpdateManyWithoutStatusNestedInput
+  }
+
+  export type ThoughtStatusUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    thoughts?: ThoughtUncheckedUpdateManyWithoutStatusNestedInput
+  }
+
+  export type ThoughtStatusCreateManyInput = {
+    id?: string
+    userId: string
+    name: string
+    color?: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtStatusUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThoughtStatusUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThoughtCreateInput = {
+    id?: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutThoughtsInput
+    status: ThoughtStatusCreateNestedOneWithoutThoughtsInput
+  }
+
+  export type ThoughtUncheckedCreateInput = {
+    id?: string
+    userId: string
+    statusId: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutThoughtsNestedInput
+    status?: ThoughtStatusUpdateOneRequiredWithoutThoughtsNestedInput
+  }
+
+  export type ThoughtUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    statusId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThoughtCreateManyInput = {
+    id?: string
+    userId: string
+    statusId: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThoughtUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    statusId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -49632,6 +52524,18 @@ export namespace Prisma {
     none?: SetLogWhereInput
   }
 
+  export type ThoughtStatusListRelationFilter = {
+    every?: ThoughtStatusWhereInput
+    some?: ThoughtStatusWhereInput
+    none?: ThoughtStatusWhereInput
+  }
+
+  export type ThoughtListRelationFilter = {
+    every?: ThoughtWhereInput
+    some?: ThoughtWhereInput
+    none?: ThoughtWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -49710,6 +52614,14 @@ export namespace Prisma {
   }
 
   export type SetLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ThoughtStatusOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ThoughtOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -51798,6 +54710,87 @@ export namespace Prisma {
     order?: SortOrder
   }
 
+  export type ThoughtStatusCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    color?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ThoughtStatusAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type ThoughtStatusMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    color?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ThoughtStatusMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    name?: SortOrder
+    color?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ThoughtStatusSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type ThoughtStatusScalarRelationFilter = {
+    is?: ThoughtStatusWhereInput
+    isNot?: ThoughtStatusWhereInput
+  }
+
+  export type ThoughtCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    statusId?: SortOrder
+    content?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ThoughtAvgOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
+  export type ThoughtMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    statusId?: SortOrder
+    content?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ThoughtMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    statusId?: SortOrder
+    content?: SortOrder
+    order?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ThoughtSumOrderByAggregateInput = {
+    order?: SortOrder
+  }
+
   export type AccountCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -51931,6 +54924,20 @@ export namespace Prisma {
     connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
   }
 
+  export type ThoughtStatusCreateNestedManyWithoutUserInput = {
+    create?: XOR<ThoughtStatusCreateWithoutUserInput, ThoughtStatusUncheckedCreateWithoutUserInput> | ThoughtStatusCreateWithoutUserInput[] | ThoughtStatusUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ThoughtStatusCreateOrConnectWithoutUserInput | ThoughtStatusCreateOrConnectWithoutUserInput[]
+    createMany?: ThoughtStatusCreateManyUserInputEnvelope
+    connect?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+  }
+
+  export type ThoughtCreateNestedManyWithoutUserInput = {
+    create?: XOR<ThoughtCreateWithoutUserInput, ThoughtUncheckedCreateWithoutUserInput> | ThoughtCreateWithoutUserInput[] | ThoughtUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutUserInput | ThoughtCreateOrConnectWithoutUserInput[]
+    createMany?: ThoughtCreateManyUserInputEnvelope
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -52062,6 +55069,20 @@ export namespace Prisma {
     connectOrCreate?: SetLogCreateOrConnectWithoutUserInput | SetLogCreateOrConnectWithoutUserInput[]
     createMany?: SetLogCreateManyUserInputEnvelope
     connect?: SetLogWhereUniqueInput | SetLogWhereUniqueInput[]
+  }
+
+  export type ThoughtStatusUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ThoughtStatusCreateWithoutUserInput, ThoughtStatusUncheckedCreateWithoutUserInput> | ThoughtStatusCreateWithoutUserInput[] | ThoughtStatusUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ThoughtStatusCreateOrConnectWithoutUserInput | ThoughtStatusCreateOrConnectWithoutUserInput[]
+    createMany?: ThoughtStatusCreateManyUserInputEnvelope
+    connect?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+  }
+
+  export type ThoughtUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ThoughtCreateWithoutUserInput, ThoughtUncheckedCreateWithoutUserInput> | ThoughtCreateWithoutUserInput[] | ThoughtUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutUserInput | ThoughtCreateOrConnectWithoutUserInput[]
+    createMany?: ThoughtCreateManyUserInputEnvelope
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -52350,6 +55371,34 @@ export namespace Prisma {
     deleteMany?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
   }
 
+  export type ThoughtStatusUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ThoughtStatusCreateWithoutUserInput, ThoughtStatusUncheckedCreateWithoutUserInput> | ThoughtStatusCreateWithoutUserInput[] | ThoughtStatusUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ThoughtStatusCreateOrConnectWithoutUserInput | ThoughtStatusCreateOrConnectWithoutUserInput[]
+    upsert?: ThoughtStatusUpsertWithWhereUniqueWithoutUserInput | ThoughtStatusUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ThoughtStatusCreateManyUserInputEnvelope
+    set?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+    disconnect?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+    delete?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+    connect?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+    update?: ThoughtStatusUpdateWithWhereUniqueWithoutUserInput | ThoughtStatusUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ThoughtStatusUpdateManyWithWhereWithoutUserInput | ThoughtStatusUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ThoughtStatusScalarWhereInput | ThoughtStatusScalarWhereInput[]
+  }
+
+  export type ThoughtUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ThoughtCreateWithoutUserInput, ThoughtUncheckedCreateWithoutUserInput> | ThoughtCreateWithoutUserInput[] | ThoughtUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutUserInput | ThoughtCreateOrConnectWithoutUserInput[]
+    upsert?: ThoughtUpsertWithWhereUniqueWithoutUserInput | ThoughtUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ThoughtCreateManyUserInputEnvelope
+    set?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    disconnect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    delete?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    update?: ThoughtUpdateWithWhereUniqueWithoutUserInput | ThoughtUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ThoughtUpdateManyWithWhereWithoutUserInput | ThoughtUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -52614,6 +55663,34 @@ export namespace Prisma {
     update?: SetLogUpdateWithWhereUniqueWithoutUserInput | SetLogUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SetLogUpdateManyWithWhereWithoutUserInput | SetLogUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SetLogScalarWhereInput | SetLogScalarWhereInput[]
+  }
+
+  export type ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ThoughtStatusCreateWithoutUserInput, ThoughtStatusUncheckedCreateWithoutUserInput> | ThoughtStatusCreateWithoutUserInput[] | ThoughtStatusUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ThoughtStatusCreateOrConnectWithoutUserInput | ThoughtStatusCreateOrConnectWithoutUserInput[]
+    upsert?: ThoughtStatusUpsertWithWhereUniqueWithoutUserInput | ThoughtStatusUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ThoughtStatusCreateManyUserInputEnvelope
+    set?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+    disconnect?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+    delete?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+    connect?: ThoughtStatusWhereUniqueInput | ThoughtStatusWhereUniqueInput[]
+    update?: ThoughtStatusUpdateWithWhereUniqueWithoutUserInput | ThoughtStatusUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ThoughtStatusUpdateManyWithWhereWithoutUserInput | ThoughtStatusUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ThoughtStatusScalarWhereInput | ThoughtStatusScalarWhereInput[]
+  }
+
+  export type ThoughtUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ThoughtCreateWithoutUserInput, ThoughtUncheckedCreateWithoutUserInput> | ThoughtCreateWithoutUserInput[] | ThoughtUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutUserInput | ThoughtCreateOrConnectWithoutUserInput[]
+    upsert?: ThoughtUpsertWithWhereUniqueWithoutUserInput | ThoughtUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ThoughtCreateManyUserInputEnvelope
+    set?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    disconnect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    delete?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    update?: ThoughtUpdateWithWhereUniqueWithoutUserInput | ThoughtUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ThoughtUpdateManyWithWhereWithoutUserInput | ThoughtUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutWeekTemplatesInput = {
@@ -54147,6 +57224,90 @@ export namespace Prisma {
     update?: XOR<XOR<ExerciseUpdateToOneWithWhereWithoutSetLogsInput, ExerciseUpdateWithoutSetLogsInput>, ExerciseUncheckedUpdateWithoutSetLogsInput>
   }
 
+  export type UserCreateNestedOneWithoutThoughtStatusesInput = {
+    create?: XOR<UserCreateWithoutThoughtStatusesInput, UserUncheckedCreateWithoutThoughtStatusesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutThoughtStatusesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ThoughtCreateNestedManyWithoutStatusInput = {
+    create?: XOR<ThoughtCreateWithoutStatusInput, ThoughtUncheckedCreateWithoutStatusInput> | ThoughtCreateWithoutStatusInput[] | ThoughtUncheckedCreateWithoutStatusInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutStatusInput | ThoughtCreateOrConnectWithoutStatusInput[]
+    createMany?: ThoughtCreateManyStatusInputEnvelope
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+  }
+
+  export type ThoughtUncheckedCreateNestedManyWithoutStatusInput = {
+    create?: XOR<ThoughtCreateWithoutStatusInput, ThoughtUncheckedCreateWithoutStatusInput> | ThoughtCreateWithoutStatusInput[] | ThoughtUncheckedCreateWithoutStatusInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutStatusInput | ThoughtCreateOrConnectWithoutStatusInput[]
+    createMany?: ThoughtCreateManyStatusInputEnvelope
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutThoughtStatusesNestedInput = {
+    create?: XOR<UserCreateWithoutThoughtStatusesInput, UserUncheckedCreateWithoutThoughtStatusesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutThoughtStatusesInput
+    upsert?: UserUpsertWithoutThoughtStatusesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutThoughtStatusesInput, UserUpdateWithoutThoughtStatusesInput>, UserUncheckedUpdateWithoutThoughtStatusesInput>
+  }
+
+  export type ThoughtUpdateManyWithoutStatusNestedInput = {
+    create?: XOR<ThoughtCreateWithoutStatusInput, ThoughtUncheckedCreateWithoutStatusInput> | ThoughtCreateWithoutStatusInput[] | ThoughtUncheckedCreateWithoutStatusInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutStatusInput | ThoughtCreateOrConnectWithoutStatusInput[]
+    upsert?: ThoughtUpsertWithWhereUniqueWithoutStatusInput | ThoughtUpsertWithWhereUniqueWithoutStatusInput[]
+    createMany?: ThoughtCreateManyStatusInputEnvelope
+    set?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    disconnect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    delete?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    update?: ThoughtUpdateWithWhereUniqueWithoutStatusInput | ThoughtUpdateWithWhereUniqueWithoutStatusInput[]
+    updateMany?: ThoughtUpdateManyWithWhereWithoutStatusInput | ThoughtUpdateManyWithWhereWithoutStatusInput[]
+    deleteMany?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
+  }
+
+  export type ThoughtUncheckedUpdateManyWithoutStatusNestedInput = {
+    create?: XOR<ThoughtCreateWithoutStatusInput, ThoughtUncheckedCreateWithoutStatusInput> | ThoughtCreateWithoutStatusInput[] | ThoughtUncheckedCreateWithoutStatusInput[]
+    connectOrCreate?: ThoughtCreateOrConnectWithoutStatusInput | ThoughtCreateOrConnectWithoutStatusInput[]
+    upsert?: ThoughtUpsertWithWhereUniqueWithoutStatusInput | ThoughtUpsertWithWhereUniqueWithoutStatusInput[]
+    createMany?: ThoughtCreateManyStatusInputEnvelope
+    set?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    disconnect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    delete?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    connect?: ThoughtWhereUniqueInput | ThoughtWhereUniqueInput[]
+    update?: ThoughtUpdateWithWhereUniqueWithoutStatusInput | ThoughtUpdateWithWhereUniqueWithoutStatusInput[]
+    updateMany?: ThoughtUpdateManyWithWhereWithoutStatusInput | ThoughtUpdateManyWithWhereWithoutStatusInput[]
+    deleteMany?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutThoughtsInput = {
+    create?: XOR<UserCreateWithoutThoughtsInput, UserUncheckedCreateWithoutThoughtsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutThoughtsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ThoughtStatusCreateNestedOneWithoutThoughtsInput = {
+    create?: XOR<ThoughtStatusCreateWithoutThoughtsInput, ThoughtStatusUncheckedCreateWithoutThoughtsInput>
+    connectOrCreate?: ThoughtStatusCreateOrConnectWithoutThoughtsInput
+    connect?: ThoughtStatusWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutThoughtsNestedInput = {
+    create?: XOR<UserCreateWithoutThoughtsInput, UserUncheckedCreateWithoutThoughtsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutThoughtsInput
+    upsert?: UserUpsertWithoutThoughtsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutThoughtsInput, UserUpdateWithoutThoughtsInput>, UserUncheckedUpdateWithoutThoughtsInput>
+  }
+
+  export type ThoughtStatusUpdateOneRequiredWithoutThoughtsNestedInput = {
+    create?: XOR<ThoughtStatusCreateWithoutThoughtsInput, ThoughtStatusUncheckedCreateWithoutThoughtsInput>
+    connectOrCreate?: ThoughtStatusCreateOrConnectWithoutThoughtsInput
+    upsert?: ThoughtStatusUpsertWithoutThoughtsInput
+    connect?: ThoughtStatusWhereUniqueInput
+    update?: XOR<XOR<ThoughtStatusUpdateToOneWithWhereWithoutThoughtsInput, ThoughtStatusUpdateWithoutThoughtsInput>, ThoughtStatusUncheckedUpdateWithoutThoughtsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -55303,6 +58464,64 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ThoughtStatusCreateWithoutUserInput = {
+    id?: string
+    name: string
+    color?: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    thoughts?: ThoughtCreateNestedManyWithoutStatusInput
+  }
+
+  export type ThoughtStatusUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    color?: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutStatusInput
+  }
+
+  export type ThoughtStatusCreateOrConnectWithoutUserInput = {
+    where: ThoughtStatusWhereUniqueInput
+    create: XOR<ThoughtStatusCreateWithoutUserInput, ThoughtStatusUncheckedCreateWithoutUserInput>
+  }
+
+  export type ThoughtStatusCreateManyUserInputEnvelope = {
+    data: ThoughtStatusCreateManyUserInput | ThoughtStatusCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ThoughtCreateWithoutUserInput = {
+    id?: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    status: ThoughtStatusCreateNestedOneWithoutThoughtsInput
+  }
+
+  export type ThoughtUncheckedCreateWithoutUserInput = {
+    id?: string
+    statusId: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtCreateOrConnectWithoutUserInput = {
+    where: ThoughtWhereUniqueInput
+    create: XOR<ThoughtCreateWithoutUserInput, ThoughtUncheckedCreateWithoutUserInput>
+  }
+
+  export type ThoughtCreateManyUserInputEnvelope = {
+    data: ThoughtCreateManyUserInput | ThoughtCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -55954,6 +59173,64 @@ export namespace Prisma {
     order?: IntFilter<"SetLog"> | number
   }
 
+  export type ThoughtStatusUpsertWithWhereUniqueWithoutUserInput = {
+    where: ThoughtStatusWhereUniqueInput
+    update: XOR<ThoughtStatusUpdateWithoutUserInput, ThoughtStatusUncheckedUpdateWithoutUserInput>
+    create: XOR<ThoughtStatusCreateWithoutUserInput, ThoughtStatusUncheckedCreateWithoutUserInput>
+  }
+
+  export type ThoughtStatusUpdateWithWhereUniqueWithoutUserInput = {
+    where: ThoughtStatusWhereUniqueInput
+    data: XOR<ThoughtStatusUpdateWithoutUserInput, ThoughtStatusUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ThoughtStatusUpdateManyWithWhereWithoutUserInput = {
+    where: ThoughtStatusScalarWhereInput
+    data: XOR<ThoughtStatusUpdateManyMutationInput, ThoughtStatusUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ThoughtStatusScalarWhereInput = {
+    AND?: ThoughtStatusScalarWhereInput | ThoughtStatusScalarWhereInput[]
+    OR?: ThoughtStatusScalarWhereInput[]
+    NOT?: ThoughtStatusScalarWhereInput | ThoughtStatusScalarWhereInput[]
+    id?: StringFilter<"ThoughtStatus"> | string
+    userId?: StringFilter<"ThoughtStatus"> | string
+    name?: StringFilter<"ThoughtStatus"> | string
+    color?: StringFilter<"ThoughtStatus"> | string
+    order?: IntFilter<"ThoughtStatus"> | number
+    createdAt?: DateTimeFilter<"ThoughtStatus"> | Date | string
+    updatedAt?: DateTimeFilter<"ThoughtStatus"> | Date | string
+  }
+
+  export type ThoughtUpsertWithWhereUniqueWithoutUserInput = {
+    where: ThoughtWhereUniqueInput
+    update: XOR<ThoughtUpdateWithoutUserInput, ThoughtUncheckedUpdateWithoutUserInput>
+    create: XOR<ThoughtCreateWithoutUserInput, ThoughtUncheckedCreateWithoutUserInput>
+  }
+
+  export type ThoughtUpdateWithWhereUniqueWithoutUserInput = {
+    where: ThoughtWhereUniqueInput
+    data: XOR<ThoughtUpdateWithoutUserInput, ThoughtUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ThoughtUpdateManyWithWhereWithoutUserInput = {
+    where: ThoughtScalarWhereInput
+    data: XOR<ThoughtUpdateManyMutationInput, ThoughtUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ThoughtScalarWhereInput = {
+    AND?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
+    OR?: ThoughtScalarWhereInput[]
+    NOT?: ThoughtScalarWhereInput | ThoughtScalarWhereInput[]
+    id?: StringFilter<"Thought"> | string
+    userId?: StringFilter<"Thought"> | string
+    statusId?: StringFilter<"Thought"> | string
+    content?: StringFilter<"Thought"> | string
+    order?: IntFilter<"Thought"> | number
+    createdAt?: DateTimeFilter<"Thought"> | Date | string
+    updatedAt?: DateTimeFilter<"Thought"> | Date | string
+  }
+
   export type UserCreateWithoutWeekTemplatesInput = {
     id?: string
     name?: string | null
@@ -55983,6 +59260,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWeekTemplatesInput = {
@@ -56014,6 +59293,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWeekTemplatesInput = {
@@ -56092,6 +59373,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWeekTemplatesInput = {
@@ -56123,6 +59406,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayUpsertWithoutWeekTemplatesInput = {
@@ -56191,6 +59476,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -56222,6 +59509,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -56269,6 +59558,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -56300,6 +59591,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -56331,6 +59624,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -56362,6 +59657,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -56409,6 +59706,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -56440,6 +59739,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -56471,6 +59772,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -56502,6 +59805,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -56549,6 +59854,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -56580,6 +59887,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCreateWithoutSphereInput = {
@@ -56671,6 +59980,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLifeSpheresInput = {
@@ -56702,6 +60013,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLifeSpheresInput = {
@@ -56899,6 +60212,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLifeSpheresInput = {
@@ -56930,6 +60245,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MilestoneUpsertWithWhereUniqueWithoutSphereInput = {
@@ -57218,6 +60535,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTasksInput = {
@@ -57249,6 +60568,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTasksInput = {
@@ -57457,6 +60778,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTasksInput = {
@@ -57488,6 +60811,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDailyEntriesInput = {
@@ -57519,6 +60844,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDailyEntriesInput = {
@@ -57550,6 +60877,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDailyEntriesInput = {
@@ -57597,6 +60926,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDailyEntriesInput = {
@@ -57628,6 +60959,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutHabitsInput = {
@@ -57721,6 +61054,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitsInput = {
@@ -57752,6 +61087,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitsInput = {
@@ -57895,6 +61232,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitsInput = {
@@ -57926,6 +61265,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitCompletionUpsertWithWhereUniqueWithoutHabitInput = {
@@ -57983,6 +61324,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutHabitChainsInput = {
@@ -58014,6 +61357,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutHabitChainsInput = {
@@ -58121,6 +61466,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutHabitChainsInput = {
@@ -58152,6 +61499,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type HabitUpsertWithWhereUniqueWithoutChainInput = {
@@ -58315,6 +61664,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVisionsInput = {
@@ -58346,6 +61697,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVisionsInput = {
@@ -58393,6 +61746,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVisionsInput = {
@@ -58424,6 +61779,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAnnualCompassesInput = {
@@ -58455,6 +61812,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnualCompassesInput = {
@@ -58486,6 +61845,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnualCompassesInput = {
@@ -58533,6 +61894,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnualCompassesInput = {
@@ -58564,6 +61927,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type LifeSphereCreateWithoutMilestonesInput = {
@@ -58630,6 +61995,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMilestonesInput = {
@@ -58661,6 +62028,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMilestonesInput = {
@@ -58749,6 +62118,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMilestonesInput = {
@@ -58780,6 +62151,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ObjectiveCreateWithoutSprintInput = {
@@ -58845,6 +62218,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSprintsInput = {
@@ -58876,6 +62251,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSprintsInput = {
@@ -58973,6 +62350,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSprintsInput = {
@@ -59004,6 +62383,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type SprintReviewUpsertWithWhereUniqueWithoutSprintInput = {
@@ -59844,6 +63225,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutExercisesInput = {
@@ -59875,6 +63258,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutExercisesInput = {
@@ -60006,6 +63391,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutExercisesInput = {
@@ -60037,6 +63424,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayExerciseUpsertWithWhereUniqueWithoutExerciseInput = {
@@ -60100,6 +63489,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrainingPlansInput = {
@@ -60131,6 +63522,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrainingPlansInput = {
@@ -60214,6 +63607,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingPlansInput = {
@@ -60245,6 +63640,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayUpsertWithWhereUniqueWithoutPlanInput = {
@@ -60292,6 +63689,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrainingDaysInput = {
@@ -60323,6 +63722,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrainingDaysInput = {
@@ -60499,6 +63900,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingDaysInput = {
@@ -60530,6 +63933,8 @@ export namespace Prisma {
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingPlanUpsertWithoutDaysInput = {
@@ -60642,6 +64047,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrainingDayExercisesInput = {
@@ -60673,6 +64080,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrainingDayExercisesInput = {
@@ -60796,6 +64205,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingDayExercisesInput = {
@@ -60827,6 +64238,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayUpsertWithoutExercisesInput = {
@@ -60946,6 +64359,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTrainingSessionsInput = {
@@ -60977,6 +64392,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTrainingSessionsInput = {
@@ -61099,6 +64516,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTrainingSessionsInput = {
@@ -61130,6 +64549,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingDayUpsertWithoutSessionsInput = {
@@ -61214,6 +64635,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
     trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSetLogsInput = {
@@ -61245,6 +64668,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
     trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
     trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSetLogsInput = {
@@ -61368,6 +64793,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
     trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSetLogsInput = {
@@ -61399,6 +64826,8 @@ export namespace Prisma {
     trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
     trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
     trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TrainingSessionUpsertWithoutSetLogsInput = {
@@ -61487,6 +64916,402 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutExerciseNestedInput
+  }
+
+  export type UserCreateWithoutThoughtStatusesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutThoughtStatusesInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughts?: ThoughtUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutThoughtStatusesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutThoughtStatusesInput, UserUncheckedCreateWithoutThoughtStatusesInput>
+  }
+
+  export type ThoughtCreateWithoutStatusInput = {
+    id?: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutThoughtsInput
+  }
+
+  export type ThoughtUncheckedCreateWithoutStatusInput = {
+    id?: string
+    userId: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtCreateOrConnectWithoutStatusInput = {
+    where: ThoughtWhereUniqueInput
+    create: XOR<ThoughtCreateWithoutStatusInput, ThoughtUncheckedCreateWithoutStatusInput>
+  }
+
+  export type ThoughtCreateManyStatusInputEnvelope = {
+    data: ThoughtCreateManyStatusInput | ThoughtCreateManyStatusInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutThoughtStatusesInput = {
+    update: XOR<UserUpdateWithoutThoughtStatusesInput, UserUncheckedUpdateWithoutThoughtStatusesInput>
+    create: XOR<UserCreateWithoutThoughtStatusesInput, UserUncheckedCreateWithoutThoughtStatusesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutThoughtStatusesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutThoughtStatusesInput, UserUncheckedUpdateWithoutThoughtStatusesInput>
+  }
+
+  export type UserUpdateWithoutThoughtStatusesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutThoughtStatusesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughts?: ThoughtUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ThoughtUpsertWithWhereUniqueWithoutStatusInput = {
+    where: ThoughtWhereUniqueInput
+    update: XOR<ThoughtUpdateWithoutStatusInput, ThoughtUncheckedUpdateWithoutStatusInput>
+    create: XOR<ThoughtCreateWithoutStatusInput, ThoughtUncheckedCreateWithoutStatusInput>
+  }
+
+  export type ThoughtUpdateWithWhereUniqueWithoutStatusInput = {
+    where: ThoughtWhereUniqueInput
+    data: XOR<ThoughtUpdateWithoutStatusInput, ThoughtUncheckedUpdateWithoutStatusInput>
+  }
+
+  export type ThoughtUpdateManyWithWhereWithoutStatusInput = {
+    where: ThoughtScalarWhereInput
+    data: XOR<ThoughtUpdateManyMutationInput, ThoughtUncheckedUpdateManyWithoutStatusInput>
+  }
+
+  export type UserCreateWithoutThoughtsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryCreateNestedManyWithoutUserInput
+    habits?: HabitCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereCreateNestedManyWithoutUserInput
+    milestones?: MilestoneCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    sprints?: SprintCreateNestedManyWithoutUserInput
+    tasks?: TaskCreateNestedManyWithoutUserInput
+    visions?: VisionCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateCreateNestedManyWithoutUserInput
+    exercises?: ExerciseCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionCreateNestedManyWithoutUserInput
+    setLogs?: SetLogCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutThoughtsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    passwordHash?: string | null
+    privateTaskPasswordHash?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    systemStatus?: $Enums.SystemStatus
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    annualCompasses?: AnnualCompassUncheckedCreateNestedManyWithoutUserInput
+    dailyEntries?: DailyEntryUncheckedCreateNestedManyWithoutUserInput
+    habits?: HabitUncheckedCreateNestedManyWithoutUserInput
+    habitChains?: HabitChainUncheckedCreateNestedManyWithoutUserInput
+    lifeSpheres?: LifeSphereUncheckedCreateNestedManyWithoutUserInput
+    milestones?: MilestoneUncheckedCreateNestedManyWithoutUserInput
+    pushSubscriptions?: PushSubscriptionUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    sprints?: SprintUncheckedCreateNestedManyWithoutUserInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutUserInput
+    visions?: VisionUncheckedCreateNestedManyWithoutUserInput
+    weekTemplates?: WeekTemplateUncheckedCreateNestedManyWithoutUserInput
+    exercises?: ExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingPlans?: TrainingPlanUncheckedCreateNestedManyWithoutUserInput
+    trainingDays?: TrainingDayUncheckedCreateNestedManyWithoutUserInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedCreateNestedManyWithoutUserInput
+    trainingSessions?: TrainingSessionUncheckedCreateNestedManyWithoutUserInput
+    setLogs?: SetLogUncheckedCreateNestedManyWithoutUserInput
+    thoughtStatuses?: ThoughtStatusUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutThoughtsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutThoughtsInput, UserUncheckedCreateWithoutThoughtsInput>
+  }
+
+  export type ThoughtStatusCreateWithoutThoughtsInput = {
+    id?: string
+    name: string
+    color?: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutThoughtStatusesInput
+  }
+
+  export type ThoughtStatusUncheckedCreateWithoutThoughtsInput = {
+    id?: string
+    userId: string
+    name: string
+    color?: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtStatusCreateOrConnectWithoutThoughtsInput = {
+    where: ThoughtStatusWhereUniqueInput
+    create: XOR<ThoughtStatusCreateWithoutThoughtsInput, ThoughtStatusUncheckedCreateWithoutThoughtsInput>
+  }
+
+  export type UserUpsertWithoutThoughtsInput = {
+    update: XOR<UserUpdateWithoutThoughtsInput, UserUncheckedUpdateWithoutThoughtsInput>
+    create: XOR<UserCreateWithoutThoughtsInput, UserUncheckedCreateWithoutThoughtsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutThoughtsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutThoughtsInput, UserUncheckedUpdateWithoutThoughtsInput>
+  }
+
+  export type UserUpdateWithoutThoughtsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUpdateManyWithoutUserNestedInput
+    habits?: HabitUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    sprints?: SprintUpdateManyWithoutUserNestedInput
+    tasks?: TaskUpdateManyWithoutUserNestedInput
+    visions?: VisionUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutThoughtsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    annualCompasses?: AnnualCompassUncheckedUpdateManyWithoutUserNestedInput
+    dailyEntries?: DailyEntryUncheckedUpdateManyWithoutUserNestedInput
+    habits?: HabitUncheckedUpdateManyWithoutUserNestedInput
+    habitChains?: HabitChainUncheckedUpdateManyWithoutUserNestedInput
+    lifeSpheres?: LifeSphereUncheckedUpdateManyWithoutUserNestedInput
+    milestones?: MilestoneUncheckedUpdateManyWithoutUserNestedInput
+    pushSubscriptions?: PushSubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    sprints?: SprintUncheckedUpdateManyWithoutUserNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutUserNestedInput
+    visions?: VisionUncheckedUpdateManyWithoutUserNestedInput
+    weekTemplates?: WeekTemplateUncheckedUpdateManyWithoutUserNestedInput
+    exercises?: ExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingPlans?: TrainingPlanUncheckedUpdateManyWithoutUserNestedInput
+    trainingDays?: TrainingDayUncheckedUpdateManyWithoutUserNestedInput
+    trainingDayExercises?: TrainingDayExerciseUncheckedUpdateManyWithoutUserNestedInput
+    trainingSessions?: TrainingSessionUncheckedUpdateManyWithoutUserNestedInput
+    setLogs?: SetLogUncheckedUpdateManyWithoutUserNestedInput
+    thoughtStatuses?: ThoughtStatusUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ThoughtStatusUpsertWithoutThoughtsInput = {
+    update: XOR<ThoughtStatusUpdateWithoutThoughtsInput, ThoughtStatusUncheckedUpdateWithoutThoughtsInput>
+    create: XOR<ThoughtStatusCreateWithoutThoughtsInput, ThoughtStatusUncheckedCreateWithoutThoughtsInput>
+    where?: ThoughtStatusWhereInput
+  }
+
+  export type ThoughtStatusUpdateToOneWithWhereWithoutThoughtsInput = {
+    where?: ThoughtStatusWhereInput
+    data: XOR<ThoughtStatusUpdateWithoutThoughtsInput, ThoughtStatusUncheckedUpdateWithoutThoughtsInput>
+  }
+
+  export type ThoughtStatusUpdateWithoutThoughtsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutThoughtStatusesNestedInput
+  }
+
+  export type ThoughtStatusUncheckedUpdateWithoutThoughtsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AccountCreateManyUserInput = {
@@ -61758,6 +65583,24 @@ export namespace Prisma {
     completed?: boolean
     notes?: string | null
     order?: number
+  }
+
+  export type ThoughtStatusCreateManyUserInput = {
+    id?: string
+    name: string
+    color?: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtCreateManyUserInput = {
+    id?: string
+    statusId: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -62603,6 +66446,62 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ThoughtStatusUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    thoughts?: ThoughtUpdateManyWithoutStatusNestedInput
+  }
+
+  export type ThoughtStatusUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    thoughts?: ThoughtUncheckedUpdateManyWithoutStatusNestedInput
+  }
+
+  export type ThoughtStatusUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThoughtUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: ThoughtStatusUpdateOneRequiredWithoutThoughtsNestedInput
+  }
+
+  export type ThoughtUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    statusId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThoughtUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    statusId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type HabitCreateManySphereInput = {
@@ -63883,6 +67782,42 @@ export namespace Prisma {
     completed?: BoolFieldUpdateOperationsInput | boolean
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ThoughtCreateManyStatusInput = {
+    id?: string
+    userId: string
+    content: string
+    order?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ThoughtUpdateWithoutStatusInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutThoughtsNestedInput
+  }
+
+  export type ThoughtUncheckedUpdateWithoutStatusInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ThoughtUncheckedUpdateManyWithoutStatusInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    order?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
