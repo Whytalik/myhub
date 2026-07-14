@@ -33,7 +33,6 @@ export function getSpaceFromPath(pathname: string): SpaceKey {
   if (pathname.startsWith("/health/training")) return "training";
   if (pathname.startsWith("/health")) return "health";
   if (pathname.startsWith("/nutrition")) return "nutrition";
-  if (pathname.startsWith("/life/planning/kanban")) return "life";
   if (pathname.startsWith("/life/planning")) return "planning";
   if (pathname.startsWith("/life")) return "life";
   if (pathname.startsWith("/fitness")) return "fitness";

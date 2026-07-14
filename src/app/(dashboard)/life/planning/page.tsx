@@ -45,7 +45,7 @@ export default async function PlanningPage() {
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "planning" }]}
         title="Thoughts"
-        description="Capture ideas and move them across statuses you define."
+        description="Zero-friction capture — drop any raw thought here without judging it. Clarify and commit them in the Planning Wizard."
       />
       <ThoughtsBoardClient initialStatuses={statuses} spheres={spheres} />
     </div>

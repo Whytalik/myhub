@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { Breadcrumb } from "@/components/ui/navigation/breadcrumb";
+import { PageHeader } from "@/components/ui/display/page-header";
 import { TasksPageClient } from "@/features/life/components/tasks/TasksPageClient";
 import * as taskService from "@/features/life/services/task-service";
 
@@ -48,7 +48,11 @@ export default async function TasksPage({
 
   return (
     <div className="flex flex-col gap-6">
-      <Breadcrumb items={[{ label: "life space", href: "/life" }, { label: "tasks" }]} />
+      <PageHeader
+        breadcrumb={[{ label: "life space", href: "/life" }, { label: "tasks" }]}
+        title="Tasks"
+        description="Committed next-actions — the clarified output of planning, ready to execute."
+      />
       <TasksPageClient
         initialTasks={tasks}
         calendarTasks={calendarTasks}

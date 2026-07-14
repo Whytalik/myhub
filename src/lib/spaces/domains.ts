@@ -79,9 +79,8 @@ export const DOMAINS: Domain[] = [
         label: "Operation Space",
         icon: Activity,
         accent: "#6fbfbf",
-        href: "/life/planning/kanban",
+        href: "/life/journal",
         pages: [
-          { href: "/life/planning/kanban", label: "Weekly Board", icon: Kanban },
           { href: "/life/journal", label: "Journal", icon: BookText },
           { href: "/life/habits", label: "Habits", icon: Zap },
           { href: "/life/tasks", label: "Tasks Database", icon: CheckCircle2 },
@@ -95,9 +94,10 @@ export const DOMAINS: Domain[] = [
         href: "/life/planning/mission",
         pages: [
           { href: "/life/planning/mission", label: "Mission", icon: Compass },
-          { href: "/life/planning/wizard", label: "Planning Wizard", icon: Sparkles },
-          { href: "/life/planning", label: "Inbox Thoughts", icon: Lightbulb },
           { href: "/life/planning/spheres", label: "Life Spheres", icon: LayoutGrid },
+          { href: "/life/planning", label: "Inbox Thoughts", icon: Lightbulb },
+          { href: "/life/planning/wizard", label: "Planning Wizard", icon: Sparkles },
+          { href: "/life/planning/kanban", label: "Weekly Board", icon: Kanban },
         ],
       },
     ],
@@ -140,7 +140,7 @@ export const DOMAINS: Domain[] = [
 export function getActiveDomain(pathname: string): Domain {
   for (const domain of DOMAINS) {
     const hasActivePage = domain.spaces.some((space) =>
-      space.pages.some((page) => pathname === page.href || pathname.startsWith(page.href + "/"))
+      space.pages.some((page) => pathname === page.href || pathname.startsWith(page.href + "/")),
     );
     if (hasActivePage) {
       return domain;
