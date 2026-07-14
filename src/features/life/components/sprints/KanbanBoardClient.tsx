@@ -49,7 +49,7 @@ import {
   updateTaskStatusAction,
 } from "@/features/life/actions/task-actions";
 import type { LifeSphereData, TaskData } from "@/features/life/types";
-import { startOfWeek, endOfWeek, format } from "date-fns";
+import { startOfWeek, endOfWeek, format, addDays, startOfDay, isSameDay, isToday } from "date-fns";
 
 // Custom TaskCard component for the Operational board
 import { useSortable } from "@dnd-kit/sortable";
@@ -236,6 +236,7 @@ export function KanbanBoardClient({
   const [editObjectiveDesc, setEditObjectiveDesc] = useState("");
   const [editObjectiveSphereId, setEditObjectiveSphereId] = useState("");
   const [assigningProjectId, setAssigningProjectId] = useState<string | null>(null);
+  const [tacticsView, setTacticsView] = useState<"kanban" | "calendar">("kanban");
 
   const filteredBacklogProjects = useMemo(() => {
     if (!backlogSearch.trim()) return backlogProjects;
@@ -385,6 +386,163 @@ export function KanbanBoardClient({
         setObjectiveToEdit(null);
       } else {
         toast.error(result.error || "Failed to update objective");
+      }
+    });
+  };
+
+  // Calendar View Helpers
+  const daysOfWeek = useMemo(() => {
+    return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+  }, [weekStart]);
+
+  const sprintProjectTasksPool = useMemo(() => {
+    const tasks: TaskData[] = [];
+    sprint.objectives.forEach((obj) => {
+      obj.projects.forEach((proj) => {
+        proj.tasks.forEach((t) => {
+          if (t.status === "TODO" || t.status === "IN_PROGRESS") {
+            if (!t.plannedDate) {
+              tasks.push({ ...t, project: { id: proj.id, title: proj.title } } as any);
+            }
+          }
+        });
+      });
+    });
+    return tasks;
+  }, [sprint]);
+
+  const handleScheduleTask = (taskId: string, dateIso: string) => {
+    startTransition(async () => {
+      const targetDate = new Date(dateIso);
+      const result = await upsertTaskAction({
+        id: taskId,
+        plannedDate: dateIso,
+      });
+
+      if (result.success) {
+        toast.success("Task scheduled successfully!");
+
+        setColumns((prev) => {
+          let taskToMove: TaskData | undefined;
+          const cleanWeekly = prev.weekly.filter((t) => {
+            if (t.id === taskId) {
+              taskToMove = { ...t, plannedDate: targetDate };
+              return false;
+            }
+            return true;
+          });
+          const cleanToday = prev.today.filter((t) => {
+            if (t.id === taskId) {
+              taskToMove = { ...t, plannedDate: targetDate };
+              return false;
+            }
+            return true;
+          });
+
+          if (!taskToMove) {
+            // Find it in pool
+            sprint.objectives.forEach((obj) => {
+              obj.projects.forEach((proj) => {
+                const pt = proj.tasks.find((t) => t.id === taskId);
+                if (pt) {
+                  taskToMove = { ...pt, plannedDate: targetDate, project: { id: proj.id, title: proj.title } } as any;
+                }
+              });
+            });
+          }
+
+          if (!taskToMove) return prev;
+
+          const isTodayTask = isSameDay(targetDate, new Date());
+          if (isTodayTask) {
+            return {
+              ...prev,
+              weekly: cleanWeekly,
+              today: [taskToMove, ...cleanToday],
+            };
+          } else {
+            return {
+              ...prev,
+              weekly: [taskToMove, ...cleanWeekly],
+              today: cleanToday,
+            };
+          }
+        });
+
+        setSprint((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            objectives: prev.objectives.map((obj) => ({
+              ...obj,
+              projects: obj.projects.map((proj) => ({
+                ...proj,
+                tasks: proj.tasks.map((t) =>
+                  t.id === taskId ? { ...t, plannedDate: targetDate } : t
+                ),
+              })),
+            })),
+          };
+        });
+      } else {
+        toast.error(result.error || "Failed to schedule task");
+      }
+    });
+  };
+
+  const handleUnscheduleTask = (taskId: string) => {
+    startTransition(async () => {
+      const result = await upsertTaskAction({
+        id: taskId,
+        plannedDate: null,
+      });
+
+      if (result.success) {
+        toast.success("Task unscheduled!");
+
+        setColumns((prev) => {
+          let taskToMove: TaskData | undefined;
+          const cleanWeekly = prev.weekly.filter((t) => {
+            if (t.id === taskId) {
+              taskToMove = { ...t, plannedDate: null };
+              return false;
+            }
+            return true;
+          });
+          const cleanToday = prev.today.filter((t) => {
+            if (t.id === taskId) {
+              taskToMove = { ...t, plannedDate: null };
+              return false;
+            }
+            return true;
+          });
+
+          if (!taskToMove) return prev;
+
+          return {
+            ...prev,
+            weekly: [taskToMove, ...cleanWeekly],
+            today: cleanToday,
+          };
+        });
+
+        setSprint((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            objectives: prev.objectives.map((obj) => ({
+              ...obj,
+              projects: obj.projects.map((proj) => ({
+                ...proj,
+                tasks: proj.tasks.map((t) =>
+                  t.id === taskId ? { ...t, plannedDate: null } : t
+                ),
+              })),
+            })),
+          };
+        });
+      } else {
+        toast.error(result.error || "Failed to unschedule task");
       }
     });
   };
@@ -1142,63 +1300,296 @@ export function KanbanBoardClient({
 
       {/* LEVEL 2: Atoms (Tactics) */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2 text-zinc-400">
-          <CheckSquare size={14} className="text-orange-400" />
-          <h2 className="text-panel-title uppercase tracking-wider font-semibold text-xs font-mono">
-            Operational Atoms (Weekly Execution)
-          </h2>
+        <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
+          <div className="flex items-center gap-2 text-zinc-400">
+            <CheckSquare size={14} className="text-orange-400" />
+            <h2 className="text-panel-title uppercase tracking-wider font-semibold text-xs font-mono">
+              Operational Atoms (Weekly Execution)
+            </h2>
+          </div>
+          <div className="flex bg-white/[0.03] border border-white/[0.06] rounded-xl p-0.5">
+            <button
+              type="button"
+              onClick={() => setTacticsView("kanban")}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                tacticsView === "kanban"
+                  ? "bg-accent/15 text-accent border border-accent/20"
+                  : "text-zinc-400 hover:text-zinc-200"
+              }`}
+            >
+              Kanban Board
+            </button>
+            <button
+              type="button"
+              onClick={() => setTacticsView("calendar")}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                tacticsView === "calendar"
+                  ? "bg-accent/15 text-accent border border-accent/20"
+                  : "text-zinc-400 hover:text-zinc-200"
+              }`}
+            >
+              Weekly Planner
+            </button>
+          </div>
         </div>
 
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCorners}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-        >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-            <div id="column-weekly">
-              <TaskColumn
-                id="weekly"
-                title="Weekly Plan"
-                tasks={columns.weekly}
-                onDeleteTask={handleDeleteTask}
-                onEditTask={() => {}}
-              />
+        {tacticsView === "kanban" ? (
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+              <div id="column-weekly">
+                <TaskColumn
+                  id="weekly"
+                  title="Weekly Plan"
+                  tasks={columns.weekly}
+                  onDeleteTask={handleDeleteTask}
+                  onEditTask={() => {}}
+                />
+              </div>
+              <div id="column-today">
+                <TaskColumn
+                  id="today"
+                  title="TODAY"
+                  tasks={columns.today}
+                  onDeleteTask={handleDeleteTask}
+                  onEditTask={() => {}}
+                />
+              </div>
+              <div id="column-done">
+                <TaskColumn
+                  id="done"
+                  title="Done"
+                  tasks={columns.done}
+                  onDeleteTask={handleDeleteTask}
+                  onEditTask={() => {}}
+                />
+              </div>
             </div>
-            <div id="column-today">
-              <TaskColumn
-                id="today"
-                title="TODAY"
-                tasks={columns.today}
-                onDeleteTask={handleDeleteTask}
-                onEditTask={() => {}}
-              />
+
+            <DragOverlay>
+              {activeDragTask ? (
+                <div className="glass-card p-3 w-64 shadow-xl border border-white/20">
+                  <p className="text-body text-zinc-150 font-medium break-words">{activeDragTask.title}</p>
+                  {activeDragTask.project && (
+                    <span className="inline-block mt-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[10px] font-mono">
+                      {activeDragTask.project.title}
+                    </span>
+                  )}
+                </div>
+              ) : null}
+            </DragOverlay>
+          </DndContext>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {/* Unplanned Atoms Pool */}
+            <div className="glass-card p-4 border-white/[0.04] bg-white/[0.01] rounded-2xl flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <span className="text-caption font-mono uppercase text-xs font-semibold text-zinc-400">
+                  Unplanned Project Tasks Pool ({sprintProjectTasksPool.length})
+                </span>
+                <span className="text-[10px] text-zinc-500 italic">
+                  Select a day in the dropdown below to schedule a task to the calendar
+                </span>
+              </div>
+              
+              {sprintProjectTasksPool.length === 0 ? (
+                <div className="text-zinc-500 text-xs italic py-6 text-center bg-black/10 border border-dashed border-white/[0.04] rounded-xl">
+                  All active project tasks have been scheduled!
+                </div>
+              ) : (
+                <div className="flex flex-row gap-3 overflow-x-auto pb-3 pt-1 scrollbar-thin">
+                  {sprintProjectTasksPool.map((task) => (
+                    <div
+                      key={task.id}
+                      className="glass-card p-3 w-[260px] shrink-0 border border-white/[0.06] hover:border-white/10 transition-colors flex flex-col gap-2 relative bg-zinc-900/60 justify-between"
+                    >
+                      <div className="flex flex-col gap-2">
+                        <h4 className="text-xs font-semibold text-zinc-200 line-clamp-2" title={task.title}>
+                          {task.title}
+                        </h4>
+                        {task.project && (
+                          <span className="inline-block self-start px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[9px] font-mono border border-amber-500/10 truncate max-w-full">
+                            {task.project.title}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/[0.04]">
+                        <select
+                          onChange={(e) => handleScheduleTask(task.id, e.target.value)}
+                          value=""
+                          className="bg-black/40 border border-white/10 rounded px-1.5 py-1 text-[10px] text-zinc-400 outline-none w-full"
+                        >
+                          <option value="" disabled>Schedule to day...</option>
+                          {daysOfWeek.map((day, idx) => (
+                            <option key={idx} value={day.toISOString()}>
+                              {format(day, "EEEE (dd.MM)")}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            <div id="column-done">
-              <TaskColumn
-                id="done"
-                title="Done"
-                tasks={columns.done}
-                onDeleteTask={handleDeleteTask}
-                onEditTask={() => {}}
-              />
+
+            {/* Weekly Calendar Columns */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-8 gap-3 mt-2 items-start">
+              {/* Overdue / Backlog Column */}
+              {(() => {
+                const allPlannedTasks = [...columns.weekly, ...columns.today];
+                const overdueTasks = allPlannedTasks.filter(
+                  (t) => t.plannedDate && new Date(t.plannedDate) < startOfDay(weekStart)
+                );
+
+                return (
+                  <div className="glass-card p-3 border border-rose-500/20 bg-rose-500/[0.01] rounded-xl flex flex-col gap-2 min-h-[220px]">
+                    <div className="border-b border-rose-500/10 pb-1.5 flex flex-col gap-0.5">
+                      <span className="text-[10px] font-mono font-semibold uppercase text-rose-400">
+                        Overdue / Backlog
+                      </span>
+                      <span className="text-[9px] font-mono text-rose-500/80">
+                        Past unfinished tasks
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-2 flex-grow">
+                      {overdueTasks.length === 0 ? (
+                        <div className="text-[10px] text-zinc-600 italic py-10 text-center">
+                          No overdue tasks
+                        </div>
+                      ) : (
+                        overdueTasks.map((task) => (
+                          <div
+                            key={task.id}
+                            className="p-2 rounded bg-zinc-950 border border-rose-500/10 flex flex-col gap-1.5 text-[11px] relative group"
+                          >
+                            <p className="text-zinc-300 font-medium break-words leading-tight">
+                              {task.title}
+                            </p>
+                            {task.project && (
+                              <span className="inline-block px-1 py-0.2 rounded bg-amber-500/5 text-amber-500/80 text-[8px] font-mono max-w-full truncate">
+                                {task.project.title}
+                              </span>
+                            )}
+                            <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                type="button"
+                                onClick={() => handleUnscheduleTask(task.id)}
+                                className="text-[8px] font-mono text-zinc-500 hover:text-rose-450 uppercase"
+                              >
+                                Unplan
+                              </button>
+                              <select
+                                onChange={(e) => handleScheduleTask(task.id, e.target.value)}
+                                value=""
+                                className="bg-black/40 border border-white/5 rounded text-[8px] text-zinc-400 outline-none max-w-[80px]"
+                              >
+                                <option value="" disabled>Move...</option>
+                                {daysOfWeek.map((d, dIdx) => (
+                                  <option key={dIdx} value={d.toISOString()}>
+                                    {format(d, "EEE")}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* 7 Days of the week */}
+              {daysOfWeek.map((day, idx) => {
+                const allPlannedTasks = [...columns.weekly, ...columns.today];
+                const dayTasks = allPlannedTasks.filter(
+                  (t) => t.plannedDate && isSameDay(new Date(t.plannedDate), day)
+                );
+
+                const isTodayDay = isToday(day);
+
+                return (
+                  <div
+                    key={idx}
+                    className={`glass-card p-3 border rounded-xl flex flex-col gap-2 min-h-[220px] ${
+                      isTodayDay
+                        ? "border-accent/40 bg-accent/[0.02] ring-1 ring-accent/10"
+                        : "border-white/[0.06] bg-black/10"
+                    }`}
+                  >
+                    <div className={`border-b pb-1.5 flex flex-col gap-0.5 ${
+                      isTodayDay ? "border-accent/20" : "border-white/[0.04]"
+                    }`}>
+                      <span className={`text-[10px] font-mono font-semibold uppercase ${
+                        isTodayDay ? "text-accent" : "text-zinc-400"
+                      }`}>
+                        {format(day, "EEEE")}
+                      </span>
+                      <span className="text-[9px] font-mono text-zinc-500">
+                        {format(day, "dd.MM")} {isTodayDay && "(Today)"}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-2 flex-grow">
+                      {dayTasks.length === 0 ? (
+                        <div className="text-[10px] text-zinc-650 italic py-10 text-center">
+                          No tasks
+                        </div>
+                      ) : (
+                        dayTasks.map((task) => (
+                          <div
+                            key={task.id}
+                            className={`p-2 rounded border flex flex-col gap-1.5 text-[11px] relative group ${
+                              isTodayDay
+                                ? "bg-zinc-900 border-accent/20"
+                                : "bg-zinc-900 border-white/[0.04]"
+                            }`}
+                          >
+                            <p className="text-zinc-250 font-medium break-words leading-tight">
+                              {task.title}
+                            </p>
+                            {task.project && (
+                              <span className="inline-block px-1 py-0.2 rounded bg-amber-500/5 text-amber-500/80 text-[8px] font-mono max-w-full truncate">
+                                {task.project.title}
+                              </span>
+                            )}
+                            <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                type="button"
+                                onClick={() => handleUnscheduleTask(task.id)}
+                                className="text-[8px] font-mono text-zinc-550 hover:text-rose-455 uppercase"
+                              >
+                                Unplan
+                              </button>
+                              <select
+                                onChange={(e) => handleScheduleTask(task.id, e.target.value)}
+                                value={day.toISOString()}
+                                className="bg-black/40 border border-white/5 rounded text-[8px] text-zinc-400 outline-none max-w-[80px]"
+                              >
+                                {daysOfWeek.map((d, dIdx) => (
+                                  <option key={dIdx} value={d.toISOString()}>
+                                    {format(d, "EEE")}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
-
-          <DragOverlay>
-            {activeDragTask ? (
-              <div className="glass-card p-3 w-64 shadow-xl border border-white/20">
-                <p className="text-body text-zinc-150 font-medium break-words">{activeDragTask.title}</p>
-                {activeDragTask.project && (
-                  <span className="inline-block mt-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[10px] font-mono">
-                    {activeDragTask.project.title}
-                  </span>
-                )}
-              </div>
-            ) : null}
-          </DragOverlay>
-        </DndContext>
+        )}
       </div>
 
       {/* MODALS */}
