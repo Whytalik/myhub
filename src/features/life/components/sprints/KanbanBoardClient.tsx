@@ -30,6 +30,7 @@ import {
   X,
   ArrowRightLeft,
   Pencil,
+  Folder,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
@@ -97,14 +98,15 @@ function SortableTaskCard({ task, onEdit, onDelete }: SortableTaskCardProps) {
         </button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-1.5 mt-1">
+      <div className="flex flex-col gap-1 mt-1">
         {task.project && (
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono uppercase tracking-wide">
-            {task.project.title}
-          </span>
+          <div className="flex items-center gap-1 text-[10px] font-mono text-amber-400/90 font-medium truncate max-w-full">
+            <Folder size={10} className="text-amber-500/70 shrink-0" />
+            <span>{task.project.title}</span>
+          </div>
         )}
         {task.sphere && (
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.03] text-[10px] text-zinc-400">
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.03] text-[10px] text-zinc-400 w-fit">
             <span
               className="w-1.5 h-1.5 rounded-full shrink-0"
               style={{ backgroundColor: task.sphere.color }}
