@@ -19,6 +19,7 @@ import {
   Zap,
   HelpCircle,
   Pencil,
+  type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
@@ -31,9 +32,15 @@ import {
 import type { LifeSphereData } from "@/features/life/types";
 import { KanbanBoardClient } from "../sprints/KanbanBoardClient";
 import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields";
-import type { ThoughtType } from "@/features/life/logic/thought-types";
+import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { upsertThoughtAction } from "@/features/life/actions/thought-actions";
+
+const FILTER_TYPE_ICONS: Record<string, LucideIcon> = {
+  AlertTriangle,
+  Sparkles,
+  CheckCircle2,
+};
 
 interface ThoughtItem {
   id: string;
@@ -324,6 +331,27 @@ export function PlanningWizardClient({
       setFirstAtomTitle("First action for: " + currentDecomposeThought.content.slice(0, 30));
     }
   }, [currentDecomposeThought]);
+
+  const currentFilterThought = inboxThoughts[filterIndex];
+  const filterThoughtSphere = currentFilterThought
+    ? spheres.find((currentSphere) => currentSphere.id === currentFilterThought.sphereId)
+    : null;
+  const filterThoughtTypeConfig = currentFilterThought?.type
+    ? THOUGHT_TYPE_CONFIGS.find((config) => config.id === currentFilterThought.type)
+    : null;
+  const FilterThoughtIcon = filterThoughtTypeConfig
+    ? FILTER_TYPE_ICONS[filterThoughtTypeConfig.icon]
+    : null;
+
+  const decomposeThoughtSphere = currentDecomposeThought
+    ? spheres.find((currentSphere) => currentSphere.id === currentDecomposeThought.sphereId)
+    : null;
+  const decomposeThoughtTypeConfig = currentDecomposeThought?.type
+    ? THOUGHT_TYPE_CONFIGS.find((config) => config.id === currentDecomposeThought.type)
+    : null;
+  const DecomposeThoughtIcon = decomposeThoughtTypeConfig
+    ? FILTER_TYPE_ICONS[decomposeThoughtTypeConfig.icon]
+    : null;
 
   return (
     <div className="flex flex-col gap-6 w-full">
@@ -753,14 +781,53 @@ export function PlanningWizardClient({
             </div>
           ) : (
             <div className="flex flex-col gap-6 w-full max-w-lg items-center">
-              <div className="glass-card p-6 w-full border-white/10 bg-white/[0.02] shadow-xl text-center min-h-[120px] flex items-center justify-center relative group">
-                <p className="text-lg font-medium text-zinc-150 leading-relaxed font-sans whitespace-pre-wrap">
-                  &ldquo;{inboxThoughts[filterIndex]?.content}&rdquo;
+              <div className="glass-card p-6 w-full border-white/10 bg-white/[0.02] shadow-xl min-h-[140px] flex flex-col items-start justify-start relative group">
+                {/* Top Sphere & Type indicators */}
+                {(filterThoughtSphere || filterThoughtTypeConfig) && (
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {filterThoughtSphere && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] text-[10px] font-mono uppercase tracking-wider text-zinc-300">
+                        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: filterThoughtSphere.color }} />
+                        {filterThoughtSphere.name}
+                      </span>
+                    )}
+                    {filterThoughtTypeConfig && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] text-[10px] font-mono uppercase tracking-wider text-zinc-300">
+                        {FilterThoughtIcon && <FilterThoughtIcon size={10} className="text-accent" />}
+                        {filterThoughtTypeConfig.label}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                <p className="text-base font-medium text-zinc-150 leading-relaxed font-sans whitespace-pre-wrap text-left w-full">
+                  {currentFilterThought.content}
                 </p>
-                {inboxThoughts[filterIndex] && (
+
+                {/* Template Fields Data */}
+                {filterThoughtTypeConfig && currentFilterThought.templateData && (
+                  <div className="w-full flex flex-col gap-2.5 mt-4 pt-4 border-t border-white/[0.04] text-left">
+                    {filterThoughtTypeConfig.fields.map((field) => {
+                      const fieldValue = currentFilterThought.templateData?.[field.key];
+                      if (!fieldValue) return null;
+                      return (
+                        <div key={field.key} className="flex flex-col gap-0.5">
+                          <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                            {field.label}
+                          </span>
+                          <p className="text-xs text-zinc-300 whitespace-pre-wrap leading-relaxed">
+                            {fieldValue}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {currentFilterThought && (
                   <button
                     type="button"
-                    onClick={() => handleEditClick(inboxThoughts[filterIndex])}
+                    onClick={() => handleEditClick(currentFilterThought)}
                     className="absolute top-3 right-3 p-1.5 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                     title="Edit thought"
                   >
@@ -869,18 +936,58 @@ export function PlanningWizardClient({
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.3fr] gap-8 items-start">
               <div className="flex flex-col gap-4">
-                <div className="glass-card p-4 border-amber-500/10 bg-amber-500/[0.01] rounded-xl flex flex-col gap-2 relative group">
+                <div className="glass-card p-4 border-amber-500/10 bg-amber-500/[0.01] rounded-xl flex flex-col gap-3 relative group">
                   <div className="flex justify-between items-center text-[9px] font-mono text-amber-400 font-semibold uppercase">
-                    <span>Raw thought ({decomposableThoughts[decomposeIndex]?.status.name})</span>
+                    <span>Raw thought ({currentDecomposeThought?.status.name})</span>
                     <span>Thought {decomposeIndex + 1} of {decomposableThoughts.length}</span>
                   </div>
+
+                  {/* Top Sphere & Type indicators */}
+                  {(decomposeThoughtSphere || decomposeThoughtTypeConfig) && (
+                    <div className="flex flex-wrap gap-2">
+                      {decomposeThoughtSphere && (
+                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.06] text-[9px] font-mono uppercase tracking-wider text-zinc-400">
+                          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: decomposeThoughtSphere.color }} />
+                          {decomposeThoughtSphere.name}
+                        </span>
+                      )}
+                      {decomposeThoughtTypeConfig && (
+                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.06] text-[9px] font-mono uppercase tracking-wider text-zinc-400">
+                          {DecomposeThoughtIcon && <DecomposeThoughtIcon size={9} className="text-amber-450" />}
+                          {decomposeThoughtTypeConfig.label}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
                   <p className="text-sm font-medium text-zinc-150 leading-relaxed font-sans whitespace-pre-wrap">
-                    &ldquo;{decomposableThoughts[decomposeIndex]?.content}&rdquo;
+                    {currentDecomposeThought?.content}
                   </p>
-                  {decomposableThoughts[decomposeIndex] && (
+
+                  {/* Template Fields Data */}
+                  {decomposeThoughtTypeConfig && currentDecomposeThought?.templateData && (
+                    <div className="w-full flex flex-col gap-2 pt-2 border-t border-white/[0.04] text-left">
+                      {decomposeThoughtTypeConfig.fields.map((field) => {
+                        const fieldValue = currentDecomposeThought.templateData?.[field.key];
+                        if (!fieldValue) return null;
+                        return (
+                          <div key={field.key} className="flex flex-col gap-0.5">
+                            <span className="text-[8px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                              {field.label}
+                            </span>
+                            <p className="text-xs text-zinc-350 whitespace-pre-wrap leading-relaxed">
+                              {fieldValue}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {currentDecomposeThought && (
                     <button
                       type="button"
-                      onClick={() => handleEditClick(decomposableThoughts[decomposeIndex])}
+                      onClick={() => handleEditClick(currentDecomposeThought)}
                       className="absolute top-3 right-3 p-1.5 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                       title="Edit thought"
                     >
