@@ -112,6 +112,7 @@ export function PlanningWizardClient({
     return baseThoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId);
   }, [thoughts, activeFilterSphereId]);
   const [filterIndex, setFilterIndex] = useState(0);
+  const [initialFilterCount, setInitialFilterCount] = useState<number | null>(null);
 
   // Step 3: Decompose states
   const decomposableThoughts = useMemo(() => {
@@ -248,6 +249,16 @@ export function PlanningWizardClient({
       setDecomposeIndex(decomposableThoughts.length - 1);
     }
   }, [decomposableThoughts.length, decomposeIndex]);
+
+  useEffect(() => {
+    if (step === 2) {
+      if (initialFilterCount === null || initialFilterCount < inboxThoughts.length) {
+        setInitialFilterCount(inboxThoughts.length);
+      }
+    } else {
+      setInitialFilterCount(null);
+    }
+  }, [step, inboxThoughts.length, initialFilterCount]);
 
   const handleFilterThought = (thoughtId: string, outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE") => {
     const previousThoughts = [...thoughts];
@@ -766,7 +777,7 @@ export function PlanningWizardClient({
           <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
             <h3 className="text-panel-title font-semibold text-zinc-200">Step 2: Prime Filter</h3>
             <span className="text-xs font-mono text-zinc-500">
-              Card {inboxThoughts.length > 0 ? filterIndex + 1 : 0} of {inboxThoughts.length}
+              Card {initialFilterCount && inboxThoughts.length > 0 ? (initialFilterCount - inboxThoughts.length + 1) : 0} of {initialFilterCount || 0}
             </span>
           </div>
 
@@ -843,7 +854,13 @@ export function PlanningWizardClient({
               <div className="w-full h-1 bg-black/35 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-accent transition-all duration-300"
-                  style={{ width: `${((filterIndex + 1) / inboxThoughts.length) * 100}%` }}
+                  style={{
+                    width: `${
+                      initialFilterCount && initialFilterCount > 0
+                        ? ((initialFilterCount - inboxThoughts.length) / initialFilterCount) * 100
+                        : 0
+                    }%`,
+                  }}
                 />
               </div>
 
