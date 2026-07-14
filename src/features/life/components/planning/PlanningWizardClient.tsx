@@ -36,6 +36,7 @@ import { KanbanBoardClient } from "../sprints/KanbanBoardClient";
 import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields";
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
+import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 
 const FILTER_TYPE_ICONS: Record<string, LucideIcon> = {
   AlertTriangle,
@@ -96,6 +97,7 @@ export function PlanningWizardClient({
   const [isActionPending, startActionTransition] = useTransition();
   const [isSavePending, startSaveTransition] = useTransition();
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [deleteThoughtId, setDeleteThoughtId] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.setItem("planning-wizard-step", String(step));
@@ -356,10 +358,6 @@ export function PlanningWizardClient({
   };
 
   const handleDeleteThought = (thoughtId: string) => {
-    if (!window.confirm("Are you sure you want to delete this thought?")) {
-      return;
-    }
-
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
@@ -1312,7 +1310,7 @@ export function PlanningWizardClient({
                   <div className="flex items-center gap-4">
                     <button
                       type="button"
-                      onClick={() => handleDeleteThought(currentDecomposeThought.id)}
+                      onClick={() => setDeleteThoughtId(currentDecomposeThought.id)}
                       disabled={isActionPending}
                       className="text-rose-500 hover:text-rose-455 font-medium flex items-center gap-1.5 transition-colors duration-150"
                       title="Delete this thought"
@@ -1561,6 +1559,23 @@ export function PlanningWizardClient({
           }}
           spheres={spheres}
           onSave={handleSaveEditedThought}
+        />
+      )}
+
+      {deleteThoughtId && (
+        <ConfirmationDialog
+          isOpen={deleteThoughtId !== null}
+          onClose={() => setDeleteThoughtId(null)}
+          onConfirm={() => {
+            if (deleteThoughtId) {
+              handleDeleteThought(deleteThoughtId);
+            }
+          }}
+          title="Delete Thought"
+          description="Are you sure you want to permanently delete this thought? This action cannot be undone."
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          variant="danger"
         />
       )}
     </div>
