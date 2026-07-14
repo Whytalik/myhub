@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useMemo, useEffect } from "react";
+import { useState, useTransition, useMemo, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -71,7 +71,16 @@ export function PlanningWizardClient({
   initialColumns,
 }: PlanningWizardClientProps) {
   const router = useRouter();
-  const [step, setStep] = useState(0); // 0: Intro, 1: Brain Dump, 2: Filter, 3: Decompose, 4: Finish
+  const [step, setStep] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("planning-wizard-step");
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        if (parsed >= 0 && parsed <= 4) return parsed;
+      }
+    }
+    return 0; // 0: Intro, 1: Brain Dump, 2: Filter, 3: Decompose, 4: Finish
+  });
   const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts);
 
   // Step 1: Brain Dump state
@@ -84,6 +93,12 @@ export function PlanningWizardClient({
   const [activeFilterSphereId, setActiveFilterSphereId] = useState<string | null>(null);
   const [isGroupedBySphere, setIsGroupedBySphere] = useState(false);
   const [isActionPending, startActionTransition] = useTransition();
+  const [isSavePending, startSaveTransition] = useTransition();
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem("planning-wizard-step", String(step));
+  }, [step]);
 
   const displayedThoughts = useMemo(() => {
     if (!activeFilterSphereId) return thoughts;
@@ -287,6 +302,23 @@ export function PlanningWizardClient({
     setWantType(null);
   }, [currentFilterThoughtId]);
 
+  const saveThought = (
+    thoughtId: string,
+    finalSphereId: string | null,
+    finalType: ThoughtType | null,
+    finalTemplateData: Record<string, string> | null
+  ) => {
+    startSaveTransition(async () => {
+      await upsertThoughtAction({
+        id: thoughtId,
+        content: thoughts.find((t) => t.id === thoughtId)?.content || "",
+        sphereId: finalSphereId,
+        type: finalType,
+        templateData: finalTemplateData,
+      });
+    });
+  };
+
   const handleFilterThought = (thoughtId: string, outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY") => {
     const previousThoughts = [...thoughts];
     const isLastThought = inboxThoughts.length <= 1;
@@ -324,6 +356,10 @@ export function PlanningWizardClient({
 
   // Run decomposition
   const handleDecompose = (thoughtId: string) => {
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
     const isProject = decomposeType === "project";
     const title = isProject ? projectTitle.trim() : taskTitle.trim();
     if (!title) return;
@@ -1279,29 +1315,37 @@ export function PlanningWizardClient({
                       if (updatedFields.sphereId !== undefined) {
                         setSelectedSphereId(updatedFields.sphereId || "");
                       }
+
+                      const targetSphereId = updatedFields.sphereId !== undefined ? updatedFields.sphereId : currentDecomposeThought.sphereId;
+                      const targetType = updatedFields.type !== undefined ? updatedFields.type : currentDecomposeThought.type;
+                      const targetTemplateData = updatedFields.templateData !== undefined ? updatedFields.templateData : currentDecomposeThought.templateData;
+
                       // Update thoughts state optimistically
                       setThoughts((previousThoughts) =>
                         previousThoughts.map((currentThought) =>
                           currentThought.id === currentDecomposeThought.id
                             ? {
                                 ...currentThought,
-                                sphereId: updatedFields.sphereId !== undefined ? updatedFields.sphereId : currentThought.sphereId,
-                                type: updatedFields.type !== undefined ? updatedFields.type : currentThought.type,
-                                templateData: (updatedFields.templateData !== undefined ? updatedFields.templateData : currentThought.templateData) as Record<string, string> | null,
+                                sphereId: targetSphereId ?? null,
+                                type: targetType ?? null,
+                                templateData: (targetTemplateData ?? null) as Record<string, string> | null,
                               }
                             : currentThought
                         )
                       );
-                      // Save in database
-                      startActionTransition(async () => {
-                        await upsertThoughtAction({
-                          id: currentDecomposeThought.id,
-                          content: currentDecomposeThought.content,
-                          sphereId: updatedFields.sphereId !== undefined ? updatedFields.sphereId : currentDecomposeThought.sphereId,
-                          type: updatedFields.type !== undefined ? updatedFields.type : currentDecomposeThought.type,
-                          templateData: updatedFields.templateData !== undefined ? updatedFields.templateData : currentDecomposeThought.templateData,
-                        });
-                      });
+
+                      // Debounce save in database
+                      if (saveTimeoutRef.current) {
+                        clearTimeout(saveTimeoutRef.current);
+                      }
+                      saveTimeoutRef.current = setTimeout(() => {
+                        saveThought(
+                          currentDecomposeThought.id,
+                          targetSphereId ?? null,
+                          targetType ?? null,
+                          targetTemplateData ?? null
+                        );
+                      }, 500);
                     }}
                   />
                 </div>
