@@ -629,62 +629,68 @@ export function KanbanBoardClient({
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-4 items-start">
+        <div className="flex flex-col gap-6">
           {/* Backlog Column */}
-          <div className="glass-card p-3 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-3 min-h-[300px]">
-            <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
-              <h3 className="text-panel-title font-semibold text-zinc-300">Global Backlog</h3>
-              <span className="text-label text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded-md font-mono">
-                {filteredBacklogProjects.length}
-              </span>
+          <div className="glass-card p-4 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/[0.04] pb-3">
+              <div className="flex items-center gap-2">
+                <h3 className="text-panel-title font-semibold text-zinc-300">Global Backlog</h3>
+                <span className="text-label text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded-md font-mono">
+                  {filteredBacklogProjects.length}
+                </span>
+              </div>
+
+              <div className="relative w-full md:w-64">
+                <Input
+                  placeholder="Search backlog..."
+                  value={backlogSearch}
+                  onChange={(e) => setBacklogSearch(e.target.value)}
+                  className="h-8 text-xs bg-black/20 border-white/[0.06] focus:border-accent/40"
+                />
+                {backlogSearch && (
+                  <button
+                    type="button"
+                    onClick={() => setBacklogSearch("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-350 text-[10px] font-mono"
+                  >
+                    CLEAR
+                  </button>
+                )}
+              </div>
             </div>
 
-            <div className="relative">
-              <Input
-                placeholder="Search backlog..."
-                value={backlogSearch}
-                onChange={(e) => setBacklogSearch(e.target.value)}
-                className="h-8 text-xs bg-black/20 border-white/[0.06] focus:border-accent/40"
-              />
-              {backlogSearch && (
-                <button
-                  type="button"
-                  onClick={() => setBacklogSearch("")}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-350 text-[10px] font-mono"
-                >
-                  CLEAR
-                </button>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-2 overflow-y-auto max-h-[650px] pr-1">
+            <div className="flex flex-row gap-3 overflow-x-auto pb-3 pt-1 scrollbar-thin">
               {filteredBacklogProjects.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-zinc-500 text-xs italic">
+                <div className="flex items-center justify-center w-full py-12 text-zinc-500 text-xs italic">
                   {backlogSearch ? "No matching projects" : "Backlog is empty"}
                 </div>
               ) : (
                 filteredBacklogProjects.map((project) => (
                   <div
                     key={project.id}
-                    className="glass-card p-3 flex flex-col gap-2 relative hover:border-white/10 transition-colors duration-150"
+                    className="glass-card p-3 flex flex-col justify-between gap-3 w-[300px] shrink-0 relative hover:border-white/10 transition-colors duration-150"
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <h4 className="text-body font-semibold text-zinc-200">{project.title}</h4>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteProject(project.id, false)}
-                        className="text-zinc-600 hover:text-rose-400 transition-colors"
-                      >
-                        <Trash2 size={12} />
-                      </button>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className="text-body font-semibold text-zinc-200 line-clamp-1" title={project.title}>
+                          {project.title}
+                        </h4>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteProject(project.id, false)}
+                          className="text-zinc-600 hover:text-rose-400 transition-colors shrink-0"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                      {project.description && (
+                        <p className="text-caption text-zinc-400 text-xs line-clamp-2">
+                          {project.description}
+                        </p>
+                      )}
                     </div>
-                    {project.description && (
-                      <p className="text-caption text-zinc-400 text-xs line-clamp-2">
-                        {project.description}
-                      </p>
-                    )}
 
-                    <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-white/[0.04]">
+                    <div className="flex flex-col gap-2 mt-auto pt-2 border-t border-white/[0.04]">
                       <button
                         type="button"
                         onClick={() =>
