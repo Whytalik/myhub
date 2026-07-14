@@ -6,6 +6,31 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DOMAINS, getActiveDomain } from "@/lib/spaces/domains";
 
+function getDomainColors(domainId: string) {
+  switch (domainId) {
+    case "life":
+      return {
+        accentClass: "text-[#6fbfbf]",
+        activeClass: "text-zinc-50 bg-[#6fbfbf]/20 border border-[#6fbfbf]/30 shadow-sm",
+      };
+    case "health":
+      return {
+        accentClass: "text-[#ff8c00]",
+        activeClass: "text-zinc-50 bg-[#ff8c00]/20 border border-[#ff8c00]/30 shadow-sm",
+      };
+    case "review":
+      return {
+        accentClass: "text-[#fbbf24]",
+        activeClass: "text-zinc-50 bg-[#fbbf24]/20 border border-[#fbbf24]/30 shadow-sm",
+      };
+    default:
+      return {
+        accentClass: "text-accent",
+        activeClass: "text-zinc-50 bg-accent/20 border border-accent/30 shadow-sm",
+      };
+  }
+}
+
 export function DomainHeader() {
   const { isMobileOpen, setIsMobileOpen } = useSidebar();
   const pathname = usePathname();
@@ -24,7 +49,7 @@ export function DomainHeader() {
 
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="p-1 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850 rounded-md transition-colors"
+          className="p-1 text-zinc-400 hover:text-zinc-250 hover:bg-zinc-850 rounded-md transition-colors"
           aria-label="Toggle menu"
         >
           {isMobileOpen ? <X size={16} /> : <Menu size={16} />}
@@ -36,11 +61,9 @@ export function DomainHeader() {
         {DOMAINS.map((domain) => {
           const Icon = domain.icon;
           const isActive = activeDomainId === domain.id;
-          const isLifeDomain = domain.id === "life";
-          const domainAccentClass = isLifeDomain ? "text-accent-life" : "text-accent-nutrition";
-          const domainActiveClass = isLifeDomain
-            ? "text-zinc-50 bg-accent-life/20 border border-accent-life/30 shadow-sm"
-            : "text-zinc-50 bg-accent-nutrition/20 border border-accent-nutrition/30 shadow-sm";
+          const colors = getDomainColors(domain.id);
+          const domainAccentClass = colors.accentClass;
+          const domainActiveClass = colors.activeClass;
           const domainLinkClass = `flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-medium outline-none focus:outline-none transition-all duration-150 ${
             isActive
               ? domainActiveClass

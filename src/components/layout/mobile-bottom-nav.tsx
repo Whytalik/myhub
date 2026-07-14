@@ -5,6 +5,19 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { DOMAINS, getActiveDomain } from "@/lib/spaces/domains";
 
+function getMobileDomainColors(domainId: string) {
+  switch (domainId) {
+    case "life":
+      return "bg-[#6fbfbf]/10 text-[#6fbfbf] border border-[#6fbfbf]/20";
+    case "health":
+      return "bg-[#ff8c00]/10 text-[#ff8c00] border border-[#ff8c00]/20";
+    case "review":
+      return "bg-[#fbbf24]/10 text-[#fbbf24] border border-[#fbbf24]/20";
+    default:
+      return "bg-accent/15 text-accent border border-accent/20";
+  }
+}
+
 export function MobileBottomNav() {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
@@ -41,12 +54,11 @@ export function MobileBottomNav() {
   }, [pathname, activePages]);
 
   useEffect(() => {
-    const scrollContainer = document.querySelector("main");
+    const scrollContainer = document.getElementById("main-scroll-container");
     if (!scrollContainer) return;
 
     const handleScroll = () => {
       const currentScrollY = scrollContainer.scrollTop;
-      if (Math.abs(currentScrollY - lastScrollY.current) < 10) return;
       setIsVisible(currentScrollY < lastScrollY.current || currentScrollY <= 100);
       lastScrollY.current = currentScrollY;
     };
@@ -65,10 +77,7 @@ export function MobileBottomNav() {
         {DOMAINS.map((domain) => {
           const Icon = domain.icon;
           const isActive = activeDomain.id === domain.id;
-          const domainAccentClass =
-            domain.id === "life"
-              ? "bg-accent-life/15 text-accent-life border border-accent-life/20"
-              : "bg-accent-nutrition/15 text-accent-nutrition border border-accent-nutrition/20";
+          const domainAccentClass = getMobileDomainColors(domain.id);
           const domainLinkClass = `flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium transition-all duration-150 ${
             isActive ? domainAccentClass : "text-zinc-500 hover:text-zinc-300"
           }`;

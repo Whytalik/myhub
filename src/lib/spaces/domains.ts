@@ -48,6 +48,27 @@ export interface Domain {
 
 export const DOMAINS: Domain[] = [
   {
+    id: "review",
+    label: "Review",
+    href: "/life/review",
+    icon: LineChart,
+    accent: "#fbbf24",
+    spaces: [
+      {
+        label: "Retrospective",
+        icon: ListChecks,
+        accent: "#fbbf24",
+        href: "/life/review",
+        pages: [
+          { href: "/life/review", label: "Life & Habits", icon: LineChart },
+          { href: "/life/planning/review", label: "Thoughts Filter", icon: Sparkles },
+          { href: "/health/training/review", label: "Training Review", icon: TrendingUp },
+          { href: "/health/training/stats", label: "Training Stats", icon: BarChart3 },
+        ],
+      },
+    ],
+  },
+  {
     id: "life",
     label: "Life",
     href: "/life",
@@ -65,7 +86,6 @@ export const DOMAINS: Domain[] = [
           { href: "/life/habits", label: "Habits", icon: Zap },
           { href: "/life/tasks", label: "Tasks Database", icon: CheckCircle2 },
           { href: "/life/week", label: "Week Template", icon: CalendarDays },
-          { href: "/life/review", label: "Review", icon: LineChart },
         ],
       },
       {
@@ -78,7 +98,6 @@ export const DOMAINS: Domain[] = [
           { href: "/life/planning/wizard", label: "Planning Wizard", icon: Sparkles },
           { href: "/life/planning", label: "Inbox Thoughts", icon: Lightbulb },
           { href: "/life/planning/spheres", label: "Life Spheres", icon: LayoutGrid },
-          { href: "/life/planning/review", label: "Weekly Review", icon: ListChecks },
         ],
       },
     ],
@@ -112,8 +131,6 @@ export const DOMAINS: Domain[] = [
           { href: "/health/training", label: "Plan", icon: ClipboardList },
           { href: "/health/training/exercises", label: "Exercises", icon: Dumbbell },
           { href: "/health/training/sessions", label: "Sessions", icon: LineChart },
-          { href: "/health/training/review", label: "Weekly Review", icon: TrendingUp },
-          { href: "/health/training/stats", label: "Statistics", icon: BarChart3 },
         ],
       },
     ],
@@ -121,5 +138,15 @@ export const DOMAINS: Domain[] = [
 ];
 
 export function getActiveDomain(pathname: string): Domain {
-  return DOMAINS.find((domain) => pathname.startsWith(domain.href)) ?? DOMAINS[0];
+  for (const domain of DOMAINS) {
+    const hasActivePage = domain.spaces.some((space) =>
+      space.pages.some((page) => pathname === page.href || pathname.startsWith(page.href + "/"))
+    );
+    if (hasActivePage) {
+      return domain;
+    }
+  }
+
+  const sorted = [...DOMAINS].sort((a, b) => b.href.length - a.href.length);
+  return sorted.find((domain) => pathname.startsWith(domain.href)) ?? DOMAINS[0];
 }
