@@ -879,7 +879,7 @@ export function PlanningWizardClient({
                 {filterStage === "q1" && (
                   <div className="flex flex-col gap-3 w-full items-center">
                     <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
-                      ❓ Чиє це бажання?
+                      ❓ Whose desire is this?
                     </p>
                     <div className="grid grid-cols-2 gap-3 w-full">
                       <Button
@@ -892,7 +892,7 @@ export function PlanningWizardClient({
                         }}
                         className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
                       >
-                        💚 Хочу (Моє)
+                        💚 Want (Mine)
                       </Button>
                       <Button
                         type="button"
@@ -903,7 +903,7 @@ export function PlanningWizardClient({
                         }}
                         className="border-amber-500/20 text-amber-400 bg-amber-500/[0.02] hover:bg-amber-500/10 h-11 text-xs"
                       >
-                        👥 Нав'язане
+                        👥 Imposed
                       </Button>
                     </div>
                   </div>
@@ -912,7 +912,7 @@ export function PlanningWizardClient({
                 {filterStage === "q1b" && (
                   <div className="flex flex-col gap-3 w-full items-center">
                     <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
-                      ❓ Що станеться, якщо я просто заб'ю і цього не зроблю?
+                      ❓ What happens if I just ignore it and don't do it?
                     </p>
                     <div className="grid grid-cols-2 gap-3 w-full">
                       <Button
@@ -921,7 +921,7 @@ export function PlanningWizardClient({
                         onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
                         className="border-zinc-500/20 text-zinc-400 bg-white/[0.01] hover:bg-white/[0.03] h-11 text-xs"
                       >
-                        🗑️ Нічого страшного
+                        🗑️ Nothing bad
                       </Button>
                       <Button
                         type="button"
@@ -933,7 +933,7 @@ export function PlanningWizardClient({
                         }}
                         className="border-red-500/20 text-rose-450 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
                       >
-                        ⚠️ Реальний наслідок
+                        ⚠️ Real consequence
                       </Button>
                     </div>
                   </div>
@@ -942,7 +942,7 @@ export function PlanningWizardClient({
                 {filterStage === "q_conflict" && (
                   <div className="flex flex-col gap-3 w-full items-center">
                     <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
-                      ❓ Чи суперечить це моїй місії або цінностям?
+                      ❓ Does this conflict with my mission or values?
                     </p>
                     <div className="grid grid-cols-2 gap-3 w-full">
                       <Button
@@ -951,7 +951,7 @@ export function PlanningWizardClient({
                         onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
                         className="border-red-500/20 text-rose-450 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
                       >
-                        ❌ Так, конфлікт
+                        ❌ Yes, conflict
                       </Button>
                       <Button
                         type="button"
@@ -960,9 +960,9 @@ export function PlanningWizardClient({
                           setFilterStageHistory((previousHistory) => [...previousHistory, "q_conflict"]);
                           setFilterStage("q2");
                         }}
-                        className="border-emerald-500/20 text-emerald-450 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
+                        className="border-emerald-500/20 text-emerald-455 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
                       >
-                        ✅ Ні, все узгоджено
+                        ✅ No, fully aligned
                       </Button>
                     </div>
                   </div>
@@ -971,7 +971,7 @@ export function PlanningWizardClient({
                 {filterStage === "q2" && (
                   <div className="flex flex-col gap-3 w-full items-center">
                     <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
-                      ❓ Чи принесе це пряму користь мені або моєму оточенню?
+                      ❓ Does this bring direct benefit to me or my close ones?
                     </p>
                     <div className="grid grid-cols-2 gap-3 w-full">
                       <Button
@@ -983,7 +983,7 @@ export function PlanningWizardClient({
                         }}
                         className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
                       >
-                        👍 Так
+                        👍 Yes
                       </Button>
                       <Button
                         type="button"
@@ -991,7 +991,7 @@ export function PlanningWizardClient({
                         onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
                         className="border-zinc-500/20 text-zinc-400 bg-white/[0.01] hover:bg-white/[0.03] h-11 text-xs"
                       >
-                        👎 Ні
+                        👎 No
                       </Button>
                     </div>
                   </div>
@@ -1000,7 +1000,7 @@ export function PlanningWizardClient({
                 {filterStage === "q3" && (
                   <div className="flex flex-col gap-3 w-full items-center">
                     <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
-                      ❓ Чи маю я на це ресурс у найближчій перспективі?
+                      ❓ Do I have the resources for this in the near future?
                     </p>
                     <div className="grid grid-cols-2 gap-3 w-full">
                       <Button
@@ -1009,7 +1009,7 @@ export function PlanningWizardClient({
                         onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, wantType === "must" ? "KEEP_MUST" : "KEEP_WANT")}
                         className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
                       >
-                        ⚡ Так
+                        ⚡ Yes
                       </Button>
                       <Button
                         type="button"
@@ -1017,7 +1017,7 @@ export function PlanningWizardClient({
                         onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "SOMEDAY")}
                         className="border-purple-500/20 text-purple-400 bg-purple-500/[0.02] hover:bg-purple-500/10 h-11 text-xs"
                       >
-                        ⏳ Не зараз (Колись)
+                        ⏳ Not now (Someday)
                       </Button>
                     </div>
                   </div>
@@ -1034,7 +1034,7 @@ export function PlanningWizardClient({
                     }}
                     className="text-[10px] font-mono text-zinc-500 hover:text-zinc-350 transition-colors duration-150 uppercase tracking-wider mt-1"
                   >
-                    ↩️ Назад до попереднього запитання
+                    ↩️ Back to previous question
                   </button>
                 )}
               </div>
