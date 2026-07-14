@@ -113,6 +113,9 @@ export function PlanningWizardClient({
   }, [thoughts, activeFilterSphereId]);
   const [filterIndex, setFilterIndex] = useState(0);
   const [initialFilterCount, setInitialFilterCount] = useState<number | null>(null);
+  const [filterStage, setFilterStage] = useState<"q1" | "q1b" | "q_conflict" | "q2" | "q3">("q1");
+  const [filterStageHistory, setFilterStageHistory] = useState<("q1" | "q1b" | "q_conflict" | "q2" | "q3")[]>([]);
+  const [wantType, setWantType] = useState<"want" | "must" | null>(null);
 
   // Step 3: Decompose states
   const decomposableThoughts = useMemo(() => {
@@ -260,7 +263,13 @@ export function PlanningWizardClient({
     }
   }, [step, inboxThoughts.length, initialFilterCount]);
 
-  const handleFilterThought = (thoughtId: string, outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE") => {
+  useEffect(() => {
+    setFilterStage("q1");
+    setFilterStageHistory([]);
+    setWantType(null);
+  }, [filterIndex]);
+
+  const handleFilterThought = (thoughtId: string, outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY") => {
     const previousThoughts = [...thoughts];
     const isLastThought = inboxThoughts.length <= 1;
 
@@ -268,6 +277,7 @@ export function PlanningWizardClient({
       KEEP_WANT: "Want",
       KEEP_MUST: "Must",
       NOT_MINE: "Basket",
+      SOMEDAY: "Someday",
     };
 
     // Optimistically update status name
@@ -864,35 +874,169 @@ export function PlanningWizardClient({
                 />
               </div>
 
-              <p className="text-xs font-mono text-zinc-400 text-center uppercase tracking-wider flex items-center gap-1.5">
-                <HelpCircle size={13} className="text-accent" /> What is this thought?
-              </p>
+              {/* Question flow based on filterStage */}
+              <div className="flex flex-col gap-4 w-full mt-2 items-center">
+                {filterStage === "q1" && (
+                  <div className="flex flex-col gap-3 w-full items-center">
+                    <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
+                      ❓ Чиє це бажання?
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 w-full">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          setWantType("want");
+                          setFilterStageHistory((previousHistory) => [...previousHistory, "q1"]);
+                          setFilterStage("q_conflict");
+                        }}
+                        className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
+                      >
+                        💚 Хочу (Моє)
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          setFilterStageHistory((previousHistory) => [...previousHistory, "q1"]);
+                          setFilterStage("q1b");
+                        }}
+                        className="border-amber-500/20 text-amber-400 bg-amber-500/[0.02] hover:bg-amber-500/10 h-11 text-xs"
+                      >
+                        👥 Нав'язане
+                      </Button>
+                    </div>
+                  </div>
+                )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "KEEP_WANT")}
-                  className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-12"
-                >
-                  💚 WANT (Desire)
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "KEEP_MUST")}
-                  className="border-amber-500/20 text-amber-400 bg-amber-500/[0.02] hover:bg-amber-500/10 h-12"
-                >
-                  💙 MUST (Obligation)
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
-                  className="border-zinc-500/20 text-zinc-400 bg-white/[0.01] hover:bg-white/[0.03] h-12"
-                >
-                  🗑️ NOT MINE (To Basket)
-                </Button>
+                {filterStage === "q1b" && (
+                  <div className="flex flex-col gap-3 w-full items-center">
+                    <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
+                      ❓ Що станеться, якщо я просто заб'ю і цього не зроблю?
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 w-full">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
+                        className="border-zinc-500/20 text-zinc-400 bg-white/[0.01] hover:bg-white/[0.03] h-11 text-xs"
+                      >
+                        🗑️ Нічого страшного
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          setWantType("must");
+                          setFilterStageHistory((previousHistory) => [...previousHistory, "q1b"]);
+                          setFilterStage("q_conflict");
+                        }}
+                        className="border-red-500/20 text-rose-450 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
+                      >
+                        ⚠️ Реальний наслідок
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {filterStage === "q_conflict" && (
+                  <div className="flex flex-col gap-3 w-full items-center">
+                    <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
+                      ❓ Чи суперечить це моїй місії або цінностям?
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 w-full">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
+                        className="border-red-500/20 text-rose-450 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
+                      >
+                        ❌ Так, конфлікт
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          setFilterStageHistory((previousHistory) => [...previousHistory, "q_conflict"]);
+                          setFilterStage("q2");
+                        }}
+                        className="border-emerald-500/20 text-emerald-450 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
+                      >
+                        ✅ Ні, все узгоджено
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {filterStage === "q2" && (
+                  <div className="flex flex-col gap-3 w-full items-center">
+                    <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
+                      ❓ Чи принесе це пряму користь мені або моєму оточенню?
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 w-full">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          setFilterStageHistory((previousHistory) => [...previousHistory, "q2"]);
+                          setFilterStage("q3");
+                        }}
+                        className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
+                      >
+                        👍 Так
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
+                        className="border-zinc-500/20 text-zinc-400 bg-white/[0.01] hover:bg-white/[0.03] h-11 text-xs"
+                      >
+                        👎 Ні
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {filterStage === "q3" && (
+                  <div className="flex flex-col gap-3 w-full items-center">
+                    <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
+                      ❓ Чи маю я на це ресурс у найближчій перспективі?
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 w-full">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, wantType === "must" ? "KEEP_MUST" : "KEEP_WANT")}
+                        className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
+                      >
+                        ⚡ Так
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "SOMEDAY")}
+                        className="border-purple-500/20 text-purple-400 bg-purple-500/[0.02] hover:bg-purple-500/10 h-11 text-xs"
+                      >
+                        ⏳ Не зараз (Колись)
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Back button within questionnaire */}
+                {filterStageHistory.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const previousStage = filterStageHistory[filterStageHistory.length - 1];
+                      setFilterStageHistory((previousHistory) => previousHistory.slice(0, -1));
+                      setFilterStage(previousStage);
+                    }}
+                    className="text-[10px] font-mono text-zinc-500 hover:text-zinc-350 transition-colors duration-150 uppercase tracking-wider mt-1"
+                  >
+                    ↩️ Назад до попереднього запитання
+                  </button>
+                )}
               </div>
 
               <div className="flex gap-4 justify-between w-full text-xs text-zinc-500 border-t border-white/[0.04] pt-4 mt-2">
