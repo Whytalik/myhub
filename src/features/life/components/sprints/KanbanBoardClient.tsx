@@ -20,6 +20,8 @@ import {
   Plus,
   Trash2,
   AlertTriangle,
+  Sparkles,
+  CheckCircle2,
   Compass,
   Calendar,
   Layers,
@@ -229,6 +231,25 @@ export function KanbanBoardClient({
         (project.description || "").toLowerCase().includes(term)
     );
   }, [backlogProjects, backlogSearch]);
+
+  // Helper to extract template type and original description
+  const parseProjectDescription = (descriptionText: string | null) => {
+    if (!descriptionText) return { templateType: null, fields: [], cleanDescription: null };
+    const match = descriptionText.match(/^📋 Type: ([^\n]+)/);
+    if (match) {
+      const typeLabel = match[1];
+      const lines = descriptionText.split("\n");
+      const cleanLines = lines.filter(
+        (line) => !line.startsWith("📋 Type:") && !line.startsWith("•")
+      );
+      const cleanDescription = cleanLines.join("\n").trim();
+      const fields = lines
+        .filter((line) => line.startsWith("•"))
+        .map((line) => line.slice(2)); // remove "• "
+      return { templateType: typeLabel, fields, cleanDescription };
+    }
+    return { templateType: null, fields: [], cleanDescription: descriptionText };
+  };
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
@@ -665,68 +686,110 @@ export function KanbanBoardClient({
                   {backlogSearch ? "No matching projects" : "Backlog is empty"}
                 </div>
               ) : (
-                filteredBacklogProjects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="glass-card p-3 flex flex-col justify-between gap-3 w-[300px] shrink-0 relative hover:border-white/10 transition-colors duration-150"
-                  >
-                    <div className="flex flex-col gap-2">
-                      <div className="flex items-start justify-between gap-2">
-                        <h4 className="text-body font-semibold text-zinc-200 line-clamp-1" title={project.title}>
-                          {project.title}
-                        </h4>
+                filteredBacklogProjects.map((project) => {
+                  const projectSphere = project.tasks?.find((t) => t.sphere)?.sphere;
+                  const { templateType, fields, cleanDescription } = parseProjectDescription(project.description);
+
+                  return (
+                    <div
+                      key={project.id}
+                      className="glass-card p-3 flex flex-col justify-between gap-3 w-[300px] shrink-0 relative hover:border-white/10 transition-colors duration-150"
+                    >
+                      <div className="flex flex-col gap-2 min-w-0">
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="text-body font-semibold text-zinc-200 line-clamp-1" title={project.title}>
+                            {project.title}
+                          </h4>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteProject(project.id, false)}
+                            className="text-zinc-600 hover:text-rose-400 transition-colors shrink-0"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </div>
+
+                        {/* Sphere and Template badges */}
+                        {(projectSphere || templateType) && (
+                          <div className="flex flex-wrap gap-1.5">
+                            {projectSphere && (
+                              <div
+                                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold bg-white/[0.03] border border-white/[0.06]"
+                                style={{ color: projectSphere.color }}
+                              >
+                                <span
+                                  className="w-1 h-1 rounded-full"
+                                  style={{ backgroundColor: projectSphere.color }}
+                                />
+                                {projectSphere.name}
+                              </div>
+                            )}
+
+                            {templateType && (
+                              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-800/80 text-zinc-305 text-[9px] font-mono border border-white/[0.06]">
+                                {templateType === "Worry / Problem" && <AlertTriangle size={9} className="text-amber-400" />}
+                                {templateType === "Idea / Dream" && <Sparkles size={9} className="text-purple-400" />}
+                                {templateType === "Task / Deadline" && <CheckCircle2 size={9} className="text-emerald-400" />}
+                                {templateType}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Render template fields inline if present */}
+                        {fields.length > 0 && (
+                          <div className="flex flex-col gap-0.5 text-[10px] text-zinc-400 font-sans mt-0.5 p-1.5 bg-white/[0.01] border border-white/[0.04] rounded-lg">
+                            {fields.map((f, idx) => (
+                              <div key={idx} className="truncate" title={f}>{f}</div>
+                            ))}
+                          </div>
+                        )}
+
+                        {cleanDescription && (
+                          <p className="text-caption text-zinc-400 text-xs line-clamp-2 mt-0.5">
+                            {cleanDescription}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex flex-col gap-2 mt-auto pt-2 border-t border-white/[0.04]">
                         <button
                           type="button"
-                          onClick={() => handleDeleteProject(project.id, false)}
-                          className="text-zinc-600 hover:text-rose-400 transition-colors shrink-0"
+                          onClick={() =>
+                            setAssigningProjectId(assigningProjectId === project.id ? null : project.id)
+                          }
+                          className="text-[10px] font-mono font-semibold uppercase text-accent hover:underline flex items-center gap-1 self-start"
                         >
-                          <Trash2 size={12} />
+                          <ArrowRightLeft size={10} /> Assign to Sprint
                         </button>
-                      </div>
-                      {project.description && (
-                        <p className="text-caption text-zinc-400 text-xs line-clamp-2">
-                          {project.description}
-                        </p>
-                      )}
-                    </div>
 
-                    <div className="flex flex-col gap-2 mt-auto pt-2 border-t border-white/[0.04]">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setAssigningProjectId(assigningProjectId === project.id ? null : project.id)
-                        }
-                        className="text-[10px] font-mono font-semibold uppercase text-accent hover:underline flex items-center gap-1 self-start"
-                      >
-                        <ArrowRightLeft size={10} /> Assign to Sprint
-                      </button>
-
-                      {assigningProjectId === project.id && (
-                        <div className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl p-2 flex flex-col gap-1">
-                          <span className="text-[9px] uppercase tracking-wider font-mono text-zinc-500 px-1 block mb-1">
-                            Select Objective:
-                          </span>
-                          {sprint.objectives.length === 0 ? (
-                            <span className="text-zinc-500 text-[10px] italic px-1">
-                              No objectives in sprint
+                        {assigningProjectId === project.id && (
+                          <div className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl p-2 flex flex-col gap-1">
+                            <span className="text-[9px] uppercase tracking-wider font-mono text-zinc-500 px-1 block mb-1">
+                              Select Objective:
                             </span>
-                          ) : (
-                            sprint.objectives.map((obj) => (
-                              <button
-                                key={obj.id}
-                                type="button"
-                                onClick={() => handleAssignProject(project.id, obj.id)}
-                                className="text-left text-xs text-zinc-350 hover:bg-white/5 px-2 py-1 rounded transition-colors truncate"
-                              >
-                                {obj.title}
-                              </button>
-                            ))
-                          )}
-                        </div>
-                      )}
+                            {sprint.objectives.length === 0 ? (
+                              <span className="text-zinc-500 text-[10px] italic px-1">
+                                No objectives in sprint
+                              </span>
+                            ) : (
+                              sprint.objectives.map((obj) => (
+                                <button
+                                  key={obj.id}
+                                  type="button"
+                                  onClick={() => handleAssignProject(project.id, obj.id)}
+                                  className="text-left text-xs text-zinc-350 hover:bg-white/5 px-2 py-1 rounded transition-colors truncate"
+                                >
+                                  {obj.title}
+                                </button>
+                              ))
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
           </div>
@@ -795,36 +858,59 @@ export function KanbanBoardClient({
                             (t) => t.status === "TODO" || t.status === "IN_PROGRESS"
                           );
                           const isStalled = totalTasks === 0 || !hasActiveTask;
+                          const { templateType, fields, cleanDescription } = parseProjectDescription(project.description);
 
-                          return (
-                            <div
-                              key={project.id}
-                              className={`glass-card p-3 border flex flex-col gap-3 relative transition-colors ${
-                                isStalled
-                                  ? "border-orange-500/20 bg-orange-500/[0.01]"
-                                  : "border-white/[0.08]"
-                              }`}
-                            >
-                              <div className="flex items-start justify-between gap-2">
-                                <div>
-                                  <h5 className="text-body font-semibold text-zinc-150">
-                                    {project.title}
-                                  </h5>
-                                  {project.description && (
-                                    <p className="text-caption text-zinc-400 text-xs line-clamp-1 mt-0.5">
-                                      {project.description}
-                                    </p>
-                                  )}
+                            return (
+                              <div
+                                key={project.id}
+                                className={`glass-card p-3 border flex flex-col gap-3 relative transition-colors ${
+                                  isStalled
+                                    ? "border-orange-500/20 bg-orange-500/[0.01]"
+                                    : "border-white/[0.08]"
+                                }`}
+                              >
+                                <div className="flex items-start justify-between gap-2">
+                                  <div className="min-w-0 flex-1">
+                                    <h5 className="text-body font-semibold text-zinc-150 truncate" title={project.title}>
+                                      {project.title}
+                                    </h5>
+
+                                    {/* Template badge */}
+                                    {templateType && (
+                                      <div className="flex flex-wrap gap-1 mt-1">
+                                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-800/80 text-zinc-300 text-[9px] font-mono border border-white/[0.06]">
+                                          {templateType === "Worry / Problem" && <AlertTriangle size={9} className="text-amber-400" />}
+                                          {templateType === "Idea / Dream" && <Sparkles size={9} className="text-purple-400" />}
+                                          {templateType === "Task / Deadline" && <CheckCircle2 size={9} className="text-emerald-400" />}
+                                          {templateType}
+                                        </span>
+                                      </div>
+                                    )}
+
+                                    {/* Render template fields inline if present */}
+                                    {fields.length > 0 && (
+                                      <div className="flex flex-col gap-0.5 text-[10px] text-zinc-400 font-sans mt-1 p-1.5 bg-white/[0.01] border border-white/[0.04] rounded-lg">
+                                        {fields.map((f, idx) => (
+                                          <div key={idx} className="truncate" title={f}>{f}</div>
+                                        ))}
+                                      </div>
+                                    )}
+
+                                    {cleanDescription && (
+                                      <p className="text-caption text-zinc-400 text-xs line-clamp-1 mt-1">
+                                        {cleanDescription}
+                                      </p>
+                                    )}
+                                  </div>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteProject(project.id, true)}
+                                    className="text-zinc-600 hover:text-rose-400 transition-colors shrink-0"
+                                  >
+                                    <Trash2 size={12} />
+                                  </button>
                                 </div>
-
-                                <button
-                                  type="button"
-                                  onClick={() => handleDeleteProject(project.id, true)}
-                                  className="text-zinc-600 hover:text-rose-400 transition-colors shrink-0"
-                                >
-                                  <Trash2 size={12} />
-                                </button>
-                              </div>
 
                               {totalTasks > 0 && (
                                 <div className="flex flex-col gap-1">

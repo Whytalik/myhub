@@ -53,6 +53,9 @@ export async function getSprintDashboard(userId: string) {
             projects: {
               include: {
                 tasks: {
+                  include: {
+                    sphere: true,
+                  },
                   orderBy: { createdAt: "asc" },
                 },
               },
@@ -68,6 +71,9 @@ export async function getSprintDashboard(userId: string) {
     where: { userId, objectiveId: null },
     include: {
       tasks: {
+        include: {
+          sphere: true,
+        },
         orderBy: { createdAt: "asc" },
       },
     },

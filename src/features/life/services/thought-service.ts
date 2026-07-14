@@ -6,7 +6,7 @@ import { sphereRepository } from "../repositories/sphere.repository";
 import { DEFAULT_THOUGHT_STATUSES } from "../constants";
 import { Prisma } from "@/app/generated/prisma";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
-import type { ThoughtType } from "../logic/thought-types";
+import { getThoughtTypeConfig, type ThoughtType } from "../logic/thought-types";
 import { FILTER_OUTCOME_STATUS, type FilterOutcome } from "../logic/filter-outcomes";
 
 export async function getBoard(userId: string) {
@@ -202,6 +202,30 @@ export async function decomposeThought(
     throw new Error("Thought not found or unauthorized");
   }
 
+  // Format template details if present
+  let formattedDescription = description || "";
+  if (thought.type) {
+    const config = getThoughtTypeConfig(thought.type);
+    const typeLabel = config?.label || thought.type;
+    let templateText = `📋 Type: ${typeLabel}`;
+    if (thought.templateData && typeof thought.templateData === "object") {
+      const data = thought.templateData as Record<string, string>;
+      const fieldsText = Object.entries(data)
+        .filter(([_, val]) => val && val.trim())
+        .map(([key, val]) => {
+          const fieldLabel = config?.fields.find((f) => f.key === key)?.label || key;
+          return `• ${fieldLabel}: ${val}`;
+        })
+        .join("\n");
+      if (fieldsText) {
+        templateText += `\n${fieldsText}`;
+      }
+    }
+    formattedDescription = formattedDescription
+      ? `${templateText}\n\n${formattedDescription}`
+      : templateText;
+  }
+
   return prisma.$transaction(async (tx) => {
     if (type === "task") {
       const title = taskTitle || thought.content;
@@ -209,7 +233,7 @@ export async function decomposeThought(
         data: {
           userId,
           title,
-          description: description || null,
+          description: formattedDescription || null,
           status: "TODO",
           priority: priority as any,
           sphereId: sphereId || thought.sphereId,
@@ -228,7 +252,7 @@ export async function decomposeThought(
         data: {
           userId,
           title,
-          description: description || null,
+          description: formattedDescription || null,
           status: "TODO",
         },
       });
