@@ -194,6 +194,21 @@ export async function getStandaloneBacklogTasks(userId: string) {
   });
 }
 
+export async function getProjectDetail(userId: string, projectId: string) {
+  return prisma.project.findFirst({
+    where: { id: projectId, userId },
+    include: {
+      tasks: {
+        include: { sphere: true, children: true },
+        orderBy: { createdAt: "asc" },
+      },
+      objective: {
+        include: { sphere: true, sprint: true },
+      },
+    },
+  });
+}
+
 export async function createProject(
   userId: string,
   title: string,

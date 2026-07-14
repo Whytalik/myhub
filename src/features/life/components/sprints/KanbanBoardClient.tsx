@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   CheckSquare,
@@ -21,8 +22,7 @@ import { Select } from "@/components/ui/inputs/select";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { TaskCardBase } from "@/features/life/components/tasks/TaskCardBase";
-import { TaskCalendar } from "@/features/life/components/tasks/TaskCalendar";
-import { ProjectAtomsDialog } from "./ProjectAtomsDialog";
+import { WeeklyStatusBoard } from "./WeeklyStatusBoard";
 import {
   createProjectAction,
   deleteProjectAction,
@@ -85,6 +85,7 @@ export function KanbanBoardClient({
   initialStandaloneTasks,
   spheres,
 }: KanbanBoardClientProps) {
+  const router = useRouter();
   // State
   const [sprint, setSprint] = useState<SprintData>(initialSprint);
   const [backlogProjects, setBacklogProjects] = useState<ProjectData[]>(initialBacklogProjects);
@@ -124,8 +125,6 @@ export function KanbanBoardClient({
   const [objectiveDesc, setObjectiveDesc] = useState("");
   const [selectedSphereId, setSelectedSphereId] = useState<string>(spheres[0]?.id || "");
 
-  const [openAtomsProjectId, setOpenAtomsProjectId] = useState<string | null>(null);
-
   const [isPending, startTransition] = useTransition();
   const [backlogSearch, setBacklogSearch] = useState("");
 
@@ -140,59 +139,6 @@ export function KanbanBoardClient({
   const [editObjectiveDesc, setEditObjectiveDesc] = useState("");
   const [editObjectiveSphereId, setEditObjectiveSphereId] = useState("");
   const [assigningProjectId, setAssigningProjectId] = useState<string | null>(null);
-
-  const findProjectById = (projectId: string): ProjectData | undefined => {
-    const inBacklog = backlogProjects.find((p) => p.id === projectId);
-    if (inBacklog) return inBacklog;
-    for (const obj of sprint.objectives) {
-      const found = obj.projects.find((p) => p.id === projectId);
-      if (found) return found;
-    }
-    return undefined;
-  };
-
-  const findObjectiveSphereForProject = (projectId: string): string | null => {
-    for (const obj of sprint.objectives) {
-      if (obj.projects.some((p) => p.id === projectId)) return obj.sphere.id;
-    }
-    return null;
-  };
-
-  const openAtomsProject = openAtomsProjectId ? findProjectById(openAtomsProjectId) : undefined;
-
-  const handleAtomAdded = (projectId: string, newTask: TaskData) => {
-    setSprintTasks((prev) => [...prev, newTask]);
-    setSprint((prev) => ({
-      ...prev,
-      objectives: prev.objectives.map((obj) => ({
-        ...obj,
-        projects: obj.projects.map((p) =>
-          p.id === projectId ? { ...p, tasks: [...p.tasks, newTask] } : p,
-        ),
-      })),
-    }));
-    setBacklogProjects((prev) =>
-      prev.map((p) => (p.id === projectId ? { ...p, tasks: [...p.tasks, newTask] } : p)),
-    );
-  };
-
-  const handleAtomDeletedFromDialog = (projectId: string, taskId: string) => {
-    setSprintTasks((prev) => prev.filter((t) => t.id !== taskId));
-    setSprint((prev) => ({
-      ...prev,
-      objectives: prev.objectives.map((obj) => ({
-        ...obj,
-        projects: obj.projects.map((p) =>
-          p.id === projectId ? { ...p, tasks: p.tasks.filter((t) => t.id !== taskId) } : p,
-        ),
-      })),
-    }));
-    setBacklogProjects((prev) =>
-      prev.map((p) =>
-        p.id === projectId ? { ...p, tasks: p.tasks.filter((t) => t.id !== taskId) } : p,
-      ),
-    );
-  };
 
   const handleAssignStandaloneTask = (taskId: string, projectId: string) => {
     startTransition(async () => {
@@ -726,7 +672,7 @@ export function KanbanBoardClient({
                       <div className="flex flex-col gap-2 mt-auto pt-2 border-t border-white/[0.04]">
                         <button
                           type="button"
-                          onClick={() => setOpenAtomsProjectId(project.id)}
+                          onClick={() => router.push(`/life/planning/kanban/project/${project.id}`)}
                           className="text-[10px] font-mono font-semibold uppercase text-zinc-400 hover:text-zinc-200 flex items-center gap-1 self-start"
                         >
                           <CheckSquare size={10} /> Atoms ({project.tasks?.length ?? 0})
@@ -911,7 +857,9 @@ export function KanbanBoardClient({
                                 <div className="min-w-0 flex-1">
                                   <h5
                                     className="text-body font-semibold text-zinc-150 truncate cursor-pointer hover:text-white transition-colors"
-                                    onClick={() => setOpenAtomsProjectId(project.id)}
+                                    onClick={() =>
+                                      router.push(`/life/planning/kanban/project/${project.id}`)
+                                    }
                                     title={project.title}
                                   >
                                     {project.title}
@@ -997,7 +945,9 @@ export function KanbanBoardClient({
 
                               <button
                                 type="button"
-                                onClick={() => setOpenAtomsProjectId(project.id)}
+                                onClick={() =>
+                                  router.push(`/life/planning/kanban/project/${project.id}`)
+                                }
                                 className="text-[10px] font-mono font-semibold uppercase text-zinc-400 hover:text-zinc-200 flex items-center gap-1 self-start"
                               >
                                 <CheckSquare size={10} /> View / add atoms
@@ -1093,16 +1043,11 @@ export function KanbanBoardClient({
           )}
         </div>
 
-        <TaskCalendar
-          key={weekStart.toISOString()}
+        <WeeklyStatusBoard
           tasks={sprintTasks}
-          allTasks={sprintTasks}
-          spheres={spheres}
-          defaultMode="week"
-          initialDate={weekStart}
-          hideModeSwitch
-          showUnplannedPool
+          weekStart={weekStart}
           locked={isPlanningLocked}
+          onTasksChange={setSprintTasks}
         />
       </div>
 
@@ -1361,25 +1306,6 @@ export function KanbanBoardClient({
             </div>
           </div>
         </Dialog>
-      )}
-
-      {openAtomsProject && (
-        <ProjectAtomsDialog
-          isOpen={true}
-          onClose={() => setOpenAtomsProjectId(null)}
-          projectId={openAtomsProject.id}
-          projectTitle={openAtomsProject.title}
-          tasks={openAtomsProject.tasks}
-          sphereId={
-            findObjectiveSphereForProject(openAtomsProject.id) ||
-            openAtomsProject.tasks.find((t) => t.sphere)?.sphere?.id ||
-            spheres[0]?.id ||
-            null
-          }
-          isPlanningLocked={isPlanningLocked}
-          onAtomAdded={(task) => handleAtomAdded(openAtomsProject.id, task)}
-          onAtomDeleted={(taskId) => handleAtomDeletedFromDialog(openAtomsProject.id, taskId)}
-        />
       )}
     </div>
   );
