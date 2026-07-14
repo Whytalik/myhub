@@ -1258,55 +1258,55 @@ export function PlanningWizardClient({
                 </div>
               </div>
 
-              <div className="glass-card p-5 bg-black/20 border-white/[0.06] rounded-xl flex flex-col gap-4">
-                {!currentDecomposeThought?.type ? (
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-1 border-b border-white/[0.04] pb-2">
-                      <span className="text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
-                        📝 Clarify & Detail Thought
-                      </span>
-                      <p className="text-[10px] text-zinc-500">
-                        Please select a type and fill out details for this thought to proceed.
-                      </p>
-                    </div>
-
-                    <ThoughtFields
-                      spheres={spheres}
-                      sphereId={selectedSphereId}
-                      type={currentDecomposeThought?.type || null}
-                      templateData={currentDecomposeThought?.templateData || null}
-                      onChange={(updatedFields) => {
-                        if (updatedFields.sphereId) {
-                          setSelectedSphereId(updatedFields.sphereId);
-                        }
-                        // Update thoughts state optimistically
-                        setThoughts((previousThoughts) =>
-                          previousThoughts.map((currentThought) =>
-                            currentThought.id === currentDecomposeThought.id
-                              ? {
-                                  ...currentThought,
-                                  sphereId: updatedFields.sphereId ?? null,
-                                  type: updatedFields.type ?? null,
-                                  templateData: (updatedFields.templateData ?? null) as Record<string, string> | null,
-                                }
-                              : currentThought
-                          )
-                        );
-                        // Save in database
-                        startActionTransition(async () => {
-                          await upsertThoughtAction({
-                            id: currentDecomposeThought.id,
-                            content: currentDecomposeThought.content,
-                            sphereId: updatedFields.sphereId ?? null,
-                            type: updatedFields.type ?? null,
-                            templateData: updatedFields.templateData ?? null,
-                          });
-                        });
-                      }}
-                    />
+              <div className="glass-card p-5 bg-black/20 border-white/[0.06] rounded-xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-1 border-b border-white/[0.04] pb-2">
+                    <span className="text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
+                      📝 Clarify & Detail Thought
+                    </span>
+                    <p className="text-[10px] text-zinc-500">
+                      Specify the life sphere, template type, and details of this thought.
+                    </p>
                   </div>
-                ) : (
-                  <>
+
+                  <ThoughtFields
+                    spheres={spheres}
+                    sphereId={selectedSphereId}
+                    type={currentDecomposeThought?.type || null}
+                    templateData={currentDecomposeThought?.templateData || null}
+                    onChange={(updatedFields) => {
+                      if (updatedFields.sphereId) {
+                        setSelectedSphereId(updatedFields.sphereId);
+                      }
+                      // Update thoughts state optimistically
+                      setThoughts((previousThoughts) =>
+                        previousThoughts.map((currentThought) =>
+                          currentThought.id === currentDecomposeThought.id
+                            ? {
+                                ...currentThought,
+                                sphereId: updatedFields.sphereId ?? null,
+                                type: updatedFields.type ?? null,
+                                templateData: (updatedFields.templateData ?? null) as Record<string, string> | null,
+                              }
+                            : currentThought
+                        )
+                      );
+                      // Save in database
+                      startActionTransition(async () => {
+                        await upsertThoughtAction({
+                          id: currentDecomposeThought.id,
+                          content: currentDecomposeThought.content,
+                          sphereId: updatedFields.sphereId ?? null,
+                          type: updatedFields.type ?? null,
+                          templateData: updatedFields.templateData ?? null,
+                        });
+                      });
+                    }}
+                  />
+                </div>
+
+                {currentDecomposeThought?.type && (
+                  <div className="flex flex-col gap-4 border-t border-white/[0.04] pt-4">
                     {decomposeType === "task" ? (
                       <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-1.5">
@@ -1375,30 +1375,6 @@ export function PlanningWizardClient({
 
                     <div className="flex flex-col gap-3 border-t border-white/[0.04] pt-3">
                       <div className="flex flex-col gap-1.5">
-                        <label className="text-[10px] font-mono text-zinc-300 uppercase">Life sphere</label>
-                        <div className="flex flex-wrap gap-1.5">
-                          {spheres.map((s) => (
-                            <button
-                              key={s.id}
-                              type="button"
-                              onClick={() => setSelectedSphereId(s.id)}
-                              className={`px-2 py-1 rounded text-[11px] font-medium border transition-colors ${
-                                selectedSphereId === s.id
-                                  ? "bg-accent/15 text-accent border-accent/30"
-                                  : "text-zinc-500 border-white/[0.06] hover:text-zinc-300 hover:bg-white/5"
-                              }`}
-                            >
-                              <span
-                                className="inline-block w-1.5 h-1.5 rounded-full mr-1"
-                                style={{ backgroundColor: s.color }}
-                              />
-                              {s.name}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-1.5">
                         <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
                           <span>Internal resistance before action</span>
                           <span className="text-orange-400 font-bold">{resistance} / 5</span>
@@ -1440,7 +1416,7 @@ export function PlanningWizardClient({
                     >
                       Decompose and create {decomposeType === "project" ? "Project" : "Atom"}
                     </Button>
-                  </>
+                  </div>
                 )}
               </div>
             </div>
