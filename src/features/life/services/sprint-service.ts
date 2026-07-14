@@ -91,12 +91,12 @@ export async function getSprintDashboard(userId: string) {
     where: {
       userId,
       OR: [
-        // Tasks planned for this week
+        // Tasks planned for this week or unfinished tasks from the past
         {
           plannedDate: {
-            gte: weekStart,
             lte: weekEnd,
           },
+          status: { in: ["TODO", "IN_PROGRESS"] },
         },
         // Completed tasks (done this week)
         {
@@ -142,9 +142,12 @@ export async function getSprintDashboard(userId: string) {
       t.status !== "DONE" &&
       t.status !== "CANCELLED" &&
       t.plannedDate &&
-      t.plannedDate >= weekStart &&
-      t.plannedDate <= weekEnd &&
-      (t.plannedDate < dayStart || t.plannedDate > dayEnd)
+      (
+        // Planned for this week (excluding today)
+        (t.plannedDate >= weekStart && t.plannedDate <= weekEnd && (t.plannedDate < dayStart || t.plannedDate > dayEnd)) ||
+        // Or planned in the past (overdue/carry-over tasks)
+        (t.plannedDate < weekStart)
+      )
   );
 
   const doneTasks = allTasks.filter((t) => t.status === "DONE" || t.status === "CANCELLED");

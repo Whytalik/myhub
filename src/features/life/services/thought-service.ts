@@ -237,6 +237,7 @@ export async function decomposeThought(
           status: "TODO",
           priority: priority as any,
           sphereId: sphereId || thought.sphereId,
+          plannedDate: new Date(),
           depth: 0,
         },
       });
@@ -266,6 +267,7 @@ export async function decomposeThought(
           priority: priority as any,
           projectId: createdProject.id,
           sphereId: sphereId || thought.sphereId,
+          plannedDate: new Date(),
           depth: 0,
         },
       });
