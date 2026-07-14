@@ -934,7 +934,7 @@ export function TaskCalendar({
                     >
                       <Flag size={8} className="shrink-0" />
                       {Icon && <Icon size={8} className="shrink-0" />}
-                      <span className="truncate">{task.isPrivate ? "Private" : task.title}</span>
+                      <span className="truncate">{task.title}</span>
                     </button>
                   );
                 });
@@ -1077,7 +1077,7 @@ export function TaskCalendar({
                     )}
                     {Icon && <Icon size={11} className="text-zinc-400 shrink-0" />}
                     <span className="text-xs font-medium text-zinc-200 whitespace-nowrap">
-                      {task.isPrivate ? "Private" : task.title}
+                      {task.title}
                     </span>
                     <div className="flex items-center gap-1.5">
                       <div className="w-12 h-1 rounded-full bg-white/10 overflow-hidden">
@@ -1129,7 +1129,7 @@ export function TaskCalendar({
                             className: "text-zinc-400 shrink-0",
                           })}
                         <span className="text-xs font-medium text-zinc-200">
-                          {task.isPrivate ? "Приватне" : task.title}
+                          {task.title}
                         </span>
                         {task.sphere && (
                           <div

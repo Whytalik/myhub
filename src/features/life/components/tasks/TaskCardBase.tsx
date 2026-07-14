@@ -182,10 +182,10 @@ export function TaskCardBase({
   const titleClass = isCompact
     ? "text-sm font-medium text-zinc-100 whitespace-pre-wrap break-words"
     : "text-panel-title whitespace-pre-wrap break-words";
-  const titleText = task.isPrivate ? "Hidden" : task.title;
+  const titleText = task.title;
   const titleHtml = { __html: formatText(titleText) };
-  const parentLabel = task.isPrivate ? "Hidden" : task.parentTitle || "Parent Task";
-  const descriptionText = task.isPrivate ? "Content is hidden" : task.description;
+  const parentLabel = task.parentTitle || "Parent Task";
+  const descriptionText = task.description;
   const iconSize = isCompact ? 10 : 16;
   const actionIconSize = isCompact ? 10 : 12;
   const dateIconSize = isCompact ? 8 : 11;
@@ -301,9 +301,9 @@ export function TaskCardBase({
               Frog
             </span>
           )}
-          {task.isPrivate && (
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-zinc-500/10 text-zinc-400 text-[10px] font-mono font-semibold uppercase tracking-wide">
-              Private
+          {task.project && (
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-[10px] font-mono font-semibold uppercase tracking-wide border border-amber-500/10 truncate max-w-[150px]" title={task.project.title}>
+              {task.project.title}
             </span>
           )}
         </div>

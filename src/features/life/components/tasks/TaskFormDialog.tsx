@@ -497,28 +497,13 @@ function UnifiedTaskForm({
                   { id: "none", label: "Top Level", icon: Link2Off, color: "#666" },
                   ...allTasks.map((t: TaskData) => ({
                     id: t.id,
-                    label: t.isPrivate ? "Private" : t.title,
+                    label: t.title,
                     icon: t.icon ? SPHERE_ICONS[t.icon] || FileText : FileText,
                     color: t.sphere?.color || "#888",
                   })),
                 ]}
               />
             </div>
-            <button
-              type="button"
-              onClick={() => setIsPrivate(!isPrivate)}
-              className={privateToggleClass}
-            >
-              <EyeOff size={14} className="text-zinc-400 shrink-0" />
-              <div className="flex flex-col">
-                <span className="text-sm font-medium text-zinc-100">
-                  {isPrivate ? "Private" : "Public"}
-                </span>
-                <span className="text-caption">
-                  {isPrivate ? "Only you can see this" : "Visible to everyone"}
-                </span>
-              </div>
-            </button>
           </div>
         );
 
@@ -824,7 +809,7 @@ function TaskDetail({
                       ) : (
                         <FileText size={11} />
                       )}
-                      <span className="truncate">{child.isPrivate ? "Private" : child.title}</span>
+                      <span className="truncate">{child.title}</span>
                     </div>
                     <div className="flex items-center gap-1 shrink-0">
                       {onViewTask && (
@@ -1011,21 +996,12 @@ function TaskDetail({
                       .filter((t: TaskData) => t.id !== task.id)
                       .map((t: TaskData) => ({
                         id: t.id,
-                        label: t.isPrivate ? "Private" : t.title,
+                        label: t.title,
                         icon: LayoutGrid,
                       })),
                   ]}
                 />
               </div>
-              <button
-                onClick={() => setIsPrivate(!isPrivate)}
-                className="glass-card p-2.5 flex items-center gap-2 text-left hover:border-white/[0.12] transition-colors"
-              >
-                <EyeOff size={12} className="text-zinc-400 shrink-0" />
-                <span className="text-sm text-zinc-200">
-                  {isPrivate ? "Private Task" : "Public Task"}
-                </span>
-              </button>
             </div>
           </section>
 
