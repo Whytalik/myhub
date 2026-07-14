@@ -356,6 +356,10 @@ export function PlanningWizardClient({
   };
 
   const handleDeleteThought = (thoughtId: string) => {
+    if (!window.confirm("Are you sure you want to delete this thought?")) {
+      return;
+    }
+
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
