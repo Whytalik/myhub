@@ -655,24 +655,24 @@ export function KanbanBoardClient({
                       </p>
                     )}
 
-                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
+                    <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-white/[0.04]">
                       <button
                         type="button"
                         onClick={() =>
                           setAssigningProjectId(assigningProjectId === project.id ? null : project.id)
                         }
-                        className="text-[10px] font-mono font-semibold uppercase text-accent hover:underline flex items-center gap-1"
+                        className="text-[10px] font-mono font-semibold uppercase text-accent hover:underline flex items-center gap-1 self-start"
                       >
                         <ArrowRightLeft size={10} /> Assign to Sprint
                       </button>
 
                       {assigningProjectId === project.id && (
-                        <div className="absolute left-0 right-0 top-full mt-1 bg-zinc-900 border border-white/10 rounded-xl p-1.5 shadow-xl z-20 flex flex-col gap-1">
-                          <span className="text-[9px] uppercase tracking-wider font-mono text-zinc-500 px-2 block mb-1">
+                        <div className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl p-2 flex flex-col gap-1">
+                          <span className="text-[9px] uppercase tracking-wider font-mono text-zinc-500 px-1 block mb-1">
                             Select Objective:
                           </span>
                           {sprint.objectives.length === 0 ? (
-                            <span className="text-zinc-500 text-[10px] italic px-2">
+                            <span className="text-zinc-500 text-[10px] italic px-1">
                               No objectives in sprint
                             </span>
                           ) : (
@@ -681,7 +681,7 @@ export function KanbanBoardClient({
                                 key={obj.id}
                                 type="button"
                                 onClick={() => handleAssignProject(project.id, obj.id)}
-                                className="text-left text-xs text-zinc-300 hover:bg-white/5 px-2 py-1 rounded transition-colors truncate"
+                                className="text-left text-xs text-zinc-350 hover:bg-white/5 px-2 py-1 rounded transition-colors truncate"
                               >
                                 {obj.title}
                               </button>
