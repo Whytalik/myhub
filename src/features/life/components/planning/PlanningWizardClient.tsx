@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useMemo } from "react";
+import { useState, useTransition, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
@@ -74,18 +74,28 @@ export function PlanningWizardClient({
   const [newThoughtType, setNewThoughtType] = useState<ThoughtType | null>(null);
   const [newThoughtTemplateData, setNewThoughtTemplateData] = useState<Record<string, string> | null>(null);
   const [editingThought, setEditingThought] = useState<ThoughtItem | null>(null);
+  const [activeFilterSphereId, setActiveFilterSphereId] = useState<string | null>(null);
   const [isActionPending, startActionTransition] = useTransition();
+
+  const displayedThoughts = useMemo(() => {
+    if (!activeFilterSphereId) return thoughts;
+    return thoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId);
+  }, [thoughts, activeFilterSphereId]);
 
   // Step 2: Filter states
   const inboxThoughts = useMemo(() => {
-    return thoughts.filter((t) => t.status.name === "Inbox" || t.status.name === "Інбокс");
-  }, [thoughts]);
+    const baseThoughts = thoughts.filter((currentThought) => currentThought.status.name === "Inbox" || currentThought.status.name === "Інбокс");
+    if (!activeFilterSphereId) return baseThoughts;
+    return baseThoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId);
+  }, [thoughts, activeFilterSphereId]);
   const [filterIndex, setFilterIndex] = useState(0);
 
   // Step 3: Decompose states
   const decomposableThoughts = useMemo(() => {
-    return thoughts.filter((t) => t.status.name === "Хочу" || t.status.name === "Повинен" || t.status.name === "Want" || t.status.name === "Must");
-  }, [thoughts]);
+    const baseThoughts = thoughts.filter((currentThought) => currentThought.status.name === "Хочу" || currentThought.status.name === "Повинен" || currentThought.status.name === "Want" || currentThought.status.name === "Must");
+    if (!activeFilterSphereId) return baseThoughts;
+    return baseThoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId);
+  }, [thoughts, activeFilterSphereId]);
   const [decomposeIndex, setDecomposeIndex] = useState(0);
 
   // Decomposition Form states
@@ -166,7 +176,11 @@ export function PlanningWizardClient({
             type: newThoughtType,
             templateData: newThoughtTemplateData,
           }
-        : undefined;
+        : activeFilterSphereId
+          ? {
+              sphereId: activeFilterSphereId,
+            }
+          : undefined;
 
       const result = await quickCaptureAction(text, extraFields);
       if (result.success) {
@@ -185,7 +199,7 @@ export function PlanningWizardClient({
         };
         setThoughts((previousThoughts) => [...previousThoughts, newThought]);
         setNewThoughtText("");
-        setNewThoughtSphereId(null);
+        setNewThoughtSphereId(activeFilterSphereId);
         setNewThoughtType(null);
         setNewThoughtTemplateData(null);
         setShowDetailedFields(false);
@@ -194,6 +208,19 @@ export function PlanningWizardClient({
       }
     });
   };
+
+  // Keep filterIndex and decomposeIndex in bounds when inboxThoughts/decomposableThoughts change
+  useEffect(() => {
+    if (filterIndex >= inboxThoughts.length && inboxThoughts.length > 0) {
+      setFilterIndex(inboxThoughts.length - 1);
+    }
+  }, [inboxThoughts.length, filterIndex]);
+
+  useEffect(() => {
+    if (decomposeIndex >= decomposableThoughts.length && decomposableThoughts.length > 0) {
+      setDecomposeIndex(decomposableThoughts.length - 1);
+    }
+  }, [decomposableThoughts.length, decomposeIndex]);
 
   const handleFilterThought = (thoughtId: string, outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE") => {
     startActionTransition(async () => {
@@ -282,7 +309,7 @@ export function PlanningWizardClient({
     <div className="flex flex-col gap-6 w-full">
       {/* Step Indicator */}
       {step > 0 && (
-        <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/[0.06] pb-4 gap-3">
           <div className="flex flex-wrap items-center gap-1.5 md:gap-4 text-xs font-mono text-zinc-500">
             <span className={step === 1 ? "text-accent font-bold" : thoughts.length > 0 ? "text-zinc-300" : ""}>
               1. BRAIN DUMP
@@ -301,9 +328,44 @@ export function PlanningWizardClient({
             </span>
           </div>
 
-          <Button variant="ghost" size="sm" onClick={() => setStep(0)} className="text-xs">
-            Restart Flow
-          </Button>
+          <div className="flex items-center gap-3">
+            {activeFilterSphereId && (
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/10 border border-accent/20 text-[10px] font-mono text-accent uppercase tracking-wider">
+                <span
+                  className="w-1.5 h-1.5 rounded-full shrink-0 animate-pulse"
+                  style={{
+                    backgroundColor: spheres.find(
+                      (currentSphere) => currentSphere.id === activeFilterSphereId
+                    )?.color,
+                  }}
+                />
+                <span>
+                  Context:{" "}
+                  {
+                    spheres.find((currentSphere) => currentSphere.id === activeFilterSphereId)
+                      ?.name
+                  }
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveFilterSphereId(null);
+                    if (!showDetailedFields) {
+                      setNewThoughtSphereId(null);
+                    }
+                  }}
+                  className="ml-1 hover:text-zinc-200 transition-colors font-bold"
+                  title="Clear context filter"
+                >
+                  &times;
+                </button>
+              </div>
+            )}
+
+            <Button variant="ghost" size="sm" onClick={() => setStep(0)} className="text-xs">
+              Restart Flow
+            </Button>
+          </div>
         </div>
       )}
 
@@ -430,21 +492,40 @@ export function PlanningWizardClient({
 
             <div className="flex flex-col gap-2 mt-2 pt-3 border-t border-white/[0.04]">
               <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
-                💡 Life Areas (use as triggers to remember tasks):
+                💡 Life Areas (click to filter and pre-select):
               </span>
               <div className="flex flex-wrap gap-1.5">
-                {spheres.map((s) => (
-                  <div
-                    key={s.id}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.02] border border-white/[0.06] text-[11px] text-zinc-350"
-                  >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full shrink-0"
-                      style={{ backgroundColor: s.color }}
-                    />
-                    <span>{s.name}</span>
-                  </div>
-                ))}
+                {spheres.map((currentSphere) => {
+                  const isSelected = activeFilterSphereId === currentSphere.id;
+                  return (
+                    <button
+                      key={currentSphere.id}
+                      type="button"
+                      onClick={() => {
+                        if (isSelected) {
+                          setActiveFilterSphereId(null);
+                          if (!showDetailedFields) {
+                            setNewThoughtSphereId(null);
+                          }
+                        } else {
+                          setActiveFilterSphereId(currentSphere.id);
+                          setNewThoughtSphereId(currentSphere.id);
+                        }
+                      }}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono uppercase tracking-wide border transition-all duration-150 ${
+                        isSelected
+                          ? "bg-accent/15 text-accent border-accent/40 shadow-sm"
+                          : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:text-zinc-300 hover:bg-white/5"
+                      }`}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full shrink-0"
+                        style={{ backgroundColor: currentSphere.color }}
+                      />
+                      <span>{currentSphere.name}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -454,17 +535,19 @@ export function PlanningWizardClient({
             <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
               <h4 className="text-xs font-mono font-semibold uppercase text-zinc-400">Current Inbox</h4>
               <span className="text-[11px] font-mono text-zinc-500 bg-white/[0.03] px-2 py-0.5 rounded">
-                {thoughts.length}
+                {activeFilterSphereId ? `${displayedThoughts.length} of ${thoughts.length}` : thoughts.length}
               </span>
             </div>
 
-            {thoughts.length === 0 ? (
+            {displayedThoughts.length === 0 ? (
               <div className="text-zinc-500 text-xs italic py-12 text-center">
-                Your thoughts will appear here. Write something above!
+                {activeFilterSphereId 
+                  ? "No thoughts captured in this sphere yet." 
+                  : "Your thoughts will appear here. Write something above!"}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-y-auto max-h-[350px] pr-1">
-                {[...thoughts].reverse().map((thoughtItem) => {
+                {[...displayedThoughts].reverse().map((thoughtItem) => {
                   const sphere = spheres.find((currentSphere) => currentSphere.id === thoughtItem.sphereId);
                   return (
                     <div
