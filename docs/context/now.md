@@ -11,6 +11,7 @@ Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS
 
 ## Recently shipped
 
+- Detailed thought capture in the Planning Wizard (multi-line textarea, sphere/type/template selection, and UI formatting preservation) — shipped to main.
 - Nutrition macro calculation system (actual kcal/protein/fat/carbs from meal ingredients) — shipped to main.
 - Life domain restructuring: History split into its own space, day-type/routine consolidation.
 

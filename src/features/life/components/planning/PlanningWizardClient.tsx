@@ -18,6 +18,7 @@ import {
   Layers,
   Zap,
   HelpCircle,
+  Pencil,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
@@ -29,15 +30,22 @@ import {
 } from "@/features/life/actions/thought-actions";
 import type { LifeSphereData } from "@/features/life/types";
 import { KanbanBoardClient } from "../sprints/KanbanBoardClient";
+import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields";
+import type { ThoughtType } from "@/features/life/logic/thought-types";
+import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
+import { upsertThoughtAction } from "@/features/life/actions/thought-actions";
 
 interface ThoughtItem {
   id: string;
   content: string;
+  statusId: string;
   status: {
     id: string;
     name: string;
   };
   sphereId: string | null;
+  type?: ThoughtType | null;
+  templateData?: Record<string, string> | null;
 }
 
 interface PlanningWizardClientProps {
@@ -61,6 +69,11 @@ export function PlanningWizardClient({
 
   // Step 1: Brain Dump state
   const [newThoughtText, setNewThoughtText] = useState("");
+  const [showDetailedFields, setShowDetailedFields] = useState(false);
+  const [newThoughtSphereId, setNewThoughtSphereId] = useState<string | null>(null);
+  const [newThoughtType, setNewThoughtType] = useState<ThoughtType | null>(null);
+  const [newThoughtTemplateData, setNewThoughtTemplateData] = useState<Record<string, string> | null>(null);
+  const [editingThought, setEditingThought] = useState<ThoughtItem | null>(null);
   const [isActionPending, startActionTransition] = useTransition();
 
   // Step 2: Filter states
@@ -90,25 +103,92 @@ export function PlanningWizardClient({
   const [resistance, setResistance] = useState<number>(3); // 1-5
 
   // Handlers
+  const handleDetailedFieldsChange = (patch: {
+    sphereId?: string | null;
+    type?: ThoughtType | null;
+    templateData?: Record<string, string> | null;
+  }) => {
+    if (patch.sphereId !== undefined) setNewThoughtSphereId(patch.sphereId);
+    if (patch.type !== undefined) setNewThoughtType(patch.type);
+    if (patch.templateData !== undefined) setNewThoughtTemplateData(patch.templateData);
+  };
+
+  const handleEditClick = (thoughtItem: ThoughtItem) => {
+    setEditingThought(thoughtItem);
+  };
+
+  const handleSaveEditedThought = (updatedFields: {
+    content: string;
+    sphereId: string | null;
+    type: ThoughtType | null;
+    templateData: Record<string, string> | null;
+  }) => {
+    if (!editingThought) return;
+
+    startActionTransition(async () => {
+      const result = await upsertThoughtAction({
+        id: editingThought.id,
+        content: updatedFields.content,
+        sphereId: updatedFields.sphereId,
+        type: updatedFields.type,
+        templateData: updatedFields.templateData,
+      });
+
+      if (result.success) {
+        toast.success("Thought updated!");
+        setThoughts((previousThoughts) =>
+          previousThoughts.map((currentThought) =>
+            currentThought.id === editingThought.id
+              ? {
+                  ...currentThought,
+                  content: result.data.content,
+                  sphereId: result.data.sphereId,
+                  type: result.data.type,
+                  templateData: result.data.templateData as Record<string, string> | null,
+                }
+              : currentThought
+          )
+        );
+      } else {
+        toast.error(result.error || "Failed to update thought");
+      }
+    });
+  };
+
   const handleAddThought = () => {
     const text = newThoughtText.trim();
     if (!text) return;
 
     startActionTransition(async () => {
-      const result = await quickCaptureAction(text);
+      const extraFields = showDetailedFields
+        ? {
+            sphereId: newThoughtSphereId,
+            type: newThoughtType,
+            templateData: newThoughtTemplateData,
+          }
+        : undefined;
+
+      const result = await quickCaptureAction(text, extraFields);
       if (result.success) {
         toast.success("Thought captured!");
         const newThought: ThoughtItem = {
           id: result.data.id,
           content: result.data.content,
+          statusId: result.data.statusId,
           status: {
             id: result.data.statusId,
             name: "Inbox",
           },
           sphereId: result.data.sphereId,
+          type: result.data.type,
+          templateData: result.data.templateData as Record<string, string> | null,
         };
-        setThoughts((prev) => [...prev, newThought]);
+        setThoughts((previousThoughts) => [...previousThoughts, newThought]);
         setNewThoughtText("");
+        setNewThoughtSphereId(null);
+        setNewThoughtType(null);
+        setNewThoughtTemplateData(null);
+        setShowDetailedFields(false);
       } else {
         toast.error(result.error || "Failed to capture thought");
       }
@@ -295,25 +375,57 @@ export function PlanningWizardClient({
               </p>
             </div>
 
-            <div className="flex gap-2 mt-2">
-              <Input
-                value={newThoughtText}
-                onChange={(e) => setNewThoughtText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleAddThought();
-                }}
-                placeholder="Capture thought..."
-                autoFocus
-                disabled={isActionPending}
-                className="flex-1"
-              />
-              <Button
-                variant="primary"
-                onClick={handleAddThought}
-                disabled={!newThoughtText.trim() || isActionPending}
-              >
-                Add
-              </Button>
+            <div className="flex flex-col gap-4 mt-2">
+              <div className="flex gap-3 items-start">
+                <Textarea
+                  value={newThoughtText}
+                  onChange={(e) => setNewThoughtText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      if (e.metaKey || e.ctrlKey || !showDetailedFields) {
+                        e.preventDefault();
+                        handleAddThought();
+                      }
+                    }
+                  }}
+                  placeholder="Capture thought... (Ctrl+Enter to save)"
+                  autoFocus
+                  disabled={isActionPending}
+                  rows={2}
+                  className="flex-1 min-h-[60px]"
+                />
+                <div className="flex flex-col gap-2 shrink-0">
+                  <Button
+                    variant="primary"
+                    onClick={handleAddThought}
+                    disabled={!newThoughtText.trim() || isActionPending}
+                    className="h-9 px-4"
+                  >
+                    Add
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    onClick={() => setShowDetailedFields(!showDetailedFields)}
+                    className="text-[11px] font-mono h-8 border border-white/[0.04] bg-white/[0.01]"
+                  >
+                    {showDetailedFields ? "Hide details" : "Add details"}
+                  </Button>
+                </div>
+              </div>
+
+              {showDetailedFields && (
+                <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.01] flex flex-col gap-4 animate-fade-up">
+                  <ThoughtFields
+                    spheres={spheres}
+                    sphereId={newThoughtSphereId}
+                    type={newThoughtType}
+                    templateData={newThoughtTemplateData}
+                    onChange={handleDetailedFieldsChange}
+                  />
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col gap-2 mt-2 pt-3 border-t border-white/[0.04]">
@@ -352,17 +464,45 @@ export function PlanningWizardClient({
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-y-auto max-h-[350px] pr-1">
-                {[...thoughts].reverse().map((t) => (
-                  <div
-                    key={t.id}
-                    className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex items-center justify-between gap-3 min-h-[48px]"
-                  >
-                    <span className="text-zinc-300 leading-normal break-words">{t.content}</span>
-                    <span className="text-[9px] font-mono text-zinc-500 shrink-0 bg-white/[0.03] px-1.5 py-0.5 rounded h-fit">
-                      {t.status.name}
-                    </span>
-                  </div>
-                ))}
+                {[...thoughts].reverse().map((thoughtItem) => {
+                  const sphere = spheres.find((currentSphere) => currentSphere.id === thoughtItem.sphereId);
+                  return (
+                    <div
+                      key={thoughtItem.id}
+                      className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex flex-col gap-2 min-h-[48px] relative group"
+                    >
+                      <div className="flex items-start justify-between gap-3 w-full">
+                        <span className="text-zinc-305 leading-normal break-words flex-1 whitespace-pre-wrap">
+                          {thoughtItem.content}
+                        </span>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => handleEditClick(thoughtItem)}
+                            className="p-1 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                            title="Edit thought"
+                          >
+                            <Pencil size={12} />
+                          </button>
+                          <span className="text-[9px] font-mono text-zinc-500 bg-white/[0.03] px-1.5 py-0.5 rounded h-fit">
+                            {thoughtItem.status.name}
+                          </span>
+                        </div>
+                      </div>
+                      {sphere && (
+                        <div className="flex items-center gap-1.5 self-start mt-auto">
+                          <span
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: sphere.color }}
+                          />
+                          <span className="text-[10px] text-zinc-500 font-mono uppercase tracking-wide">
+                            {sphere.name}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
 
@@ -407,10 +547,20 @@ export function PlanningWizardClient({
             </div>
           ) : (
             <div className="flex flex-col gap-6 w-full max-w-lg items-center">
-              <div className="glass-card p-6 w-full border-white/10 bg-white/[0.02] shadow-xl text-center min-h-[120px] flex items-center justify-center relative">
-                <p className="text-lg font-medium text-zinc-150 leading-relaxed font-sans">
+              <div className="glass-card p-6 w-full border-white/10 bg-white/[0.02] shadow-xl text-center min-h-[120px] flex items-center justify-center relative group">
+                <p className="text-lg font-medium text-zinc-150 leading-relaxed font-sans whitespace-pre-wrap">
                   &ldquo;{inboxThoughts[filterIndex]?.content}&rdquo;
                 </p>
+                {inboxThoughts[filterIndex] && (
+                  <button
+                    type="button"
+                    onClick={() => handleEditClick(inboxThoughts[filterIndex])}
+                    className="absolute top-3 right-3 p-1.5 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                    title="Edit thought"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                )}
               </div>
 
               <div className="w-full h-1 bg-black/35 rounded-full overflow-hidden">
@@ -513,14 +663,24 @@ export function PlanningWizardClient({
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1.3fr] gap-8 items-start">
               <div className="flex flex-col gap-4">
-                <div className="glass-card p-4 border-amber-500/10 bg-amber-500/[0.01] rounded-xl flex flex-col gap-2">
+                <div className="glass-card p-4 border-amber-500/10 bg-amber-500/[0.01] rounded-xl flex flex-col gap-2 relative group">
                   <div className="flex justify-between items-center text-[9px] font-mono text-amber-400 font-semibold uppercase">
                     <span>Raw thought ({decomposableThoughts[decomposeIndex]?.status.name})</span>
                     <span>Thought {decomposeIndex + 1} of {decomposableThoughts.length}</span>
                   </div>
-                  <p className="text-sm font-medium text-zinc-150 leading-relaxed font-sans">
+                  <p className="text-sm font-medium text-zinc-150 leading-relaxed font-sans whitespace-pre-wrap">
                     &ldquo;{decomposableThoughts[decomposeIndex]?.content}&rdquo;
                   </p>
+                  {decomposableThoughts[decomposeIndex] && (
+                    <button
+                      type="button"
+                      onClick={() => handleEditClick(decomposableThoughts[decomposeIndex])}
+                      className="absolute top-3 right-3 p-1.5 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                      title="Edit thought"
+                    >
+                      <Pencil size={13} />
+                    </button>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -749,6 +909,27 @@ export function PlanningWizardClient({
             spheres={spheres}
           />
         </div>
+      )}
+
+      {editingThought && (
+        <ThoughtDetailDialog
+          isOpen={true}
+          onClose={() => setEditingThought(null)}
+          thought={{
+            id: editingThought.id,
+            statusId: editingThought.statusId,
+            content: editingThought.content,
+            order: 0,
+            type: editingThought.type ?? null,
+            templateData: editingThought.templateData ?? null,
+            sphereId: editingThought.sphereId,
+            sphere: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }}
+          spheres={spheres}
+          onSave={handleSaveEditedThought}
+        />
       )}
     </div>
   );
