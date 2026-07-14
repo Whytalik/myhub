@@ -97,8 +97,15 @@ export const taskRepository = {
     return prisma.task.updateMany({ where, data });
   },
 
-  delete(id: string, userId: string) {
-    return prisma.task.delete({ where: { id, userId } });
+  async delete(id: string, userId: string) {
+    try {
+      return await prisma.task.delete({ where: { id, userId } });
+    } catch (error: any) {
+      if (error.code === "P2025") {
+        return null;
+      }
+      throw error;
+    }
   },
 
   setFrogExclusive(userId: string, id: string) {
