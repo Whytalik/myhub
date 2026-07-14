@@ -250,29 +250,34 @@ export function PlanningWizardClient({
   }, [decomposableThoughts.length, decomposeIndex]);
 
   const handleFilterThought = (thoughtId: string, outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE") => {
+    const previousThoughts = [...thoughts];
+    const isLastThought = inboxThoughts.length <= 1;
+
+    const statusNameMap = {
+      KEEP_WANT: "Want",
+      KEEP_MUST: "Must",
+      NOT_MINE: "Basket",
+    };
+
+    // Optimistically update status name
+    setThoughts((previousThoughtsState) =>
+      previousThoughtsState.map((currentThought) =>
+        currentThought.id === thoughtId
+          ? { ...currentThought, status: { ...currentThought.status, name: statusNameMap[outcome] } }
+          : currentThought
+      )
+    );
+
     startActionTransition(async () => {
       const result = await routeThoughtAction(thoughtId, outcome);
       if (result.success) {
         toast.success("Thought filtered");
-        const statusNameMap = {
-          KEEP_WANT: "Want",
-          KEEP_MUST: "Must",
-          NOT_MINE: "Basket",
-        };
-        setThoughts((prev) =>
-          prev.map((t) =>
-            t.id === thoughtId
-              ? { ...t, status: { ...t.status, name: statusNameMap[outcome] } }
-              : t
-          )
-        );
-
-        if (filterIndex < inboxThoughts.length - 1) {
-          setFilterIndex((prev) => prev + 1);
-        } else {
+        if (isLastThought) {
           toast.success("All thoughts from Inbox filtered!");
         }
       } else {
+        // Rollback on failure
+        setThoughts(previousThoughts);
         toast.error(result.error || "Failed to filter thought");
       }
     });
@@ -281,9 +286,24 @@ export function PlanningWizardClient({
   // Run decomposition
   const handleDecompose = (thoughtId: string) => {
     const isProject = decomposeType === "project";
-
     const title = isProject ? projectTitle.trim() : taskTitle.trim();
     if (!title) return;
+
+    const previousThoughts = [...thoughts];
+
+    // Optimistically remove the decomposed thought
+    setThoughts((previousThoughtsState) =>
+      previousThoughtsState.filter((currentThought) => currentThought.id !== thoughtId)
+    );
+
+    // Reset form states immediately
+    setTaskTitle("");
+    setTaskDesc("");
+    setProjectTitle("");
+    setProjectDesc("");
+    setFirstAtomTitle("");
+    setFirstAtomDesc("");
+    setResistance(3);
 
     startActionTransition(async () => {
       const result = await decomposeThoughtAction({
@@ -299,25 +319,9 @@ export function PlanningWizardClient({
 
       if (result.success) {
         toast.success(isProject ? "Project created successfully!" : "Atom created successfully!");
-
-        // Remove the decomposed thought locally
-        setThoughts((prev) => prev.filter((t) => t.id !== thoughtId));
-
-        // Reset form states
-        setTaskTitle("");
-        setTaskDesc("");
-        setProjectTitle("");
-        setProjectDesc("");
-        setFirstAtomTitle("");
-        setFirstAtomDesc("");
-        setResistance(3);
-
-        if (decomposeIndex < decomposableThoughts.length - 1) {
-          // Keep index bounds checked
-        } else {
-          setDecomposeIndex(0);
-        }
       } else {
+        // Rollback on failure
+        setThoughts(previousThoughts);
         toast.error(result.error || "Error during decomposition");
       }
     });
@@ -996,44 +1000,46 @@ export function PlanningWizardClient({
                   )}
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wide">
-                    Define scope of thought:
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setDecomposeType("task")}
-                      className={`p-3 rounded-xl border text-left flex flex-col gap-1.5 transition-all duration-150 ${
-                        decomposeType === "task"
-                          ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-400"
-                          : "bg-white/[0.01] border-white/[0.06] text-zinc-400 hover:bg-white/[0.02]"
-                      }`}
-                    >
-                      <CheckSquare size={16} />
-                      <div>
-                        <span className="text-xs font-semibold block">Kaizen Step (Atom)</span>
-                        <span className="text-[9px] opacity-75 block mt-0.5">Done in one sitting, &lt; 30 min.</span>
-                      </div>
-                    </button>
+                {currentDecomposeThought?.type && (
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wide">
+                      Define scope of thought:
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setDecomposeType("task")}
+                        className={`p-3 rounded-xl border text-left flex flex-col gap-1.5 transition-all duration-150 ${
+                          decomposeType === "task"
+                            ? "bg-emerald-500/5 border-emerald-500/20 text-emerald-400"
+                            : "bg-white/[0.01] border-white/[0.06] text-zinc-400 hover:bg-white/[0.02]"
+                        }`}
+                      >
+                        <CheckSquare size={16} />
+                        <div>
+                          <span className="text-xs font-semibold block">Kaizen Step (Atom)</span>
+                          <span className="text-[9px] opacity-75 block mt-0.5">Done in one sitting, &lt; 30 min.</span>
+                        </div>
+                      </button>
 
-                    <button
-                      type="button"
-                      onClick={() => setDecomposeType("project")}
-                      className={`p-3 rounded-xl border text-left flex flex-col gap-1.5 transition-all duration-150 ${
-                        decomposeType === "project"
-                          ? "bg-amber-500/5 border-amber-500/20 text-amber-400"
-                          : "bg-white/[0.01] border-white/[0.06] text-zinc-400 hover:bg-white/[0.02]"
-                      }`}
-                    >
-                      <FolderKanban size={16} />
-                      <div>
-                        <span className="text-xs font-semibold block">Project (&gt;1 step)</span>
-                        <span className="text-[9px] opacity-75 block mt-0.5">Requires multiple steps.</span>
-                      </div>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => setDecomposeType("project")}
+                        className={`p-3 rounded-xl border text-left flex flex-col gap-1.5 transition-all duration-150 ${
+                          decomposeType === "project"
+                            ? "bg-amber-500/5 border-amber-500/20 text-amber-400"
+                            : "bg-white/[0.01] border-white/[0.06] text-zinc-400 hover:bg-white/[0.02]"
+                        }`}
+                      >
+                        <FolderKanban size={16} />
+                        <div>
+                          <span className="text-xs font-semibold block">Project (&gt;1 step)</span>
+                          <span className="text-[9px] opacity-75 block mt-0.5">Requires multiple steps.</span>
+                        </div>
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="flex justify-between items-center border-t border-white/[0.04] pt-4 mt-2 text-xs">
                   <button
@@ -1061,131 +1067,189 @@ export function PlanningWizardClient({
               </div>
 
               <div className="glass-card p-5 bg-black/20 border-white/[0.06] rounded-xl flex flex-col gap-4">
-                {decomposeType === "task" ? (
+                {!currentDecomposeThought?.type ? (
                   <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-mono text-zinc-300 uppercase">Formulate physical step</label>
-                      <Input
-                        value={taskTitle}
-                        onChange={(e) => setTaskTitle(e.target.value)}
-                        placeholder="Start with a verb: Write email, Buy tickets..."
-                      />
-                      <p className="text-[10px] text-zinc-500 italic">
-                        💡 The step must be so simple that you feel zero friction.
+                    <div className="flex flex-col gap-1 border-b border-white/[0.04] pb-2">
+                      <span className="text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
+                        📝 Clarify & Detail Thought
+                      </span>
+                      <p className="text-[10px] text-zinc-500">
+                        Please select a type and fill out details for this thought to proceed.
                       </p>
                     </div>
 
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-mono text-zinc-300 uppercase">Description / Details (optional)</label>
-                      <Textarea
-                        value={taskDesc}
-                        onChange={(e) => setTaskDesc(e.target.value)}
-                        placeholder="Useful links, notes, etc..."
-                        rows={2}
-                      />
-                    </div>
+                    <ThoughtFields
+                      spheres={spheres}
+                      sphereId={selectedSphereId}
+                      type={currentDecomposeThought?.type || null}
+                      templateData={currentDecomposeThought?.templateData || null}
+                      onChange={(updatedFields) => {
+                        if (updatedFields.sphereId) {
+                          setSelectedSphereId(updatedFields.sphereId);
+                        }
+                        // Update thoughts state optimistically
+                        setThoughts((previousThoughts) =>
+                          previousThoughts.map((currentThought) =>
+                            currentThought.id === currentDecomposeThought.id
+                              ? {
+                                  ...currentThought,
+                                  sphereId: updatedFields.sphereId ?? null,
+                                  type: updatedFields.type ?? null,
+                                  templateData: (updatedFields.templateData ?? null) as Record<string, string> | null,
+                                }
+                              : currentThought
+                          )
+                        );
+                        // Save in database
+                        startActionTransition(async () => {
+                          await upsertThoughtAction({
+                            id: currentDecomposeThought.id,
+                            content: currentDecomposeThought.content,
+                            sphereId: updatedFields.sphereId ?? null,
+                            type: updatedFields.type ?? null,
+                            templateData: updatedFields.templateData ?? null,
+                          });
+                        });
+                      }}
+                    />
                   </div>
                 ) : (
-                  <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-mono text-zinc-300 uppercase">Project title</label>
-                      <Input
-                        value={projectTitle}
-                        onChange={(e) => setProjectTitle(e.target.value)}
-                        placeholder="e.g. Relocate to new office"
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[10px] font-mono text-zinc-300 uppercase">Project description (optional)</label>
-                      <Textarea
-                        value={projectDesc}
-                        onChange={(e) => setProjectDesc(e.target.value)}
-                        placeholder="Desired outcome that defines success..."
-                        rows={2}
-                      />
-                    </div>
-
-                    <div className="flex flex-col gap-1.5 border-t border-white/[0.04] pt-3">
-                      <label className="text-[10px] font-mono text-amber-400 uppercase font-semibold">
-                        What is the very first physical action needed to get started?
-                      </label>
-                      <Input
-                        value={firstAtomTitle}
-                        onChange={(e) => setFirstAtomTitle(e.target.value)}
-                        placeholder="Start with a verb: Call realtor, Pack boxes..."
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex flex-col gap-3 border-t border-white/[0.04] pt-3">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-mono text-zinc-300 uppercase">Life sphere</label>
-                    <div className="flex flex-wrap gap-1.5">
-                      {spheres.map((s) => (
-                        <button
-                          key={s.id}
-                          type="button"
-                          onClick={() => setSelectedSphereId(s.id)}
-                          className={`px-2 py-1 rounded text-[11px] font-medium border transition-colors ${
-                            selectedSphereId === s.id
-                              ? "bg-accent/15 text-accent border-accent/30"
-                              : "text-zinc-500 border-white/[0.06] hover:text-zinc-300 hover:bg-white/5"
-                          }`}
-                        >
-                          <span
-                            className="inline-block w-1.5 h-1.5 rounded-full mr-1"
-                            style={{ backgroundColor: s.color }}
+                  <>
+                    {decomposeType === "task" ? (
+                      <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-mono text-zinc-300 uppercase">Formulate physical step</label>
+                          <Input
+                            value={taskTitle}
+                            onChange={(e) => setTaskTitle(e.target.value)}
+                            placeholder="Start with a verb: Write email, Buy tickets..."
                           />
-                          {s.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                          <p className="text-[10px] text-zinc-500 italic">
+                            💡 The step must be so simple that you feel zero friction.
+                          </p>
+                        </div>
 
-                  <div className="flex flex-col gap-1.5">
-                    <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
-                      <span>Internal resistance before action</span>
-                      <span className="text-orange-400 font-bold">{resistance} / 5</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      {[1, 2, 3, 4, 5].map((val) => (
-                        <button
-                          key={val}
-                          type="button"
-                          onClick={() => setResistance(val)}
-                          className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
-                            resistance === val
-                              ? val >= 4
-                                ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                                : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                              : "bg-white/[0.01] border-white/[0.06] text-zinc-500 hover:bg-white/[0.03]"
-                          }`}
-                        >
-                          {val}
-                        </button>
-                      ))}
-                    </div>
-                    {resistance >= 4 && (
-                      <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
-                        <AlertTriangle size={11} className="shrink-0" />
-                        <span>Resistance is high: better split this step into an even simpler one!</span>
-                      </p>
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-mono text-zinc-300 uppercase">Description / Details (optional)</label>
+                          <Textarea
+                            value={taskDesc}
+                            onChange={(e) => setTaskDesc(e.target.value)}
+                            placeholder="Add links, context or reference..."
+                            rows={3}
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-mono text-zinc-300 uppercase">Project Title</label>
+                          <Input
+                            value={projectTitle}
+                            onChange={(e) => setProjectTitle(e.target.value)}
+                            placeholder="e.g. Set up trading workstation"
+                          />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                          <label className="text-[10px] font-mono text-zinc-300 uppercase">Project Description (optional)</label>
+                          <Textarea
+                            value={projectDesc}
+                            onChange={(e) => setProjectDesc(e.target.value)}
+                            placeholder="Goal of the project..."
+                            rows={2}
+                          />
+                        </div>
+
+                        <div className="p-3 bg-white/[0.02] border border-white/[0.04] rounded-xl flex flex-col gap-3">
+                          <span className="text-[10px] font-mono text-amber-400 font-semibold uppercase tracking-wider block">
+                            🎯 First Action (Atom)
+                          </span>
+                          <div className="flex flex-col gap-2">
+                            <Input
+                              value={firstAtomTitle}
+                              onChange={(e) => setFirstAtomTitle(e.target.value)}
+                              placeholder="First physical step to kickstart project..."
+                            />
+                            <Textarea
+                              value={firstAtomDesc}
+                              onChange={(e) => setFirstAtomDesc(e.target.value)}
+                              placeholder="Notes for the first step..."
+                              rows={2}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     )}
-                  </div>
-                </div>
 
-                <Button
-                  type="button"
-                  variant="primary"
-                  size="sm"
-                  onClick={() => handleDecompose(decomposableThoughts[decomposeIndex].id)}
-                  disabled={isActionPending}
-                  className="w-full mt-2"
-                >
-                  Decompose and create {decomposeType === "project" ? "Project" : "Atom"}
-                </Button>
+                    <div className="flex flex-col gap-3 border-t border-white/[0.04] pt-3">
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-[10px] font-mono text-zinc-300 uppercase">Life sphere</label>
+                        <div className="flex flex-wrap gap-1.5">
+                          {spheres.map((s) => (
+                            <button
+                              key={s.id}
+                              type="button"
+                              onClick={() => setSelectedSphereId(s.id)}
+                              className={`px-2 py-1 rounded text-[11px] font-medium border transition-colors ${
+                                selectedSphereId === s.id
+                                  ? "bg-accent/15 text-accent border-accent/30"
+                                  : "text-zinc-500 border-white/[0.06] hover:text-zinc-300 hover:bg-white/5"
+                              }`}
+                            >
+                              <span
+                                className="inline-block w-1.5 h-1.5 rounded-full mr-1"
+                                style={{ backgroundColor: s.color }}
+                              />
+                              {s.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-1.5">
+                        <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+                          <span>Internal resistance before action</span>
+                          <span className="text-orange-400 font-bold">{resistance} / 5</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          {[1, 2, 3, 4, 5].map((val) => (
+                            <button
+                              key={val}
+                              type="button"
+                              onClick={() => setResistance(val)}
+                              className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
+                                resistance === val
+                                  ? val >= 4
+                                    ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                                    : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                  : "bg-white/[0.01] border-white/[0.06] text-zinc-500 hover:bg-white/[0.03]"
+                              }`}
+                            >
+                              {val}
+                            </button>
+                          ))}
+                        </div>
+                        {resistance >= 4 && (
+                          <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
+                            <AlertTriangle size={11} className="shrink-0" />
+                            <span>Resistance is high: better split this step into an even simpler one!</span>
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="primary"
+                      size="sm"
+                      onClick={() => handleDecompose(decomposableThoughts[decomposeIndex].id)}
+                      disabled={isActionPending}
+                      className="w-full mt-2"
+                    >
+                      Decompose and create {decomposeType === "project" ? "Project" : "Atom"}
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           )}
