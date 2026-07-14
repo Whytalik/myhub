@@ -75,12 +75,25 @@ export function PlanningWizardClient({
   const [newThoughtTemplateData, setNewThoughtTemplateData] = useState<Record<string, string> | null>(null);
   const [editingThought, setEditingThought] = useState<ThoughtItem | null>(null);
   const [activeFilterSphereId, setActiveFilterSphereId] = useState<string | null>(null);
+  const [isGroupedBySphere, setIsGroupedBySphere] = useState(false);
   const [isActionPending, startActionTransition] = useTransition();
 
   const displayedThoughts = useMemo(() => {
     if (!activeFilterSphereId) return thoughts;
     return thoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId);
   }, [thoughts, activeFilterSphereId]);
+
+  const groupedThoughts = useMemo(() => {
+    const groups: Record<string, ThoughtItem[]> = {};
+    thoughts.forEach((thoughtItem) => {
+      const key = thoughtItem.sphereId || "uncategorized";
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+      groups[key].push(thoughtItem);
+    });
+    return groups;
+  }, [thoughts]);
 
   // Step 2: Filter states
   const inboxThoughts = useMemo(() => {
@@ -533,7 +546,22 @@ export function PlanningWizardClient({
           {/* Bottom Inbox List (3-column grid) */}
           <div className="glass-card p-5 bg-black/10 border border-white/[0.04] rounded-2xl flex flex-col gap-4 w-full">
             <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
-              <h4 className="text-xs font-mono font-semibold uppercase text-zinc-400">Current Inbox</h4>
+              <div className="flex items-center gap-3">
+                <h4 className="text-xs font-mono font-semibold uppercase text-zinc-400">Current Inbox</h4>
+                {!activeFilterSphereId && thoughts.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsGroupedBySphere(!isGroupedBySphere)}
+                    className={`text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded border transition-colors duration-150 ${
+                      isGroupedBySphere
+                        ? "bg-accent/15 text-accent border-accent/30"
+                        : "text-zinc-500 border-white/[0.06] hover:text-zinc-300 hover:bg-white/5"
+                    }`}
+                  >
+                    Group by sphere
+                  </button>
+                )}
+              </div>
               <span className="text-[11px] font-mono text-zinc-500 bg-white/[0.03] px-2 py-0.5 rounded">
                 {activeFilterSphereId ? `${displayedThoughts.length} of ${thoughts.length}` : thoughts.length}
               </span>
@@ -544,6 +572,94 @@ export function PlanningWizardClient({
                 {activeFilterSphereId 
                   ? "No thoughts captured in this sphere yet." 
                   : "Your thoughts will appear here. Write something above!"}
+              </div>
+            ) : isGroupedBySphere && !activeFilterSphereId ? (
+              <div className="flex flex-col gap-6 overflow-y-auto max-h-[350px] pr-1">
+                {/* 1. Uncategorized Group */}
+                {groupedThoughts["uncategorized"]?.length > 0 && (
+                  <div className="flex flex-col gap-2.5">
+                    <div className="flex items-center gap-2 border-b border-white/[0.04] pb-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 shrink-0" />
+                      <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider font-semibold">
+                        Uncategorized ({groupedThoughts["uncategorized"].length})
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {[...groupedThoughts["uncategorized"]].reverse().map((thoughtItem) => (
+                        <div
+                          key={thoughtItem.id}
+                          className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex flex-col gap-2 min-h-[48px] relative group"
+                        >
+                          <div className="flex items-start justify-between gap-3 w-full">
+                            <span className="text-zinc-305 leading-normal break-words flex-1 whitespace-pre-wrap">
+                              {thoughtItem.content}
+                            </span>
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => handleEditClick(thoughtItem)}
+                                className="p-1 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                                title="Edit thought"
+                              >
+                                <Pencil size={12} />
+                              </button>
+                              <span className="text-[9px] font-mono text-zinc-500 bg-white/[0.03] px-1.5 py-0.5 rounded h-fit">
+                                {thoughtItem.status.name}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 2. Spheres Groups */}
+                {spheres.map((currentSphere) => {
+                  const thoughtsInSphere = groupedThoughts[currentSphere.id] || [];
+                  if (thoughtsInSphere.length === 0) return null;
+
+                  return (
+                    <div key={currentSphere.id} className="flex flex-col gap-2.5">
+                      <div className="flex items-center gap-2 border-b border-white/[0.04] pb-1">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{ backgroundColor: currentSphere.color }}
+                        />
+                        <span className="text-[10px] font-mono text-zinc-450 uppercase tracking-wider font-semibold">
+                          {currentSphere.name} ({thoughtsInSphere.length})
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {[...thoughtsInSphere].reverse().map((thoughtItem) => (
+                          <div
+                            key={thoughtItem.id}
+                            className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex flex-col gap-2 min-h-[48px] relative group"
+                          >
+                            <div className="flex items-start justify-between gap-3 w-full">
+                              <span className="text-zinc-305 leading-normal break-words flex-1 whitespace-pre-wrap">
+                                {thoughtItem.content}
+                              </span>
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditClick(thoughtItem)}
+                                  className="p-1 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                                  title="Edit thought"
+                                >
+                                  <Pencil size={12} />
+                                </button>
+                                <span className="text-[9px] font-mono text-zinc-500 bg-white/[0.03] px-1.5 py-0.5 rounded h-fit">
+                                  {thoughtItem.status.name}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-y-auto max-h-[350px] pr-1">
