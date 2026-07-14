@@ -134,10 +134,12 @@ export function TasksPageClient({
               </Button>
             </Link>
 
-            <Button variant="primary" size="sm" onClick={handleAddNew}>
-              <Plus size={16} />
-              New Task
-            </Button>
+            <Link href="/life/planning">
+              <Button variant="primary" size="sm">
+                <Plus size={16} />
+                Capture Thought
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -176,6 +178,7 @@ export function TasksPageClient({
               defaultMode="week"
               onDuplicate={handleDuplicate}
               onDelete={handleTaskDeleted}
+              disableDirectAdd={true}
             />
           </Suspense>
         )}

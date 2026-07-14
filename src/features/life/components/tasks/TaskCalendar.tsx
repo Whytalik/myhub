@@ -68,6 +68,7 @@ interface TaskCalendarProps {
   onDuplicate?: (task: TaskData) => void;
   onDelete?: () => void;
   minCellHeight?: number;
+  disableDirectAdd?: boolean;
 }
 
 function TaskCalendarCard({
@@ -352,6 +353,7 @@ export function TaskCalendar({
   onDuplicate,
   onDelete,
   minCellHeight,
+  disableDirectAdd = false,
 }: TaskCalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mode, setMode] = useState<"month" | "week" | "day">(defaultMode);
@@ -895,7 +897,7 @@ export function TaskCalendar({
                   key={dayIdx}
                   day={day}
                   currentMonth={currentDate}
-                  onAdd={(date) => {
+                  onAdd={disableDirectAdd ? undefined : (date) => {
                     setEditingTask({ plannedDate: date } as TaskData);
                     setParentTask(null);
                     setIsDuplicate(false);
