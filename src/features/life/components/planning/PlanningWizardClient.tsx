@@ -28,13 +28,14 @@ import {
   quickCaptureAction,
   routeThoughtAction,
   decomposeThoughtAction,
+  upsertThoughtAction,
+  deleteThoughtAction,
 } from "@/features/life/actions/thought-actions";
 import type { LifeSphereData } from "@/features/life/types";
 import { KanbanBoardClient } from "../sprints/KanbanBoardClient";
 import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields";
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
-import { upsertThoughtAction } from "@/features/life/actions/thought-actions";
 
 const FILTER_TYPE_ICONS: Record<string, LucideIcon> = {
   AlertTriangle,
@@ -350,6 +351,30 @@ export function PlanningWizardClient({
         // Rollback on failure
         setThoughts(previousThoughts);
         toast.error(result.error || "Failed to filter thought");
+      }
+    });
+  };
+
+  const handleDeleteThought = (thoughtId: string) => {
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+
+    const previousThoughts = [...thoughts];
+
+    // Optimistically remove the deleted thought
+    setThoughts((previousThoughtsState) =>
+      previousThoughtsState.filter((currentThought) => currentThought.id !== thoughtId)
+    );
+
+    startActionTransition(async () => {
+      const result = await deleteThoughtAction(thoughtId);
+      if (result.success) {
+        toast.success("Thought deleted successfully!");
+      } else {
+        // Rollback on failure
+        setThoughts(previousThoughts);
+        toast.error(result.error || "Failed to delete thought");
       }
     });
   };
@@ -1279,19 +1304,32 @@ export function PlanningWizardClient({
                   >
                     <ChevronLeft size={14} /> Back
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (decomposeIndex < decomposableThoughts.length - 1) {
-                        setDecomposeIndex((i) => i + 1);
-                      } else {
-                        setDecomposeIndex(0);
-                      }
-                    }}
-                    className="text-zinc-400 hover:text-zinc-200"
-                  >
-                    Skip this thought
-                  </button>
+
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteThought(currentDecomposeThought.id)}
+                      disabled={isActionPending}
+                      className="text-rose-500 hover:text-rose-455 font-medium flex items-center gap-1.5 transition-colors duration-150"
+                      title="Delete this thought"
+                    >
+                      <Trash2 size={13} /> Delete
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (decomposeIndex < decomposableThoughts.length - 1) {
+                          setDecomposeIndex((i) => i + 1);
+                        } else {
+                          setDecomposeIndex(0);
+                        }
+                      }}
+                      className="text-zinc-400 hover:text-zinc-200"
+                    >
+                      Skip this thought
+                    </button>
+                  </div>
                 </div>
               </div>
 
