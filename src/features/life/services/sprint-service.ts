@@ -12,6 +12,9 @@ export async function getSprintDashboard(userId: string) {
           projects: {
             include: {
               tasks: {
+                include: {
+                  sphere: true,
+                },
                 orderBy: { createdAt: "asc" },
               },
             },
@@ -98,6 +101,16 @@ export async function getSprintDashboard(userId: string) {
           },
           status: { in: ["TODO", "IN_PROGRESS"] },
         },
+        // Unplanned/undated tasks that belong to active projects in the current sprint
+        {
+          plannedDate: null,
+          status: { in: ["TODO", "IN_PROGRESS"] },
+          project: {
+            objective: {
+              sprintId: sprint.id,
+            },
+          },
+        },
         // Completed tasks (done this week)
         {
           status: "DONE",
@@ -141,8 +154,9 @@ export async function getSprintDashboard(userId: string) {
     (t) =>
       t.status !== "DONE" &&
       t.status !== "CANCELLED" &&
-      t.plannedDate &&
       (
+        // Tasks with no planned date but belong to active projects
+        !t.plannedDate ||
         // Planned for this week (excluding today)
         (t.plannedDate >= weekStart && t.plannedDate <= weekEnd && (t.plannedDate < dayStart || t.plannedDate > dayEnd)) ||
         // Or planned in the past (overdue/carry-over tasks)
