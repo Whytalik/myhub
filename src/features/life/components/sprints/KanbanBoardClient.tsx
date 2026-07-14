@@ -31,6 +31,7 @@ import {
   ArrowRightLeft,
   Pencil,
   Folder,
+  Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
@@ -52,7 +53,7 @@ import {
   updateTaskStatusAction,
 } from "@/features/life/actions/task-actions";
 import type { LifeSphereData, TaskData } from "@/features/life/types";
-import { startOfWeek, endOfWeek, format, addDays, startOfDay, isSameDay, isToday } from "date-fns";
+import { startOfWeek, endOfWeek, format, addDays, startOfDay, endOfDay, isSameDay, isToday } from "date-fns";
 
 // Custom TaskCard component for the Operational board
 import { useSortable } from "@dnd-kit/sortable";
@@ -62,12 +63,14 @@ interface SortableTaskCardProps {
   task: TaskData;
   onEdit: () => void;
   onDelete: () => void;
+  isLocked?: boolean;
 }
 
-function SortableTaskCard({ task, onEdit, onDelete }: SortableTaskCardProps) {
+function SortableTaskCard({ task, onEdit, onDelete, isLocked }: SortableTaskCardProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: task.id,
     data: { type: "task-card", task },
+    disabled: isLocked,
   });
 
   const style = {
@@ -80,22 +83,26 @@ function SortableTaskCard({ task, onEdit, onDelete }: SortableTaskCardProps) {
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
-      className="glass-card p-3 flex flex-col gap-2 group cursor-grab active:cursor-grabbing touch-none hover:border-white/15 transition-colors duration-150"
+      {...(isLocked ? {} : attributes)}
+      {...(isLocked ? {} : listeners)}
+      className={`glass-card p-3 flex flex-col gap-2 group touch-none transition-colors duration-150 ${
+        isLocked ? "border-white/[0.04]" : "cursor-grab active:cursor-grabbing hover:border-white/15"
+      }`}
     >
       <div className="flex items-start justify-between gap-2">
         <p className="text-body text-zinc-150 font-medium break-words leading-tight">{task.title}</p>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-          className="opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-rose-400 p-0.5 rounded transition-all duration-150"
-        >
-          <X size={12} />
-        </button>
+        {!isLocked && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+            className="opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-rose-400 p-0.5 rounded transition-all duration-150"
+          >
+            <X size={12} />
+          </button>
+        )}
       </div>
 
       <div className="flex flex-col gap-1 mt-1">
@@ -126,9 +133,10 @@ interface TaskColumnProps {
   tasks: TaskData[];
   onDeleteTask: (id: string) => void;
   onEditTask: (task: TaskData) => void;
+  isLocked?: boolean;
 }
 
-function TaskColumn({ id, title, tasks, onDeleteTask, onEditTask }: TaskColumnProps) {
+function TaskColumn({ id, title, tasks, onDeleteTask, onEditTask, isLocked }: TaskColumnProps) {
   return (
     <div className="glass-card p-3 bg-black/15 border border-white/[0.04] rounded-2xl w-full flex flex-col gap-3 min-h-[300px]">
       <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
@@ -151,6 +159,7 @@ function TaskColumn({ id, title, tasks, onDeleteTask, onEditTask }: TaskColumnPr
                 task={task}
                 onEdit={() => onEditTask(task)}
                 onDelete={() => onDeleteTask(task.id)}
+                isLocked={isLocked}
               />
             ))
           )}
@@ -197,6 +206,7 @@ interface KanbanBoardClientProps {
     today: TaskData[];
     done: TaskData[];
   };
+  initialAllTasks?: TaskData[];
   spheres: LifeSphereData[];
 }
 
@@ -204,12 +214,35 @@ export function KanbanBoardClient({
   initialSprint,
   initialBacklogProjects,
   initialColumns,
+  initialAllTasks,
   spheres,
 }: KanbanBoardClientProps) {
   // State
   const [sprint, setSprint] = useState<SprintData>(initialSprint);
   const [backlogProjects, setBacklogProjects] = useState<ProjectData[]>(initialBacklogProjects);
-  const [columns, setColumns] = useState(initialColumns);
+  
+  const [sprintTasks, setSprintTasks] = useState<TaskData[]>(() => {
+    const all = initialAllTasks || [
+      ...initialColumns.weekly,
+      ...initialColumns.today,
+      ...initialColumns.done,
+    ];
+    const seen = new Set();
+    return all.filter((t) => {
+      if (seen.has(t.id)) return false;
+      seen.add(t.id);
+      return true;
+    });
+  });
+
+  const [selectedWeekIndex, setSelectedWeekIndex] = useState<number>(() => {
+    const now = new Date();
+    const sprintStart = startOfWeek(new Date(initialSprint.startDate), { weekStartsOn: 1 });
+    const diffTime = now.getTime() - sprintStart.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    const currentIdx = Math.floor(diffDays / 7);
+    return Math.max(0, Math.min(11, currentIdx));
+  });
 
   // Modal Open states
   const [newProjectOpen, setNewProjectOpen] = useState(false);
@@ -283,8 +316,78 @@ export function KanbanBoardClient({
 
   // Helper date conversions
   const now = new Date();
-  const weekStart = startOfWeek(now, { weekStartsOn: 1 });
-  const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
+  
+  const sprintStart = useMemo(() => startOfWeek(new Date(sprint.startDate), { weekStartsOn: 1 }), [sprint.startDate]);
+  const weekStart = useMemo(() => addDays(sprintStart, selectedWeekIndex * 7), [sprintStart, selectedWeekIndex]);
+  const weekEnd = useMemo(() => endOfWeek(weekStart, { weekStartsOn: 1 }), [weekStart]);
+
+  const currentWeekIndex = useMemo(() => {
+    const sprintStartVal = startOfWeek(new Date(sprint.startDate), { weekStartsOn: 1 });
+    const diffTime = now.getTime() - sprintStartVal.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    return Math.floor(diffDays / 7);
+  }, [sprint.startDate, now]);
+
+  const sprintWeeks = useMemo(() => {
+    return Array.from({ length: 12 }, (_, i) => {
+      const start = addDays(sprintStart, i * 7);
+      const end = endOfWeek(start, { weekStartsOn: 1 });
+      return {
+        index: i,
+        label: `W${i + 1}`,
+        dateRange: `${format(start, "dd.MM")} - ${format(end, "dd.MM")}`,
+        start,
+        end,
+      };
+    });
+  }, [sprintStart]);
+
+  const isSunday = now.getDay() === 0;
+  const isNextWeek = selectedWeekIndex === currentWeekIndex + 1;
+  const isPlanningLocked = selectedWeekIndex > currentWeekIndex && !(isNextWeek && isSunday);
+
+  const columns = useMemo(() => {
+    const todayStart = startOfDay(now);
+    const todayEnd = endOfDay(now);
+    const isCurrentWeek = selectedWeekIndex === currentWeekIndex;
+
+    const todayTasks = sprintTasks.filter(
+      (t) =>
+        t.status !== "DONE" &&
+        t.status !== "CANCELLED" &&
+        t.plannedDate &&
+        isCurrentWeek &&
+        new Date(t.plannedDate) >= todayStart &&
+        new Date(t.plannedDate) <= todayEnd
+    );
+
+    const weeklyTasks = sprintTasks.filter(
+      (t) =>
+        t.status !== "DONE" &&
+        t.status !== "CANCELLED" &&
+        (
+          !t.plannedDate ||
+          (new Date(t.plannedDate) >= weekStart &&
+            new Date(t.plannedDate) <= weekEnd &&
+            (!isCurrentWeek || new Date(t.plannedDate) < todayStart || new Date(t.plannedDate) > todayEnd)) ||
+          (new Date(t.plannedDate) < weekStart && selectedWeekIndex === currentWeekIndex)
+        )
+    );
+
+    const doneTasks = sprintTasks.filter(
+      (t) =>
+        t.status === "DONE" &&
+        t.completedAt &&
+        new Date(t.completedAt) >= weekStart &&
+        new Date(t.completedAt) <= weekEnd
+    );
+
+    return {
+      weekly: weeklyTasks,
+      today: todayTasks,
+      done: doneTasks,
+    };
+  }, [sprintTasks, selectedWeekIndex, weekStart, weekEnd, currentWeekIndex, now]);
 
   // Projects stats (active + backlog)
   const activeProjectsCount = useMemo(() => {
@@ -424,6 +527,10 @@ export function KanbanBoardClient({
   }, [sprint]);
 
   const handleScheduleTask = (taskId: string, dateIso: string) => {
+    if (isPlanningLocked) {
+      toast.error("Planning for this week is locked!");
+      return;
+    }
     startTransition(async () => {
       const targetDate = new Date(dateIso);
       const result = await upsertTaskAction({
@@ -434,50 +541,24 @@ export function KanbanBoardClient({
       if (result.success) {
         toast.success("Task scheduled successfully!");
 
-        setColumns((prev) => {
-          let taskToMove: TaskData | undefined;
-          const cleanWeekly = prev.weekly.filter((t) => {
-            if (t.id === taskId) {
-              taskToMove = { ...t, plannedDate: targetDate };
-              return false;
-            }
-            return true;
-          });
-          const cleanToday = prev.today.filter((t) => {
-            if (t.id === taskId) {
-              taskToMove = { ...t, plannedDate: targetDate };
-              return false;
-            }
-            return true;
-          });
-
-          if (!taskToMove) {
-            // Find it in pool
+        setSprintTasks((prev) => {
+          const exists = prev.some((t) => t.id === taskId);
+          if (exists) {
+            return prev.map((t) => (t.id === taskId ? { ...t, plannedDate: targetDate } : t));
+          } else {
+            let foundTask: TaskData | undefined;
             sprint.objectives.forEach((obj) => {
               obj.projects.forEach((proj) => {
                 const pt = proj.tasks.find((t) => t.id === taskId);
                 if (pt) {
-                  taskToMove = { ...pt, plannedDate: targetDate, project: { id: proj.id, title: proj.title } } as any;
+                  foundTask = { ...pt, plannedDate: targetDate, project: { id: proj.id, title: proj.title } } as any;
                 }
               });
             });
-          }
-
-          if (!taskToMove) return prev;
-
-          const isTodayTask = isSameDay(targetDate, new Date());
-          if (isTodayTask) {
-            return {
-              ...prev,
-              weekly: cleanWeekly,
-              today: [taskToMove, ...cleanToday],
-            };
-          } else {
-            return {
-              ...prev,
-              weekly: [taskToMove, ...cleanWeekly],
-              today: cleanToday,
-            };
+            if (foundTask) {
+              return [...prev, foundTask];
+            }
+            return prev;
           }
         });
 
@@ -503,6 +584,10 @@ export function KanbanBoardClient({
   };
 
   const handleUnscheduleTask = (taskId: string) => {
+    if (isPlanningLocked) {
+      toast.error("Planning for this week is locked!");
+      return;
+    }
     startTransition(async () => {
       const result = await upsertTaskAction({
         id: taskId,
@@ -512,31 +597,9 @@ export function KanbanBoardClient({
       if (result.success) {
         toast.success("Task unscheduled!");
 
-        setColumns((prev) => {
-          let taskToMove: TaskData | undefined;
-          const cleanWeekly = prev.weekly.filter((t) => {
-            if (t.id === taskId) {
-              taskToMove = { ...t, plannedDate: null };
-              return false;
-            }
-            return true;
-          });
-          const cleanToday = prev.today.filter((t) => {
-            if (t.id === taskId) {
-              taskToMove = { ...t, plannedDate: null };
-              return false;
-            }
-            return true;
-          });
-
-          if (!taskToMove) return prev;
-
-          return {
-            ...prev,
-            weekly: [taskToMove, ...cleanWeekly],
-            today: cleanToday,
-          };
-        });
+        setSprintTasks((prev) =>
+          prev.map((t) => (t.id === taskId ? { ...t, plannedDate: null } : t))
+        );
 
         setSprint((prev) => {
           if (!prev) return prev;
@@ -560,6 +623,10 @@ export function KanbanBoardClient({
   };
 
   const handleToggleTaskStatus = (taskId: string, currentStatus: string) => {
+    if (isPlanningLocked) {
+      toast.error("Updates for this week are locked!");
+      return;
+    }
     const newStatus = currentStatus === "DONE" ? "TODO" : "DONE";
 
     startTransition(async () => {
@@ -567,56 +634,13 @@ export function KanbanBoardClient({
       if (result.success) {
         toast.success(newStatus === "DONE" ? "Task completed!" : "Task active");
 
-        setColumns((prev) => {
-          let updatedTask: TaskData | undefined;
-          const cleanWeekly = prev.weekly.filter((t) => {
-            if (t.id === taskId) {
-              updatedTask = { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null };
-              return false;
-            }
-            return true;
-          });
-          const cleanToday = prev.today.filter((t) => {
-            if (t.id === taskId) {
-              updatedTask = { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null };
-              return false;
-            }
-            return true;
-          });
-          const cleanDone = prev.done.filter((t) => {
-            if (t.id === taskId) {
-              updatedTask = { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null };
-              return false;
-            }
-            return true;
-          });
-
-          if (updatedTask) {
-            if (newStatus === "DONE") {
-              return {
-                weekly: cleanWeekly,
-                today: cleanToday,
-                done: [updatedTask, ...cleanDone],
-              };
-            } else {
-              const isTodayTask = updatedTask.plannedDate && isSameDay(new Date(updatedTask.plannedDate), new Date());
-              if (isTodayTask) {
-                return {
-                  weekly: cleanWeekly,
-                  today: [updatedTask, ...cleanToday],
-                  done: cleanDone,
-                };
-              } else {
-                return {
-                  weekly: [updatedTask, ...cleanWeekly],
-                  today: cleanToday,
-                  done: cleanDone,
-                };
-              }
-            }
-          }
-          return prev;
-        });
+        setSprintTasks((prev) =>
+          prev.map((t) =>
+            t.id === taskId
+              ? { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null }
+              : t
+          )
+        );
 
         setSprint((prev) => {
           if (!prev) return prev;
@@ -792,6 +816,10 @@ export function KanbanBoardClient({
 
   // Inline Quick Add Task Atom under Project card
   const handleAddInlineAtom = (projectId: string, projectSphereId: string | null) => {
+    if (isPlanningLocked) {
+      toast.error("Planning for this week is locked!");
+      return;
+    }
     const title = inlineAtomTitle[projectId]?.trim();
     if (!title) return;
 
@@ -809,10 +837,7 @@ export function KanbanBoardClient({
 
         const newTask: TaskData = result.data as any;
 
-        setColumns((prev) => ({
-          ...prev,
-          weekly: [...prev.weekly, newTask],
-        }));
+        setSprintTasks((prev) => [...prev, newTask]);
 
         setSprint((prev) => ({
           ...prev,
@@ -842,11 +867,7 @@ export function KanbanBoardClient({
       if (result.success) {
         toast.success("Atom deleted");
 
-        setColumns((prev) => ({
-          weekly: prev.weekly.filter((t) => t.id !== taskId),
-          today: prev.today.filter((t) => t.id !== taskId),
-          done: prev.done.filter((t) => t.id !== taskId),
-        }));
+        setSprintTasks((prev) => prev.filter((t) => t.id !== taskId));
 
         setSprint((prev) => ({
           ...prev,
@@ -893,6 +914,11 @@ export function KanbanBoardClient({
     setActiveDragId(null);
     if (!over) return;
 
+    if (isPlanningLocked) {
+      toast.error("Planning for this week is locked!");
+      return;
+    }
+
     const taskId = active.id as string;
     const task = active.data.current?.task as TaskData;
     if (!task) return;
@@ -930,26 +956,24 @@ export function KanbanBoardClient({
 
     if (sourceCol === targetCol) return;
 
-    setColumns((prev) => {
-      const targetList = [...prev[targetCol!]];
-      const updatedTask = { ...task };
-
-      if (targetCol === "weekly") {
-        updatedTask.plannedDate = weekStart;
-        updatedTask.status = "TODO";
-      } else if (targetCol === "today") {
-        updatedTask.plannedDate = now;
-        updatedTask.status = "TODO";
-      } else if (targetCol === "done") {
-        updatedTask.status = "DONE";
-        updatedTask.completedAt = now;
-      }
-
-      return {
-        ...prev,
-        [sourceCol!]: prev[sourceCol!].filter((t) => t.id !== taskId),
-        [targetCol!]: [updatedTask, ...targetList],
-      };
+    setSprintTasks((prev) => {
+      return prev.map((t) => {
+        if (t.id === taskId) {
+          const updatedTask = { ...t };
+          if (targetCol === "weekly") {
+            updatedTask.plannedDate = weekStart;
+            updatedTask.status = "TODO";
+          } else if (targetCol === "today") {
+            updatedTask.plannedDate = now;
+            updatedTask.status = "TODO";
+          } else if (targetCol === "done") {
+            updatedTask.status = "DONE";
+            updatedTask.completedAt = now;
+          }
+          return updatedTask;
+        }
+        return t;
+      });
     });
 
     startTransition(async () => {
@@ -977,7 +1001,7 @@ export function KanbanBoardClient({
   };
 
   const activeDragTask = activeDragId
-    ? [...columns.weekly, ...columns.today, ...columns.done].find((t) => t.id === activeDragId)
+    ? sprintTasks.find((t) => t.id === activeDragId)
     : null;
 
   return (
@@ -1510,6 +1534,58 @@ export function KanbanBoardClient({
           </div>
         </div>
 
+        {/* 12-Week Sprint Navigator */}
+        <div className="flex flex-col gap-3 p-4 bg-black/10 border border-white/[0.04] rounded-2xl">
+          <div className="flex items-center justify-between gap-4">
+            <span className="text-[10px] font-mono font-semibold uppercase text-zinc-500 tracking-wider">
+              Sprint Weeks Selector
+            </span>
+            <span className="text-xs font-semibold text-zinc-300 font-mono">
+              {format(weekStart, "MMMM d")} — {format(weekEnd, "MMMM d, yyyy")}
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 mt-1">
+            {sprintWeeks.map((w) => {
+              const isCurrent = w.index === currentWeekIndex;
+              const isSelected = w.index === selectedWeekIndex;
+              
+              const wNextWeek = w.index === currentWeekIndex + 1;
+              const wIsLocked = w.index > currentWeekIndex && !(wNextWeek && isSunday);
+
+              return (
+                <button
+                  key={w.index}
+                  type="button"
+                  onClick={() => setSelectedWeekIndex(w.index)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono transition-all duration-150 ${
+                    isSelected
+                      ? "bg-amber-500/10 text-amber-400 border-amber-500/40 shadow-sm shadow-amber-500/5 font-bold"
+                      : isCurrent
+                        ? "bg-white/[0.04] text-white border-white/20 hover:bg-white/[0.08]"
+                        : "bg-transparent text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-white/[0.02]"
+                  }`}
+                >
+                  <span>{w.label}</span>
+                  {isCurrent && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" title="Current Week" />
+                  )}
+                  {wIsLocked && (
+                    <span title="Locked for planning"><Lock size={10} className="text-zinc-600 shrink-0" /></span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {isPlanningLocked && (
+            <div className="flex items-center gap-2 p-2 px-3 text-xs bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl font-mono w-fit">
+              <Lock size={12} className="shrink-0" />
+              <span>Planning for this week is locked. It unlocks on Sunday of the current week.</span>
+            </div>
+          )}
+        </div>
+
         {tacticsView === "kanban" ? (
           <DndContext
             sensors={sensors}
@@ -1526,6 +1602,7 @@ export function KanbanBoardClient({
                   tasks={columns.weekly}
                   onDeleteTask={handleDeleteTask}
                   onEditTask={() => {}}
+                  isLocked={isPlanningLocked}
                 />
               </div>
               <div id="column-today">
@@ -1535,6 +1612,7 @@ export function KanbanBoardClient({
                   tasks={columns.today}
                   onDeleteTask={handleDeleteTask}
                   onEditTask={() => {}}
+                  isLocked={isPlanningLocked}
                 />
               </div>
               <div id="column-done">
@@ -1544,6 +1622,7 @@ export function KanbanBoardClient({
                   tasks={columns.done}
                   onDeleteTask={handleDeleteTask}
                   onEditTask={() => {}}
+                  isLocked={isPlanningLocked}
                 />
               </div>
             </div>
@@ -1595,21 +1674,23 @@ export function KanbanBoardClient({
                           </span>
                         )}
                       </div>
-                      <div className="mt-2 pt-2 border-t border-white/[0.04]">
-                        <Select
-                          onChange={(e) => handleScheduleTask(task.id, e.target.value)}
-                          value=""
-                          variant="inline"
-                          className="text-[10px] text-zinc-400 font-mono"
-                        >
-                          <option value="" disabled className="bg-zinc-950 text-zinc-500">Schedule to day...</option>
-                          {daysOfWeek.map((day, idx) => (
-                            <option key={idx} value={day.toISOString()} className="bg-zinc-950 text-zinc-200">
-                              {format(day, "EEEE (dd.MM)")}
-                            </option>
-                          ))}
-                        </Select>
-                      </div>
+                      {!isPlanningLocked && (
+                        <div className="mt-2 pt-2 border-t border-white/[0.04]">
+                          <Select
+                            onChange={(e) => handleScheduleTask(task.id, e.target.value)}
+                            value=""
+                            variant="inline"
+                            className="text-[10px] text-zinc-400 font-mono"
+                          >
+                            <option value="" disabled className="bg-zinc-950 text-zinc-500">Schedule to day...</option>
+                            {daysOfWeek.map((day, idx) => (
+                              <option key={idx} value={day.toISOString()} className="bg-zinc-950 text-zinc-200">
+                                {format(day, "EEEE (dd.MM)")}
+                              </option>
+                            ))}
+                          </Select>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -1656,30 +1737,32 @@ export function KanbanBoardClient({
                               {task.project.title}
                             </span>
                           )}
-                          <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
-                            <button
-                              type="button"
-                              onClick={() => handleUnscheduleTask(task.id)}
-                              className="text-[10px] font-mono text-zinc-500 hover:text-rose-400 uppercase tracking-wider transition-colors"
-                            >
-                              Unplan
-                            </button>
-                            <div className="w-24">
-                              <Select
-                                onChange={(e) => handleScheduleTask(task.id, e.target.value)}
-                                value=""
-                                variant="inline"
-                                className="text-[10px] text-zinc-400 font-mono"
+                          {!isPlanningLocked && (
+                            <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
+                              <button
+                                type="button"
+                                onClick={() => handleUnscheduleTask(task.id)}
+                                className="text-[10px] font-mono text-zinc-500 hover:text-rose-400 uppercase tracking-wider transition-colors"
                               >
-                                <option value="" disabled className="bg-zinc-950 text-zinc-500">Move to...</option>
-                                {daysOfWeek.map((d, dIdx) => (
-                                  <option key={dIdx} value={d.toISOString()} className="bg-zinc-950 text-zinc-200">
-                                    {format(d, "EEE")}
-                                  </option>
-                                ))}
-                              </Select>
+                                Unplan
+                              </button>
+                              <div className="w-24">
+                                <Select
+                                  onChange={(e) => handleScheduleTask(task.id, e.target.value)}
+                                  value=""
+                                  variant="inline"
+                                  className="text-[10px] text-zinc-400 font-mono"
+                                >
+                                  <option value="" disabled className="bg-zinc-950 text-zinc-500">Move to...</option>
+                                  {daysOfWeek.map((d, dIdx) => (
+                                    <option key={dIdx} value={d.toISOString()} className="bg-zinc-950 text-zinc-200">
+                                      {format(d, "EEE")}
+                                    </option>
+                                  ))}
+                                </Select>
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -1744,29 +1827,31 @@ export function KanbanBoardClient({
                                   {task.project.title}
                                 </span>
                               )}
-                              <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
-                                <button
-                                  type="button"
-                                  onClick={() => handleUnscheduleTask(task.id)}
-                                  className="text-[10px] font-mono text-zinc-500 hover:text-rose-400 uppercase tracking-wider transition-colors"
-                                >
-                                  Unplan
-                                </button>
-                                <div className="w-24">
-                                  <Select
-                                    onChange={(e) => handleScheduleTask(task.id, e.target.value)}
-                                    value={day.toISOString()}
-                                    variant="inline"
-                                    className="text-[10px] text-zinc-400 font-mono"
+                              {!isPlanningLocked && (
+                                <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleUnscheduleTask(task.id)}
+                                    className="text-[10px] font-mono text-zinc-500 hover:text-rose-400 uppercase tracking-wider transition-colors"
                                   >
-                                    {daysOfWeek.map((d, dIdx) => (
-                                      <option key={dIdx} value={d.toISOString()} className="bg-zinc-950 text-zinc-200">
-                                        {format(d, "EEE")}
-                                      </option>
-                                    ))}
-                                  </Select>
+                                    Unplan
+                                  </button>
+                                  <div className="w-24">
+                                    <Select
+                                      onChange={(e) => handleScheduleTask(task.id, e.target.value)}
+                                      value={day.toISOString()}
+                                      variant="inline"
+                                      className="text-[10px] text-zinc-400 font-mono"
+                                    >
+                                      {daysOfWeek.map((d, dIdx) => (
+                                        <option key={dIdx} value={d.toISOString()} className="bg-zinc-950 text-zinc-200">
+                                          {format(d, "EEE")}
+                                        </option>
+                                      ))}
+                                    </Select>
+                                  </div>
                                 </div>
-                              </div>
+                              )}
                             </div>
                           ))}
                         </div>

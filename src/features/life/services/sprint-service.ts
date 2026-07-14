@@ -90,14 +90,17 @@ export async function getSprintDashboard(userId: string) {
   const dayStart = startOfDay(now);
   const dayEnd = endOfDay(now);
 
+  const sprintStart = startOfWeek(new Date(sprint.startDate), { weekStartsOn: 1 });
+  const sprintEnd = endOfWeek(new Date(sprint.endDate), { weekStartsOn: 1 });
+
   const allTasks = await prisma.task.findMany({
     where: {
       userId,
       OR: [
-        // Tasks planned for this week or unfinished tasks from the past
+        // Tasks planned for this sprint or past active tasks
         {
           plannedDate: {
-            lte: weekEnd,
+            lte: sprintEnd,
           },
           status: { in: ["TODO", "IN_PROGRESS"] },
         },
@@ -111,19 +114,12 @@ export async function getSprintDashboard(userId: string) {
             },
           },
         },
-        // Completed tasks (done this week)
+        // Completed tasks (done during this sprint)
         {
           status: "DONE",
           completedAt: {
-            gte: weekStart,
-            lte: weekEnd,
-          },
-        },
-        // Or completed recently (last 7 days fallback)
-        {
-          status: "DONE",
-          completedAt: {
-            gte: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000),
+            gte: sprintStart,
+            lte: sprintEnd,
           },
         },
       ],
@@ -174,6 +170,7 @@ export async function getSprintDashboard(userId: string) {
       today: todayTasks,
       done: doneTasks,
     },
+    allTasks,
   };
 }
 

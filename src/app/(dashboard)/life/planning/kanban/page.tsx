@@ -38,6 +38,7 @@ export default async function KanbanPage() {
         initialSprint={dashboardData.sprint as any}
         initialBacklogProjects={dashboardData.backlogProjects as any}
         initialColumns={dashboardData.columns as any}
+        initialAllTasks={dashboardData.allTasks as any}
         spheres={spheres}
       />
     </div>
