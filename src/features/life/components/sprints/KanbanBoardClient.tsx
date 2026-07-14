@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
+import { Select } from "@/components/ui/inputs/select";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import {
@@ -1531,15 +1532,15 @@ export function KanbanBoardClient({
             </DragOverlay>
           </DndContext>
         ) : (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-5">
             {/* Unplanned Atoms Pool */}
             <div className="glass-card p-4 border-white/[0.04] bg-white/[0.01] rounded-2xl flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <span className="text-caption font-mono uppercase text-xs font-semibold text-zinc-400">
-                  Unplanned Project Tasks Pool ({sprintProjectTasksPool.length})
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <span className="text-sm font-mono uppercase font-semibold text-zinc-300">
+                  Unplanned Sprint Project Atoms ({sprintProjectTasksPool.length})
                 </span>
-                <span className="text-[10px] text-zinc-500 italic">
-                  Select a day in the dropdown below to schedule a task to the calendar
+                <span className="text-xs text-zinc-500 italic">
+                  Select a day in the selector below to place an atom onto the calendar
                 </span>
               </div>
               
@@ -1552,31 +1553,32 @@ export function KanbanBoardClient({
                   {sprintProjectTasksPool.map((task) => (
                     <div
                       key={task.id}
-                      className="glass-card p-3 w-[260px] shrink-0 border border-white/[0.06] hover:border-white/10 transition-colors flex flex-col gap-2 relative bg-zinc-900/60 justify-between"
+                      className="glass-card p-3 w-[260px] shrink-0 border border-white/[0.06] hover:border-white/10 transition-colors flex flex-col gap-3 bg-zinc-900/60 justify-between rounded-xl"
                     >
                       <div className="flex flex-col gap-2">
-                        <h4 className="text-xs font-semibold text-zinc-200 line-clamp-2" title={task.title}>
+                        <h4 className="text-sm font-semibold text-zinc-200 line-clamp-2 leading-snug" title={task.title}>
                           {task.title}
                         </h4>
                         {task.project && (
-                          <span className="inline-block self-start px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[9px] font-mono border border-amber-500/10 truncate max-w-full">
+                          <span className="inline-block self-start px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[10px] font-mono border border-amber-500/10 truncate max-w-full">
                             {task.project.title}
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/[0.04]">
-                        <select
+                      <div className="mt-2 pt-2 border-t border-white/[0.04]">
+                        <Select
                           onChange={(e) => handleScheduleTask(task.id, e.target.value)}
                           value=""
-                          className="bg-black/40 border border-white/10 rounded px-1.5 py-1 text-[10px] text-zinc-400 outline-none w-full"
+                          variant="inline"
+                          className="text-[10px] text-zinc-400 font-mono"
                         >
-                          <option value="" disabled>Schedule to day...</option>
+                          <option value="" disabled className="bg-zinc-950 text-zinc-500">Schedule to day...</option>
                           {daysOfWeek.map((day, idx) => (
-                            <option key={idx} value={day.toISOString()}>
+                            <option key={idx} value={day.toISOString()} className="bg-zinc-950 text-zinc-200">
                               {format(day, "EEEE (dd.MM)")}
                             </option>
                           ))}
-                        </select>
+                        </Select>
                       </div>
                     </div>
                   ))}
@@ -1584,75 +1586,80 @@ export function KanbanBoardClient({
               )}
             </div>
 
-            {/* Weekly Calendar Columns */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-8 gap-3 mt-2 items-start">
-              {/* Overdue / Backlog Column */}
-              {(() => {
-                const allPlannedTasks = [...columns.weekly, ...columns.today];
-                const overdueTasks = allPlannedTasks.filter(
-                  (t) => t.plannedDate && new Date(t.plannedDate) < startOfDay(weekStart)
-                );
+            {/* Overdue / Backlog section */}
+            {(() => {
+              const allPlannedTasks = [...columns.weekly, ...columns.today];
+              const overdueTasks = allPlannedTasks.filter(
+                (t) => t.plannedDate && new Date(t.plannedDate) < startOfDay(weekStart)
+              );
 
-                return (
-                  <div className="glass-card p-3 border border-rose-500/20 bg-rose-500/[0.01] rounded-xl flex flex-col gap-2 min-h-[220px]">
-                    <div className="border-b border-rose-500/10 pb-1.5 flex flex-col gap-0.5">
-                      <span className="text-[10px] font-mono font-semibold uppercase text-rose-400">
-                        Overdue / Backlog
-                      </span>
-                      <span className="text-[9px] font-mono text-rose-500/80">
-                        Past unfinished tasks
+              return (
+                <div className="glass-card p-4 border border-rose-500/20 bg-rose-500/[0.01] rounded-2xl flex flex-col gap-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                      <span className="text-sm font-mono uppercase font-semibold text-rose-450">
+                        Overdue Backlog ({overdueTasks.length})
                       </span>
                     </div>
-
-                    <div className="flex flex-col gap-2 flex-grow">
-                      {overdueTasks.length === 0 ? (
-                        <div className="text-[10px] text-zinc-600 italic py-10 text-center">
-                          No overdue tasks
-                        </div>
-                      ) : (
-                        overdueTasks.map((task) => (
-                          <div
-                            key={task.id}
-                            className="p-2 rounded bg-zinc-950 border border-rose-500/10 flex flex-col gap-1.5 text-[11px] relative group"
-                          >
-                            <p className="text-zinc-300 font-medium break-words leading-tight">
-                              {task.title}
-                            </p>
-                            {task.project && (
-                              <span className="inline-block px-1 py-0.2 rounded bg-amber-500/5 text-amber-500/80 text-[8px] font-mono max-w-full truncate">
-                                {task.project.title}
-                              </span>
-                            )}
-                            <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity">
-                              <button
-                                type="button"
-                                onClick={() => handleUnscheduleTask(task.id)}
-                                className="text-[8px] font-mono text-zinc-500 hover:text-rose-450 uppercase"
-                              >
-                                Unplan
-                              </button>
-                              <select
+                    <span className="text-xs text-zinc-500 italic">
+                      Unfinished tasks from past days
+                    </span>
+                  </div>
+                  
+                  {overdueTasks.length === 0 ? (
+                    <div className="text-zinc-500 text-xs italic py-4 text-center bg-black/10 border border-white/[0.02] rounded-xl">
+                      No overdue tasks. Great job!
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-3">
+                      {overdueTasks.map((task) => (
+                        <div
+                          key={task.id}
+                          className="p-3 rounded-xl bg-zinc-950 border border-rose-500/10 flex flex-col gap-2 text-xs w-[240px] shrink-0"
+                        >
+                          <p className="text-zinc-200 font-medium break-words leading-tight">
+                            {task.title}
+                          </p>
+                          {task.project && (
+                            <span className="inline-block self-start px-1.5 py-0.5 rounded bg-amber-500/5 text-amber-555/80 text-[9px] font-mono max-w-full truncate border border-amber-500/5" title={task.project.title}>
+                              {task.project.title}
+                            </span>
+                          )}
+                          <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
+                            <button
+                              type="button"
+                              onClick={() => handleUnscheduleTask(task.id)}
+                              className="text-[10px] font-mono text-zinc-500 hover:text-rose-400 uppercase tracking-wider transition-colors"
+                            >
+                              Unplan
+                            </button>
+                            <div className="w-24">
+                              <Select
                                 onChange={(e) => handleScheduleTask(task.id, e.target.value)}
                                 value=""
-                                className="bg-black/40 border border-white/5 rounded text-[8px] text-zinc-400 outline-none max-w-[80px]"
+                                variant="inline"
+                                className="text-[10px] text-zinc-400 font-mono"
                               >
-                                <option value="" disabled>Move...</option>
+                                <option value="" disabled className="bg-zinc-950 text-zinc-500">Move to...</option>
                                 {daysOfWeek.map((d, dIdx) => (
-                                  <option key={dIdx} value={d.toISOString()}>
+                                  <option key={dIdx} value={d.toISOString()} className="bg-zinc-950 text-zinc-200">
                                     {format(d, "EEE")}
                                   </option>
                                 ))}
-                              </select>
+                              </Select>
                             </div>
                           </div>
-                        ))
-                      )}
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                );
-              })()}
+                  )}
+                </div>
+              );
+            })()}
 
-              {/* 7 Days of the week */}
+            {/* 7 Days of the Week as Rows */}
+            <div className="flex flex-col gap-3">
               {daysOfWeek.map((day, idx) => {
                 const allPlannedTasks = [...columns.weekly, ...columns.today];
                 const dayTasks = allPlannedTasks.filter(
@@ -1664,70 +1671,75 @@ export function KanbanBoardClient({
                 return (
                   <div
                     key={idx}
-                    className={`glass-card p-3 border rounded-xl flex flex-col gap-2 min-h-[220px] ${
+                    className={`glass-card p-4 border rounded-2xl flex flex-col md:flex-row md:items-start justify-between gap-4 transition-colors ${
                       isTodayDay
                         ? "border-accent/40 bg-accent/[0.02] ring-1 ring-accent/10"
-                        : "border-white/[0.06] bg-black/10"
+                        : "border-white/[0.04] bg-black/5 hover:border-white/[0.08]"
                     }`}
                   >
-                    <div className={`border-b pb-1.5 flex flex-col gap-0.5 ${
-                      isTodayDay ? "border-accent/20" : "border-white/[0.04]"
-                    }`}>
-                      <span className={`text-[10px] font-mono font-semibold uppercase ${
-                        isTodayDay ? "text-accent" : "text-zinc-400"
+                    {/* Day label info (Left side, fixed width) */}
+                    <div className="flex items-center md:flex-col md:items-start gap-2 md:gap-1 shrink-0 w-full md:w-44 pt-1">
+                      <span className={`text-sm font-semibold font-mono uppercase tracking-wide ${
+                        isTodayDay ? "text-accent" : "text-zinc-300"
                       }`}>
                         {format(day, "EEEE")}
                       </span>
-                      <span className="text-[9px] font-mono text-zinc-500">
-                        {format(day, "dd.MM")} {isTodayDay && "(Today)"}
+                      <span className="text-xs text-zinc-500 font-mono">
+                        {format(day, "dd.MM.yyyy")} {isTodayDay && <span className="text-accent font-semibold ml-1">(Today)</span>}
                       </span>
                     </div>
 
-                    <div className="flex flex-col gap-2 flex-grow">
+                    {/* Tasks list for this day (Right side, expands) */}
+                    <div className="flex-grow flex-1 min-w-0">
                       {dayTasks.length === 0 ? (
-                        <div className="text-[10px] text-zinc-650 italic py-10 text-center">
-                          No tasks
+                        <div className="text-xs text-zinc-650 italic py-2">
+                          No atoms scheduled for this day
                         </div>
                       ) : (
-                        dayTasks.map((task) => (
-                          <div
-                            key={task.id}
-                            className={`p-2 rounded border flex flex-col gap-1.5 text-[11px] relative group ${
-                              isTodayDay
-                                ? "bg-zinc-900 border-accent/20"
-                                : "bg-zinc-900 border-white/[0.04]"
-                            }`}
-                          >
-                            <p className="text-zinc-250 font-medium break-words leading-tight">
-                              {task.title}
-                            </p>
-                            {task.project && (
-                              <span className="inline-block px-1 py-0.2 rounded bg-amber-500/5 text-amber-500/80 text-[8px] font-mono max-w-full truncate">
-                                {task.project.title}
-                              </span>
-                            )}
-                            <div className="flex items-center justify-between mt-1 pt-1 border-t border-white/[0.02] opacity-0 group-hover:opacity-100 transition-opacity">
-                              <button
-                                type="button"
-                                onClick={() => handleUnscheduleTask(task.id)}
-                                className="text-[8px] font-mono text-zinc-550 hover:text-rose-455 uppercase"
-                              >
-                                Unplan
-                              </button>
-                              <select
-                                onChange={(e) => handleScheduleTask(task.id, e.target.value)}
-                                value={day.toISOString()}
-                                className="bg-black/40 border border-white/5 rounded text-[8px] text-zinc-400 outline-none max-w-[80px]"
-                              >
-                                {daysOfWeek.map((d, dIdx) => (
-                                  <option key={dIdx} value={d.toISOString()}>
-                                    {format(d, "EEE")}
-                                  </option>
-                                ))}
-                              </select>
+                        <div className="flex flex-wrap gap-3">
+                          {dayTasks.map((task) => (
+                            <div
+                              key={task.id}
+                              className={`p-3 rounded-xl bg-zinc-950 border flex flex-col gap-2 text-xs w-[240px] shrink-0 relative group ${
+                                isTodayDay
+                                  ? "border-accent/20"
+                                  : "border-white/[0.04]"
+                              }`}
+                            >
+                              <p className="text-zinc-200 font-medium break-words leading-snug">
+                                {task.title}
+                              </p>
+                              {task.project && (
+                                <span className="inline-block self-start px-1.5 py-0.5 rounded bg-amber-500/5 text-amber-500/80 text-[9px] font-mono max-w-full truncate border border-amber-500/5" title={task.project.title}>
+                                  {task.project.title}
+                                </span>
+                              )}
+                              <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
+                                <button
+                                  type="button"
+                                  onClick={() => handleUnscheduleTask(task.id)}
+                                  className="text-[10px] font-mono text-zinc-500 hover:text-rose-400 uppercase tracking-wider transition-colors"
+                                >
+                                  Unplan
+                                </button>
+                                <div className="w-24">
+                                  <Select
+                                    onChange={(e) => handleScheduleTask(task.id, e.target.value)}
+                                    value={day.toISOString()}
+                                    variant="inline"
+                                    className="text-[10px] text-zinc-400 font-mono"
+                                  >
+                                    {daysOfWeek.map((d, dIdx) => (
+                                      <option key={dIdx} value={d.toISOString()} className="bg-zinc-950 text-zinc-200">
+                                        {format(d, "EEE")}
+                                      </option>
+                                    ))}
+                                  </Select>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        ))
+                          ))}
+                        </div>
                       )}
                     </div>
                   </div>
