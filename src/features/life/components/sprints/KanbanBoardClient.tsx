@@ -28,6 +28,7 @@ import {
   ChevronRight,
   X,
   ArrowRightLeft,
+  Pencil,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
@@ -39,6 +40,8 @@ import {
   assignProjectToObjectiveAction,
   createSprintObjectiveAction,
   updateProjectStatusAction,
+  updateProjectAction,
+  updateSprintObjectiveAction,
 } from "@/features/life/actions/sprint-actions";
 import {
   upsertTaskAction,
@@ -222,6 +225,18 @@ export function KanbanBoardClient({
   const [isPending, startTransition] = useTransition();
   const [backlogSearch, setBacklogSearch] = useState("");
 
+  // Edit Project State
+  const [editingProject, setEditingProject] = useState<ProjectData | null>(null);
+  const [editProjectTitle, setEditProjectTitle] = useState("");
+  const [editProjectDesc, setEditProjectDesc] = useState("");
+
+  // Edit Objective State
+  const [editingObjective, setObjectiveToEdit] = useState<ObjectiveData | null>(null);
+  const [editObjectiveTitle, setEditObjectiveTitle] = useState("");
+  const [editObjectiveDesc, setEditObjectiveDesc] = useState("");
+  const [editObjectiveSphereId, setEditObjectiveSphereId] = useState("");
+  const [assigningProjectId, setAssigningProjectId] = useState<string | null>(null);
+
   const filteredBacklogProjects = useMemo(() => {
     if (!backlogSearch.trim()) return backlogProjects;
     const term = backlogSearch.toLowerCase();
@@ -263,8 +278,116 @@ export function KanbanBoardClient({
     return sprint.objectives.reduce((acc, obj) => acc + obj.projects.length, 0);
   }, [sprint]);
 
-  // Project assign selector positioning
-  const [assigningProjectId, setAssigningProjectId] = useState<string | null>(null);
+  // Edit Project Handlers
+  const handleStartEditProject = (project: ProjectData) => {
+    setEditingProject(project);
+    setEditProjectTitle(project.title);
+    const { cleanDescription } = parseProjectDescription(project.description);
+    setEditProjectDesc(cleanDescription || "");
+  };
+
+  const handleSaveProject = () => {
+    if (!editingProject || !editProjectTitle.trim()) return;
+
+    startTransition(async () => {
+      const { templateType, fields } = parseProjectDescription(editingProject.description);
+      let finalDescription = editProjectDesc.trim();
+      if (templateType) {
+        let templateText = `📋 Type: ${templateType}`;
+        const fieldsText = fields.map((f) => `• ${f}`).join("\n");
+        if (fieldsText) {
+          templateText += `\n${fieldsText}`;
+        }
+        finalDescription = finalDescription
+          ? `${templateText}\n\n${finalDescription}`
+          : templateText;
+      }
+
+      const result = await updateProjectAction(
+        editingProject.id,
+        editProjectTitle.trim(),
+        finalDescription || undefined
+      );
+
+      if (result.success) {
+        toast.success("Project updated successfully!");
+        
+        setBacklogProjects((prev) =>
+          prev.map((p) =>
+            p.id === editingProject.id
+              ? { ...p, title: editProjectTitle.trim(), description: finalDescription || null }
+              : p
+          )
+        );
+
+        setSprint((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            objectives: prev.objectives.map((obj) => ({
+              ...obj,
+              projects: obj.projects.map((p) =>
+                p.id === editingProject.id
+                  ? { ...p, title: editProjectTitle.trim(), description: finalDescription || null }
+                  : p
+              ),
+            })),
+          };
+        });
+
+        setEditingProject(null);
+      } else {
+        toast.error(result.error || "Failed to update project");
+      }
+    });
+  };
+
+  // Edit Objective Handlers
+  const handleStartEditObjective = (obj: ObjectiveData) => {
+    setObjectiveToEdit(obj);
+    setEditObjectiveTitle(obj.title);
+    setEditObjectiveDesc(obj.description || "");
+    setEditObjectiveSphereId(obj.sphere.id);
+  };
+
+  const handleSaveObjective = () => {
+    if (!editingObjective || !editObjectiveTitle.trim() || !editObjectiveSphereId) return;
+
+    startTransition(async () => {
+      const result = await updateSprintObjectiveAction(
+        editingObjective.id,
+        editObjectiveTitle.trim(),
+        editObjectiveSphereId,
+        editObjectiveDesc.trim() || undefined
+      );
+
+      if (result.success) {
+        toast.success("Objective updated successfully!");
+        const sphere = spheres.find((s) => s.id === editObjectiveSphereId)!;
+
+        setSprint((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            objectives: prev.objectives.map((obj) =>
+              obj.id === editingObjective.id
+                ? {
+                    ...obj,
+                    title: editObjectiveTitle.trim(),
+                    description: editObjectiveDesc.trim() || null,
+                    sphere: sphere,
+                  }
+                : obj
+            ),
+          };
+        });
+
+        setObjectiveToEdit(null);
+      } else {
+        toast.error(result.error || "Failed to update objective");
+      }
+    });
+  };
 
   // Handlers for Projects (Level 1)
   const handleCreateProject = () => {
@@ -700,13 +823,24 @@ export function KanbanBoardClient({
                           <h4 className="text-body font-semibold text-zinc-200 line-clamp-1" title={project.title}>
                             {project.title}
                           </h4>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteProject(project.id, false)}
-                            className="text-zinc-600 hover:text-rose-400 transition-colors shrink-0"
-                          >
-                            <Trash2 size={12} />
-                          </button>
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleStartEditProject(project)}
+                              className="text-zinc-600 hover:text-accent transition-colors"
+                              title="Edit project"
+                            >
+                              <Pencil size={11} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteProject(project.id, false)}
+                              className="text-zinc-600 hover:text-rose-400 transition-colors"
+                              title="Delete project"
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
                         </div>
 
                         {/* Sphere and Template badges */}
@@ -835,6 +969,14 @@ export function KanbanBoardClient({
                         <h4 className="text-body font-bold text-zinc-100 truncate" title={obj.title}>
                           {obj.title}
                         </h4>
+                        <button
+                          type="button"
+                          onClick={() => handleStartEditObjective(obj)}
+                          className="text-zinc-650 hover:text-accent transition-colors shrink-0"
+                          title="Edit objective"
+                        >
+                          <Pencil size={11} />
+                        </button>
                       </div>
                       <span className="text-[10px] font-mono font-semibold uppercase text-zinc-500">
                         {obj.sphere.name}
@@ -903,13 +1045,24 @@ export function KanbanBoardClient({
                                     )}
                                   </div>
 
-                                  <button
-                                    type="button"
-                                    onClick={() => handleDeleteProject(project.id, true)}
-                                    className="text-zinc-600 hover:text-rose-400 transition-colors shrink-0"
-                                  >
-                                    <Trash2 size={12} />
-                                  </button>
+                                  <div className="flex items-center gap-1.5 shrink-0">
+                                    <button
+                                      type="button"
+                                      onClick={() => handleStartEditProject(project)}
+                                      className="text-zinc-600 hover:text-accent transition-colors"
+                                      title="Edit project"
+                                    >
+                                      <Pencil size={11} />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleDeleteProject(project.id, true)}
+                                      className="text-zinc-600 hover:text-rose-400 transition-colors"
+                                      title="Delete project"
+                                    >
+                                      <Trash2 size={12} />
+                                    </button>
+                                  </div>
                                 </div>
 
                               {totalTasks > 0 && (
@@ -1174,6 +1327,136 @@ export function KanbanBoardClient({
           </div>
         </div>
       </Dialog>
+
+      {/* Edit Project Modal */}
+      {editingProject && (
+        <Dialog
+          isOpen={true}
+          onClose={() => setEditingProject(null)}
+          title="Edit project"
+          maxWidth="480px"
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-label text-zinc-300">Project title</label>
+              <Input
+                value={editProjectTitle}
+                onChange={(e) => setEditProjectTitle(e.target.value)}
+                placeholder="Project title..."
+                autoFocus
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-label text-zinc-300">Description</label>
+              <Textarea
+                value={editProjectDesc}
+                onChange={(e) => setEditProjectDesc(e.target.value)}
+                placeholder="Description..."
+                rows={4}
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-3 border-t border-white/[0.06]">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setEditingProject(null)}
+                disabled={isPending}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                onClick={handleSaveProject}
+                disabled={!editProjectTitle.trim() || isPending}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      )}
+
+      {/* Edit Objective Modal */}
+      {editingObjective && (
+        <Dialog
+          isOpen={true}
+          onClose={() => setObjectiveToEdit(null)}
+          title="Edit strategic objective"
+          maxWidth="480px"
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-label text-zinc-300">Objective title</label>
+              <Input
+                value={editObjectiveTitle}
+                onChange={(e) => setEditObjectiveTitle(e.target.value)}
+                placeholder="Objective title..."
+                autoFocus
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-label text-zinc-300">Life sphere</label>
+              <div className="flex flex-wrap gap-2">
+                {spheres.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => setEditObjectiveSphereId(s.id)}
+                    className={`px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                      editObjectiveSphereId === s.id
+                        ? "bg-accent/15 text-accent border-accent/30"
+                        : "text-zinc-400 border-white/[0.08] hover:text-zinc-200 hover:bg-white/5"
+                    }`}
+                  >
+                    <span
+                      className="inline-block w-2 h-2 rounded-full mr-1.5"
+                      style={{ backgroundColor: s.color }}
+                    />
+                    {s.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-label text-zinc-300">Description</label>
+              <Textarea
+                value={editObjectiveDesc}
+                onChange={(e) => setEditObjectiveDesc(e.target.value)}
+                placeholder="Objective description..."
+                rows={3}
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-3 border-t border-white/[0.06]">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setObjectiveToEdit(null)}
+                disabled={isPending}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                onClick={handleSaveObjective}
+                disabled={!editObjectiveTitle.trim() || isPending}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      )}
     </div>
   );
 }

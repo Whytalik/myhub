@@ -308,3 +308,48 @@ export async function saveSprintReview(
     });
   }
 }
+
+export async function updateProject(
+  userId: string,
+  projectId: string,
+  title: string,
+  description: string | null
+) {
+  const project = await prisma.project.findFirst({
+    where: { id: projectId, userId },
+  });
+  if (!project) throw new Error("Project not found or unauthorized");
+
+  return prisma.project.update({
+    where: { id: projectId },
+    data: {
+      title,
+      description,
+    },
+  });
+}
+
+export async function updateSprintObjective(
+  userId: string,
+  objectiveId: string,
+  title: string,
+  sphereId: string,
+  description: string | null
+) {
+  const objective = await prisma.objective.findFirst({
+    where: {
+      id: objectiveId,
+      sprint: { userId },
+    },
+  });
+  if (!objective) throw new Error("Objective not found or unauthorized");
+
+  return prisma.objective.update({
+    where: { id: objectiveId },
+    data: {
+      title,
+      sphereId,
+      description,
+    },
+  });
+}

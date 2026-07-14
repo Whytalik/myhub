@@ -75,3 +75,28 @@ export async function saveSprintReviewAction(
     return review;
   });
 }
+
+export async function updateProjectAction(
+  projectId: string,
+  title: string,
+  description?: string
+): Promise<ActionResult<any>> {
+  return withAction(async (userId) => {
+    const project = await sprintService.updateProject(userId, projectId, title, description || null);
+    invalidateTaskCache(userId);
+    return project;
+  });
+}
+
+export async function updateSprintObjectiveAction(
+  objectiveId: string,
+  title: string,
+  sphereId: string,
+  description?: string
+): Promise<ActionResult<any>> {
+  return withAction(async (userId) => {
+     const objective = await sprintService.updateSprintObjective(userId, objectiveId, title, sphereId, description || null);
+     invalidateTaskCache(userId);
+     return objective;
+  });
+}
