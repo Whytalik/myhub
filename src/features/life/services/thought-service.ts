@@ -147,8 +147,8 @@ export async function routeThought(userId: string, thoughtId: string, outcome: F
     destination = { ...created, thoughts: [] };
   }
 
-  const orderedIds = [...destination.thoughts.map((t) => t.id), thoughtId];
-  return thoughtRepository.moveAndReorder(userId, thoughtId, destination.id, orderedIds);
+  const nextOrder = destination.thoughts.length;
+  return thoughtRepository.moveToEnd(userId, thoughtId, destination.id, nextOrder);
 }
 
 export async function moveThought(

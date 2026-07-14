@@ -10,6 +10,14 @@ export const thoughtRepository = {
     return prisma.thought.update({ where: { id, userId }, data, include: { sphere: true } });
   },
 
+  moveToEnd(userId: string, id: string, targetStatusId: string, orderIndex: number) {
+    return prisma.thought.update({
+      where: { id, userId },
+      data: { statusId: targetStatusId, order: orderIndex },
+      include: { sphere: true },
+    });
+  },
+
   delete(id: string, userId: string) {
     return prisma.thought.delete({ where: { id, userId } });
   },
