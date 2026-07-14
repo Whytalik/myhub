@@ -97,7 +97,10 @@ export function PlanningWizardClient({
 
   // Step 2: Filter states
   const inboxThoughts = useMemo(() => {
-    const baseThoughts = thoughts.filter((currentThought) => currentThought.status.name === "Inbox" || currentThought.status.name === "Інбокс");
+    const baseThoughts = thoughts.filter((currentThought) => {
+      const lowerName = currentThought.status.name.toLowerCase();
+      return lowerName === "inbox" || lowerName === "інбокс" || lowerName === "беклог" || lowerName === "backlog" || lowerName === "вхідні";
+    });
     if (!activeFilterSphereId) return baseThoughts;
     return baseThoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId);
   }, [thoughts, activeFilterSphereId]);
@@ -198,13 +201,17 @@ export function PlanningWizardClient({
       const result = await quickCaptureAction(text, extraFields);
       if (result.success) {
         toast.success("Thought captured!");
+        const existingStatusName = thoughts.find(
+          (currentThought) => currentThought.statusId === result.data.statusId
+        )?.status.name || "Inbox";
+
         const newThought: ThoughtItem = {
           id: result.data.id,
           content: result.data.content,
           statusId: result.data.statusId,
           status: {
             id: result.data.statusId,
-            name: "Inbox",
+            name: existingStatusName,
           },
           sphereId: result.data.sphereId,
           type: result.data.type,
