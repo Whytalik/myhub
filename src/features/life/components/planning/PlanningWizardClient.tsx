@@ -367,11 +367,12 @@ export function PlanningWizardClient({
   };
 
   const currentDecomposeThought = decomposableThoughts[decomposeIndex];
-  useMemo(() => {
+  useEffect(() => {
     if (currentDecomposeThought) {
       setTaskTitle(currentDecomposeThought.content);
       setProjectTitle(currentDecomposeThought.content);
       setFirstAtomTitle("First action for: " + currentDecomposeThought.content.slice(0, 30));
+      setSelectedSphereId(currentDecomposeThought.sphereId || "");
     }
   }, [currentDecomposeThought]);
 
