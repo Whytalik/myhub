@@ -547,6 +547,88 @@ export function KanbanBoardClient({
     });
   };
 
+  const handleToggleTaskStatus = (taskId: string, currentStatus: string) => {
+    const newStatus = currentStatus === "DONE" ? "TODO" : "DONE";
+
+    startTransition(async () => {
+      const result = await updateTaskStatusAction(taskId, newStatus as any);
+      if (result.success) {
+        toast.success(newStatus === "DONE" ? "Task completed!" : "Task active");
+
+        setColumns((prev) => {
+          let updatedTask: TaskData | undefined;
+          const cleanWeekly = prev.weekly.filter((t) => {
+            if (t.id === taskId) {
+              updatedTask = { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null };
+              return false;
+            }
+            return true;
+          });
+          const cleanToday = prev.today.filter((t) => {
+            if (t.id === taskId) {
+              updatedTask = { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null };
+              return false;
+            }
+            return true;
+          });
+          const cleanDone = prev.done.filter((t) => {
+            if (t.id === taskId) {
+              updatedTask = { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null };
+              return false;
+            }
+            return true;
+          });
+
+          if (updatedTask) {
+            if (newStatus === "DONE") {
+              return {
+                weekly: cleanWeekly,
+                today: cleanToday,
+                done: [updatedTask, ...cleanDone],
+              };
+            } else {
+              const isTodayTask = updatedTask.plannedDate && isSameDay(new Date(updatedTask.plannedDate), new Date());
+              if (isTodayTask) {
+                return {
+                  weekly: cleanWeekly,
+                  today: [updatedTask, ...cleanToday],
+                  done: cleanDone,
+                };
+              } else {
+                return {
+                  weekly: [updatedTask, ...cleanWeekly],
+                  today: cleanToday,
+                  done: cleanDone,
+                };
+              }
+            }
+          }
+          return prev;
+        });
+
+        setSprint((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            objectives: prev.objectives.map((obj) => ({
+              ...obj,
+              projects: obj.projects.map((proj) => ({
+                ...proj,
+                tasks: proj.tasks.map((t) =>
+                  t.id === taskId
+                    ? { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null }
+                    : t
+                ),
+              })),
+            })),
+          };
+        });
+      } else {
+        toast.error(result.error || "Failed to update task status");
+      }
+    });
+  };
+
   // Handlers for Projects (Level 1)
   const handleCreateProject = () => {
     const title = projectTitle.trim();
@@ -1042,6 +1124,22 @@ export function KanbanBoardClient({
                             {cleanDescription}
                           </p>
                         )}
+
+                        {/* Task List (Atoms) in Backlog Project */}
+                        {project.tasks && project.tasks.length > 0 && (
+                          <div className="flex flex-col gap-1 mt-2 pt-2 border-t border-white/[0.04]">
+                            <span className="text-[9px] font-mono uppercase tracking-wider text-zinc-500 block mb-1">
+                              Project Atoms ({project.tasks.length}):
+                            </span>
+                            <div className="flex flex-col gap-1 max-h-[100px] overflow-y-auto scrollbar-thin text-[10px] text-zinc-400 font-mono">
+                              {project.tasks.map((task) => (
+                                <div key={task.id} className="truncate bg-black/10 px-1.5 py-0.5 rounded border border-white/[0.02]" title={task.title}>
+                                  • {task.title}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       <div className="flex flex-col gap-2 mt-auto pt-2 border-t border-white/[0.04]">
@@ -1236,6 +1334,54 @@ export function KanbanBoardClient({
                                       className="h-full bg-emerald-400 rounded-full transition-all duration-300"
                                       style={{ width: `${progressPct}%` }}
                                     />
+                                  </div>
+
+                                  {/* Checklist of Project Atoms */}
+                                  <div className="flex flex-col gap-1 max-h-[140px] overflow-y-auto scrollbar-thin mt-2 pt-2 border-t border-white/[0.04]">
+                                    {project.tasks.map((task) => (
+                                      <div
+                                        key={task.id}
+                                        className="flex items-center justify-between gap-2 p-1.5 rounded bg-black/20 border border-white/[0.02]"
+                                      >
+                                        <div className="flex items-center gap-2 min-w-0">
+                                          <button
+                                            type="button"
+                                            onClick={() => handleToggleTaskStatus(task.id, task.status)}
+                                            className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-colors shrink-0 ${
+                                              task.status === "DONE"
+                                                ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
+                                                : "border-white/20 hover:border-white/40"
+                                            }`}
+                                          >
+                                            {task.status === "DONE" && <CheckCircle2 size={10} />}
+                                          </button>
+                                          <span
+                                            className={`text-[11px] truncate leading-tight ${
+                                              task.status === "DONE"
+                                                ? "text-zinc-500 line-through"
+                                                : "text-zinc-300"
+                                            }`}
+                                            title={task.title}
+                                          >
+                                            {task.title}
+                                          </span>
+                                        </div>
+
+                                        {task.priority && (
+                                          <span
+                                            className={`text-[8px] font-mono px-1 rounded shrink-0 ${
+                                              task.priority === "HIGH"
+                                                ? "bg-rose-500/10 text-rose-400"
+                                                : task.priority === "MEDIUM"
+                                                  ? "bg-amber-500/10 text-amber-455"
+                                                  : "bg-blue-500/10 text-blue-400"
+                                            }`}
+                                          >
+                                            {task.priority.slice(0, 1)}
+                                          </span>
+                                        )}
+                                      </div>
+                                    ))}
                                   </div>
                                 </div>
                               )}
