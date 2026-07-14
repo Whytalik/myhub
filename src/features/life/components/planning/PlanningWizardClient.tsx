@@ -125,6 +125,22 @@ export function PlanningWizardClient({
   }, [thoughts, activeFilterSphereId]);
   const [decomposeIndex, setDecomposeIndex] = useState(0);
 
+  const getQuestionStep = () => {
+    switch (filterStage) {
+      case "q1":
+      case "q1b":
+        return 1;
+      case "q_conflict":
+        return 2;
+      case "q2":
+        return 3;
+      case "q3":
+        return 4;
+      default:
+        return 1;
+    }
+  };
+
   // Decomposition Form states
   const [decomposeType, setDecomposeType] = useState<"task" | "project">("task");
   // Task fields
@@ -263,11 +279,13 @@ export function PlanningWizardClient({
     }
   }, [step, inboxThoughts.length, initialFilterCount]);
 
+  const currentFilterThoughtId = inboxThoughts[filterIndex]?.id;
+
   useEffect(() => {
     setFilterStage("q1");
     setFilterStageHistory([]);
     setWantType(null);
-  }, [filterIndex]);
+  }, [currentFilterThoughtId]);
 
   const handleFilterThought = (thoughtId: string, outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY") => {
     const previousThoughts = [...thoughts];
@@ -876,6 +894,19 @@ export function PlanningWizardClient({
 
               {/* Question flow based on filterStage */}
               <div className="flex flex-col gap-4 w-full mt-2 items-center">
+                {/* 4-step questionnaire progress bar */}
+                <div className="flex gap-1.5 w-full max-w-[160px] mb-1">
+                  {[1, 2, 3, 4].map((stepNum) => (
+                    <div
+                      key={stepNum}
+                      className={`h-1 flex-1 rounded-full transition-all duration-300 ${
+                        stepNum <= getQuestionStep()
+                          ? "bg-accent"
+                          : "bg-white/[0.08]"
+                      }`}
+                    />
+                  ))}
+                </div>
                 {filterStage === "q1" && (
                   <div className="flex flex-col gap-3 w-full items-center">
                     <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
