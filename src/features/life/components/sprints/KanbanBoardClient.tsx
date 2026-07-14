@@ -26,6 +26,7 @@ import {
   Calendar,
   Layers,
   ChevronRight,
+  ChevronDown,
   X,
   ArrowRightLeft,
   Pencil,
@@ -238,6 +239,14 @@ export function KanbanBoardClient({
   const [editObjectiveSphereId, setEditObjectiveSphereId] = useState("");
   const [assigningProjectId, setAssigningProjectId] = useState<string | null>(null);
   const [tacticsView, setTacticsView] = useState<"kanban" | "calendar">("kanban");
+  const [collapsedProjects, setCollapsedProjects] = useState<Record<string, boolean>>({});
+
+  const toggleProjectCollapse = (projectId: string) => {
+    setCollapsedProjects((prev) => ({
+      ...prev,
+      [projectId]: !prev[projectId],
+    }));
+  };
 
   const filteredBacklogProjects = useMemo(() => {
     if (!backlogSearch.trim()) return backlogProjects;
@@ -1210,7 +1219,7 @@ export function KanbanBoardClient({
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {sprint.objectives.map((obj) => (
                   <div
                     key={obj.id}
@@ -1258,6 +1267,7 @@ export function KanbanBoardClient({
                           );
                           const isStalled = totalTasks === 0 || !hasActiveTask;
                           const { templateType, fields, cleanDescription } = parseProjectDescription(project.description);
+                          const isCollapsed = collapsedProjects[project.id];
 
                             return (
                               <div
@@ -1270,13 +1280,27 @@ export function KanbanBoardClient({
                               >
                                 <div className="flex items-start justify-between gap-2">
                                   <div className="min-w-0 flex-1">
-                                    <h5 className="text-body font-semibold text-zinc-150 truncate" title={project.title}>
-                                      {project.title}
-                                    </h5>
+                                    <div className="flex items-center gap-2">
+                                      <button
+                                        type="button"
+                                        onClick={() => toggleProjectCollapse(project.id)}
+                                        className="text-zinc-500 hover:text-zinc-300 p-0.5 rounded transition-colors shrink-0"
+                                        title={isCollapsed ? "Expand project" : "Collapse project"}
+                                      >
+                                        {isCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
+                                      </button>
+                                      <h5
+                                        className="text-body font-semibold text-zinc-150 truncate cursor-pointer hover:text-white transition-colors"
+                                        onClick={() => toggleProjectCollapse(project.id)}
+                                        title={project.title}
+                                      >
+                                        {project.title}
+                                      </h5>
+                                    </div>
 
                                     {/* Template badge */}
                                     {templateType && (
-                                      <div className="flex flex-wrap gap-1 mt-1">
+                                      <div className="flex flex-wrap gap-1 mt-1 pl-6">
                                         <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-800/80 text-zinc-300 text-[9px] font-mono border border-white/[0.06]">
                                           {templateType === "Worry / Problem" && <AlertTriangle size={9} className="text-amber-400" />}
                                           {templateType === "Idea / Dream" && <Sparkles size={9} className="text-purple-400" />}
@@ -1287,16 +1311,16 @@ export function KanbanBoardClient({
                                     )}
 
                                     {/* Render template fields inline if present */}
-                                    {fields.length > 0 && (
-                                      <div className="flex flex-col gap-0.5 text-[10px] text-zinc-400 font-sans mt-1 p-1.5 bg-white/[0.01] border border-white/[0.04] rounded-lg">
+                                    {!isCollapsed && fields.length > 0 && (
+                                      <div className="flex flex-col gap-0.5 text-[10px] text-zinc-400 font-sans mt-1 p-1.5 bg-white/[0.01] border border-white/[0.04] rounded-lg ml-6">
                                         {fields.map((f, idx) => (
                                           <div key={idx} className="truncate" title={f}>{f}</div>
                                         ))}
                                       </div>
                                     )}
 
-                                    {cleanDescription && (
-                                      <p className="text-caption text-zinc-400 text-xs line-clamp-1 mt-1">
+                                    {!isCollapsed && cleanDescription && (
+                                      <p className="text-caption text-zinc-400 text-xs line-clamp-1 mt-1 pl-6">
                                         {cleanDescription}
                                       </p>
                                     )}
@@ -1338,90 +1362,94 @@ export function KanbanBoardClient({
                                   </div>
 
                                   {/* Checklist of Project Atoms */}
-                                  <div className="flex flex-col gap-1 max-h-[140px] overflow-y-auto scrollbar-thin mt-2 pt-2 border-t border-white/[0.04]">
-                                    {project.tasks.map((task) => (
-                                      <div
-                                        key={task.id}
-                                        className="flex items-center justify-between gap-2 p-1.5 rounded bg-black/20 border border-white/[0.02]"
-                                      >
-                                        <div className="flex items-center gap-2 min-w-0">
-                                          <button
-                                            type="button"
-                                            onClick={() => handleToggleTaskStatus(task.id, task.status)}
-                                            className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-colors shrink-0 ${
-                                              task.status === "DONE"
-                                                ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                                                : "border-white/20 hover:border-white/40"
-                                            }`}
-                                          >
-                                            {task.status === "DONE" && <CheckCircle2 size={10} />}
-                                          </button>
-                                          <span
-                                            className={`text-[11px] truncate leading-tight ${
-                                              task.status === "DONE"
-                                                ? "text-zinc-500 line-through"
-                                                : "text-zinc-300"
-                                            }`}
-                                            title={task.title}
-                                          >
-                                            {task.title}
-                                          </span>
-                                        </div>
+                                  {!isCollapsed && (
+                                    <div className="flex flex-col gap-1 max-h-[140px] overflow-y-auto scrollbar-thin mt-2 pt-2 border-t border-white/[0.04]">
+                                      {project.tasks.map((task) => (
+                                        <div
+                                          key={task.id}
+                                          className="flex items-center justify-between gap-2 p-1.5 rounded bg-black/20 border border-white/[0.02]"
+                                        >
+                                          <div className="flex items-center gap-2 min-w-0">
+                                            <button
+                                              type="button"
+                                              onClick={() => handleToggleTaskStatus(task.id, task.status)}
+                                              className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-colors shrink-0 ${
+                                                task.status === "DONE"
+                                                  ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
+                                                  : "border-white/20 hover:border-white/40"
+                                              }`}
+                                            >
+                                              {task.status === "DONE" && <CheckCircle2 size={10} />}
+                                            </button>
+                                            <span
+                                              className={`text-[11px] truncate leading-tight ${
+                                                task.status === "DONE"
+                                                  ? "text-zinc-500 line-through"
+                                                  : "text-zinc-300"
+                                              }`}
+                                              title={task.title}
+                                            >
+                                              {task.title}
+                                            </span>
+                                          </div>
 
-                                        {task.priority && (
-                                          <span
-                                            className={`text-[8px] font-mono px-1 rounded shrink-0 ${
-                                              task.priority === "HIGH"
-                                                ? "bg-rose-500/10 text-rose-400"
-                                                : task.priority === "MEDIUM"
-                                                  ? "bg-amber-500/10 text-amber-455"
-                                                  : "bg-blue-500/10 text-blue-400"
-                                            }`}
-                                          >
-                                            {task.priority.slice(0, 1)}
-                                          </span>
-                                        )}
-                                      </div>
-                                    ))}
-                                  </div>
+                                          {task.priority && (
+                                            <span
+                                              className={`text-[8px] font-mono px-1 rounded shrink-0 ${
+                                                task.priority === "HIGH"
+                                                  ? "bg-rose-500/10 text-rose-400"
+                                                  : task.priority === "MEDIUM"
+                                                    ? "bg-amber-500/10 text-amber-455"
+                                                    : "bg-blue-500/10 text-blue-400"
+                                              }`}
+                                            >
+                                              {task.priority.slice(0, 1)}
+                                            </span>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
                                 </div>
                               )}
 
-                              {isStalled && (
+                              {!isCollapsed && isStalled && (
                                 <div className="flex items-center gap-1.5 text-orange-400 text-[10px] font-mono bg-orange-500/5 px-2 py-1 rounded border border-orange-500/10">
                                   <AlertTriangle size={11} className="shrink-0" />
                                   <span>STALLED: no active atoms</span>
                                 </div>
                               )}
 
-                              <div className="flex items-center gap-1.5 pt-1">
-                                <Input
-                                  value={inlineAtomTitle[project.id] || ""}
-                                  onChange={(e) =>
-                                    setInlineAtomTitle((prev) => ({
-                                      ...prev,
-                                      [project.id]: e.target.value,
-                                    }))
-                                  }
-                                  onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                      e.preventDefault();
-                                      handleAddInlineAtom(project.id, obj.sphere.id);
+                              {!isCollapsed && (
+                                <div className="flex items-center gap-1.5 pt-1">
+                                  <Input
+                                    value={inlineAtomTitle[project.id] || ""}
+                                    onChange={(e) =>
+                                      setInlineAtomTitle((prev) => ({
+                                        ...prev,
+                                        [project.id]: e.target.value,
+                                      }))
                                     }
-                                  }}
-                                  placeholder="+ New kaizen atom..."
-                                  className="text-xs h-7 py-1 px-2 flex-1 bg-black/20"
-                                />
-                                <Button
-                                  type="button"
-                                  variant="ghost"
-                                  size="sm"
-                                  onClick={() => handleAddInlineAtom(project.id, obj.sphere.id)}
-                                  className="h-7 w-7 p-0 flex items-center justify-center text-zinc-400 hover:text-zinc-200"
-                                >
-                                  <ChevronRight size={14} />
-                                </Button>
-                              </div>
+                                    onKeyDown={(e) => {
+                                      if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        handleAddInlineAtom(project.id, obj.sphere.id);
+                                      }
+                                    }}
+                                    placeholder="+ New kaizen atom..."
+                                    className="text-xs h-7 py-1 px-2 flex-1 bg-black/20"
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleAddInlineAtom(project.id, obj.sphere.id)}
+                                    className="h-7 w-7 p-0 flex items-center justify-center text-zinc-400 hover:text-zinc-200"
+                                  >
+                                    <ChevronRight size={14} />
+                                  </Button>
+                                </div>
+                              )}
 
                               <div className="flex justify-end pt-1">
                                 <button
