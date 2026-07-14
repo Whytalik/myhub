@@ -1,21 +1,8 @@
 "use client";
 
 import { useState, useTransition, useMemo } from "react";
-import {
-  DndContext,
-  DragOverlay,
-  PointerSensor,
-  closestCorners,
-  useSensor,
-  useSensors,
-  type DragStartEvent,
-  type DragOverEvent,
-  type DragEndEvent,
-} from "@dnd-kit/core";
-import { SortableContext, arrayMove, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { toast } from "sonner";
 import {
-  FolderKanban,
   CheckSquare,
   Plus,
   Trash2,
@@ -23,14 +10,9 @@ import {
   Sparkles,
   CheckCircle2,
   Compass,
-  Calendar,
   Layers,
-  ChevronRight,
-  ChevronDown,
-  X,
   ArrowRightLeft,
   Pencil,
-  Folder,
   Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
@@ -38,136 +20,20 @@ import { Input } from "@/components/ui/inputs/input";
 import { Select } from "@/components/ui/inputs/select";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Dialog } from "@/components/ui/overlays/dialog";
+import { TaskCardBase } from "@/features/life/components/tasks/TaskCardBase";
+import { TaskCalendar } from "@/features/life/components/tasks/TaskCalendar";
+import { ProjectAtomsDialog } from "./ProjectAtomsDialog";
 import {
   createProjectAction,
   deleteProjectAction,
   assignProjectToObjectiveAction,
   createSprintObjectiveAction,
-  updateProjectStatusAction,
   updateProjectAction,
   updateSprintObjectiveAction,
 } from "@/features/life/actions/sprint-actions";
-import {
-  upsertTaskAction,
-  deleteTaskAction,
-  updateTaskStatusAction,
-} from "@/features/life/actions/task-actions";
+import { upsertTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData, TaskData } from "@/features/life/types";
-import { startOfWeek, endOfWeek, format, addDays, startOfDay, endOfDay, isSameDay, isToday } from "date-fns";
-
-// Custom TaskCard component for the Operational board
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-
-interface SortableTaskCardProps {
-  task: TaskData;
-  onEdit: () => void;
-  onDelete: () => void;
-  isLocked?: boolean;
-}
-
-function SortableTaskCard({ task, onEdit, onDelete, isLocked }: SortableTaskCardProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: task.id,
-    data: { type: "task-card", task },
-    disabled: isLocked,
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.4 : 1,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...(isLocked ? {} : attributes)}
-      {...(isLocked ? {} : listeners)}
-      className={`glass-card p-3 flex flex-col gap-2 group touch-none transition-colors duration-150 ${
-        isLocked ? "border-white/[0.04]" : "cursor-grab active:cursor-grabbing hover:border-white/15"
-      }`}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <p className="text-body text-zinc-150 font-medium break-words leading-tight">{task.title}</p>
-        {!isLocked && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete();
-            }}
-            className="opacity-0 group-hover:opacity-100 text-zinc-600 hover:text-rose-400 p-0.5 rounded transition-all duration-150"
-          >
-            <X size={12} />
-          </button>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-1 mt-1">
-        {task.project && (
-          <div className="flex items-center gap-1 text-[10px] font-mono text-amber-400/90 font-medium truncate max-w-full">
-            <Folder size={10} className="text-amber-500/70 shrink-0" />
-            <span>{task.project.title}</span>
-          </div>
-        )}
-        {task.sphere && (
-          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.03] text-[10px] text-zinc-400 w-fit">
-            <span
-              className="w-1.5 h-1.5 rounded-full shrink-0"
-              style={{ backgroundColor: task.sphere.color }}
-            />
-            {task.sphere.name}
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// Operational Kanban Column
-interface TaskColumnProps {
-  id: string;
-  title: string;
-  tasks: TaskData[];
-  onDeleteTask: (id: string) => void;
-  onEditTask: (task: TaskData) => void;
-  isLocked?: boolean;
-}
-
-function TaskColumn({ id, title, tasks, onDeleteTask, onEditTask, isLocked }: TaskColumnProps) {
-  return (
-    <div className="glass-card p-3 bg-black/15 border border-white/[0.04] rounded-2xl w-full flex flex-col gap-3 min-h-[300px]">
-      <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
-        <h3 className="text-panel-title font-semibold text-zinc-200">{title}</h3>
-        <span className="text-label text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded-md font-mono">
-          {tasks.length}
-        </span>
-      </div>
-
-      <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
-        <div className="flex flex-col gap-2 overflow-y-auto max-h-[400px] pr-1">
-          {tasks.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 text-zinc-500 text-xs italic">
-              No atoms
-            </div>
-          ) : (
-            tasks.map((task) => (
-              <SortableTaskCard
-                key={task.id}
-                task={task}
-                onEdit={() => onEditTask(task)}
-                onDelete={() => onDeleteTask(task.id)}
-                isLocked={isLocked}
-              />
-            ))
-          )}
-        </div>
-      </SortableContext>
-    </div>
-  );
-}
+import { startOfWeek, endOfWeek, format, addDays } from "date-fns";
 
 interface ProjectData {
   id: string;
@@ -207,6 +73,7 @@ interface KanbanBoardClientProps {
     done: TaskData[];
   };
   initialAllTasks?: TaskData[];
+  initialStandaloneTasks?: TaskData[];
   spheres: LifeSphereData[];
 }
 
@@ -215,12 +82,14 @@ export function KanbanBoardClient({
   initialBacklogProjects,
   initialColumns,
   initialAllTasks,
+  initialStandaloneTasks,
   spheres,
 }: KanbanBoardClientProps) {
   // State
   const [sprint, setSprint] = useState<SprintData>(initialSprint);
   const [backlogProjects, setBacklogProjects] = useState<ProjectData[]>(initialBacklogProjects);
-  
+  const [standaloneTasks, setStandaloneTasks] = useState<TaskData[]>(initialStandaloneTasks || []);
+
   const [sprintTasks, setSprintTasks] = useState<TaskData[]>(() => {
     const all = initialAllTasks || [
       ...initialColumns.weekly,
@@ -255,10 +124,8 @@ export function KanbanBoardClient({
   const [objectiveDesc, setObjectiveDesc] = useState("");
   const [selectedSphereId, setSelectedSphereId] = useState<string>(spheres[0]?.id || "");
 
-  // Inline Quick Add state per project
-  const [inlineAtomTitle, setInlineAtomTitle] = useState<Record<string, string>>({});
+  const [openAtomsProjectId, setOpenAtomsProjectId] = useState<string | null>(null);
 
-  const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [backlogSearch, setBacklogSearch] = useState("");
 
@@ -273,14 +140,88 @@ export function KanbanBoardClient({
   const [editObjectiveDesc, setEditObjectiveDesc] = useState("");
   const [editObjectiveSphereId, setEditObjectiveSphereId] = useState("");
   const [assigningProjectId, setAssigningProjectId] = useState<string | null>(null);
-  const [tacticsView, setTacticsView] = useState<"kanban" | "calendar">("kanban");
-  const [collapsedProjects, setCollapsedProjects] = useState<Record<string, boolean>>({});
 
-  const toggleProjectCollapse = (projectId: string) => {
-    setCollapsedProjects((prev) => ({
+  const findProjectById = (projectId: string): ProjectData | undefined => {
+    const inBacklog = backlogProjects.find((p) => p.id === projectId);
+    if (inBacklog) return inBacklog;
+    for (const obj of sprint.objectives) {
+      const found = obj.projects.find((p) => p.id === projectId);
+      if (found) return found;
+    }
+    return undefined;
+  };
+
+  const findObjectiveSphereForProject = (projectId: string): string | null => {
+    for (const obj of sprint.objectives) {
+      if (obj.projects.some((p) => p.id === projectId)) return obj.sphere.id;
+    }
+    return null;
+  };
+
+  const openAtomsProject = openAtomsProjectId ? findProjectById(openAtomsProjectId) : undefined;
+
+  const handleAtomAdded = (projectId: string, newTask: TaskData) => {
+    setSprintTasks((prev) => [...prev, newTask]);
+    setSprint((prev) => ({
       ...prev,
-      [projectId]: !prev[projectId],
+      objectives: prev.objectives.map((obj) => ({
+        ...obj,
+        projects: obj.projects.map((p) =>
+          p.id === projectId ? { ...p, tasks: [...p.tasks, newTask] } : p,
+        ),
+      })),
     }));
+    setBacklogProjects((prev) =>
+      prev.map((p) => (p.id === projectId ? { ...p, tasks: [...p.tasks, newTask] } : p)),
+    );
+  };
+
+  const handleAtomDeletedFromDialog = (projectId: string, taskId: string) => {
+    setSprintTasks((prev) => prev.filter((t) => t.id !== taskId));
+    setSprint((prev) => ({
+      ...prev,
+      objectives: prev.objectives.map((obj) => ({
+        ...obj,
+        projects: obj.projects.map((p) =>
+          p.id === projectId ? { ...p, tasks: p.tasks.filter((t) => t.id !== taskId) } : p,
+        ),
+      })),
+    }));
+    setBacklogProjects((prev) =>
+      prev.map((p) =>
+        p.id === projectId ? { ...p, tasks: p.tasks.filter((t) => t.id !== taskId) } : p,
+      ),
+    );
+  };
+
+  const handleAssignStandaloneTask = (taskId: string, projectId: string) => {
+    startTransition(async () => {
+      const result = await upsertTaskAction({ id: taskId, projectId });
+      if (result.success) {
+        toast.success("Task assigned to project");
+        setStandaloneTasks((prev) => prev.filter((t) => t.id !== taskId));
+        const updatedTask = result.data as unknown as TaskData;
+        setSprintTasks((prev) => [...prev, updatedTask]);
+        setSprint((prev) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj) => ({
+            ...obj,
+            projects: obj.projects.map((p) =>
+              p.id === projectId ? { ...p, tasks: [...p.tasks, updatedTask] } : p,
+            ),
+          })),
+        }));
+        setBacklogProjects((prev) =>
+          prev.map((p) => (p.id === projectId ? { ...p, tasks: [...p.tasks, updatedTask] } : p)),
+        );
+      } else {
+        toast.error(result.error || "Failed to assign task");
+      }
+    });
+  };
+
+  const handleDeleteStandaloneTask = (taskId: string) => {
+    setStandaloneTasks((prev) => prev.filter((t) => t.id !== taskId));
   };
 
   const filteredBacklogProjects = useMemo(() => {
@@ -289,7 +230,7 @@ export function KanbanBoardClient({
     return backlogProjects.filter(
       (project) =>
         project.title.toLowerCase().includes(term) ||
-        (project.description || "").toLowerCase().includes(term)
+        (project.description || "").toLowerCase().includes(term),
     );
   }, [backlogProjects, backlogSearch]);
 
@@ -301,24 +242,26 @@ export function KanbanBoardClient({
       const typeLabel = match[1];
       const lines = descriptionText.split("\n");
       const cleanLines = lines.filter(
-        (line) => !line.startsWith("📋 Type:") && !line.startsWith("•")
+        (line) => !line.startsWith("📋 Type:") && !line.startsWith("•"),
       );
       const cleanDescription = cleanLines.join("\n").trim();
-      const fields = lines
-        .filter((line) => line.startsWith("•"))
-        .map((line) => line.slice(2)); // remove "• "
+      const fields = lines.filter((line) => line.startsWith("•")).map((line) => line.slice(2)); // remove "• "
       return { templateType: typeLabel, fields, cleanDescription };
     }
     return { templateType: null, fields: [], cleanDescription: descriptionText };
   };
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
-
   // Helper date conversions
   const now = new Date();
-  
-  const sprintStart = useMemo(() => startOfWeek(new Date(sprint.startDate), { weekStartsOn: 1 }), [sprint.startDate]);
-  const weekStart = useMemo(() => addDays(sprintStart, selectedWeekIndex * 7), [sprintStart, selectedWeekIndex]);
+
+  const sprintStart = useMemo(
+    () => startOfWeek(new Date(sprint.startDate), { weekStartsOn: 1 }),
+    [sprint.startDate],
+  );
+  const weekStart = useMemo(
+    () => addDays(sprintStart, selectedWeekIndex * 7),
+    [sprintStart, selectedWeekIndex],
+  );
   const weekEnd = useMemo(() => endOfWeek(weekStart, { weekStartsOn: 1 }), [weekStart]);
 
   const currentWeekIndex = useMemo(() => {
@@ -345,49 +288,6 @@ export function KanbanBoardClient({
   const isSunday = now.getDay() === 0;
   const isNextWeek = selectedWeekIndex === currentWeekIndex + 1;
   const isPlanningLocked = selectedWeekIndex > currentWeekIndex && !(isNextWeek && isSunday);
-
-  const columns = useMemo(() => {
-    const todayStart = startOfDay(now);
-    const todayEnd = endOfDay(now);
-    const isCurrentWeek = selectedWeekIndex === currentWeekIndex;
-
-    const todayTasks = sprintTasks.filter(
-      (t) =>
-        t.status !== "DONE" &&
-        t.status !== "CANCELLED" &&
-        t.plannedDate &&
-        isCurrentWeek &&
-        new Date(t.plannedDate) >= todayStart &&
-        new Date(t.plannedDate) <= todayEnd
-    );
-
-    const weeklyTasks = sprintTasks.filter(
-      (t) =>
-        t.status !== "DONE" &&
-        t.status !== "CANCELLED" &&
-        (
-          !t.plannedDate ||
-          (new Date(t.plannedDate) >= weekStart &&
-            new Date(t.plannedDate) <= weekEnd &&
-            (!isCurrentWeek || new Date(t.plannedDate) < todayStart || new Date(t.plannedDate) > todayEnd)) ||
-          (new Date(t.plannedDate) < weekStart && selectedWeekIndex === currentWeekIndex)
-        )
-    );
-
-    const doneTasks = sprintTasks.filter(
-      (t) =>
-        t.status === "DONE" &&
-        t.completedAt &&
-        new Date(t.completedAt) >= weekStart &&
-        new Date(t.completedAt) <= weekEnd
-    );
-
-    return {
-      weekly: weeklyTasks,
-      today: todayTasks,
-      done: doneTasks,
-    };
-  }, [sprintTasks, selectedWeekIndex, weekStart, weekEnd, currentWeekIndex, now]);
 
   // Projects stats (active + backlog)
   const activeProjectsCount = useMemo(() => {
@@ -422,18 +322,18 @@ export function KanbanBoardClient({
       const result = await updateProjectAction(
         editingProject.id,
         editProjectTitle.trim(),
-        finalDescription || undefined
+        finalDescription || undefined,
       );
 
       if (result.success) {
         toast.success("Project updated successfully!");
-        
+
         setBacklogProjects((prev) =>
           prev.map((p) =>
             p.id === editingProject.id
               ? { ...p, title: editProjectTitle.trim(), description: finalDescription || null }
-              : p
-          )
+              : p,
+          ),
         );
 
         setSprint((prev) => {
@@ -445,7 +345,7 @@ export function KanbanBoardClient({
               projects: obj.projects.map((p) =>
                 p.id === editingProject.id
                   ? { ...p, title: editProjectTitle.trim(), description: finalDescription || null }
-                  : p
+                  : p,
               ),
             })),
           };
@@ -474,7 +374,7 @@ export function KanbanBoardClient({
         editingObjective.id,
         editObjectiveTitle.trim(),
         editObjectiveSphereId,
-        editObjectiveDesc.trim() || undefined
+        editObjectiveDesc.trim() || undefined,
       );
 
       if (result.success) {
@@ -493,7 +393,7 @@ export function KanbanBoardClient({
                     description: editObjectiveDesc.trim() || null,
                     sphere: sphere,
                   }
-                : obj
+                : obj,
             ),
           };
         });
@@ -501,166 +401,6 @@ export function KanbanBoardClient({
         setObjectiveToEdit(null);
       } else {
         toast.error(result.error || "Failed to update objective");
-      }
-    });
-  };
-
-  // Calendar View Helpers
-  const daysOfWeek = useMemo(() => {
-    return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
-  }, [weekStart]);
-
-  const sprintProjectTasksPool = useMemo(() => {
-    const tasks: TaskData[] = [];
-    sprint.objectives.forEach((obj) => {
-      obj.projects.forEach((proj) => {
-        proj.tasks.forEach((t) => {
-          if (t.status === "TODO" || t.status === "IN_PROGRESS") {
-            if (!t.plannedDate) {
-              tasks.push({ ...t, project: { id: proj.id, title: proj.title } } as any);
-            }
-          }
-        });
-      });
-    });
-    return tasks;
-  }, [sprint]);
-
-  const handleScheduleTask = (taskId: string, dateIso: string) => {
-    if (isPlanningLocked) {
-      toast.error("Planning for this week is locked!");
-      return;
-    }
-    startTransition(async () => {
-      const targetDate = new Date(dateIso);
-      const result = await upsertTaskAction({
-        id: taskId,
-        plannedDate: dateIso,
-      });
-
-      if (result.success) {
-        toast.success("Task scheduled successfully!");
-
-        setSprintTasks((prev) => {
-          const exists = prev.some((t) => t.id === taskId);
-          if (exists) {
-            return prev.map((t) => (t.id === taskId ? { ...t, plannedDate: targetDate } : t));
-          } else {
-            let foundTask: TaskData | undefined;
-            sprint.objectives.forEach((obj) => {
-              obj.projects.forEach((proj) => {
-                const pt = proj.tasks.find((t) => t.id === taskId);
-                if (pt) {
-                  foundTask = { ...pt, plannedDate: targetDate, project: { id: proj.id, title: proj.title } } as any;
-                }
-              });
-            });
-            if (foundTask) {
-              return [...prev, foundTask];
-            }
-            return prev;
-          }
-        });
-
-        setSprint((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            objectives: prev.objectives.map((obj) => ({
-              ...obj,
-              projects: obj.projects.map((proj) => ({
-                ...proj,
-                tasks: proj.tasks.map((t) =>
-                  t.id === taskId ? { ...t, plannedDate: targetDate } : t
-                ),
-              })),
-            })),
-          };
-        });
-      } else {
-        toast.error(result.error || "Failed to schedule task");
-      }
-    });
-  };
-
-  const handleUnscheduleTask = (taskId: string) => {
-    if (isPlanningLocked) {
-      toast.error("Planning for this week is locked!");
-      return;
-    }
-    startTransition(async () => {
-      const result = await upsertTaskAction({
-        id: taskId,
-        plannedDate: null,
-      });
-
-      if (result.success) {
-        toast.success("Task unscheduled!");
-
-        setSprintTasks((prev) =>
-          prev.map((t) => (t.id === taskId ? { ...t, plannedDate: null } : t))
-        );
-
-        setSprint((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            objectives: prev.objectives.map((obj) => ({
-              ...obj,
-              projects: obj.projects.map((proj) => ({
-                ...proj,
-                tasks: proj.tasks.map((t) =>
-                  t.id === taskId ? { ...t, plannedDate: null } : t
-                ),
-              })),
-            })),
-          };
-        });
-      } else {
-        toast.error(result.error || "Failed to unschedule task");
-      }
-    });
-  };
-
-  const handleToggleTaskStatus = (taskId: string, currentStatus: string) => {
-    if (isPlanningLocked) {
-      toast.error("Updates for this week are locked!");
-      return;
-    }
-    const newStatus = currentStatus === "DONE" ? "TODO" : "DONE";
-
-    startTransition(async () => {
-      const result = await updateTaskStatusAction(taskId, newStatus as any);
-      if (result.success) {
-        toast.success(newStatus === "DONE" ? "Task completed!" : "Task active");
-
-        setSprintTasks((prev) =>
-          prev.map((t) =>
-            t.id === taskId
-              ? { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null }
-              : t
-          )
-        );
-
-        setSprint((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            objectives: prev.objectives.map((obj) => ({
-              ...obj,
-              projects: obj.projects.map((proj) => ({
-                ...proj,
-                tasks: proj.tasks.map((t) =>
-                  t.id === taskId
-                    ? { ...t, status: newStatus as any, completedAt: newStatus === "DONE" ? new Date() : null }
-                    : t
-                ),
-              })),
-            })),
-          };
-        });
-      } else {
-        toast.error(result.error || "Failed to update task status");
       }
     });
   };
@@ -688,9 +428,7 @@ export function KanbanBoardClient({
           setSprint((prev) => ({
             ...prev,
             objectives: prev.objectives.map((obj) =>
-              obj.id === targetObjectiveId
-                ? { ...obj, projects: [newProj, ...obj.projects] }
-                : obj
+              obj.id === targetObjectiveId ? { ...obj, projects: [newProj, ...obj.projects] } : obj,
             ),
           }));
         } else {
@@ -768,7 +506,7 @@ export function KanbanBoardClient({
             objectives: prev.objectives.map((obj) =>
               obj.id === objectiveId
                 ? { ...obj, projects: [movingProject!, ...obj.projects] }
-                : obj
+                : obj,
             ),
           }));
         }
@@ -788,7 +526,7 @@ export function KanbanBoardClient({
         sprint.id,
         title,
         selectedSphereId,
-        objectiveDesc
+        objectiveDesc,
       );
       if (result.success) {
         toast.success("Objective added successfully!");
@@ -813,196 +551,6 @@ export function KanbanBoardClient({
       }
     });
   };
-
-  // Inline Quick Add Task Atom under Project card
-  const handleAddInlineAtom = (projectId: string, projectSphereId: string | null) => {
-    if (isPlanningLocked) {
-      toast.error("Planning for this week is locked!");
-      return;
-    }
-    const title = inlineAtomTitle[projectId]?.trim();
-    if (!title) return;
-
-    startTransition(async () => {
-      const result = await upsertTaskAction({
-        title,
-        projectId,
-        sphereId: projectSphereId || spheres[0]?.id || null,
-        status: "TODO",
-        plannedDate: weekStart.toISOString(),
-      });
-
-      if (result.success) {
-        toast.success("Atom added to weekly plan successfully!");
-
-        const newTask: TaskData = result.data as any;
-
-        setSprintTasks((prev) => [...prev, newTask]);
-
-        setSprint((prev) => ({
-          ...prev,
-          objectives: prev.objectives.map((obj) => ({
-            ...obj,
-            projects: obj.projects.map((p) =>
-              p.id === projectId ? { ...p, tasks: [...p.tasks, newTask] } : p
-            ),
-          })),
-        }));
-
-        setBacklogProjects((prev) =>
-          prev.map((p) => (p.id === projectId ? { ...p, tasks: [...p.tasks, newTask] } : p))
-        );
-
-        setInlineAtomTitle((prev) => ({ ...prev, [projectId]: "" }));
-      } else {
-        toast.error(result.error || "Failed to create atom");
-      }
-    });
-  };
-
-  // Task Actions (Level 2)
-  const handleDeleteTask = (taskId: string) => {
-    startTransition(async () => {
-      const result = await deleteTaskAction(taskId);
-      if (result.success) {
-        toast.success("Atom deleted");
-
-        setSprintTasks((prev) => prev.filter((t) => t.id !== taskId));
-
-        setSprint((prev) => ({
-          ...prev,
-          objectives: prev.objectives.map((obj) => ({
-            ...obj,
-            projects: obj.projects.map((p) => ({
-              ...p,
-              tasks: p.tasks.filter((t) => t.id !== taskId),
-            })),
-          })),
-        }));
-
-        setBacklogProjects((prev) =>
-          prev.map((p) => ({
-            ...p,
-            tasks: p.tasks.filter((t) => t.id !== taskId),
-          }))
-        );
-      } else {
-        toast.error(result.error || "Failed to delete atom");
-      }
-    });
-  };
-
-  // Operational Kanban Drag & Drop
-  const handleDragStart = (event: DragStartEvent) => {
-    if (event.active.data.current?.type === "task-card") {
-      setActiveDragId(event.active.id as string);
-    }
-  };
-
-  const handleDragOver = (event: DragOverEvent) => {
-    const { active, over } = event;
-    if (!over || active.data.current?.type !== "task-card") return;
-
-    const activeId = active.id as string;
-    const overId = over.id as string;
-
-    if (activeId === overId) return;
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveDragId(null);
-    if (!over) return;
-
-    if (isPlanningLocked) {
-      toast.error("Planning for this week is locked!");
-      return;
-    }
-
-    const taskId = active.id as string;
-    const task = active.data.current?.task as TaskData;
-    if (!task) return;
-
-    const overId = over.id as string;
-    let targetCol: "weekly" | "today" | "done" | null = null;
-
-    if (overId === "column-body-weekly" || overId.startsWith("column-weekly")) {
-      targetCol = "weekly";
-    } else if (overId === "column-body-today" || overId.startsWith("column-today")) {
-      targetCol = "today";
-    } else if (overId === "column-body-done" || overId.startsWith("column-done")) {
-      targetCol = "done";
-    } else {
-      const inWeekly = columns.weekly.some((t) => t.id === overId);
-      const inToday = columns.today.some((t) => t.id === overId);
-      const inDone = columns.done.some((t) => t.id === overId);
-      if (inWeekly) targetCol = "weekly";
-      else if (inToday) targetCol = "today";
-      else if (inDone) targetCol = "done";
-    }
-
-    if (!targetCol) return;
-
-    const inWeekly = columns.weekly.some((t) => t.id === taskId);
-    const inToday = columns.today.some((t) => t.id === taskId);
-    const inDone = columns.done.some((t) => t.id === taskId);
-    const sourceCol: typeof targetCol | null = inWeekly
-      ? "weekly"
-      : inToday
-        ? "today"
-        : inDone
-          ? "done"
-          : null;
-
-    if (sourceCol === targetCol) return;
-
-    setSprintTasks((prev) => {
-      return prev.map((t) => {
-        if (t.id === taskId) {
-          const updatedTask = { ...t };
-          if (targetCol === "weekly") {
-            updatedTask.plannedDate = weekStart;
-            updatedTask.status = "TODO";
-          } else if (targetCol === "today") {
-            updatedTask.plannedDate = now;
-            updatedTask.status = "TODO";
-          } else if (targetCol === "done") {
-            updatedTask.status = "DONE";
-            updatedTask.completedAt = now;
-          }
-          return updatedTask;
-        }
-        return t;
-      });
-    });
-
-    startTransition(async () => {
-      let result;
-      if (targetCol === "done") {
-        result = await updateTaskStatusAction(taskId, "DONE");
-      } else if (targetCol === "today") {
-        result = await upsertTaskAction({
-          id: taskId,
-          plannedDate: now.toISOString(),
-          status: "TODO",
-        });
-      } else {
-        result = await upsertTaskAction({
-          id: taskId,
-          plannedDate: weekStart.toISOString(),
-          status: "TODO",
-        });
-      }
-
-      if (!result.success) {
-        toast.error(result.error || "Failed to move atom");
-      }
-    });
-  };
-
-  const activeDragTask = activeDragId
-    ? sprintTasks.find((t) => t.id === activeDragId)
-    : null;
 
   return (
     <div className="flex flex-col gap-8">
@@ -1087,7 +635,9 @@ export function KanbanBoardClient({
               ) : (
                 filteredBacklogProjects.map((project) => {
                   const projectSphere = project.tasks?.find((t) => t.sphere)?.sphere;
-                  const { templateType, fields, cleanDescription } = parseProjectDescription(project.description);
+                  const { templateType, fields, cleanDescription } = parseProjectDescription(
+                    project.description,
+                  );
 
                   return (
                     <div
@@ -1096,7 +646,10 @@ export function KanbanBoardClient({
                     >
                       <div className="flex flex-col gap-2 min-w-0">
                         <div className="flex items-start justify-between gap-2">
-                          <h4 className="text-body font-semibold text-zinc-200 line-clamp-1" title={project.title}>
+                          <h4
+                            className="text-body font-semibold text-zinc-200 line-clamp-1"
+                            title={project.title}
+                          >
                             {project.title}
                           </h4>
                           <div className="flex items-center gap-1.5 shrink-0">
@@ -1137,9 +690,15 @@ export function KanbanBoardClient({
 
                             {templateType && (
                               <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-800/80 text-zinc-305 text-[9px] font-mono border border-white/[0.06]">
-                                {templateType === "Worry / Problem" && <AlertTriangle size={9} className="text-amber-400" />}
-                                {templateType === "Idea / Dream" && <Sparkles size={9} className="text-purple-400" />}
-                                {templateType === "Task / Deadline" && <CheckCircle2 size={9} className="text-emerald-400" />}
+                                {templateType === "Worry / Problem" && (
+                                  <AlertTriangle size={9} className="text-amber-400" />
+                                )}
+                                {templateType === "Idea / Dream" && (
+                                  <Sparkles size={9} className="text-purple-400" />
+                                )}
+                                {templateType === "Task / Deadline" && (
+                                  <CheckCircle2 size={9} className="text-emerald-400" />
+                                )}
                                 {templateType}
                               </span>
                             )}
@@ -1150,7 +709,9 @@ export function KanbanBoardClient({
                         {fields.length > 0 && (
                           <div className="flex flex-col gap-0.5 text-[10px] text-zinc-400 font-sans mt-0.5 p-1.5 bg-white/[0.01] border border-white/[0.04] rounded-lg">
                             {fields.map((f, idx) => (
-                              <div key={idx} className="truncate" title={f}>{f}</div>
+                              <div key={idx} className="truncate" title={f}>
+                                {f}
+                              </div>
                             ))}
                           </div>
                         )}
@@ -1160,29 +721,23 @@ export function KanbanBoardClient({
                             {cleanDescription}
                           </p>
                         )}
-
-                        {/* Task List (Atoms) in Backlog Project */}
-                        {project.tasks && project.tasks.length > 0 && (
-                          <div className="flex flex-col gap-1 mt-2 pt-2 border-t border-white/[0.04]">
-                            <span className="text-[9px] font-mono uppercase tracking-wider text-zinc-500 block mb-1">
-                              Project Atoms ({project.tasks.length}):
-                            </span>
-                            <div className="flex flex-col gap-1 max-h-[100px] overflow-y-auto scrollbar-thin text-[10px] text-zinc-400 font-mono">
-                              {project.tasks.map((task) => (
-                                <div key={task.id} className="truncate bg-black/10 px-1.5 py-0.5 rounded border border-white/[0.02]" title={task.title}>
-                                  • {task.title}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
                       </div>
 
                       <div className="flex flex-col gap-2 mt-auto pt-2 border-t border-white/[0.04]">
                         <button
                           type="button"
+                          onClick={() => setOpenAtomsProjectId(project.id)}
+                          className="text-[10px] font-mono font-semibold uppercase text-zinc-400 hover:text-zinc-200 flex items-center gap-1 self-start"
+                        >
+                          <CheckSquare size={10} /> Atoms ({project.tasks?.length ?? 0})
+                        </button>
+
+                        <button
+                          type="button"
                           onClick={() =>
-                            setAssigningProjectId(assigningProjectId === project.id ? null : project.id)
+                            setAssigningProjectId(
+                              assigningProjectId === project.id ? null : project.id,
+                            )
                           }
                           className="text-[10px] font-mono font-semibold uppercase text-accent hover:underline flex items-center gap-1 self-start"
                         >
@@ -1218,6 +773,49 @@ export function KanbanBoardClient({
                 })
               )}
             </div>
+
+            {standaloneTasks.length > 0 && (
+              <div className="flex flex-col gap-2 pt-3 border-t border-white/[0.04]">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">
+                  Standalone tasks (no project) — {standaloneTasks.length}
+                </span>
+                <div className="flex flex-row gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                  {standaloneTasks.map((task) => {
+                    const assignableProjects = [
+                      ...backlogProjects,
+                      ...sprint.objectives.flatMap((obj) => obj.projects),
+                    ];
+                    return (
+                      <div key={task.id} className="w-[260px] shrink-0 flex flex-col gap-2">
+                        <TaskCardBase
+                          task={task}
+                          variant="atom"
+                          onEdit={() => {}}
+                          onDelete={() => handleDeleteStandaloneTask(task.id)}
+                        />
+                        {assignableProjects.length > 0 && (
+                          <Select
+                            onChange={(e) => handleAssignStandaloneTask(task.id, e.target.value)}
+                            value=""
+                            variant="inline"
+                            className="text-[10px] text-zinc-400 font-mono"
+                          >
+                            <option value="" disabled className="bg-zinc-950 text-zinc-500">
+                              Assign to project...
+                            </option>
+                            {assignableProjects.map((p) => (
+                              <option key={p.id} value={p.id} className="bg-zinc-950 text-zinc-200">
+                                {p.title}
+                              </option>
+                            ))}
+                          </Select>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Active Sprint Grid */}
@@ -1258,7 +856,10 @@ export function KanbanBoardClient({
                           className="w-2.5 h-2.5 rounded-full shrink-0"
                           style={{ backgroundColor: obj.sphere.color }}
                         />
-                        <h4 className="text-body font-bold text-zinc-100 truncate" title={obj.title}>
+                        <h4
+                          className="text-body font-bold text-zinc-100 truncate"
+                          title={obj.title}
+                        >
                           {obj.title}
                         </h4>
                         <button
@@ -1284,198 +885,123 @@ export function KanbanBoardClient({
                       ) : (
                         obj.projects.map((project) => {
                           const totalTasks = project.tasks.length;
-                          const completedTasks = project.tasks.filter((t) => t.status === "DONE")
-                            .length;
-                          const progressPct = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+                          const completedTasks = project.tasks.filter(
+                            (t) => t.status === "DONE",
+                          ).length;
+                          const progressPct =
+                            totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
                           const hasActiveTask = project.tasks.some(
-                            (t) => t.status === "TODO" || t.status === "IN_PROGRESS"
+                            (t) => t.status === "TODO" || t.status === "IN_PROGRESS",
                           );
                           const isStalled = totalTasks === 0 || !hasActiveTask;
-                          const { templateType, fields, cleanDescription } = parseProjectDescription(project.description);
-                          const isCollapsed = collapsedProjects[project.id];
+                          const { templateType, fields, cleanDescription } =
+                            parseProjectDescription(project.description);
 
-                            return (
-                              <div
-                                key={project.id}
-                                className={`glass-card p-3 border flex flex-col gap-3 relative transition-colors ${
-                                  isStalled
-                                    ? "border-orange-500/20 bg-orange-500/[0.01]"
-                                    : "border-white/[0.08]"
-                                }`}
-                              >
-                                <div className="flex items-start justify-between gap-2">
-                                  <div className="min-w-0 flex-1">
-                                    <div className="flex items-center gap-2">
-                                      <button
-                                        type="button"
-                                        onClick={() => toggleProjectCollapse(project.id)}
-                                        className="text-zinc-500 hover:text-zinc-300 p-0.5 rounded transition-colors shrink-0"
-                                        title={isCollapsed ? "Expand project" : "Collapse project"}
-                                      >
-                                        {isCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
-                                      </button>
-                                      <h5
-                                        className="text-body font-semibold text-zinc-150 truncate cursor-pointer hover:text-white transition-colors"
-                                        onClick={() => toggleProjectCollapse(project.id)}
-                                        title={project.title}
-                                      >
-                                        {project.title}
-                                      </h5>
+                          return (
+                            <div
+                              key={project.id}
+                              className={`glass-card p-3 border flex flex-col gap-3 relative transition-colors ${
+                                isStalled
+                                  ? "border-orange-500/20 bg-orange-500/[0.01]"
+                                  : "border-white/[0.08]"
+                              }`}
+                            >
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="min-w-0 flex-1">
+                                  <h5
+                                    className="text-body font-semibold text-zinc-150 truncate cursor-pointer hover:text-white transition-colors"
+                                    onClick={() => setOpenAtomsProjectId(project.id)}
+                                    title={project.title}
+                                  >
+                                    {project.title}
+                                  </h5>
+
+                                  {/* Template badge */}
+                                  {templateType && (
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                      <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-800/80 text-zinc-300 text-[9px] font-mono border border-white/[0.06]">
+                                        {templateType === "Worry / Problem" && (
+                                          <AlertTriangle size={9} className="text-amber-400" />
+                                        )}
+                                        {templateType === "Idea / Dream" && (
+                                          <Sparkles size={9} className="text-purple-400" />
+                                        )}
+                                        {templateType === "Task / Deadline" && (
+                                          <CheckCircle2 size={9} className="text-emerald-400" />
+                                        )}
+                                        {templateType}
+                                      </span>
                                     </div>
+                                  )}
 
-                                    {/* Template badge */}
-                                    {templateType && (
-                                      <div className="flex flex-wrap gap-1 mt-1 pl-6">
-                                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-zinc-800/80 text-zinc-300 text-[9px] font-mono border border-white/[0.06]">
-                                          {templateType === "Worry / Problem" && <AlertTriangle size={9} className="text-amber-400" />}
-                                          {templateType === "Idea / Dream" && <Sparkles size={9} className="text-purple-400" />}
-                                          {templateType === "Task / Deadline" && <CheckCircle2 size={9} className="text-emerald-400" />}
-                                          {templateType}
-                                        </span>
-                                      </div>
-                                    )}
-
-                                    {/* Render template fields inline if present */}
-                                    {!isCollapsed && fields.length > 0 && (
-                                      <div className="flex flex-col gap-0.5 text-[10px] text-zinc-400 font-sans mt-1 p-1.5 bg-white/[0.01] border border-white/[0.04] rounded-lg ml-6">
-                                        {fields.map((f, idx) => (
-                                          <div key={idx} className="truncate" title={f}>{f}</div>
-                                        ))}
-                                      </div>
-                                    )}
-
-                                    {!isCollapsed && cleanDescription && (
-                                      <p className="text-caption text-zinc-400 text-xs line-clamp-1 mt-1 pl-6">
-                                        {cleanDescription}
-                                      </p>
-                                    )}
-                                  </div>
-
-                                  <div className="flex items-center gap-1.5 shrink-0">
-                                    <button
-                                      type="button"
-                                      onClick={() => handleStartEditProject(project)}
-                                      className="text-zinc-600 hover:text-accent transition-colors"
-                                      title="Edit project"
-                                    >
-                                      <Pencil size={11} />
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => handleDeleteProject(project.id, true)}
-                                      className="text-zinc-600 hover:text-rose-400 transition-colors"
-                                      title="Delete project"
-                                    >
-                                      <Trash2 size={12} />
-                                    </button>
-                                  </div>
-                                </div>
-
-                              {totalTasks > 0 && (
-                                <div className="flex flex-col gap-1">
-                                  <div className="flex justify-between text-[10px] font-mono text-zinc-500">
-                                    <span>Atom progress</span>
-                                    <span>
-                                      {completedTasks}/{totalTasks} ({Math.round(progressPct)}%)
-                                    </span>
-                                  </div>
-                                  <div className="w-full h-1.5 rounded-full bg-black/35 overflow-hidden">
-                                    <div
-                                      className="h-full bg-emerald-400 rounded-full transition-all duration-300"
-                                      style={{ width: `${progressPct}%` }}
-                                    />
-                                  </div>
-
-                                  {/* Checklist of Project Atoms */}
-                                  {!isCollapsed && (
-                                    <div className="flex flex-col gap-1 max-h-[140px] overflow-y-auto scrollbar-thin mt-2 pt-2 border-t border-white/[0.04]">
-                                      {project.tasks.map((task) => (
-                                        <div
-                                          key={task.id}
-                                          className="flex items-center justify-between gap-2 p-1.5 rounded bg-black/20 border border-white/[0.02]"
-                                        >
-                                          <div className="flex items-center gap-2 min-w-0">
-                                            <button
-                                              type="button"
-                                              onClick={() => handleToggleTaskStatus(task.id, task.status)}
-                                              className={`w-3.5 h-3.5 rounded border flex items-center justify-center transition-colors shrink-0 ${
-                                                task.status === "DONE"
-                                                  ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                                                  : "border-white/20 hover:border-white/40"
-                                              }`}
-                                            >
-                                              {task.status === "DONE" && <CheckCircle2 size={10} />}
-                                            </button>
-                                            <span
-                                              className={`text-[11px] truncate leading-tight ${
-                                                task.status === "DONE"
-                                                  ? "text-zinc-500 line-through"
-                                                  : "text-zinc-300"
-                                              }`}
-                                              title={task.title}
-                                            >
-                                              {task.title}
-                                            </span>
-                                          </div>
-
-                                          {task.priority && (
-                                            <span
-                                              className={`text-[8px] font-mono px-1 rounded shrink-0 ${
-                                                task.priority === "HIGH"
-                                                  ? "bg-rose-500/10 text-rose-400"
-                                                  : task.priority === "MEDIUM"
-                                                    ? "bg-amber-500/10 text-amber-455"
-                                                    : "bg-blue-500/10 text-blue-400"
-                                              }`}
-                                            >
-                                              {task.priority.slice(0, 1)}
-                                            </span>
-                                          )}
+                                  {/* Render template fields inline if present */}
+                                  {fields.length > 0 && (
+                                    <div className="flex flex-col gap-0.5 text-[10px] text-zinc-400 font-sans mt-1 p-1.5 bg-white/[0.01] border border-white/[0.04] rounded-lg">
+                                      {fields.map((f, idx) => (
+                                        <div key={idx} className="truncate" title={f}>
+                                          {f}
                                         </div>
                                       ))}
                                     </div>
                                   )}
-                                </div>
-                              )}
 
-                              {!isCollapsed && isStalled && (
+                                  {cleanDescription && (
+                                    <p className="text-caption text-zinc-400 text-xs line-clamp-1 mt-1">
+                                      {cleanDescription}
+                                    </p>
+                                  )}
+                                </div>
+
+                                <div className="flex items-center gap-1.5 shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleStartEditProject(project)}
+                                    className="text-zinc-600 hover:text-accent transition-colors"
+                                    title="Edit project"
+                                  >
+                                    <Pencil size={11} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteProject(project.id, true)}
+                                    className="text-zinc-600 hover:text-rose-400 transition-colors"
+                                    title="Delete project"
+                                  >
+                                    <Trash2 size={12} />
+                                  </button>
+                                </div>
+                              </div>
+
+                              <div className="flex flex-col gap-1">
+                                <div className="flex justify-between text-[10px] font-mono text-zinc-500">
+                                  <span>Atom progress</span>
+                                  <span>
+                                    {completedTasks}/{totalTasks} ({Math.round(progressPct)}%)
+                                  </span>
+                                </div>
+                                <div className="w-full h-1.5 rounded-full bg-black/35 overflow-hidden">
+                                  <div
+                                    className="h-full bg-emerald-400 rounded-full transition-all duration-300"
+                                    style={{ width: `${progressPct}%` }}
+                                  />
+                                </div>
+                              </div>
+
+                              {isStalled && (
                                 <div className="flex items-center gap-1.5 text-orange-400 text-[10px] font-mono bg-orange-500/5 px-2 py-1 rounded border border-orange-500/10">
                                   <AlertTriangle size={11} className="shrink-0" />
                                   <span>STALLED: no active atoms</span>
                                 </div>
                               )}
 
-                              {!isCollapsed && (
-                                <div className="flex items-center gap-1.5 pt-1">
-                                  <Input
-                                    value={inlineAtomTitle[project.id] || ""}
-                                    onChange={(e) =>
-                                      setInlineAtomTitle((prev) => ({
-                                        ...prev,
-                                        [project.id]: e.target.value,
-                                      }))
-                                    }
-                                    onKeyDown={(e) => {
-                                      if (e.key === "Enter") {
-                                        e.preventDefault();
-                                        handleAddInlineAtom(project.id, obj.sphere.id);
-                                      }
-                                    }}
-                                    placeholder="+ New kaizen atom..."
-                                    className="text-xs h-7 py-1 px-2 flex-1 bg-black/20"
-                                  />
-                                  <Button
-                                    type="button"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => handleAddInlineAtom(project.id, obj.sphere.id)}
-                                    className="h-7 w-7 p-0 flex items-center justify-center text-zinc-400 hover:text-zinc-200"
-                                  >
-                                    <ChevronRight size={14} />
-                                  </Button>
-                                </div>
-                              )}
+                              <button
+                                type="button"
+                                onClick={() => setOpenAtomsProjectId(project.id)}
+                                className="text-[10px] font-mono font-semibold uppercase text-zinc-400 hover:text-zinc-200 flex items-center gap-1 self-start"
+                              >
+                                <CheckSquare size={10} /> View / add atoms
+                              </button>
 
                               <div className="flex justify-end pt-1">
                                 <button
@@ -1501,37 +1027,11 @@ export function KanbanBoardClient({
 
       {/* LEVEL 2: Atoms (Tactics) */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between border-b border-white/[0.04] pb-2">
-          <div className="flex items-center gap-2 text-zinc-400">
-            <CheckSquare size={14} className="text-orange-400" />
-            <h2 className="text-panel-title uppercase tracking-wider font-semibold text-xs font-mono">
-              Operational Atoms (Weekly Execution)
-            </h2>
-          </div>
-          <div className="flex bg-white/[0.03] border border-white/[0.06] rounded-xl p-0.5">
-            <button
-              type="button"
-              onClick={() => setTacticsView("kanban")}
-              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
-                tacticsView === "kanban"
-                  ? "bg-accent/15 text-accent border border-accent/20"
-                  : "text-zinc-400 hover:text-zinc-200"
-              }`}
-            >
-              Kanban Board
-            </button>
-            <button
-              type="button"
-              onClick={() => setTacticsView("calendar")}
-              className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
-                tacticsView === "calendar"
-                  ? "bg-accent/15 text-accent border border-accent/20"
-                  : "text-zinc-400 hover:text-zinc-200"
-              }`}
-            >
-              Weekly Planner
-            </button>
-          </div>
+        <div className="flex items-center gap-2 text-zinc-400 border-b border-white/[0.04] pb-2">
+          <CheckSquare size={14} className="text-orange-400" />
+          <h2 className="text-panel-title uppercase tracking-wider font-semibold text-xs font-mono">
+            Operational Atoms (Weekly Execution)
+          </h2>
         </div>
 
         {/* 12-Week Sprint Navigator */}
@@ -1549,7 +1049,7 @@ export function KanbanBoardClient({
             {sprintWeeks.map((w) => {
               const isCurrent = w.index === currentWeekIndex;
               const isSelected = w.index === selectedWeekIndex;
-              
+
               const wNextWeek = w.index === currentWeekIndex + 1;
               const wIsLocked = w.index > currentWeekIndex && !(wNextWeek && isSunday);
 
@@ -1568,10 +1068,15 @@ export function KanbanBoardClient({
                 >
                   <span>{w.label}</span>
                   {isCurrent && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" title="Current Week" />
+                    <span
+                      className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"
+                      title="Current Week"
+                    />
                   )}
                   {wIsLocked && (
-                    <span title="Locked for planning"><Lock size={10} className="text-zinc-600 shrink-0" /></span>
+                    <span title="Locked for planning">
+                      <Lock size={10} className="text-zinc-600 shrink-0" />
+                    </span>
                   )}
                 </button>
               );
@@ -1581,288 +1086,24 @@ export function KanbanBoardClient({
           {isPlanningLocked && (
             <div className="flex items-center gap-2 p-2 px-3 text-xs bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl font-mono w-fit">
               <Lock size={12} className="shrink-0" />
-              <span>Planning for this week is locked. It unlocks on Sunday of the current week.</span>
+              <span>
+                Planning for this week is locked. It unlocks on Sunday of the current week.
+              </span>
             </div>
           )}
         </div>
 
-        {tacticsView === "kanban" ? (
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCorners}
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDragEnd={handleDragEnd}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-              <div id="column-weekly">
-                <TaskColumn
-                  id="weekly"
-                  title="Weekly Plan"
-                  tasks={columns.weekly}
-                  onDeleteTask={handleDeleteTask}
-                  onEditTask={() => {}}
-                  isLocked={isPlanningLocked}
-                />
-              </div>
-              <div id="column-today">
-                <TaskColumn
-                  id="today"
-                  title="TODAY"
-                  tasks={columns.today}
-                  onDeleteTask={handleDeleteTask}
-                  onEditTask={() => {}}
-                  isLocked={isPlanningLocked}
-                />
-              </div>
-              <div id="column-done">
-                <TaskColumn
-                  id="done"
-                  title="Done"
-                  tasks={columns.done}
-                  onDeleteTask={handleDeleteTask}
-                  onEditTask={() => {}}
-                  isLocked={isPlanningLocked}
-                />
-              </div>
-            </div>
-
-            <DragOverlay>
-              {activeDragTask ? (
-                <div className="glass-card p-3 w-64 shadow-xl border border-white/20">
-                  <p className="text-body text-zinc-150 font-medium break-words">{activeDragTask.title}</p>
-                  {activeDragTask.project && (
-                    <span className="inline-block mt-1 px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[10px] font-mono">
-                      {activeDragTask.project.title}
-                    </span>
-                  )}
-                </div>
-              ) : null}
-            </DragOverlay>
-          </DndContext>
-        ) : (
-          <div className="flex flex-col gap-5">
-            {/* Unplanned Atoms Pool */}
-            <div className="glass-card p-4 border-white/[0.04] bg-white/[0.01] rounded-2xl flex flex-col gap-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <span className="text-sm font-mono uppercase font-semibold text-zinc-300">
-                  Unplanned Sprint Project Atoms ({sprintProjectTasksPool.length})
-                </span>
-                <span className="text-xs text-zinc-500 italic">
-                  Select a day in the selector below to place an atom onto the calendar
-                </span>
-              </div>
-              
-              {sprintProjectTasksPool.length === 0 ? (
-                <div className="text-zinc-500 text-xs italic py-6 text-center bg-black/10 border border-dashed border-white/[0.04] rounded-xl">
-                  All active project tasks have been scheduled!
-                </div>
-              ) : (
-                <div className="flex flex-row gap-3 overflow-x-auto pb-3 pt-1 scrollbar-thin">
-                  {sprintProjectTasksPool.map((task) => (
-                    <div
-                      key={task.id}
-                      className="glass-card p-3 w-[260px] shrink-0 border border-white/[0.06] hover:border-white/10 transition-colors flex flex-col gap-3 bg-zinc-900/60 justify-between rounded-xl"
-                    >
-                      <div className="flex flex-col gap-2">
-                        <h4 className="text-sm font-semibold text-zinc-200 line-clamp-2 leading-snug" title={task.title}>
-                          {task.title}
-                        </h4>
-                        {task.project && (
-                          <span className="inline-block self-start px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 text-[10px] font-mono border border-amber-500/10 truncate max-w-full">
-                            {task.project.title}
-                          </span>
-                        )}
-                      </div>
-                      {!isPlanningLocked && (
-                        <div className="mt-2 pt-2 border-t border-white/[0.04]">
-                          <Select
-                            onChange={(e) => handleScheduleTask(task.id, e.target.value)}
-                            value=""
-                            variant="inline"
-                            className="text-[10px] text-zinc-400 font-mono"
-                          >
-                            <option value="" disabled className="bg-zinc-950 text-zinc-500">Schedule to day...</option>
-                            {daysOfWeek.map((day, idx) => (
-                              <option key={idx} value={day.toISOString()} className="bg-zinc-950 text-zinc-200">
-                                {format(day, "EEEE (dd.MM)")}
-                              </option>
-                            ))}
-                          </Select>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Overdue / Backlog section */}
-            {(() => {
-              const allPlannedTasks = [...columns.weekly, ...columns.today];
-              const overdueTasks = allPlannedTasks.filter(
-                (t) => t.plannedDate && new Date(t.plannedDate) < startOfDay(weekStart)
-              );
-
-              return (
-                <div className="glass-card p-4 border border-rose-500/20 bg-rose-500/[0.01] rounded-2xl flex flex-col gap-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-                      <span className="text-sm font-mono uppercase font-semibold text-rose-450">
-                        Overdue Backlog ({overdueTasks.length})
-                      </span>
-                    </div>
-                    <span className="text-xs text-zinc-500 italic">
-                      Unfinished tasks from past days
-                    </span>
-                  </div>
-                  
-                  {overdueTasks.length === 0 ? (
-                    <div className="text-zinc-500 text-xs italic py-4 text-center bg-black/10 border border-white/[0.02] rounded-xl">
-                      No overdue tasks. Great job!
-                    </div>
-                  ) : (
-                    <div className="flex flex-wrap gap-3">
-                      {overdueTasks.map((task) => (
-                        <div
-                          key={task.id}
-                          className="p-3 rounded-xl bg-zinc-950 border border-rose-500/10 flex flex-col gap-2 text-xs w-[240px] shrink-0"
-                        >
-                          <p className="text-zinc-200 font-medium break-words leading-tight">
-                            {task.title}
-                          </p>
-                          {task.project && (
-                            <span className="inline-block self-start px-1.5 py-0.5 rounded bg-amber-500/5 text-amber-555/80 text-[9px] font-mono max-w-full truncate border border-amber-500/5" title={task.project.title}>
-                              {task.project.title}
-                            </span>
-                          )}
-                          {!isPlanningLocked && (
-                            <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
-                              <button
-                                type="button"
-                                onClick={() => handleUnscheduleTask(task.id)}
-                                className="text-[10px] font-mono text-zinc-500 hover:text-rose-400 uppercase tracking-wider transition-colors"
-                              >
-                                Unplan
-                              </button>
-                              <div className="w-24">
-                                <Select
-                                  onChange={(e) => handleScheduleTask(task.id, e.target.value)}
-                                  value=""
-                                  variant="inline"
-                                  className="text-[10px] text-zinc-400 font-mono"
-                                >
-                                  <option value="" disabled className="bg-zinc-950 text-zinc-500">Move to...</option>
-                                  {daysOfWeek.map((d, dIdx) => (
-                                    <option key={dIdx} value={d.toISOString()} className="bg-zinc-950 text-zinc-200">
-                                      {format(d, "EEE")}
-                                    </option>
-                                  ))}
-                                </Select>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
-
-            {/* 7 Days of the Week as Rows */}
-            <div className="flex flex-col gap-3">
-              {daysOfWeek.map((day, idx) => {
-                const allPlannedTasks = [...columns.weekly, ...columns.today];
-                const dayTasks = allPlannedTasks.filter(
-                  (t) => t.plannedDate && isSameDay(new Date(t.plannedDate), day)
-                );
-
-                const isTodayDay = isToday(day);
-
-                return (
-                  <div
-                    key={idx}
-                    className={`glass-card p-4 border rounded-2xl flex flex-col md:flex-row md:items-start justify-between gap-4 transition-colors ${
-                      isTodayDay
-                        ? "border-accent/40 bg-accent/[0.02] ring-1 ring-accent/10"
-                        : "border-white/[0.04] bg-black/5 hover:border-white/[0.08]"
-                    }`}
-                  >
-                    {/* Day label info (Left side, fixed width) */}
-                    <div className="flex items-center md:flex-col md:items-start gap-2 md:gap-1 shrink-0 w-full md:w-44 pt-1">
-                      <span className={`text-sm font-semibold font-mono uppercase tracking-wide ${
-                        isTodayDay ? "text-accent" : "text-zinc-300"
-                      }`}>
-                        {format(day, "EEEE")}
-                      </span>
-                      <span className="text-xs text-zinc-500 font-mono">
-                        {format(day, "dd.MM.yyyy")} {isTodayDay && <span className="text-accent font-semibold ml-1">(Today)</span>}
-                      </span>
-                    </div>
-
-                    {/* Tasks list for this day (Right side, expands) */}
-                    <div className="flex-grow flex-1 min-w-0">
-                      {dayTasks.length === 0 ? (
-                        <div className="text-xs text-zinc-650 italic py-2">
-                          No atoms scheduled for this day
-                        </div>
-                      ) : (
-                        <div className="flex flex-wrap gap-3">
-                          {dayTasks.map((task) => (
-                            <div
-                              key={task.id}
-                              className={`p-3 rounded-xl bg-zinc-950 border flex flex-col gap-2 text-xs w-[240px] shrink-0 relative group ${
-                                isTodayDay
-                                  ? "border-accent/20"
-                                  : "border-white/[0.04]"
-                              }`}
-                            >
-                              <p className="text-zinc-200 font-medium break-words leading-snug">
-                                {task.title}
-                              </p>
-                              {task.project && (
-                                <span className="inline-block self-start px-1.5 py-0.5 rounded bg-amber-500/5 text-amber-500/80 text-[9px] font-mono max-w-full truncate border border-amber-500/5" title={task.project.title}>
-                                  {task.project.title}
-                                </span>
-                              )}
-                              {!isPlanningLocked && (
-                                <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/[0.04]">
-                                  <button
-                                    type="button"
-                                    onClick={() => handleUnscheduleTask(task.id)}
-                                    className="text-[10px] font-mono text-zinc-500 hover:text-rose-400 uppercase tracking-wider transition-colors"
-                                  >
-                                    Unplan
-                                  </button>
-                                  <div className="w-24">
-                                    <Select
-                                      onChange={(e) => handleScheduleTask(task.id, e.target.value)}
-                                      value={day.toISOString()}
-                                      variant="inline"
-                                      className="text-[10px] text-zinc-400 font-mono"
-                                    >
-                                      {daysOfWeek.map((d, dIdx) => (
-                                        <option key={dIdx} value={d.toISOString()} className="bg-zinc-950 text-zinc-200">
-                                          {format(d, "EEE")}
-                                        </option>
-                                      ))}
-                                    </Select>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        <TaskCalendar
+          key={weekStart.toISOString()}
+          tasks={sprintTasks}
+          allTasks={sprintTasks}
+          spheres={spheres}
+          defaultMode="week"
+          initialDate={weekStart}
+          hideModeSwitch
+          showUnplannedPool
+          locked={isPlanningLocked}
+        />
       </div>
 
       {/* MODALS */}
@@ -2120,6 +1361,25 @@ export function KanbanBoardClient({
             </div>
           </div>
         </Dialog>
+      )}
+
+      {openAtomsProject && (
+        <ProjectAtomsDialog
+          isOpen={true}
+          onClose={() => setOpenAtomsProjectId(null)}
+          projectId={openAtomsProject.id}
+          projectTitle={openAtomsProject.title}
+          tasks={openAtomsProject.tasks}
+          sphereId={
+            findObjectiveSphereForProject(openAtomsProject.id) ||
+            openAtomsProject.tasks.find((t) => t.sphere)?.sphere?.id ||
+            spheres[0]?.id ||
+            null
+          }
+          isPlanningLocked={isPlanningLocked}
+          onAtomAdded={(task) => handleAtomAdded(openAtomsProject.id, task)}
+          onAtomDeleted={(taskId) => handleAtomDeletedFromDialog(openAtomsProject.id, taskId)}
+        />
       )}
     </div>
   );

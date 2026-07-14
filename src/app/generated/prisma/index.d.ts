@@ -17721,11 +17721,13 @@ export namespace Prisma {
   export type TaskAvgAggregateOutputType = {
     depth: number | null
     order: number | null
+    resistance: number | null
   }
 
   export type TaskSumAggregateOutputType = {
     depth: number | null
     order: number | null
+    resistance: number | null
   }
 
   export type TaskMinAggregateOutputType = {
@@ -17755,6 +17757,7 @@ export namespace Prisma {
     carryOverReason: string | null
     isBlocked: boolean | null
     isFrog: boolean | null
+    resistance: number | null
   }
 
   export type TaskMaxAggregateOutputType = {
@@ -17784,6 +17787,7 @@ export namespace Prisma {
     carryOverReason: string | null
     isBlocked: boolean | null
     isFrog: boolean | null
+    resistance: number | null
   }
 
   export type TaskCountAggregateOutputType = {
@@ -17813,6 +17817,7 @@ export namespace Prisma {
     carryOverReason: number
     isBlocked: number
     isFrog: number
+    resistance: number
     _all: number
   }
 
@@ -17820,11 +17825,13 @@ export namespace Prisma {
   export type TaskAvgAggregateInputType = {
     depth?: true
     order?: true
+    resistance?: true
   }
 
   export type TaskSumAggregateInputType = {
     depth?: true
     order?: true
+    resistance?: true
   }
 
   export type TaskMinAggregateInputType = {
@@ -17854,6 +17861,7 @@ export namespace Prisma {
     carryOverReason?: true
     isBlocked?: true
     isFrog?: true
+    resistance?: true
   }
 
   export type TaskMaxAggregateInputType = {
@@ -17883,6 +17891,7 @@ export namespace Prisma {
     carryOverReason?: true
     isBlocked?: true
     isFrog?: true
+    resistance?: true
   }
 
   export type TaskCountAggregateInputType = {
@@ -17912,6 +17921,7 @@ export namespace Prisma {
     carryOverReason?: true
     isBlocked?: true
     isFrog?: true
+    resistance?: true
     _all?: true
   }
 
@@ -18028,6 +18038,7 @@ export namespace Prisma {
     carryOverReason: string | null
     isBlocked: boolean
     isFrog: boolean
+    resistance: number | null
     _count: TaskCountAggregateOutputType | null
     _avg: TaskAvgAggregateOutputType | null
     _sum: TaskSumAggregateOutputType | null
@@ -18076,6 +18087,7 @@ export namespace Prisma {
     carryOverReason?: boolean
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
@@ -18111,6 +18123,7 @@ export namespace Prisma {
     carryOverReason?: boolean
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
@@ -18144,6 +18157,7 @@ export namespace Prisma {
     carryOverReason?: boolean
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: boolean
     parent?: boolean | Task$parentArgs<ExtArgs>
     project?: boolean | Task$projectArgs<ExtArgs>
     sphere?: boolean | Task$sphereArgs<ExtArgs>
@@ -18177,9 +18191,10 @@ export namespace Prisma {
     carryOverReason?: boolean
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: boolean
   }
 
-  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "plannedEndDate" | "hasPlannedEndTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt" | "carriedFromDate" | "carryOverReason" | "isBlocked" | "isFrog", ExtArgs["result"]["task"]>
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "description" | "icon" | "status" | "priority" | "isPrivate" | "plannedDate" | "hasPlannedTime" | "plannedEndDate" | "hasPlannedEndTime" | "dueDate" | "hasDueTime" | "depth" | "order" | "createdAt" | "updatedAt" | "parentId" | "sphereId" | "projectId" | "completedAt" | "carriedFromDate" | "carryOverReason" | "isBlocked" | "isFrog" | "resistance", ExtArgs["result"]["task"]>
   export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     parent?: boolean | Task$parentArgs<ExtArgs>
     children?: boolean | Task$childrenArgs<ExtArgs>
@@ -18237,6 +18252,7 @@ export namespace Prisma {
       carryOverReason: string | null
       isBlocked: boolean
       isFrog: boolean
+      resistance: number | null
     }, ExtArgs["result"]["task"]>
     composites: {}
   }
@@ -18691,6 +18707,7 @@ export namespace Prisma {
     readonly carryOverReason: FieldRef<"Task", 'String'>
     readonly isBlocked: FieldRef<"Task", 'Boolean'>
     readonly isFrog: FieldRef<"Task", 'Boolean'>
+    readonly resistance: FieldRef<"Task", 'Int'>
   }
     
 
@@ -46840,7 +46857,8 @@ export namespace Prisma {
     carriedFromDate: 'carriedFromDate',
     carryOverReason: 'carryOverReason',
     isBlocked: 'isBlocked',
-    isFrog: 'isFrog'
+    isFrog: 'isFrog',
+    resistance: 'resistance'
   };
 
   export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
@@ -48381,6 +48399,7 @@ export namespace Prisma {
     carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
     isFrog?: BoolFilter<"Task"> | boolean
+    resistance?: IntNullableFilter<"Task"> | number | null
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
     project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
@@ -48415,6 +48434,7 @@ export namespace Prisma {
     carryOverReason?: SortOrderInput | SortOrder
     isBlocked?: SortOrder
     isFrog?: SortOrder
+    resistance?: SortOrderInput | SortOrder
     parent?: TaskOrderByWithRelationInput
     children?: TaskOrderByRelationAggregateInput
     project?: ProjectOrderByWithRelationInput
@@ -48452,6 +48472,7 @@ export namespace Prisma {
     carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
     isFrog?: BoolFilter<"Task"> | boolean
+    resistance?: IntNullableFilter<"Task"> | number | null
     parent?: XOR<TaskNullableScalarRelationFilter, TaskWhereInput> | null
     children?: TaskListRelationFilter
     project?: XOR<ProjectNullableScalarRelationFilter, ProjectWhereInput> | null
@@ -48486,6 +48507,7 @@ export namespace Prisma {
     carryOverReason?: SortOrderInput | SortOrder
     isBlocked?: SortOrder
     isFrog?: SortOrder
+    resistance?: SortOrderInput | SortOrder
     _count?: TaskCountOrderByAggregateInput
     _avg?: TaskAvgOrderByAggregateInput
     _max?: TaskMaxOrderByAggregateInput
@@ -48523,6 +48545,7 @@ export namespace Prisma {
     carryOverReason?: StringNullableWithAggregatesFilter<"Task"> | string | null
     isBlocked?: BoolWithAggregatesFilter<"Task"> | boolean
     isFrog?: BoolWithAggregatesFilter<"Task"> | boolean
+    resistance?: IntNullableWithAggregatesFilter<"Task"> | number | null
   }
 
   export type DailyEntryWhereInput = {
@@ -51558,6 +51581,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -51592,6 +51616,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -51618,6 +51643,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -51652,6 +51678,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -51682,6 +51709,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
   }
 
   export type TaskUpdateManyMutationInput = {
@@ -51707,6 +51735,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type TaskUncheckedUpdateManyInput = {
@@ -51736,6 +51765,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type DailyEntryCreateInput = {
@@ -54973,11 +55003,13 @@ export namespace Prisma {
     carryOverReason?: SortOrder
     isBlocked?: SortOrder
     isFrog?: SortOrder
+    resistance?: SortOrder
   }
 
   export type TaskAvgOrderByAggregateInput = {
     depth?: SortOrder
     order?: SortOrder
+    resistance?: SortOrder
   }
 
   export type TaskMaxOrderByAggregateInput = {
@@ -55007,6 +55039,7 @@ export namespace Prisma {
     carryOverReason?: SortOrder
     isBlocked?: SortOrder
     isFrog?: SortOrder
+    resistance?: SortOrder
   }
 
   export type TaskMinOrderByAggregateInput = {
@@ -55036,11 +55069,13 @@ export namespace Prisma {
     carryOverReason?: SortOrder
     isBlocked?: SortOrder
     isFrog?: SortOrder
+    resistance?: SortOrder
   }
 
   export type TaskSumOrderByAggregateInput = {
     depth?: SortOrder
     order?: SortOrder
+    resistance?: SortOrder
   }
 
   export type EnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -60003,6 +60038,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -60035,6 +60071,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -60853,6 +60890,7 @@ export namespace Prisma {
     carryOverReason?: StringNullableFilter<"Task"> | string | null
     isBlocked?: BoolFilter<"Task"> | boolean
     isFrog?: BoolFilter<"Task"> | boolean
+    resistance?: IntNullableFilter<"Task"> | number | null
   }
 
   export type ProjectUpsertWithWhereUniqueWithoutUserInput = {
@@ -62148,6 +62186,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
@@ -62180,6 +62219,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -62425,6 +62465,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     parent?: TaskCreateNestedOneWithoutChildrenInput
     project?: ProjectCreateNestedOneWithoutTasksInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -62458,6 +62499,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
   }
 
   export type TaskCreateOrConnectWithoutChildrenInput = {
@@ -62488,6 +62530,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     children?: TaskCreateNestedManyWithoutParentInput
     project?: ProjectCreateNestedOneWithoutTasksInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -62520,6 +62563,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -62710,6 +62754,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -62743,6 +62788,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type TaskUpsertWithWhereUniqueWithoutParentInput = {
@@ -65102,6 +65148,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     parent?: TaskCreateNestedOneWithoutChildrenInput
     children?: TaskCreateNestedManyWithoutParentInput
     sphere?: LifeSphereCreateNestedOneWithoutTasksInput
@@ -65134,6 +65181,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
     children?: TaskUncheckedCreateNestedManyWithoutParentInput
   }
 
@@ -68111,6 +68159,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
   }
 
   export type ProjectCreateManyUserInput = {
@@ -68732,6 +68781,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -68764,6 +68814,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -68793,6 +68844,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ProjectUpdateWithoutUserInput = {
@@ -69295,6 +69347,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
   }
 
   export type ThoughtCreateManySphereInput = {
@@ -69473,6 +69526,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
@@ -69505,6 +69559,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -69534,6 +69589,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ThoughtUpdateWithoutSphereInput = {
@@ -69598,6 +69654,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
   }
 
   export type TaskUpdateWithoutParentInput = {
@@ -69623,6 +69680,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     children?: TaskUpdateManyWithoutParentNestedInput
     project?: ProjectUpdateOneWithoutTasksNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -69655,6 +69713,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -69684,6 +69743,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type HabitCompletionCreateManyHabitInput = {
@@ -70056,6 +70116,7 @@ export namespace Prisma {
     carryOverReason?: string | null
     isBlocked?: boolean
     isFrog?: boolean
+    resistance?: number | null
   }
 
   export type TaskUpdateWithoutProjectInput = {
@@ -70081,6 +70142,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     parent?: TaskUpdateOneWithoutChildrenNestedInput
     children?: TaskUpdateManyWithoutParentNestedInput
     sphere?: LifeSphereUpdateOneWithoutTasksNestedInput
@@ -70113,6 +70175,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
     children?: TaskUncheckedUpdateManyWithoutParentNestedInput
   }
 
@@ -70142,6 +70205,7 @@ export namespace Prisma {
     carryOverReason?: NullableStringFieldUpdateOperationsInput | string | null
     isBlocked?: BoolFieldUpdateOperationsInput | boolean
     isFrog?: BoolFieldUpdateOperationsInput | boolean
+    resistance?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type TacticCompletionCreateManyTacticInput = {

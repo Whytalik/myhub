@@ -240,6 +240,7 @@ model Task {
   carryOverReason   String?
   isBlocked         Boolean      @default(false)
   isFrog            Boolean      @default(false)
+  resistance        Int?
   parent            Task?        @relation("TaskChildren", fields: [parentId], references: [id], onDelete: Cascade)
   children          Task[]       @relation("TaskChildren")
   project           Project?     @relation(fields: [projectId], references: [id])

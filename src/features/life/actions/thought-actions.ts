@@ -91,6 +91,7 @@ export async function decomposeThoughtAction(input: {
   projectTitle?: string;
   atomTitle?: string;
   atomDescription?: string | null;
+  resistance?: number | null;
 }): Promise<ActionResult<any>> {
   return withAction(async (userId) => {
     const result = await thoughtService.decomposeThought(userId, input);

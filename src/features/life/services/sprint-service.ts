@@ -14,6 +14,7 @@ export async function getSprintDashboard(userId: string) {
               tasks: {
                 include: {
                   sphere: true,
+                  children: true,
                 },
                 orderBy: { createdAt: "asc" },
               },
@@ -58,6 +59,7 @@ export async function getSprintDashboard(userId: string) {
                 tasks: {
                   include: {
                     sphere: true,
+                    children: true,
                   },
                   orderBy: { createdAt: "asc" },
                 },
@@ -76,6 +78,7 @@ export async function getSprintDashboard(userId: string) {
       tasks: {
         include: {
           sphere: true,
+          children: true,
         },
         orderBy: { createdAt: "asc" },
       },
@@ -126,6 +129,7 @@ export async function getSprintDashboard(userId: string) {
     },
     include: {
       sphere: true,
+      children: true,
       project: {
         select: {
           id: true,
@@ -143,21 +147,21 @@ export async function getSprintDashboard(userId: string) {
       t.status !== "CANCELLED" &&
       t.plannedDate &&
       t.plannedDate >= dayStart &&
-      t.plannedDate <= dayEnd
+      t.plannedDate <= dayEnd,
   );
 
   const weeklyTasks = allTasks.filter(
     (t) =>
       t.status !== "DONE" &&
       t.status !== "CANCELLED" &&
-      (
-        // Tasks with no planned date but belong to active projects
-        !t.plannedDate ||
+      // Tasks with no planned date but belong to active projects
+      (!t.plannedDate ||
         // Planned for this week (excluding today)
-        (t.plannedDate >= weekStart && t.plannedDate <= weekEnd && (t.plannedDate < dayStart || t.plannedDate > dayEnd)) ||
+        (t.plannedDate >= weekStart &&
+          t.plannedDate <= weekEnd &&
+          (t.plannedDate < dayStart || t.plannedDate > dayEnd)) ||
         // Or planned in the past (overdue/carry-over tasks)
-        (t.plannedDate < weekStart)
-      )
+        t.plannedDate < weekStart),
   );
 
   const doneTasks = allTasks.filter((t) => t.status === "DONE" || t.status === "CANCELLED");
@@ -174,11 +178,27 @@ export async function getSprintDashboard(userId: string) {
   };
 }
 
+export async function getStandaloneBacklogTasks(userId: string) {
+  return prisma.task.findMany({
+    where: {
+      userId,
+      projectId: null,
+      parentId: null,
+      status: { in: ["TODO", "IN_PROGRESS", "BACKLOG"] },
+    },
+    include: {
+      sphere: true,
+      children: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
 export async function createProject(
   userId: string,
   title: string,
   description?: string,
-  objectiveId?: string | null
+  objectiveId?: string | null,
 ) {
   return prisma.project.create({
     data: {
@@ -198,11 +218,7 @@ export async function deleteProject(userId: string, projectId: string) {
   });
 }
 
-export async function updateProjectStatus(
-  userId: string,
-  projectId: string,
-  status: any
-) {
+export async function updateProjectStatus(userId: string, projectId: string, status: any) {
   return prisma.project.update({
     where: { id: projectId, userId },
     data: { status },
@@ -212,7 +228,7 @@ export async function updateProjectStatus(
 export async function assignProjectToObjective(
   userId: string,
   projectId: string,
-  objectiveId: string | null
+  objectiveId: string | null,
 ) {
   // Verify project ownership
   const project = await prisma.project.findFirst({
@@ -231,7 +247,7 @@ export async function createSprintObjective(
   sprintId: string,
   title: string,
   sphereId: string,
-  description?: string
+  description?: string,
 ) {
   // Verify sprint ownership
   const sprint = await prisma.sprint.findFirst({
@@ -261,7 +277,8 @@ export async function getSprintReviewForWeek(userId: string, date: Date) {
 
   if (!sprint) return null;
 
-  const weekNumber = Math.floor((date.getTime() - sprint.startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
+  const weekNumber =
+    Math.floor((date.getTime() - sprint.startDate.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
 
   const review = await prisma.sprintReview.findFirst({
     where: {
@@ -287,7 +304,7 @@ export async function saveSprintReview(
     wins?: string;
     challenges?: string;
     adjustments?: string;
-  }
+  },
 ) {
   const sprint = await prisma.sprint.findFirst({
     where: { id: sprintId, userId },
@@ -327,7 +344,7 @@ export async function updateProject(
   userId: string,
   projectId: string,
   title: string,
-  description: string | null
+  description: string | null,
 ) {
   const project = await prisma.project.findFirst({
     where: { id: projectId, userId },
@@ -348,7 +365,7 @@ export async function updateSprintObjective(
   objectiveId: string,
   title: string,
   sphereId: string,
-  description: string | null
+  description: string | null,
 ) {
   const objective = await prisma.objective.findFirst({
     where: {

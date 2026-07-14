@@ -90,7 +90,10 @@ export function PlanningWizardClient({
   const [showDetailedFields, setShowDetailedFields] = useState(false);
   const [newThoughtSphereId, setNewThoughtSphereId] = useState<string | null>(null);
   const [newThoughtType, setNewThoughtType] = useState<ThoughtType | null>(null);
-  const [newThoughtTemplateData, setNewThoughtTemplateData] = useState<Record<string, string> | null>(null);
+  const [newThoughtTemplateData, setNewThoughtTemplateData] = useState<Record<
+    string,
+    string
+  > | null>(null);
   const [editingThought, setEditingThought] = useState<ThoughtItem | null>(null);
   const [activeFilterSphereId, setActiveFilterSphereId] = useState<string | null>(null);
   const [isGroupedBySphere, setIsGroupedBySphere] = useState(false);
@@ -124,22 +127,40 @@ export function PlanningWizardClient({
   const inboxThoughts = useMemo(() => {
     const baseThoughts = thoughts.filter((currentThought) => {
       const lowerName = currentThought.status.name.toLowerCase();
-      return lowerName === "inbox" || lowerName === "інбокс" || lowerName === "беклог" || lowerName === "backlog" || lowerName === "вхідні";
+      return (
+        lowerName === "inbox" ||
+        lowerName === "інбокс" ||
+        lowerName === "беклог" ||
+        lowerName === "backlog" ||
+        lowerName === "вхідні"
+      );
     });
     if (!activeFilterSphereId) return baseThoughts;
-    return baseThoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId);
+    return baseThoughts.filter(
+      (currentThought) => currentThought.sphereId === activeFilterSphereId,
+    );
   }, [thoughts, activeFilterSphereId]);
   const [filterIndex, setFilterIndex] = useState(0);
   const [initialFilterCount, setInitialFilterCount] = useState<number | null>(null);
   const [filterStage, setFilterStage] = useState<"q1" | "q1b" | "q_conflict" | "q2" | "q3">("q1");
-  const [filterStageHistory, setFilterStageHistory] = useState<("q1" | "q1b" | "q_conflict" | "q2" | "q3")[]>([]);
+  const [filterStageHistory, setFilterStageHistory] = useState<
+    ("q1" | "q1b" | "q_conflict" | "q2" | "q3")[]
+  >([]);
   const [wantType, setWantType] = useState<"want" | "must" | null>(null);
 
   // Step 3: Decompose states
   const decomposableThoughts = useMemo(() => {
-    const baseThoughts = thoughts.filter((currentThought) => currentThought.status.name === "Хочу" || currentThought.status.name === "Повинен" || currentThought.status.name === "Want" || currentThought.status.name === "Must");
+    const baseThoughts = thoughts.filter(
+      (currentThought) =>
+        currentThought.status.name === "Хочу" ||
+        currentThought.status.name === "Повинен" ||
+        currentThought.status.name === "Want" ||
+        currentThought.status.name === "Must",
+    );
     if (!activeFilterSphereId) return baseThoughts;
-    return baseThoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId);
+    return baseThoughts.filter(
+      (currentThought) => currentThought.sphereId === activeFilterSphereId,
+    );
   }, [thoughts, activeFilterSphereId]);
   const [decomposeIndex, setDecomposeIndex] = useState(0);
 
@@ -217,8 +238,8 @@ export function PlanningWizardClient({
                   type: result.data.type,
                   templateData: result.data.templateData as Record<string, string> | null,
                 }
-              : currentThought
-          )
+              : currentThought,
+          ),
         );
       } else {
         toast.error(result.error || "Failed to update thought");
@@ -246,9 +267,9 @@ export function PlanningWizardClient({
       const result = await quickCaptureAction(text, extraFields);
       if (result.success) {
         toast.success("Thought captured!");
-        const existingStatusName = thoughts.find(
-          (currentThought) => currentThought.statusId === result.data.statusId
-        )?.status.name || "Inbox";
+        const existingStatusName =
+          thoughts.find((currentThought) => currentThought.statusId === result.data.statusId)
+            ?.status.name || "Inbox";
 
         const newThought: ThoughtItem = {
           id: result.data.id,
@@ -309,7 +330,7 @@ export function PlanningWizardClient({
     thoughtId: string,
     finalSphereId: string | null,
     finalType: ThoughtType | null,
-    finalTemplateData: Record<string, string> | null
+    finalTemplateData: Record<string, string> | null,
   ) => {
     startSaveTransition(async () => {
       await upsertThoughtAction({
@@ -322,7 +343,10 @@ export function PlanningWizardClient({
     });
   };
 
-  const handleFilterThought = (thoughtId: string, outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY") => {
+  const handleFilterThought = (
+    thoughtId: string,
+    outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY",
+  ) => {
     const previousThoughts = [...thoughts];
     const isLastThought = inboxThoughts.length <= 1;
 
@@ -337,9 +361,12 @@ export function PlanningWizardClient({
     setThoughts((previousThoughtsState) =>
       previousThoughtsState.map((currentThought) =>
         currentThought.id === thoughtId
-          ? { ...currentThought, status: { ...currentThought.status, name: statusNameMap[outcome] } }
-          : currentThought
-      )
+          ? {
+              ...currentThought,
+              status: { ...currentThought.status, name: statusNameMap[outcome] },
+            }
+          : currentThought,
+      ),
     );
 
     startActionTransition(async () => {
@@ -366,7 +393,7 @@ export function PlanningWizardClient({
 
     // Optimistically remove the deleted thought
     setThoughts((previousThoughtsState) =>
-      previousThoughtsState.filter((currentThought) => currentThought.id !== thoughtId)
+      previousThoughtsState.filter((currentThought) => currentThought.id !== thoughtId),
     );
 
     startActionTransition(async () => {
@@ -395,7 +422,7 @@ export function PlanningWizardClient({
 
     // Optimistically remove the decomposed thought
     setThoughts((previousThoughtsState) =>
-      previousThoughtsState.filter((currentThought) => currentThought.id !== thoughtId)
+      previousThoughtsState.filter((currentThought) => currentThought.id !== thoughtId),
     );
 
     // Reset form states immediately
@@ -417,6 +444,7 @@ export function PlanningWizardClient({
         atomDescription: isProject ? firstAtomDesc.trim() : undefined,
         sphereId: selectedSphereId,
         priority: "MEDIUM",
+        resistance,
       });
 
       if (result.success) {
@@ -466,21 +494,39 @@ export function PlanningWizardClient({
       {step > 0 && (
         <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/[0.06] pb-4 gap-3">
           <div className="flex flex-wrap items-center gap-1.5 md:gap-4 text-xs font-mono text-zinc-500">
-            <span className={step === 1 ? "text-accent font-bold" : thoughts.length > 0 ? "text-zinc-300" : ""}>
+            <span
+              className={
+                step === 1 ? "text-accent font-bold" : thoughts.length > 0 ? "text-zinc-300" : ""
+              }
+            >
               1. BRAIN DUMP
             </span>
             <ChevronRight size={12} />
-            <span className={step === 2 ? "text-accent font-bold" : inboxThoughts.length === 0 ? "text-zinc-300" : ""}>
+            <span
+              className={
+                step === 2
+                  ? "text-accent font-bold"
+                  : inboxThoughts.length === 0
+                    ? "text-zinc-300"
+                    : ""
+              }
+            >
               2. PRIME FILTER
             </span>
             <ChevronRight size={12} />
-            <span className={step === 3 ? "text-accent font-bold" : decomposableThoughts.length === 0 ? "text-zinc-300" : ""}>
+            <span
+              className={
+                step === 3
+                  ? "text-accent font-bold"
+                  : decomposableThoughts.length === 0
+                    ? "text-zinc-300"
+                    : ""
+              }
+            >
               3. DECOMPOSITION
             </span>
             <ChevronRight size={12} />
-            <span className={step === 4 ? "text-accent font-bold" : ""}>
-              4. DISTRIBUTE
-            </span>
+            <span className={step === 4 ? "text-accent font-bold" : ""}>4. DISTRIBUTE</span>
           </div>
 
           <div className="flex items-center gap-3">
@@ -490,16 +536,13 @@ export function PlanningWizardClient({
                   className="w-1.5 h-1.5 rounded-full shrink-0 animate-pulse"
                   style={{
                     backgroundColor: spheres.find(
-                      (currentSphere) => currentSphere.id === activeFilterSphereId
+                      (currentSphere) => currentSphere.id === activeFilterSphereId,
                     )?.color,
                   }}
                 />
                 <span>
                   Context:{" "}
-                  {
-                    spheres.find((currentSphere) => currentSphere.id === activeFilterSphereId)
-                      ?.name
-                  }
+                  {spheres.find((currentSphere) => currentSphere.id === activeFilterSphereId)?.name}
                 </span>
                 <button
                   type="button"
@@ -534,7 +577,8 @@ export function PlanningWizardClient({
           <div className="flex flex-col gap-2 max-w-lg">
             <h2 className="text-2xl font-bold text-zinc-100 font-mono">Kaizen Planning Cycle</h2>
             <p className="text-sm text-zinc-400 leading-relaxed">
-              Do not try to plan the chaos in your head. Let's declutter your mind, sift thoughts through the Prime Filter, and break them down into atoms.
+              Do not try to plan the chaos in your head. Let's declutter your mind, sift thoughts
+              through the Prime Filter, and break them down into atoms.
             </p>
           </div>
 
@@ -542,29 +586,45 @@ export function PlanningWizardClient({
             <div className="glass-card p-4 flex gap-3 border-white/[0.04] bg-white/[0.01]">
               <span className="text-xl">✍️</span>
               <div>
-                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">1. Brain Dump</h4>
-                <p className="text-[11px] text-zinc-500 mt-1">Write down everything on your mind without analysis or limits.</p>
+                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">
+                  1. Brain Dump
+                </h4>
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Write down everything on your mind without analysis or limits.
+                </p>
               </div>
             </div>
             <div className="glass-card p-4 flex gap-3 border-white/[0.04] bg-white/[0.01]">
               <span className="text-xl">🔍</span>
               <div>
-                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">2. Prime Filter</h4>
-                <p className="text-[11px] text-zinc-500 mt-1">Separate true desires from external obligations. Discard informational clutter.</p>
+                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">
+                  2. Prime Filter
+                </h4>
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Separate true desires from external obligations. Discard informational clutter.
+                </p>
               </div>
             </div>
             <div className="glass-card p-4 flex gap-3 border-white/[0.04] bg-white/[0.01]">
               <span className="text-xl">🔬</span>
               <div>
-                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">3. Decomposition</h4>
-                <p className="text-[11px] text-zinc-500 mt-1">Convert raw ideas into projects or concrete physical actions (atoms).</p>
+                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">
+                  3. Decomposition
+                </h4>
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Convert raw ideas into projects or concrete physical actions (atoms).
+                </p>
               </div>
             </div>
             <div className="glass-card p-4 flex gap-3 border-white/[0.04] bg-white/[0.01]">
               <span className="text-xl">📅</span>
               <div>
-                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">4. Distribution (Kanban)</h4>
-                <p className="text-[11px] text-zinc-500 mt-1">Set weekly plans and distribute daily workloads.</p>
+                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">
+                  4. Distribution (Kanban)
+                </h4>
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Set weekly plans and distribute daily workloads.
+                </p>
               </div>
             </div>
           </div>
@@ -588,7 +648,8 @@ export function PlanningWizardClient({
             <div>
               <h3 className="text-panel-title font-semibold text-zinc-200">Step 1: Brain Dump</h3>
               <p className="text-caption text-xs mt-1">
-                Write down everything on your mind: tasks, shopping, thoughts, ideas, obligations. Write quickly.
+                Write down everything on your mind: tasks, shopping, thoughts, ideas, obligations.
+                Write quickly.
               </p>
             </div>
 
@@ -689,7 +750,9 @@ export function PlanningWizardClient({
           <div className="glass-card p-5 bg-black/10 border border-white/[0.04] rounded-2xl flex flex-col gap-4 w-full">
             <div className="flex justify-between items-center border-b border-white/[0.04] pb-2">
               <div className="flex items-center gap-3">
-                <h4 className="text-xs font-mono font-semibold uppercase text-zinc-400">Current Inbox</h4>
+                <h4 className="text-xs font-mono font-semibold uppercase text-zinc-400">
+                  Current Inbox
+                </h4>
                 {!activeFilterSphereId && thoughts.length > 0 && (
                   <button
                     type="button"
@@ -705,14 +768,16 @@ export function PlanningWizardClient({
                 )}
               </div>
               <span className="text-[11px] font-mono text-zinc-500 bg-white/[0.03] px-2 py-0.5 rounded">
-                {activeFilterSphereId ? `${displayedThoughts.length} of ${thoughts.length}` : thoughts.length}
+                {activeFilterSphereId
+                  ? `${displayedThoughts.length} of ${thoughts.length}`
+                  : thoughts.length}
               </span>
             </div>
 
             {displayedThoughts.length === 0 ? (
               <div className="text-zinc-500 text-xs italic py-12 text-center">
-                {activeFilterSphereId 
-                  ? "No thoughts captured in this sphere yet." 
+                {activeFilterSphereId
+                  ? "No thoughts captured in this sphere yet."
                   : "Your thoughts will appear here. Write something above!"}
               </div>
             ) : isGroupedBySphere && !activeFilterSphereId ? (
@@ -806,7 +871,9 @@ export function PlanningWizardClient({
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 overflow-y-auto max-h-[350px] pr-1">
                 {[...displayedThoughts].reverse().map((thoughtItem) => {
-                  const sphere = spheres.find((currentSphere) => currentSphere.id === thoughtItem.sphereId);
+                  const sphere = spheres.find(
+                    (currentSphere) => currentSphere.id === thoughtItem.sphereId,
+                  );
                   return (
                     <div
                       key={thoughtItem.id}
@@ -855,7 +922,8 @@ export function PlanningWizardClient({
                   onClick={() => setStep(2)}
                   className="w-full md:w-auto"
                 >
-                  Next to Filtering ({inboxThoughts.length} in Inbox) <ChevronRight size={14} className="ml-1" />
+                  Next to Filtering ({inboxThoughts.length} in Inbox){" "}
+                  <ChevronRight size={14} className="ml-1" />
                 </Button>
               </div>
             )}
@@ -869,7 +937,11 @@ export function PlanningWizardClient({
           <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
             <h3 className="text-panel-title font-semibold text-zinc-200">Step 2: Prime Filter</h3>
             <span className="text-xs font-mono text-zinc-500">
-              Card {initialFilterCount && inboxThoughts.length > 0 ? (initialFilterCount - inboxThoughts.length + 1) : 0} of {initialFilterCount || 0}
+              Card{" "}
+              {initialFilterCount && inboxThoughts.length > 0
+                ? initialFilterCount - inboxThoughts.length + 1
+                : 0}{" "}
+              of {initialFilterCount || 0}
             </span>
           </div>
 
@@ -883,7 +955,8 @@ export function PlanningWizardClient({
                 </p>
               </div>
               <Button variant="primary" size="sm" onClick={() => setStep(3)} className="mt-2">
-                Next to Decomposition ({decomposableThoughts.length} waiting) <ChevronRight size={14} />
+                Next to Decomposition ({decomposableThoughts.length} waiting){" "}
+                <ChevronRight size={14} />
               </Button>
             </div>
           ) : (
@@ -894,13 +967,18 @@ export function PlanningWizardClient({
                   <div className="flex flex-wrap gap-2 mb-3">
                     {filterThoughtSphere && (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] text-[10px] font-mono uppercase tracking-wider text-zinc-300">
-                        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: filterThoughtSphere.color }} />
+                        <span
+                          className="w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{ backgroundColor: filterThoughtSphere.color }}
+                        />
                         {filterThoughtSphere.name}
                       </span>
                     )}
                     {filterThoughtTypeConfig && (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.06] text-[10px] font-mono uppercase tracking-wider text-zinc-300">
-                        {FilterThoughtIcon && <FilterThoughtIcon size={10} className="text-accent" />}
+                        {FilterThoughtIcon && (
+                          <FilterThoughtIcon size={10} className="text-accent" />
+                        )}
                         {filterThoughtTypeConfig.label}
                       </span>
                     )}
@@ -964,9 +1042,7 @@ export function PlanningWizardClient({
                     <div
                       key={stepNum}
                       className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                        stepNum <= getQuestionStep()
-                          ? "bg-accent"
-                          : "bg-white/[0.08]"
+                        stepNum <= getQuestionStep() ? "bg-accent" : "bg-white/[0.08]"
                       }`}
                     />
                   ))}
@@ -1013,7 +1089,9 @@ export function PlanningWizardClient({
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
+                        onClick={() =>
+                          handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")
+                        }
                         className="border-zinc-500/20 text-zinc-400 bg-white/[0.01] hover:bg-white/[0.03] h-11 text-xs"
                       >
                         🗑️ Nothing bad
@@ -1043,7 +1121,9 @@ export function PlanningWizardClient({
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
+                        onClick={() =>
+                          handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")
+                        }
                         className="border-red-500/20 text-rose-450 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
                       >
                         ❌ Yes, conflict
@@ -1052,7 +1132,10 @@ export function PlanningWizardClient({
                         type="button"
                         variant="outline"
                         onClick={() => {
-                          setFilterStageHistory((previousHistory) => [...previousHistory, "q_conflict"]);
+                          setFilterStageHistory((previousHistory) => [
+                            ...previousHistory,
+                            "q_conflict",
+                          ]);
                           setFilterStage("q2");
                         }}
                         className="border-emerald-500/20 text-emerald-455 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
@@ -1083,7 +1166,9 @@ export function PlanningWizardClient({
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
+                        onClick={() =>
+                          handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")
+                        }
                         className="border-zinc-500/20 text-zinc-400 bg-white/[0.01] hover:bg-white/[0.03] h-11 text-xs"
                       >
                         👎 No
@@ -1101,7 +1186,12 @@ export function PlanningWizardClient({
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, wantType === "must" ? "KEEP_MUST" : "KEEP_WANT")}
+                        onClick={() =>
+                          handleFilterThought(
+                            inboxThoughts[filterIndex].id,
+                            wantType === "must" ? "KEEP_MUST" : "KEEP_WANT",
+                          )
+                        }
                         className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
                       >
                         ⚡ Yes
@@ -1109,7 +1199,9 @@ export function PlanningWizardClient({
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "SOMEDAY")}
+                        onClick={() =>
+                          handleFilterThought(inboxThoughts[filterIndex].id, "SOMEDAY")
+                        }
                         className="border-purple-500/20 text-purple-400 bg-purple-500/[0.02] hover:bg-purple-500/10 h-11 text-xs"
                       >
                         ⏳ Not now (Someday)
@@ -1161,8 +1253,12 @@ export function PlanningWizardClient({
         <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6">
           <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
             <div>
-              <h3 className="text-panel-title font-semibold text-zinc-200">Step 3: Kaizen Decomposition</h3>
-              <p className="text-[11px] text-zinc-500 mt-0.5">We split raw thoughts into large Projects and tiny physical steps (Atoms).</p>
+              <h3 className="text-panel-title font-semibold text-zinc-200">
+                Step 3: Kaizen Decomposition
+              </h3>
+              <p className="text-[11px] text-zinc-500 mt-0.5">
+                We split raw thoughts into large Projects and tiny physical steps (Atoms).
+              </p>
             </div>
             <span className="text-xs font-mono text-zinc-500 shrink-0">
               Remaining: {decomposableThoughts.length} thoughts
@@ -1175,7 +1271,8 @@ export function PlanningWizardClient({
               <div className="flex flex-col gap-1 max-w-sm">
                 <h4 className="text-sm font-semibold text-zinc-200 font-mono">All decomposed!</h4>
                 <p className="text-xs text-zinc-400">
-                  You have successfully decomposed all filtered desires and obligations into actionable items.
+                  You have successfully decomposed all filtered desires and obligations into
+                  actionable items.
                 </p>
               </div>
               <Button
@@ -1199,7 +1296,9 @@ export function PlanningWizardClient({
                 <div className="glass-card p-4 border-amber-500/10 bg-amber-500/[0.01] rounded-xl flex flex-col gap-3 relative group">
                   <div className="flex justify-between items-center text-[9px] font-mono text-amber-400 font-semibold uppercase">
                     <span>Raw thought ({currentDecomposeThought?.status.name})</span>
-                    <span>Thought {decomposeIndex + 1} of {decomposableThoughts.length}</span>
+                    <span>
+                      Thought {decomposeIndex + 1} of {decomposableThoughts.length}
+                    </span>
                   </div>
 
                   {/* Top Sphere & Type indicators */}
@@ -1207,13 +1306,18 @@ export function PlanningWizardClient({
                     <div className="flex flex-wrap gap-2">
                       {decomposeThoughtSphere && (
                         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.06] text-[9px] font-mono uppercase tracking-wider text-zinc-400">
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: decomposeThoughtSphere.color }} />
+                          <span
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: decomposeThoughtSphere.color }}
+                          />
                           {decomposeThoughtSphere.name}
                         </span>
                       )}
                       {decomposeThoughtTypeConfig && (
                         <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.06] text-[9px] font-mono uppercase tracking-wider text-zinc-400">
-                          {DecomposeThoughtIcon && <DecomposeThoughtIcon size={9} className="text-amber-450" />}
+                          {DecomposeThoughtIcon && (
+                            <DecomposeThoughtIcon size={9} className="text-amber-450" />
+                          )}
                           {decomposeThoughtTypeConfig.label}
                         </span>
                       )}
@@ -1274,7 +1378,9 @@ export function PlanningWizardClient({
                         <CheckSquare size={16} />
                         <div>
                           <span className="text-xs font-semibold block">Kaizen Step (Atom)</span>
-                          <span className="text-[9px] opacity-75 block mt-0.5">Done in one sitting, &lt; 30 min.</span>
+                          <span className="text-[9px] opacity-75 block mt-0.5">
+                            Done in one sitting, &lt; 30 min.
+                          </span>
                         </div>
                       </button>
 
@@ -1290,7 +1396,9 @@ export function PlanningWizardClient({
                         <FolderKanban size={16} />
                         <div>
                           <span className="text-xs font-semibold block">Project (&gt;1 step)</span>
-                          <span className="text-[9px] opacity-75 block mt-0.5">Requires multiple steps.</span>
+                          <span className="text-[9px] opacity-75 block mt-0.5">
+                            Requires multiple steps.
+                          </span>
                         </div>
                       </button>
                     </div>
@@ -1356,9 +1464,18 @@ export function PlanningWizardClient({
                         setSelectedSphereId(updatedFields.sphereId || "");
                       }
 
-                      const targetSphereId = updatedFields.sphereId !== undefined ? updatedFields.sphereId : currentDecomposeThought.sphereId;
-                      const targetType = updatedFields.type !== undefined ? updatedFields.type : currentDecomposeThought.type;
-                      const targetTemplateData = updatedFields.templateData !== undefined ? updatedFields.templateData : currentDecomposeThought.templateData;
+                      const targetSphereId =
+                        updatedFields.sphereId !== undefined
+                          ? updatedFields.sphereId
+                          : currentDecomposeThought.sphereId;
+                      const targetType =
+                        updatedFields.type !== undefined
+                          ? updatedFields.type
+                          : currentDecomposeThought.type;
+                      const targetTemplateData =
+                        updatedFields.templateData !== undefined
+                          ? updatedFields.templateData
+                          : currentDecomposeThought.templateData;
 
                       // Update thoughts state optimistically
                       setThoughts((previousThoughts) =>
@@ -1368,10 +1485,13 @@ export function PlanningWizardClient({
                                 ...currentThought,
                                 sphereId: targetSphereId ?? null,
                                 type: targetType ?? null,
-                                templateData: (targetTemplateData ?? null) as Record<string, string> | null,
+                                templateData: (targetTemplateData ?? null) as Record<
+                                  string,
+                                  string
+                                > | null,
                               }
-                            : currentThought
-                        )
+                            : currentThought,
+                        ),
                       );
 
                       // Debounce save in database
@@ -1383,7 +1503,7 @@ export function PlanningWizardClient({
                           currentDecomposeThought.id,
                           targetSphereId ?? null,
                           targetType ?? null,
-                          targetTemplateData ?? null
+                          targetTemplateData ?? null,
                         );
                       }, 500);
                     }}
@@ -1395,7 +1515,9 @@ export function PlanningWizardClient({
                     {decomposeType === "task" ? (
                       <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-mono text-zinc-300 uppercase">Formulate physical step</label>
+                          <label className="text-[10px] font-mono text-zinc-300 uppercase">
+                            Formulate physical step
+                          </label>
                           <Input
                             value={taskTitle}
                             onChange={(e) => setTaskTitle(e.target.value)}
@@ -1407,7 +1529,9 @@ export function PlanningWizardClient({
                         </div>
 
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-mono text-zinc-300 uppercase">Description / Details (optional)</label>
+                          <label className="text-[10px] font-mono text-zinc-300 uppercase">
+                            Description / Details (optional)
+                          </label>
                           <Textarea
                             value={taskDesc}
                             onChange={(e) => setTaskDesc(e.target.value)}
@@ -1419,7 +1543,9 @@ export function PlanningWizardClient({
                     ) : (
                       <div className="flex flex-col gap-4">
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-mono text-zinc-300 uppercase">Project Title</label>
+                          <label className="text-[10px] font-mono text-zinc-300 uppercase">
+                            Project Title
+                          </label>
                           <Input
                             value={projectTitle}
                             onChange={(e) => setProjectTitle(e.target.value)}
@@ -1428,7 +1554,9 @@ export function PlanningWizardClient({
                         </div>
 
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-mono text-zinc-300 uppercase">Project Description (optional)</label>
+                          <label className="text-[10px] font-mono text-zinc-300 uppercase">
+                            Project Description (optional)
+                          </label>
                           <Textarea
                             value={projectDesc}
                             onChange={(e) => setProjectDesc(e.target.value)}
@@ -1485,7 +1613,9 @@ export function PlanningWizardClient({
                         {resistance >= 4 && (
                           <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
                             <AlertTriangle size={11} className="shrink-0" />
-                            <span>Resistance is high: better split this step into an even simpler one!</span>
+                            <span>
+                              Resistance is high: better split this step into an even simpler one!
+                            </span>
                           </p>
                         )}
                       </div>
@@ -1516,9 +1646,12 @@ export function PlanningWizardClient({
             <div className="flex items-center gap-3">
               <span className="text-xl">🎉</span>
               <div>
-                <h4 className="text-sm font-bold text-zinc-100 font-mono">Decomposition complete! Step 4: Distribute</h4>
+                <h4 className="text-sm font-bold text-zinc-100 font-mono">
+                  Decomposition complete! Step 4: Distribute
+                </h4>
                 <p className="text-xs text-zinc-400">
-                  All your new projects are added to the Backlog, and atoms to the Weekly Plan. Distribute them now:
+                  All your new projects are added to the Backlog, and atoms to the Weekly Plan.
+                  Distribute them now:
                 </p>
               </div>
             </div>

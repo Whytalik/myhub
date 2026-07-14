@@ -69,6 +69,50 @@ interface TaskCalendarProps {
   onDelete?: () => void;
   minCellHeight?: number;
   disableDirectAdd?: boolean;
+  /** Seeds the initially-displayed date. Only read on mount (React useState initializer) —
+   * remount via `key` to force navigation to a different date from outside. */
+  initialDate?: Date;
+  /** Renders a draggable tray of tasks with no `plannedDate` above the grid (week/month modes only). */
+  showUnplannedPool?: boolean;
+  /** Disables drag-and-drop and resizing without hiding the calendar (e.g. a locked future sprint week). */
+  locked?: boolean;
+}
+
+function UnplannedAtomCard({
+  task,
+  onEdit,
+  allTasks,
+  locked,
+}: {
+  task: TaskData;
+  onEdit: (t: TaskData) => void;
+  allTasks: TaskData[];
+  locked: boolean;
+}) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+    id: task.id,
+    data: task,
+    disabled: locked,
+  });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Translate.toString(transform ?? null),
+    zIndex: isDragging ? 1000 : undefined,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} className="w-64 shrink-0">
+      <TaskCardBase
+        task={task}
+        variant="atom"
+        isDragging={isDragging}
+        listeners={listeners}
+        attributes={attributes}
+        onEdit={onEdit}
+        allTasks={allTasks}
+      />
+    </div>
+  );
 }
 
 function TaskCalendarCard({
@@ -190,7 +234,7 @@ function TaskCalendarCard({
     document.addEventListener("mouseup", handleMouseUp);
   };
 
-  const showResizeHandle = isOverlay && task.plannedDate;
+  const showResizeHandle = isOverlay && task.plannedDate && isDraggable;
   const combinedStyle: React.CSSProperties = { ...dragStyle, ...overlayStyle };
 
   return (
@@ -354,8 +398,11 @@ export function TaskCalendar({
   onDelete,
   minCellHeight,
   disableDirectAdd = false,
+  initialDate,
+  showUnplannedPool = false,
+  locked = false,
 }: TaskCalendarProps) {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(initialDate ?? new Date());
   const [mode, setMode] = useState<"month" | "week" | "day">(defaultMode);
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
   const [parentTask, setParentTask] = useState<TaskData | null>(null);
@@ -498,6 +545,11 @@ export function TaskCalendar({
   const calendarTasks = useMemo(
     () => localTasks.filter((t) => t.children.length === 0),
     [localTasks],
+  );
+
+  const unplannedPoolTasks = useMemo(
+    () => calendarTasks.filter((t) => !t.plannedDate),
+    [calendarTasks],
   );
 
   const tasksForDay = useMemo(() => {
@@ -897,13 +949,17 @@ export function TaskCalendar({
                   key={dayIdx}
                   day={day}
                   currentMonth={currentDate}
-                  onAdd={disableDirectAdd ? undefined : (date) => {
-                    setEditingTask({ plannedDate: date } as TaskData);
-                    setParentTask(null);
-                    setIsDuplicate(false);
-                    setDialogVersion((v) => v + 1);
-                    setDialogOpen(true);
-                  }}
+                  onAdd={
+                    disableDirectAdd || locked
+                      ? undefined
+                      : (date) => {
+                          setEditingTask({ plannedDate: date } as TaskData);
+                          setParentTask(null);
+                          setIsDuplicate(false);
+                          setDialogVersion((v) => v + 1);
+                          setDialogOpen(true);
+                        }
+                  }
                   isDraggingAny={isDraggingAny}
                   mode={mode}
                   tasksForDay={tasksByDayIndex[weekIdx * 7 + dayIdx] || []}
@@ -962,7 +1018,7 @@ export function TaskCalendar({
                     onResizeStart={(id) => setResizingTaskId(id)}
                     onResizeEnd={() => setResizingTaskId(null)}
                     isOverlay
-                    isDraggable
+                    isDraggable={!locked}
                     onHeightChange={handleHeightChange}
                     fixedHeight={maxTaskHeightForRow(weekIdx)}
                     style={{ top: calculateTop(seg.level, seg.rowIdx), pointerEvents: "auto" }}
@@ -1103,6 +1159,28 @@ export function TaskCalendar({
           </div>
         )}
 
+        {showUnplannedPool && mode !== "day" && unplannedPoolTasks.length > 0 && (
+          <div className="flex flex-col gap-2 mb-4">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-500">
+                Unplanned atoms
+              </span>
+              <div className="flex-1 h-px bg-white/[0.04]" />
+            </div>
+            <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+              {unplannedPoolTasks.map((task) => (
+                <UnplannedAtomCard
+                  key={task.id}
+                  task={task}
+                  onEdit={handleEdit}
+                  allTasks={parentResolutionTasks}
+                  locked={locked}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
         <div>
           {mode === "day" ? (
             <div className="flex flex-col gap-4 py-2">
@@ -1128,9 +1206,7 @@ export function TaskCalendar({
                             size: 12,
                             className: "text-zinc-400 shrink-0",
                           })}
-                        <span className="text-xs font-medium text-zinc-200">
-                          {task.title}
-                        </span>
+                        <span className="text-xs font-medium text-zinc-200">{task.title}</span>
                         {task.sphere && (
                           <div
                             className="w-1.5 h-1.5 rounded-full shrink-0"

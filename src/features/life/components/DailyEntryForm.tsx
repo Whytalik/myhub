@@ -40,9 +40,6 @@ import { Sparkles as SparklesIcon } from "lucide-react";
 const RoutineSection = lazy(() =>
   import("./sections/RoutineSection").then((m) => ({ default: m.RoutineSection })),
 );
-const TaskCalendar = lazy(() =>
-  import("./tasks/TaskCalendar").then((m) => ({ default: m.TaskCalendar })),
-);
 
 interface Props {
   initialEntry: DailyEntryData | null;
@@ -81,14 +78,12 @@ export function DailyEntryForm({
   yesterdayStandupPlan,
   yesterdayCompletedTasks,
   tasks,
-  allTasks,
   spheres,
   habits,
   scheduledTrainingDayName,
   inboxThoughtCount,
 }: Props) {
   const [activeTab, setActiveTab] = useState("morning");
-  const [taskView, setTaskView] = useState<"grid" | "timeline">("grid");
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<TaskData | null>(null);
   const [parentTask, setParentTask] = useState<TaskData | null>(null);
@@ -224,11 +219,6 @@ export function DailyEntryForm({
       <Loader2 size={20} className="animate-spin text-accent" />
     </div>
   );
-  const calendarSuspenseFallback = (
-    <div className="flex items-center justify-center py-16">
-      <Loader2 size={24} className="animate-spin text-accent" />
-    </div>
-  );
 
   if (dayView === "greeting") {
     return (
@@ -300,6 +290,29 @@ export function DailyEntryForm({
             </>
           ) : null}
         </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <span className="text-label">
+            Today ({tasksDone}/{tasks.length})
+          </span>
+          <button
+            type="button"
+            onClick={handleAddTask}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-xs font-semibold hover:bg-accent/20 transition-colors"
+          >
+            <Plus size={13} />
+            Add Task
+          </button>
+        </div>
+        <TaskGrid
+          tasks={tasks}
+          onEdit={handleEdit}
+          onDuplicate={handleDuplicate}
+          onAddChild={handleAddChild}
+          allTasks={tasks}
+        />
       </div>
 
       <Tabs
@@ -406,61 +419,6 @@ export function DailyEntryForm({
             ),
           },
           {
-            id: "tasks",
-            label: `Tasks (${tasks.filter((t) => t.status === "DONE").length}/${tasks.length})`,
-            content: (
-              <div className="flex flex-col gap-3">
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={handleAddTask}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/10 text-accent text-xs font-semibold hover:bg-accent/20 transition-colors"
-                  >
-                    <Plus size={13} />
-                    Add Task
-                  </button>
-                </div>
-                <Tabs
-                  tabs={[
-                    {
-                      id: "grid",
-                      label: "Grid",
-                      content: (
-                        <TaskGrid
-                          tasks={tasks}
-                          onEdit={handleEdit}
-                          onDuplicate={handleDuplicate}
-                          onAddChild={handleAddChild}
-                          allTasks={tasks}
-                        />
-                      ),
-                    },
-                    {
-                      id: "timeline",
-                      label: "Timeline",
-                      content: (
-                        <Suspense fallback={calendarSuspenseFallback}>
-                          <TaskCalendar
-                            tasks={tasks}
-                            allTasks={tasks}
-                            spheres={spheres}
-                            defaultMode="day"
-                            hideControls
-                            onDuplicate={handleDuplicate}
-                            onDelete={() => {}}
-                          />
-                        </Suspense>
-                      ),
-                    },
-                  ]}
-                  activeTab={taskView}
-                  onTabChange={(id) => setTaskView(id as "grid" | "timeline")}
-                  layoutId="taskView"
-                />
-              </div>
-            ),
-          },
-          {
             id: "evening",
             label: "Evening",
             content: (
@@ -514,19 +472,6 @@ export function DailyEntryForm({
                 <ConfidenceSection log={data.confidenceLog ?? null} onChange={patch} />
 
                 <TaskReviewSection tasks={tasks} date={todayStr} />
-
-                <Suspense fallback={suspenseFallback}>
-                  <TaskCalendar
-                    tasks={allTasks.filter((t) => t.status !== "DONE")}
-                    allTasks={allTasks}
-                    spheres={spheres}
-                    defaultMode="week"
-                    hideModeSwitch
-                    onDuplicate={handleDuplicate}
-                    onDelete={() => {}}
-                    minCellHeight={150}
-                  />
-                </Suspense>
 
                 <PdcaSection
                   pdcaLog={data.pdcaLog ?? null}

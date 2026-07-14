@@ -3,7 +3,6 @@ import {
   Activity,
   BookText,
   CalendarDays,
-  CheckCircle2,
   Compass,
   Heart,
   LayoutGrid,
@@ -83,7 +82,6 @@ export const DOMAINS: Domain[] = [
         pages: [
           { href: "/life/journal", label: "Journal", icon: BookText },
           { href: "/life/habits", label: "Habits", icon: Zap },
-          { href: "/life/tasks", label: "Tasks Database", icon: CheckCircle2 },
           { href: "/life/week", label: "Week Template", icon: CalendarDays },
         ],
       },

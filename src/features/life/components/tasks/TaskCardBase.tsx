@@ -1,7 +1,17 @@
 "use client";
 
 import React, { useState, useTransition, useCallback, useEffect, useMemo } from "react";
-import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy, RefreshCw, Folder } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  ArrowUp,
+  Calendar,
+  Flag,
+  FileText,
+  Copy,
+  RefreshCw,
+  Folder,
+} from "lucide-react";
 import { deleteTaskAction, setTaskAsFrogAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
 import { toast } from "sonner";
@@ -18,7 +28,7 @@ export interface TaskCardBaseProps {
   onAddChild?: (parent: TaskData) => void;
   onDelete?: () => void;
   allTasks?: TaskData[];
-  variant?: "default" | "compact";
+  variant?: "default" | "compact" | "atom";
   isDragging?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -62,7 +72,8 @@ export function TaskCardBase({
 
   const hasChildren = task.children.length > 0;
   const completedSubtasks = task.children.filter((c) => c.status === "DONE").length;
-  const isCompact = variant === "compact";
+  const isAtom = variant === "atom";
+  const isCompact = variant === "compact" || isAtom;
 
   const handleDelete = () => {
     startTransition(async () => {
@@ -215,19 +226,21 @@ export function TaskCardBase({
       style={style}
     >
       <div className={actionBarClass}>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleToggleFrog();
-          }}
-          className={actionButtonClass}
-          title={task.isFrog ? "Зняти жабу" : "Зробити жабою"}
-        >
-          <span role="img" aria-label="frog">
-            🐸
-          </span>
-        </button>
-        {onDuplicate && (
+        {!isAtom && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleFrog();
+            }}
+            className={actionButtonClass}
+            title={task.isFrog ? "Зняти жабу" : "Зробити жабою"}
+          >
+            <span role="img" aria-label="frog">
+              🐸
+            </span>
+          </button>
+        )}
+        {!isAtom && onDuplicate && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -239,7 +252,7 @@ export function TaskCardBase({
             <Copy size={actionIconSize} />
           </button>
         )}
-        {onAddChild && (
+        {!isAtom && onAddChild && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -263,7 +276,7 @@ export function TaskCardBase({
         </button>
       </div>
 
-      {task.parentId && (
+      {!isAtom && task.parentId && (
         <div onClick={handleParentClick} className={parentLinkClass}>
           <ArrowUp size={parentArrowSize} />
           {task.parentIcon &&
@@ -293,7 +306,7 @@ export function TaskCardBase({
               Зараз
             </span>
           )}
-          {task.isFrog && (
+          {!isAtom && task.isFrog && (
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-400/10 text-amber-400 text-[10px] font-mono font-semibold uppercase tracking-wide">
               <span role="img" aria-label="frog">
                 🐸
@@ -306,7 +319,10 @@ export function TaskCardBase({
         {task.project && (
           <div className="text-[10px] text-zinc-500 font-mono flex items-center gap-1.5 mt-0.5">
             <Folder size={10} className="text-amber-500/70 shrink-0" />
-            <span className="text-amber-400/90 font-medium truncate max-w-full" title={task.project.title}>
+            <span
+              className="text-amber-400/90 font-medium truncate max-w-full"
+              title={task.project.title}
+            >
               {task.project.title}
             </span>
           </div>
@@ -333,6 +349,19 @@ export function TaskCardBase({
                 return <SphereIcon size={sphereIconSize} strokeWidth={3} />;
               })()}
               {task.sphere.name}
+            </div>
+          )}
+
+          {task.resistance != null && (
+            <div
+              className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-mono font-semibold ${
+                task.resistance >= 4
+                  ? "bg-rose-500/10 text-rose-400"
+                  : "bg-orange-500/10 text-orange-400"
+              }`}
+              title="Resistance"
+            >
+              {task.resistance}/5
             </div>
           )}
         </div>

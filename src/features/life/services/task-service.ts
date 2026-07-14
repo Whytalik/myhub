@@ -44,6 +44,7 @@ function mapTask(task: TaskRow): TaskData {
     isPrivate: task.isPrivate ?? false,
     isBlocked: task.isBlocked ?? false,
     isFrog: task.isFrog ?? false,
+    resistance: task.resistance ?? null,
     plannedDate: task.plannedDate,
     hasPlannedTime: task.hasPlannedTime,
     plannedEndDate: task.plannedEndDate,
@@ -138,6 +139,7 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     priority,
     isPrivate,
     isBlocked,
+    resistance,
     plannedDate,
     hasPlannedTime,
     plannedEndDate,
@@ -174,6 +176,7 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
       priority: priority ?? undefined,
       isPrivate: isPrivate ?? undefined,
       isBlocked: isBlocked ?? undefined,
+      resistance: resistance !== undefined ? (resistance ?? null) : undefined,
       plannedDate: parsedPlannedDate !== undefined ? parsedPlannedDate : undefined,
       hasPlannedTime: hasPlannedTime ?? undefined,
       plannedEndDate: parsedPlannedEndDate !== undefined ? parsedPlannedEndDate : undefined,
@@ -202,6 +205,7 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     priority: priority ?? "MEDIUM",
     isPrivate: isPrivate ?? false,
     isBlocked: isBlocked ?? false,
+    resistance: resistance ?? null,
     plannedDate: (parsedPlannedDate as Date | null) ?? null,
     hasPlannedTime: hasPlannedTime ?? false,
     plannedEndDate: (parsedPlannedEndDate as Date | null) ?? null,
@@ -292,7 +296,7 @@ export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
   const userSphereNamesLower = new Set(userSpheres.map((s) => s.name.toLowerCase()));
 
   const missingDefaults = DEFAULT_SPHERES.filter(
-    (ds) => !userSphereNamesLower.has(ds.name.toLowerCase())
+    (ds) => !userSphereNamesLower.has(ds.name.toLowerCase()),
   );
 
   if (missingDefaults.length > 0) {
@@ -301,17 +305,17 @@ export async function getAllSpheres(userId: string): Promise<LifeSphereData[]> {
         ...s,
         userId,
         order: userSpheres.length + idx,
-      }))
+      })),
     );
 
     const dbSpheres = await prisma.lifeSphere.findMany({
       where: { userId },
       include: {
         _count: {
-          select: { tasks: true }
-        }
+          select: { tasks: true },
+        },
       },
-      orderBy: { order: "asc" }
+      orderBy: { order: "asc" },
     });
 
     try {

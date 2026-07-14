@@ -41,6 +41,7 @@ export interface TaskData {
   isPrivate: boolean;
   isBlocked: boolean;
   isFrog: boolean;
+  resistance: number | null;
   plannedDate: Date | null;
   hasPlannedTime: boolean;
   plannedEndDate: Date | null;
@@ -74,6 +75,7 @@ export interface UpsertTaskInput {
   isPrivate?: boolean;
   isBlocked?: boolean;
   isFrog?: boolean;
+  resistance?: number | null;
   plannedDate?: string | null;
   hasPlannedTime?: boolean;
   plannedEndDate?: string | null;

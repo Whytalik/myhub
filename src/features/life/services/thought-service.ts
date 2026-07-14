@@ -180,6 +180,7 @@ export async function decomposeThought(
     projectTitle?: string;
     atomTitle?: string;
     atomDescription?: string | null;
+    resistance?: number | null;
   },
 ) {
   const {
@@ -192,6 +193,7 @@ export async function decomposeThought(
     projectTitle,
     atomTitle,
     atomDescription,
+    resistance,
   } = input;
 
   // Verify thought ownership/existence
@@ -237,7 +239,7 @@ export async function decomposeThought(
           status: "TODO",
           priority: priority as any,
           sphereId: sphereId || thought.sphereId,
-          plannedDate: new Date(),
+          resistance,
           depth: 0,
         },
       });
@@ -267,7 +269,7 @@ export async function decomposeThought(
           priority: priority as any,
           projectId: createdProject.id,
           sphereId: sphereId || thought.sphereId,
-          plannedDate: new Date(),
+          resistance,
           depth: 0,
         },
       });

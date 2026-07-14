@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
-import { getSprintDashboard } from "@/features/life/services/sprint-service";
+import {
+  getSprintDashboard,
+  getStandaloneBacklogTasks,
+} from "@/features/life/services/sprint-service";
 import { getAllSpheres } from "@/features/life/services/task-service";
 import { KanbanBoardClient } from "@/features/life/components/sprints/KanbanBoardClient";
 
@@ -18,9 +21,10 @@ export default async function KanbanPage() {
     redirect("/login");
   }
 
-  const [dashboardData, spheres] = await Promise.all([
+  const [dashboardData, spheres, standaloneTasks] = await Promise.all([
     getSprintDashboard(userId),
     getAllSpheres(userId),
+    getStandaloneBacklogTasks(userId),
   ]);
 
   return (
@@ -39,6 +43,7 @@ export default async function KanbanPage() {
         initialBacklogProjects={dashboardData.backlogProjects as any}
         initialColumns={dashboardData.columns as any}
         initialAllTasks={dashboardData.allTasks as any}
+        initialStandaloneTasks={standaloneTasks as any}
         spheres={spheres}
       />
     </div>

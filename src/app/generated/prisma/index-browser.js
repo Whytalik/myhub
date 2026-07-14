@@ -270,7 +270,8 @@ exports.Prisma.TaskScalarFieldEnum = {
   carriedFromDate: 'carriedFromDate',
   carryOverReason: 'carryOverReason',
   isBlocked: 'isBlocked',
-  isFrog: 'isFrog'
+  isFrog: 'isFrog',
+  resistance: 'resistance'
 };
 
 exports.Prisma.DailyEntryScalarFieldEnum = {
