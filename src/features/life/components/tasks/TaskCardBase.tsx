@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useTransition, useCallback, useEffect, useMemo } from "react";
-import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy, RefreshCw } from "lucide-react";
+import { Plus, Trash2, ArrowUp, Calendar, Flag, FileText, Copy, RefreshCw, Folder } from "lucide-react";
 import { deleteTaskAction, setTaskAsFrogAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
 import { toast } from "sonner";
@@ -301,12 +301,16 @@ export function TaskCardBase({
               Frog
             </span>
           )}
-          {task.project && (
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-400 text-[10px] font-mono font-semibold uppercase tracking-wide border border-amber-500/10 truncate max-w-[150px]" title={task.project.title}>
+        </div>
+
+        {task.project && (
+          <div className="text-[10px] text-zinc-500 font-mono flex items-center gap-1.5 mt-0.5">
+            <Folder size={10} className="text-amber-500/70 shrink-0" />
+            <span className="text-amber-400/90 font-medium truncate max-w-full" title={task.project.title}>
               {task.project.title}
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="flex items-center gap-1.5 flex-wrap">
           <StatusToggle
