@@ -1276,8 +1276,8 @@ export function PlanningWizardClient({
                     type={currentDecomposeThought?.type || null}
                     templateData={currentDecomposeThought?.templateData || null}
                     onChange={(updatedFields) => {
-                      if (updatedFields.sphereId) {
-                        setSelectedSphereId(updatedFields.sphereId);
+                      if (updatedFields.sphereId !== undefined) {
+                        setSelectedSphereId(updatedFields.sphereId || "");
                       }
                       // Update thoughts state optimistically
                       setThoughts((previousThoughts) =>
@@ -1285,9 +1285,9 @@ export function PlanningWizardClient({
                           currentThought.id === currentDecomposeThought.id
                             ? {
                                 ...currentThought,
-                                sphereId: updatedFields.sphereId ?? null,
-                                type: updatedFields.type ?? null,
-                                templateData: (updatedFields.templateData ?? null) as Record<string, string> | null,
+                                sphereId: updatedFields.sphereId !== undefined ? updatedFields.sphereId : currentThought.sphereId,
+                                type: updatedFields.type !== undefined ? updatedFields.type : currentThought.type,
+                                templateData: (updatedFields.templateData !== undefined ? updatedFields.templateData : currentThought.templateData) as Record<string, string> | null,
                               }
                             : currentThought
                         )
@@ -1297,9 +1297,9 @@ export function PlanningWizardClient({
                         await upsertThoughtAction({
                           id: currentDecomposeThought.id,
                           content: currentDecomposeThought.content,
-                          sphereId: updatedFields.sphereId ?? null,
-                          type: updatedFields.type ?? null,
-                          templateData: updatedFields.templateData ?? null,
+                          sphereId: updatedFields.sphereId !== undefined ? updatedFields.sphereId : currentDecomposeThought.sphereId,
+                          type: updatedFields.type !== undefined ? updatedFields.type : currentDecomposeThought.type,
+                          templateData: updatedFields.templateData !== undefined ? updatedFields.templateData : currentDecomposeThought.templateData,
                         });
                       });
                     }}
