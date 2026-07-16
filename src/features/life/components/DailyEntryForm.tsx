@@ -10,7 +10,6 @@ import { NutritionSection } from "./sections/NutritionSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
 import { TaskReviewSection } from "./sections/TaskReviewSection";
 import { StandupSection } from "./sections/StandupSection";
-import { DailyVectorSection } from "./sections/DailyVectorSection";
 import { ConfidenceSection } from "./sections/ConfidenceSection";
 import { PdcaSection } from "./sections/PdcaSection";
 import {
@@ -359,8 +358,6 @@ export function DailyEntryForm({
                     onChange={patch}
                   />
                 </div>
-
-                <DailyVectorSection vector={data.dailyVector ?? null} onChange={patch} />
 
                 <Suspense fallback={suspenseFallback}>
                   <RoutineSection

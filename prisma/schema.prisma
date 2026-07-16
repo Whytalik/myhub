@@ -501,17 +501,18 @@ model TacticCompletion {
 }
 
 model SprintReview {
-  id          String   @id @default(cuid())
-  sprintId    String
-  weekNumber  Int
-  date        DateTime @db.Date
-  score       Float?
-  wins        String?
-  challenges  String?
-  adjustments String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  sprint      Sprint   @relation(fields: [sprintId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sprintId     String
+  weekNumber   Int
+  date         DateTime @db.Date
+  score        Float?
+  wins         String?
+  challenges   String?
+  adjustments  String?
+  kaizenVector Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  sprint       Sprint   @relation(fields: [sprintId], references: [id], onDelete: Cascade)
 
   @@index([sprintId])
 }

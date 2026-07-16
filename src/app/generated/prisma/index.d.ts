@@ -34726,6 +34726,7 @@ export namespace Prisma {
     wins: number
     challenges: number
     adjustments: number
+    kaizenVector: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -34777,6 +34778,7 @@ export namespace Prisma {
     wins?: true
     challenges?: true
     adjustments?: true
+    kaizenVector?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -34877,6 +34879,7 @@ export namespace Prisma {
     wins: string | null
     challenges: string | null
     adjustments: string | null
+    kaizenVector: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: SprintReviewCountAggregateOutputType | null
@@ -34909,6 +34912,7 @@ export namespace Prisma {
     wins?: boolean
     challenges?: boolean
     adjustments?: boolean
+    kaizenVector?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sprint?: boolean | SprintDefaultArgs<ExtArgs>
@@ -34923,6 +34927,7 @@ export namespace Prisma {
     wins?: boolean
     challenges?: boolean
     adjustments?: boolean
+    kaizenVector?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sprint?: boolean | SprintDefaultArgs<ExtArgs>
@@ -34937,6 +34942,7 @@ export namespace Prisma {
     wins?: boolean
     challenges?: boolean
     adjustments?: boolean
+    kaizenVector?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     sprint?: boolean | SprintDefaultArgs<ExtArgs>
@@ -34951,11 +34957,12 @@ export namespace Prisma {
     wins?: boolean
     challenges?: boolean
     adjustments?: boolean
+    kaizenVector?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SprintReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sprintId" | "weekNumber" | "date" | "score" | "wins" | "challenges" | "adjustments" | "createdAt" | "updatedAt", ExtArgs["result"]["sprintReview"]>
+  export type SprintReviewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sprintId" | "weekNumber" | "date" | "score" | "wins" | "challenges" | "adjustments" | "kaizenVector" | "createdAt" | "updatedAt", ExtArgs["result"]["sprintReview"]>
   export type SprintReviewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sprint?: boolean | SprintDefaultArgs<ExtArgs>
   }
@@ -34980,6 +34987,7 @@ export namespace Prisma {
       wins: string | null
       challenges: string | null
       adjustments: string | null
+      kaizenVector: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["sprintReview"]>
@@ -35414,6 +35422,7 @@ export namespace Prisma {
     readonly wins: FieldRef<"SprintReview", 'String'>
     readonly challenges: FieldRef<"SprintReview", 'String'>
     readonly adjustments: FieldRef<"SprintReview", 'String'>
+    readonly kaizenVector: FieldRef<"SprintReview", 'Json'>
     readonly createdAt: FieldRef<"SprintReview", 'DateTime'>
     readonly updatedAt: FieldRef<"SprintReview", 'DateTime'>
   }
@@ -47094,6 +47103,7 @@ export namespace Prisma {
     wins: 'wins',
     challenges: 'challenges',
     adjustments: 'adjustments',
+    kaizenVector: 'kaizenVector',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -49725,6 +49735,7 @@ export namespace Prisma {
     wins?: StringNullableFilter<"SprintReview"> | string | null
     challenges?: StringNullableFilter<"SprintReview"> | string | null
     adjustments?: StringNullableFilter<"SprintReview"> | string | null
+    kaizenVector?: JsonNullableFilter<"SprintReview">
     createdAt?: DateTimeFilter<"SprintReview"> | Date | string
     updatedAt?: DateTimeFilter<"SprintReview"> | Date | string
     sprint?: XOR<SprintScalarRelationFilter, SprintWhereInput>
@@ -49739,6 +49750,7 @@ export namespace Prisma {
     wins?: SortOrderInput | SortOrder
     challenges?: SortOrderInput | SortOrder
     adjustments?: SortOrderInput | SortOrder
+    kaizenVector?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     sprint?: SprintOrderByWithRelationInput
@@ -49756,6 +49768,7 @@ export namespace Prisma {
     wins?: StringNullableFilter<"SprintReview"> | string | null
     challenges?: StringNullableFilter<"SprintReview"> | string | null
     adjustments?: StringNullableFilter<"SprintReview"> | string | null
+    kaizenVector?: JsonNullableFilter<"SprintReview">
     createdAt?: DateTimeFilter<"SprintReview"> | Date | string
     updatedAt?: DateTimeFilter<"SprintReview"> | Date | string
     sprint?: XOR<SprintScalarRelationFilter, SprintWhereInput>
@@ -49770,6 +49783,7 @@ export namespace Prisma {
     wins?: SortOrderInput | SortOrder
     challenges?: SortOrderInput | SortOrder
     adjustments?: SortOrderInput | SortOrder
+    kaizenVector?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SprintReviewCountOrderByAggregateInput
@@ -49791,6 +49805,7 @@ export namespace Prisma {
     wins?: StringNullableWithAggregatesFilter<"SprintReview"> | string | null
     challenges?: StringNullableWithAggregatesFilter<"SprintReview"> | string | null
     adjustments?: StringNullableWithAggregatesFilter<"SprintReview"> | string | null
+    kaizenVector?: JsonNullableWithAggregatesFilter<"SprintReview">
     createdAt?: DateTimeWithAggregatesFilter<"SprintReview"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SprintReview"> | Date | string
   }
@@ -53068,6 +53083,7 @@ export namespace Prisma {
     wins?: string | null
     challenges?: string | null
     adjustments?: string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     sprint: SprintCreateNestedOneWithoutReviewsInput
@@ -53082,6 +53098,7 @@ export namespace Prisma {
     wins?: string | null
     challenges?: string | null
     adjustments?: string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -53094,6 +53111,7 @@ export namespace Prisma {
     wins?: NullableStringFieldUpdateOperationsInput | string | null
     challenges?: NullableStringFieldUpdateOperationsInput | string | null
     adjustments?: NullableStringFieldUpdateOperationsInput | string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sprint?: SprintUpdateOneRequiredWithoutReviewsNestedInput
@@ -53108,6 +53126,7 @@ export namespace Prisma {
     wins?: NullableStringFieldUpdateOperationsInput | string | null
     challenges?: NullableStringFieldUpdateOperationsInput | string | null
     adjustments?: NullableStringFieldUpdateOperationsInput | string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53121,6 +53140,7 @@ export namespace Prisma {
     wins?: string | null
     challenges?: string | null
     adjustments?: string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -53133,6 +53153,7 @@ export namespace Prisma {
     wins?: NullableStringFieldUpdateOperationsInput | string | null
     challenges?: NullableStringFieldUpdateOperationsInput | string | null
     adjustments?: NullableStringFieldUpdateOperationsInput | string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53146,6 +53167,7 @@ export namespace Prisma {
     wins?: NullableStringFieldUpdateOperationsInput | string | null
     challenges?: NullableStringFieldUpdateOperationsInput | string | null
     adjustments?: NullableStringFieldUpdateOperationsInput | string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55975,6 +55997,7 @@ export namespace Prisma {
     wins?: SortOrder
     challenges?: SortOrder
     adjustments?: SortOrder
+    kaizenVector?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -64481,6 +64504,7 @@ export namespace Prisma {
     wins?: string | null
     challenges?: string | null
     adjustments?: string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -64493,6 +64517,7 @@ export namespace Prisma {
     wins?: string | null
     challenges?: string | null
     adjustments?: string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -64632,6 +64657,7 @@ export namespace Prisma {
     wins?: StringNullableFilter<"SprintReview"> | string | null
     challenges?: StringNullableFilter<"SprintReview"> | string | null
     adjustments?: StringNullableFilter<"SprintReview"> | string | null
+    kaizenVector?: JsonNullableFilter<"SprintReview">
     createdAt?: DateTimeFilter<"SprintReview"> | Date | string
     updatedAt?: DateTimeFilter<"SprintReview"> | Date | string
   }
@@ -69886,6 +69912,7 @@ export namespace Prisma {
     wins?: string | null
     challenges?: string | null
     adjustments?: string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -69932,6 +69959,7 @@ export namespace Prisma {
     wins?: NullableStringFieldUpdateOperationsInput | string | null
     challenges?: NullableStringFieldUpdateOperationsInput | string | null
     adjustments?: NullableStringFieldUpdateOperationsInput | string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -69944,6 +69972,7 @@ export namespace Prisma {
     wins?: NullableStringFieldUpdateOperationsInput | string | null
     challenges?: NullableStringFieldUpdateOperationsInput | string | null
     adjustments?: NullableStringFieldUpdateOperationsInput | string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -69956,6 +69985,7 @@ export namespace Prisma {
     wins?: NullableStringFieldUpdateOperationsInput | string | null
     challenges?: NullableStringFieldUpdateOperationsInput | string | null
     adjustments?: NullableStringFieldUpdateOperationsInput | string | null
+    kaizenVector?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

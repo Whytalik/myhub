@@ -260,19 +260,22 @@ export async function decomposeThought(
         },
       });
 
-      const createdTask = await tx.task.create({
-        data: {
-          userId,
-          title: atomTitle || "Перший крок проєкту",
-          description: atomDescription || null,
-          status: "TODO",
-          priority: priority as any,
-          projectId: createdProject.id,
-          sphereId: sphereId || thought.sphereId,
-          resistance,
-          depth: 0,
-        },
-      });
+      let createdTask = null;
+      if (atomTitle && atomTitle.trim()) {
+        createdTask = await tx.task.create({
+          data: {
+            userId,
+            title: atomTitle,
+            description: atomDescription || null,
+            status: "TODO",
+            priority: priority as any,
+            projectId: createdProject.id,
+            sphereId: sphereId || thought.sphereId,
+            resistance,
+            depth: 0,
+          },
+        });
+      }
 
       await tx.thought.delete({
         where: { id: thoughtId, userId },

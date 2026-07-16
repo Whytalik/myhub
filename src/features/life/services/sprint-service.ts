@@ -319,6 +319,7 @@ export async function saveSprintReview(
     wins?: string;
     challenges?: string;
     adjustments?: string;
+    kaizenVector?: any;
   },
 ) {
   const sprint = await prisma.sprint.findFirst({
@@ -338,6 +339,7 @@ export async function saveSprintReview(
         wins: data.wins !== undefined ? data.wins : existingReview.wins,
         challenges: data.challenges !== undefined ? data.challenges : existingReview.challenges,
         adjustments: data.adjustments !== undefined ? data.adjustments : existingReview.adjustments,
+        kaizenVector: data.kaizenVector !== undefined ? data.kaizenVector : existingReview.kaizenVector,
       },
     });
   } else {
@@ -350,6 +352,7 @@ export async function saveSprintReview(
         wins: data.wins || null,
         challenges: data.challenges || null,
         adjustments: data.adjustments || null,
+        kaizenVector: data.kaizenVector || null,
       },
     });
   }

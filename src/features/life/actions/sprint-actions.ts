@@ -67,6 +67,7 @@ export async function saveSprintReviewAction(
     wins?: string;
     challenges?: string;
     adjustments?: string;
+    kaizenVector?: any;
   }
 ): Promise<ActionResult<any>> {
   return withAction(async (userId) => {

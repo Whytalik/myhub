@@ -15,6 +15,15 @@ import {
   Zap,
   Save,
   MessageSquareQuote,
+  ChevronDown,
+  ChevronUp,
+  TrendingUp,
+  ListChecks,
+  Gauge,
+  Feather,
+  Bot,
+  Users,
+  Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
@@ -24,7 +33,37 @@ import {
   deleteTaskAction,
 } from "@/features/life/actions/task-actions";
 import { saveSprintReviewAction } from "@/features/life/actions/sprint-actions";
-import type { TaskData, WeekSummary } from "@/features/life/types";
+import type { TaskData, WeekSummary, DailyVector } from "@/features/life/types";
+
+const VECTOR_PROMPTS: {
+  key: keyof DailyVector;
+  icon: any;
+  label: string;
+  placeholder: string;
+}[] = [
+  {
+    key: "toImprove",
+    icon: TrendingUp,
+    label: "Improve",
+    placeholder: "What do I need to improve?",
+  },
+  { key: "toDo", icon: ListChecks, label: "Do", placeholder: "What do I need to do?" },
+  {
+    key: "toIncreaseEfficiency",
+    icon: Gauge,
+    label: "Efficiency",
+    placeholder: "How do I increase efficiency?",
+  },
+  {
+    key: "toReduceEffort",
+    icon: Feather,
+    label: "Reduce Effort",
+    placeholder: "How do I reduce effort?",
+  },
+  { key: "toAutomate", icon: Bot, label: "Automate", placeholder: "What do I need to automate?" },
+  { key: "toDelegate", icon: Users, label: "Delegate", placeholder: "What do I need to delegate?" },
+  { key: "toFix", icon: Wrench, label: "Fix", placeholder: "What do I need to fix?" },
+];
 
 interface KaizenTabProps {
   tasks: TaskData[];
@@ -136,6 +175,18 @@ function KaizenFormInner({
   const [wins, setWins] = useState<string>(currentReview?.wins ?? "");
   const [challenges, setChallenges] = useState<string>(currentReview?.challenges ?? "");
   const [adjustments, setAdjustments] = useState<string>(currentReview?.adjustments ?? "");
+  const [isVectorExpanded, setIsVectorExpanded] = useState(false);
+  const [kaizenVector, setKaizenVector] = useState<any>(
+    currentReview?.kaizenVector ?? {
+      toImprove: null,
+      toDo: null,
+      toIncreaseEfficiency: null,
+      toReduceEffort: null,
+      toAutomate: null,
+      toDelegate: null,
+      toFix: null,
+    }
+  );
 
   // Checklist states
   const [checklist, setChecklist] = useState<Record<string, boolean>>({});
@@ -227,6 +278,7 @@ function KaizenFormInner({
           wins,
           challenges,
           adjustments,
+          kaizenVector,
         }
       );
 
@@ -543,6 +595,63 @@ function KaizenFormInner({
                 rows={2}
                 className="text-xs"
               />
+            </div>
+
+            {/* Kaizen Vector Section */}
+            <div className="border-t border-white/[0.06] pt-4 mt-2">
+              <button
+                type="button"
+                onClick={() => setIsVectorExpanded((v) => !v)}
+                className="flex items-center justify-between w-full text-left py-2 hover:bg-white/[0.02] rounded-lg px-2 -mx-2 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <Compass size={14} className="text-zinc-400" />
+                  <span className="text-xs font-mono uppercase tracking-wider text-zinc-400">
+                    Systemic Upgrades (Kaizen Vector)
+                  </span>
+                  {Object.values(kaizenVector || {}).filter(Boolean).length > 0 && (
+                    <span className="text-[10px] bg-accent/15 text-accent px-1.5 py-0.5 rounded-full font-mono">
+                      {Object.values(kaizenVector || {}).filter(Boolean).length}/7
+                    </span>
+                  )}
+                </div>
+                {isVectorExpanded ? (
+                  <ChevronUp size={14} className="text-zinc-500" />
+                ) : (
+                  <ChevronDown size={14} className="text-zinc-500" />
+                )}
+              </button>
+
+              {isVectorExpanded && (
+                <div className="grid grid-cols-1 gap-4 mt-4 bg-white/[0.01] border border-white/[0.04] p-4 rounded-xl">
+                  {VECTOR_PROMPTS.map(({ key, icon: Icon, label, placeholder }) => {
+                    const value = kaizenVector ? (kaizenVector as any)[key] : null;
+                    const hasValue = !!value;
+                    const labelClass = `text-[11px] font-mono ${hasValue ? "text-accent font-semibold" : "text-zinc-500"}`;
+
+                    return (
+                      <div key={key} className="flex flex-col gap-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <Icon size={12} className={hasValue ? "text-accent" : "text-zinc-500"} />
+                          <label className={labelClass}>{label}</label>
+                        </div>
+                        <Textarea
+                          value={value ?? ""}
+                          onChange={(e) =>
+                            setKaizenVector((prev: any) => ({
+                              ...(prev || {}),
+                              [key]: e.target.value || null,
+                            }))
+                          }
+                          placeholder={placeholder}
+                          rows={2}
+                          className="text-xs"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <Button

@@ -465,6 +465,7 @@ exports.Prisma.SprintReviewScalarFieldEnum = {
   wins: 'wins',
   challenges: 'challenges',
   adjustments: 'adjustments',
+  kaizenVector: 'kaizenVector',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };

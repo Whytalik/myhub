@@ -19,6 +19,7 @@ import {
   Zap,
   HelpCircle,
   Pencil,
+  Plus,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
@@ -31,6 +32,13 @@ import {
   upsertThoughtAction,
   deleteThoughtAction,
 } from "@/features/life/actions/thought-actions";
+import {
+  createProjectAction,
+  assignProjectToObjectiveAction,
+  createSprintObjectiveAction,
+  deleteProjectAction,
+} from "@/features/life/actions/sprint-actions";
+import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
 import { KanbanBoardClient } from "../sprints/KanbanBoardClient";
 import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields";
@@ -78,12 +86,44 @@ export function PlanningWizardClient({
       const saved = localStorage.getItem("planning-wizard-step");
       if (saved) {
         const parsed = parseInt(saved, 10);
-        if (parsed >= 0 && parsed <= 4) return parsed;
+        if (parsed >= 0 && parsed <= 6) return parsed;
       }
     }
-    return 0; // 0: Intro, 1: Brain Dump, 2: Filter, 3: Decompose, 4: Finish
+    return 0; // 0: Intro, 1: Brain Dump, 2: Filter, 3: Decompose, 4: Sprint Goals, 5: Project Deconstruct, 6: Distribute
   });
   const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts);
+  const [sprint, setSprint] = useState<any>(activeSprint);
+  const [backlogProjects, setBacklogProjects] = useState<any[]>(initialBacklogProjects);
+
+  // Step 4 state
+  const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
+  const [newObjectiveSphereId, setNewObjectiveSphereId] = useState(spheres[0]?.id || "");
+  const [newObjectiveDesc, setNewObjectiveDesc] = useState("");
+  const [showAddObjectiveForm, setShowAddObjectiveForm] = useState(false);
+  const [backlogSearch, setBacklogSearch] = useState("");
+
+  // Step 5 state
+  const activeSprintProjects = useMemo(() => {
+    if (!sprint?.objectives) return [];
+    return sprint.objectives.flatMap((obj: any) => obj.projects || []);
+  }, [sprint]);
+  const [selectedDeconstructProjectId, setSelectedDeconstructProjectId] = useState<string | null>(null);
+  
+  // Set default selected project when entering Step 5
+  useEffect(() => {
+    if (step === 5 && !selectedDeconstructProjectId && activeSprintProjects.length > 0) {
+      setSelectedDeconstructProjectId(activeSprintProjects[0].id);
+    }
+  }, [step, activeSprintProjects, selectedDeconstructProjectId]);
+
+  const selectedDeconstructProject = useMemo(() => {
+    return activeSprintProjects.find((p: any) => p.id === selectedDeconstructProjectId) || null;
+  }, [activeSprintProjects, selectedDeconstructProjectId]);
+
+  const [newAtomTitle, setNewAtomTitle] = useState("");
+  const [newAtomDesc, setNewAtomDesc] = useState("");
+  const [newAtomResistance, setNewAtomResistance] = useState(3);
+  const [newAtomPriority, setNewAtomPriority] = useState<any>("MEDIUM");
 
   // Step 1: Brain Dump state
   const [newThoughtText, setNewThoughtText] = useState("");
@@ -440,19 +480,189 @@ export function PlanningWizardClient({
         type: decomposeType,
         projectTitle: isProject ? title : undefined,
         description: isProject ? projectDesc : taskDesc,
-        atomTitle: isProject ? firstAtomTitle.trim() : title,
-        atomDescription: isProject ? firstAtomDesc.trim() : undefined,
+        atomTitle: isProject ? undefined : title,
+        atomDescription: undefined,
         sphereId: selectedSphereId,
         priority: "MEDIUM",
-        resistance,
+        resistance: isProject ? undefined : resistance,
       });
 
       if (result.success) {
         toast.success(isProject ? "Project created successfully!" : "Atom created successfully!");
+        if (isProject && result.data?.project) {
+          // Add project to backlog state
+          setBacklogProjects((prev) => [result.data.project, ...prev]);
+        }
       } else {
         // Rollback on failure
         setThoughts(previousThoughts);
         toast.error(result.error || "Error during decomposition");
+      }
+    });
+  };
+
+  // Step 4 Handlers
+  const handleCreateObjective = () => {
+    const title = newObjectiveTitle.trim();
+    if (!title || !sprint) return;
+
+    startActionTransition(async () => {
+      const result = await createSprintObjectiveAction(sprint.id, title, newObjectiveSphereId, newObjectiveDesc);
+      if (result.success) {
+        toast.success("Objective created successfully!");
+        setNewObjectiveTitle("");
+        setNewObjectiveDesc("");
+        setShowAddObjectiveForm(false);
+        const newObj = {
+          ...result.data,
+          sphere: spheres.find((s) => s.id === newObjectiveSphereId),
+          projects: [],
+        };
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: [...(prev?.objectives || []), newObj],
+        }));
+      } else {
+        toast.error(result.error || "Failed to create objective");
+      }
+    });
+  };
+
+  const handleAssignProject = (projectId: string, objectiveId: string | null) => {
+    startActionTransition(async () => {
+      const result = await assignProjectToObjectiveAction(projectId, objectiveId);
+      if (result.success) {
+        toast.success(objectiveId ? "Project assigned to objective!" : "Project moved to backlog!");
+        
+        let projectToMove: any = null;
+        
+        const backlogIndex = backlogProjects.findIndex((p) => p.id === projectId);
+        if (backlogIndex !== -1) {
+          projectToMove = backlogProjects[backlogIndex];
+        } else {
+          for (const obj of sprint.objectives) {
+            const idx = obj.projects.findIndex((p: any) => p.id === projectId);
+            if (idx !== -1) {
+              projectToMove = obj.projects[idx];
+              break;
+            }
+          }
+        }
+
+        if (!projectToMove) return;
+
+        const updatedProject = {
+          ...projectToMove,
+          objectiveId: objectiveId,
+          tasks: projectToMove.tasks || [],
+        };
+
+        setBacklogProjects((prev) => prev.filter((p) => p.id !== projectId));
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.filter((p: any) => p.id !== projectId),
+          })),
+        }));
+
+        if (objectiveId === null) {
+          setBacklogProjects((prev) => [updatedProject, ...prev]);
+        } else {
+          setSprint((prev: any) => ({
+            ...prev,
+            objectives: prev.objectives.map((obj: any) => {
+              if (obj.id === objectiveId) {
+                return {
+                  ...obj,
+                  projects: [...obj.projects, updatedProject],
+                };
+              }
+              return obj;
+            }),
+          }));
+        }
+      } else {
+        toast.error(result.error || "Failed to assign project");
+      }
+    });
+  };
+
+  // Step 5 Handlers
+  const handleAddAtomToProject = () => {
+    const title = newAtomTitle.trim();
+    if (!title || !selectedDeconstructProjectId || !sprint) return;
+
+    startActionTransition(async () => {
+      let sphereId: string | null = null;
+      for (const obj of sprint.objectives) {
+        if (obj.projects.some((p: any) => p.id === selectedDeconstructProjectId)) {
+          sphereId = obj.sphereId;
+          break;
+        }
+      }
+
+      const result = await upsertTaskAction({
+        title,
+        description: newAtomDesc.trim() || null,
+        projectId: selectedDeconstructProjectId,
+        sphereId,
+        status: "TODO",
+        priority: newAtomPriority,
+        resistance: newAtomResistance,
+      });
+
+      if (result.success) {
+        toast.success("Task atom created!");
+        setNewAtomTitle("");
+        setNewAtomDesc("");
+        setNewAtomResistance(3);
+        setNewAtomPriority("MEDIUM");
+
+        const newTask = result.data;
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.map((p: any) => {
+              if (p.id === selectedDeconstructProjectId) {
+                return {
+                  ...p,
+                  tasks: [...(p.tasks || []), newTask],
+                };
+              }
+              return p;
+            }),
+          })),
+        }));
+      } else {
+        toast.error(result.error || "Failed to add task atom");
+      }
+    });
+  };
+
+  const handleDeleteAtomFromProject = (taskId: string) => {
+    startActionTransition(async () => {
+      const result = await deleteTaskAction(taskId);
+      if (result.success) {
+        toast.success("Task atom deleted");
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.map((p: any) => {
+              if (p.id === selectedDeconstructProjectId) {
+                return {
+                  ...p,
+                  tasks: (p.tasks || []).filter((t: any) => t.id !== taskId),
+                };
+              }
+              return p;
+            }),
+          })),
+        }));
+      } else {
+        toast.error(result.error || "Failed to delete task atom");
       }
     });
   };
@@ -493,40 +703,74 @@ export function PlanningWizardClient({
       {/* Step Indicator */}
       {step > 0 && (
         <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/[0.06] pb-4 gap-3">
-          <div className="flex flex-wrap items-center gap-1.5 md:gap-4 text-xs font-mono text-zinc-500">
-            <span
-              className={
+          <div className="flex flex-wrap items-center gap-1.5 md:gap-3 text-xs font-mono text-zinc-500">
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className={`hover:text-zinc-200 transition-colors duration-150 ${
                 step === 1 ? "text-accent font-bold" : thoughts.length > 0 ? "text-zinc-300" : ""
-              }
+              }`}
             >
               1. BRAIN DUMP
-            </span>
-            <ChevronRight size={12} />
-            <span
-              className={
+            </button>
+            <ChevronRight size={10} />
+            <button
+              type="button"
+              onClick={() => setStep(2)}
+              className={`hover:text-zinc-200 transition-colors duration-150 ${
                 step === 2
                   ? "text-accent font-bold"
                   : inboxThoughts.length === 0
                     ? "text-zinc-300"
                     : ""
-              }
+              }`}
             >
               2. PRIME FILTER
-            </span>
-            <ChevronRight size={12} />
-            <span
-              className={
+            </button>
+            <ChevronRight size={10} />
+            <button
+              type="button"
+              onClick={() => setStep(3)}
+              className={`hover:text-zinc-200 transition-colors duration-150 ${
                 step === 3
                   ? "text-accent font-bold"
                   : decomposableThoughts.length === 0
                     ? "text-zinc-300"
                     : ""
-              }
+              }`}
             >
               3. DECOMPOSITION
-            </span>
-            <ChevronRight size={12} />
-            <span className={step === 4 ? "text-accent font-bold" : ""}>4. DISTRIBUTE</span>
+            </button>
+            <ChevronRight size={10} />
+            <button
+              type="button"
+              onClick={() => setStep(4)}
+              className={`hover:text-zinc-200 transition-colors duration-150 ${
+                step === 4 ? "text-accent font-bold" : "text-zinc-300"
+              }`}
+            >
+              4. SPRINT PROJECTS
+            </button>
+            <ChevronRight size={10} />
+            <button
+              type="button"
+              onClick={() => setStep(5)}
+              className={`hover:text-zinc-200 transition-colors duration-150 ${
+                step === 5 ? "text-accent font-bold" : "text-zinc-300"
+              }`}
+            >
+              5. DECONSTRUCTION
+            </button>
+            <ChevronRight size={10} />
+            <button
+              type="button"
+              onClick={() => setStep(6)}
+              className={`hover:text-zinc-200 transition-colors duration-150 ${
+                step === 6 ? "text-accent font-bold" : "text-zinc-300"
+              }`}
+            >
+              6. DISTRIBUTE
+            </button>
           </div>
 
           <div className="flex items-center gap-3">
@@ -582,7 +826,7 @@ export function PlanningWizardClient({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl w-full text-left mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl w-full text-left mt-4">
             <div className="glass-card p-4 flex gap-3 border-white/[0.04] bg-white/[0.01]">
               <span className="text-xl">✍️</span>
               <div>
@@ -601,7 +845,7 @@ export function PlanningWizardClient({
                   2. Prime Filter
                 </h4>
                 <p className="text-[11px] text-zinc-500 mt-1">
-                  Separate true desires from external obligations. Discard informational clutter.
+                  Separate true desires from obligations. Discard noise.
                 </p>
               </div>
             </div>
@@ -612,7 +856,29 @@ export function PlanningWizardClient({
                   3. Decomposition
                 </h4>
                 <p className="text-[11px] text-zinc-500 mt-1">
-                  Convert raw ideas into projects or concrete physical actions (atoms).
+                  Convert thoughts into Projects or Standalone Tasks in your backlog.
+                </p>
+              </div>
+            </div>
+            <div className="glass-card p-4 flex gap-3 border-white/[0.04] bg-white/[0.01]">
+              <span className="text-xl">🎯</span>
+              <div>
+                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">
+                  4. Sprint Goals
+                </h4>
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Define sprint objectives and pull projects from backlog.
+                </p>
+              </div>
+            </div>
+            <div className="glass-card p-4 flex gap-3 border-white/[0.04] bg-white/[0.01]">
+              <span className="text-xl">🛠️</span>
+              <div>
+                <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">
+                  5. Deconstruction
+                </h4>
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Break down sprint projects into simple actionable task atoms.
                 </p>
               </div>
             </div>
@@ -620,10 +886,10 @@ export function PlanningWizardClient({
               <span className="text-xl">📅</span>
               <div>
                 <h4 className="text-xs uppercase font-mono tracking-wider font-semibold text-zinc-300">
-                  4. Distribution (Kanban)
+                  6. Distribution
                 </h4>
                 <p className="text-[11px] text-zinc-500 mt-1">
-                  Set weekly plans and distribute daily workloads.
+                  Distribute task atoms across the weeks and days of your sprint.
                 </p>
               </div>
             </div>
@@ -1441,6 +1707,23 @@ export function PlanningWizardClient({
                     </button>
                   </div>
                 </div>
+
+                <div className="flex justify-between text-xs text-zinc-500 border-t border-white/[0.04] pt-4 mt-2">
+                  <button
+                    type="button"
+                    onClick={() => setStep(2)}
+                    className="text-zinc-450 hover:text-zinc-350"
+                  >
+                    &larr; Back to Filtering
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setStep(4)}
+                    className="text-zinc-400 hover:text-zinc-200 font-semibold"
+                  >
+                    Skip decomposition and proceed &rarr;
+                  </button>
+                </div>
               </div>
 
               <div className="glass-card p-5 bg-black/20 border-white/[0.06] rounded-xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
@@ -1564,62 +1847,45 @@ export function PlanningWizardClient({
                             rows={2}
                           />
                         </div>
-
-                        <div className="p-3 bg-white/[0.02] border border-white/[0.04] rounded-xl flex flex-col gap-3">
-                          <span className="text-[10px] font-mono text-amber-400 font-semibold uppercase tracking-wider block">
-                            🎯 First Action (Atom)
-                          </span>
-                          <div className="flex flex-col gap-2">
-                            <Input
-                              value={firstAtomTitle}
-                              onChange={(e) => setFirstAtomTitle(e.target.value)}
-                              placeholder="First physical step to kickstart project..."
-                            />
-                            <Textarea
-                              value={firstAtomDesc}
-                              onChange={(e) => setFirstAtomDesc(e.target.value)}
-                              placeholder="Notes for the first step..."
-                              rows={2}
-                            />
-                          </div>
-                        </div>
                       </div>
                     )}
 
-                    <div className="flex flex-col gap-3 border-t border-white/[0.04] pt-3">
-                      <div className="flex flex-col gap-1.5">
-                        <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
-                          <span>Internal resistance before action</span>
-                          <span className="text-orange-400 font-bold">{resistance} / 5</span>
+                    {decomposeType === "task" && (
+                      <div className="flex flex-col gap-3 border-t border-white/[0.04] pt-3">
+                        <div className="flex flex-col gap-1.5">
+                          <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+                            <span>Internal resistance before action</span>
+                            <span className="text-orange-400 font-bold">{resistance} / 5</span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            {[1, 2, 3, 4, 5].map((val) => (
+                              <button
+                                key={val}
+                                type="button"
+                                onClick={() => setResistance(val)}
+                                className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
+                                  resistance === val
+                                    ? val >= 4
+                                      ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                                      : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                    : "bg-white/[0.01] border-white/[0.06] text-zinc-500 hover:bg-white/[0.03]"
+                                }`}
+                              >
+                                {val}
+                              </button>
+                            ))}
+                          </div>
+                          {resistance >= 4 && (
+                            <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
+                              <AlertTriangle size={11} className="shrink-0" />
+                              <span>
+                                Resistance is high: better split this step into an even simpler one!
+                              </span>
+                            </p>
+                          )}
                         </div>
-                        <div className="flex items-center gap-1.5">
-                          {[1, 2, 3, 4, 5].map((val) => (
-                            <button
-                              key={val}
-                              type="button"
-                              onClick={() => setResistance(val)}
-                              className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
-                                resistance === val
-                                  ? val >= 4
-                                    ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                                    : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                                  : "bg-white/[0.01] border-white/[0.06] text-zinc-500 hover:bg-white/[0.03]"
-                              }`}
-                            >
-                              {val}
-                            </button>
-                          ))}
-                        </div>
-                        {resistance >= 4 && (
-                          <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
-                            <AlertTriangle size={11} className="shrink-0" />
-                            <span>
-                              Resistance is high: better split this step into an even simpler one!
-                            </span>
-                          </p>
-                        )}
                       </div>
-                    </div>
+                    )}
 
                     <Button
                       type="button"
@@ -1639,15 +1905,462 @@ export function PlanningWizardClient({
         </div>
       )}
 
-      {/* 📅 STEP 4: KANBAN DISTRIBUTION */}
+      {/* STEP 4: SPRINT OBJECTIVES & PROJECTS */}
       {step === 4 && (
+        <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6">
+          <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
+            <div>
+              <h3 className="text-panel-title font-semibold text-zinc-200">
+                Step 4: Sprint Objectives & Projects
+              </h3>
+              <p className="text-[11px] text-zinc-500 mt-0.5">
+                Define your goals for the sprint and assign backlog projects to them.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowAddObjectiveForm(!showAddObjectiveForm)}
+                className="text-xs flex items-center gap-1.5"
+              >
+                <Plus size={14} /> New Objective
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setStep(5)}
+                className="text-xs"
+              >
+                Next: Deconstruct Projects <ChevronRight size={14} className="ml-1" />
+              </Button>
+            </div>
+          </div>
+
+          {showAddObjectiveForm && (
+            <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02] flex flex-col gap-4 animate-fade-up max-w-lg">
+              <h4 className="text-xs font-mono font-semibold text-zinc-300 uppercase">
+                Add Sprint Objective
+              </h4>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] font-mono text-zinc-400">Title</label>
+                  <Input
+                    value={newObjectiveTitle}
+                    onChange={(e) => setNewObjectiveTitle(e.target.value)}
+                    placeholder="e.g. Master React Native navigation"
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] font-mono text-zinc-400">Sphere (Area)</label>
+                  <select
+                    value={newObjectiveSphereId}
+                    onChange={(e) => setNewObjectiveSphereId(e.target.value)}
+                    className="bg-black/30 border border-white/8 rounded-lg px-3 py-1.5 text-sm text-zinc-150"
+                  >
+                    {spheres.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] font-mono text-zinc-400">Description</label>
+                  <Textarea
+                    value={newObjectiveDesc}
+                    onChange={(e) => setNewObjectiveDesc(e.target.value)}
+                    placeholder="What does success look like?"
+                    rows={2}
+                  />
+                </div>
+                <div className="flex gap-2 justify-end mt-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowAddObjectiveForm(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handleCreateObjective}
+                    disabled={!newObjectiveTitle.trim() || isActionPending}
+                  >
+                    Create
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 items-start">
+            {/* Sprint Objectives Panel */}
+            <div className="flex flex-col gap-4">
+              <h4 className="text-xs font-mono font-semibold uppercase text-zinc-400 border-b border-white/[0.04] pb-2">
+                Sprint Objectives & Active Projects
+              </h4>
+
+              {(!sprint?.objectives || sprint.objectives.length === 0) ? (
+                <div className="text-zinc-500 text-xs italic py-8 text-center border border-dashed border-white/[0.06] rounded-xl">
+                  No objectives defined for this sprint. Create one to assign projects.
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {sprint.objectives.map((obj: any) => (
+                    <div key={obj.id} className="glass-card p-4 border-white/[0.06] bg-white/[0.02] rounded-xl flex flex-col gap-3">
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="w-2.5 h-2.5 rounded-full shrink-0"
+                            style={{ backgroundColor: obj.sphere?.color }}
+                          />
+                          <h5 className="text-sm font-semibold text-zinc-200">
+                            {obj.title}
+                          </h5>
+                        </div>
+                        <span className="text-[9px] font-mono text-zinc-500 uppercase bg-white/[0.04] px-2 py-0.5 rounded">
+                          {obj.sphere?.name}
+                        </span>
+                      </div>
+                      
+                      {obj.description && (
+                        <p className="text-xs text-zinc-400 italic">
+                          {obj.description}
+                        </p>
+                      )}
+
+                      <div className="flex flex-col gap-2 mt-2">
+                        <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                          Assigned Projects:
+                        </span>
+                        
+                        {(!obj.projects || obj.projects.length === 0) ? (
+                          <div className="text-[11px] text-zinc-500 italic py-2">
+                            No projects linked. Assign a project from the backlog.
+                          </div>
+                        ) : (
+                          <div className="flex flex-col gap-2">
+                            {obj.projects.map((p: any) => (
+                              <div key={p.id} className="flex justify-between items-center bg-white/[0.01] border border-white/[0.04] p-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150">
+                                <span className="text-zinc-200 font-medium">
+                                  📂 {p.title}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleAssignProject(p.id, null)}
+                                  className="text-[10px] text-rose-450 hover:text-rose-400 font-mono"
+                                  disabled={isActionPending}
+                                >
+                                  Unassign
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Backlog Projects Panel */}
+            <div className="flex flex-col gap-4 bg-black/10 border border-white/[0.04] p-4 rounded-xl">
+              <div className="flex justify-between items-center">
+                <h4 className="text-xs font-mono font-semibold uppercase text-zinc-400">
+                  Project Backlog
+                </h4>
+                <span className="text-[10px] font-mono text-zinc-500 bg-white/[0.03] px-2 py-0.5 rounded">
+                  {backlogProjects.length} projects
+                </span>
+              </div>
+
+              <Input
+                value={backlogSearch}
+                onChange={(e) => setBacklogSearch(e.target.value)}
+                placeholder="Search backlog projects..."
+                className="h-8 text-xs"
+              />
+
+              <div className="flex flex-col gap-2 max-h-[350px] overflow-y-auto pr-1">
+                {backlogProjects.filter(p => p.title.toLowerCase().includes(backlogSearch.toLowerCase())).length === 0 ? (
+                  <div className="text-zinc-500 text-xs italic py-8 text-center">
+                    No backlog projects found.
+                  </div>
+                ) : (
+                  backlogProjects
+                    .filter(p => p.title.toLowerCase().includes(backlogSearch.toLowerCase()))
+                    .map((p) => (
+                      <div key={p.id} className="glass-card p-3 border-white/[0.04] bg-white/[0.01] rounded-lg text-xs flex flex-col gap-2">
+                        <span className="text-zinc-200 font-medium break-words">📂 {p.title}</span>
+                        {p.description && (
+                          <span className="text-[10px] text-zinc-505 line-clamp-2">{p.description}</span>
+                        )}
+                        {sprint.objectives.length > 0 ? (
+                          <div className="flex flex-col gap-1 mt-1 pt-1.5 border-t border-white/[0.04]">
+                            <span className="text-[8px] font-mono text-zinc-505 uppercase">
+                              Assign to Objective:
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {sprint.objectives.map((obj: any) => (
+                                <button
+                                  key={obj.id}
+                                  type="button"
+                                  onClick={() => handleAssignProject(p.id, obj.id)}
+                                  className="text-[9px] font-mono bg-white/[0.03] hover:bg-accent/15 hover:text-accent border border-white/[0.06] rounded px-1.5 py-0.5 text-zinc-300 transition-colors duration-150 truncate max-w-[100px]"
+                                  title={obj.title}
+                                  disabled={isActionPending}
+                                >
+                                  {obj.title}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-[8px] text-zinc-500 italic">Create an objective first</span>
+                        )}
+                      </div>
+                    ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* STEP 5: PROJECT DECONSTRUCTION */}
+      {step === 5 && (
+        <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6">
+          <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
+            <div>
+              <h3 className="text-panel-title font-semibold text-zinc-200">
+                Step 5: Project Deconstruction
+              </h3>
+              <p className="text-[11px] text-zinc-500 mt-0.5">
+                Break down active sprint projects into micro-tasks (atoms) to remove resistance.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setStep(4)}
+                className="text-xs"
+              >
+                <ChevronLeft size={14} className="mr-1" /> Back to Objectives
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  startActionTransition(async () => {
+                    router.refresh();
+                    setStep(6);
+                  });
+                }}
+                disabled={isActionPending}
+                className="text-xs"
+              >
+                Next: Weekly Planning <ChevronRight size={14} className="ml-1" />
+              </Button>
+            </div>
+          </div>
+
+          {activeSprintProjects.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
+              <AlertTriangle size={36} className="text-amber-400" />
+              <div className="flex flex-col gap-1 max-w-sm">
+                <h4 className="text-sm font-semibold text-zinc-200 font-mono">No active projects!</h4>
+                <p className="text-xs text-zinc-400">
+                  You haven't assigned any projects to this sprint. Go back and assign some to objectives.
+                </p>
+              </div>
+              <Button variant="outline" size="sm" onClick={() => setStep(4)} className="mt-2">
+                <ChevronLeft size={14} className="mr-1" /> Back to Step 4
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6 items-start">
+              {/* Left Project List */}
+              <div className="flex flex-col gap-2 border-r border-white/[0.04] pr-4 max-h-[500px] overflow-y-auto">
+                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold mb-1">
+                  Active Projects
+                </span>
+                {activeSprintProjects.map((p: any) => {
+                  const isSelected = p.id === selectedDeconstructProjectId;
+                  const taskCount = p.tasks?.length || 0;
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setSelectedDeconstructProjectId(p.id)}
+                      className={`w-full text-left p-3 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
+                        isSelected
+                          ? "bg-accent/10 border-accent/30 text-accent font-semibold shadow-sm"
+                          : "bg-white/[0.01] border-white/[0.04] text-zinc-400 hover:bg-white/[0.02]"
+                      }`}
+                    >
+                      <span className="truncate w-full">📂 {p.title}</span>
+                      <span className="text-[9px] opacity-75 font-mono">
+                        {taskCount} task atoms
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Right Deconstruction Panel */}
+              {selectedDeconstructProject ? (
+                <div className="flex flex-col gap-6">
+                  {/* Selected Project Info */}
+                  <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]">
+                    <span className="text-[9px] font-mono text-accent uppercase tracking-wider block font-semibold mb-1">
+                      Currently Deconstructing
+                    </span>
+                    <h4 className="text-base font-bold text-zinc-150">
+                      📂 {selectedDeconstructProject.title}
+                    </h4>
+                    {selectedDeconstructProject.description && (
+                      <p className="text-xs text-zinc-450 mt-1 whitespace-pre-wrap">
+                        {selectedDeconstructProject.description}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Add Atom Form */}
+                  <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.01] flex flex-col gap-4">
+                    <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-wider font-semibold">
+                      ➕ Add Actionable Atom
+                    </span>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-mono text-zinc-450 uppercase">Task Title</label>
+                        <Input
+                          value={newAtomTitle}
+                          onChange={(e) => setNewAtomTitle(e.target.value)}
+                          placeholder="e.g. Write design spec drafts, Install package dependencies..."
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey) {
+                              e.preventDefault();
+                              handleAddAtomToProject();
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-mono text-zinc-450 uppercase">Description / Links (optional)</label>
+                        <Textarea
+                          value={newAtomDesc}
+                          onChange={(e) => setNewAtomDesc(e.target.value)}
+                          placeholder="Notes, references or urls..."
+                          rows={2}
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-3">
+                        <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+                          <span>Internal resistance before action</span>
+                          <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          {[1, 2, 3, 4, 5].map((val) => (
+                            <button
+                              key={val}
+                              type="button"
+                              onClick={() => setNewAtomResistance(val)}
+                              className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
+                                newAtomResistance === val
+                                  ? val >= 4
+                                    ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                                    : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                  : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
+                              }`}
+                            >
+                              {val}
+                            </button>
+                          ))}
+                        </div>
+                        {newAtomResistance >= 4 && (
+                          <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
+                            <AlertTriangle size={11} className="shrink-0" />
+                            <span>
+                              Resistance is high: better split this step into an even simpler one!
+                            </span>
+                          </p>
+                        )}
+                      </div>
+
+                      <Button
+                        type="button"
+                        variant="primary"
+                        size="sm"
+                        onClick={handleAddAtomToProject}
+                        disabled={!newAtomTitle.trim() || isActionPending}
+                        className="w-fit self-end mt-1"
+                      >
+                        Add Atom to Project
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Tasks List */}
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold border-b border-white/[0.04] pb-1">
+                      Project Tasks ({selectedDeconstructProject.tasks?.length || 0})
+                    </span>
+                    {(!selectedDeconstructProject.tasks || selectedDeconstructProject.tasks.length === 0) ? (
+                      <div className="text-zinc-500 text-xs italic py-6 text-center">
+                        No tasks added to this project yet. Use the form above to add task atoms.
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto pr-1">
+                        {selectedDeconstructProject.tasks.map((task: any) => (
+                          <div key={task.id} className="flex justify-between items-center bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg text-xs group hover:bg-white/[0.02] transition-colors duration-150">
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-zinc-200 font-medium">✔️ {task.title}</span>
+                              {task.description && (
+                                <span className="text-[10px] text-zinc-505">{task.description}</span>
+                              )}
+                              {task.resistance && (
+                                <span className="text-[9px] font-mono text-orange-400">Friction: {task.resistance}/5</span>
+                              )}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteAtomFromProject(task.id)}
+                              className="p-1 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                              title="Delete task atom"
+                              disabled={isActionPending}
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-zinc-505 text-xs italic py-16 text-center">
+                  Select a project from the left to start deconstruction.
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 📅 STEP 6: KANBAN DISTRIBUTION */}
+      {step === 6 && (
         <div className="flex flex-col gap-6">
           <div className="glass-card p-4 bg-emerald-500/5 border-emerald-500/10 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-3">
               <span className="text-xl">🎉</span>
               <div>
                 <h4 className="text-sm font-bold text-zinc-100 font-mono">
-                  Decomposition complete! Step 4: Distribute
+                  Deconstruction complete! Step 6: Distribute
                 </h4>
                 <p className="text-xs text-zinc-400">
                   All your new projects are added to the Backlog, and atoms to the Weekly Plan.
@@ -1666,8 +2379,8 @@ export function PlanningWizardClient({
           </div>
 
           <KanbanBoardClient
-            initialSprint={activeSprint}
-            initialBacklogProjects={initialBacklogProjects}
+            initialSprint={sprint}
+            initialBacklogProjects={backlogProjects}
             initialColumns={initialColumns}
             spheres={spheres}
           />
