@@ -947,7 +947,7 @@ export function PlanningWizardClient({
           <div className="flex flex-col gap-2 max-w-lg">
             <h2 className="text-2xl font-bold text-zinc-100 font-mono">Kaizen Planning Cycle</h2>
             <p className="text-sm text-zinc-400 leading-relaxed">
-              Do not try to plan the chaos in your head. Let's declutter your mind, sift thoughts
+              Do not try to plan the chaos in your head. Let&apos;s declutter your mind, sift thoughts
               through the Prime Filter, and break them down into atoms.
             </p>
           </div>
@@ -1475,7 +1475,7 @@ export function PlanningWizardClient({
                 {filterStage === "q1b" && (
                   <div className="flex flex-col gap-3 w-full items-center">
                     <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
-                      ❓ What happens if I just ignore it and don't do it?
+                      ❓ What happens if I just ignore it and don&apos;t do it?
                     </p>
                     <div className="grid grid-cols-2 gap-3 w-full">
                       <Button
@@ -2342,7 +2342,7 @@ export function PlanningWizardClient({
               <div className="flex flex-col gap-1 max-w-sm">
                 <h4 className="text-sm font-semibold text-zinc-200 font-mono">No active projects!</h4>
                 <p className="text-xs text-zinc-400">
-                  You haven't assigned any projects to this sprint. Go back and assign some to objectives.
+                  You haven&apos;t assigned any projects to this sprint. Go back and assign some to objectives.
                 </p>
               </div>
               <Button variant="outline" size="sm" onClick={() => setStep(4)} className="mt-2">
@@ -2356,9 +2356,10 @@ export function PlanningWizardClient({
                 <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold mb-1">
                   Active Projects
                 </span>
-                {activeSprintProjects.map((p: any) => {
+                {activeSprintProjects.map((p: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const taskCount = p.tasks?.length || 0;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const subAtomCount = (p.tasks || []).reduce((sum: number, t: any) => sum + (t.children?.length || 0), 0);
                   return (
                     <div key={p.id} className="group/proj relative">
@@ -2568,6 +2569,7 @@ export function PlanningWizardClient({
                       </div>
                     ) : (
                       <div className="flex flex-col gap-1.5 max-h-[500px] overflow-y-auto pr-1">
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {selectedDeconstructProject.tasks.map((task: any) => {
                           const hasChildren = (task.children || []).length > 0;
                           const isExpanded = expandedGroupId === task.id;
@@ -2633,6 +2635,7 @@ export function PlanningWizardClient({
                               {/* Expanded: sub-atoms + inline form */}
                               {isExpanded && (
                                 <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
+                                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                   {children.length > 0 ? (
                                     children.map((atom: any) => (
                                       <div key={atom.id} className="flex items-center gap-2 pl-5 pr-1 py-1.5 rounded text-xs group/atom hover:bg-white/[0.02] transition-colors duration-150">
