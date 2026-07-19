@@ -402,3 +402,39 @@ export async function updateSprintObjective(
     },
   });
 }
+
+export async function getCurrentSprintProjects(userId: string) {
+  const sprint = await prisma.sprint.findFirst({
+    where: { userId, status: "ACTIVE" },
+    include: {
+      objectives: {
+        include: {
+          projects: {
+            include: {
+              tasks: {
+                where: { parentId: null },
+                include: {
+                  children: true,
+                },
+                orderBy: { createdAt: "asc" },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!sprint) return [];
+
+  const projects = sprint.objectives.flatMap((obj) => obj.projects || []);
+  return projects.map((p) => ({
+    id: p.id,
+    title: p.title,
+    groups: p.tasks.map((t) => ({
+      id: t.id,
+      title: t.title,
+      childCount: t.children.length,
+    })),
+  }));
+}
