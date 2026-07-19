@@ -2571,13 +2571,14 @@ export function PlanningWizardClient({
                       <div className="flex flex-col gap-1.5 max-h-[500px] overflow-y-auto pr-1">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {selectedDeconstructProject.tasks.map((task: any) => {
+                          const isGroup = !!(task.description || task.resistance);
                           const hasChildren = (task.children || []).length > 0;
                           const isExpanded = expandedGroupId === task.id;
                           const children = task.children || [];
                           const childCount = children.length;
                           const doneCount = children.filter((c: any) => c.status === "DONE").length;
 
-                          if (!hasChildren) {
+                          if (!isGroup) {
                             return (
                               <div key={task.id} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150 group">
                                 <span className={`flex-1 truncate ${task.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}>
