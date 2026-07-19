@@ -101,3 +101,9 @@ export async function updateSprintObjectiveAction(
      return objective;
   });
 }
+
+export async function getCurrentSprintProjectsAction(): Promise<ActionResult<any>> {
+  return withAction(async (userId) => {
+    return await sprintService.getCurrentSprintProjects(userId);
+  });
+}

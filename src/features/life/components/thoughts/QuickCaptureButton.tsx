@@ -6,11 +6,18 @@ import { toast } from "sonner";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
 import { Textarea } from "@/components/ui/inputs/textarea";
-import { quickCaptureAction } from "@/features/life/actions/thought-actions";
+import { quickCaptureAction, decomposeThoughtAction } from "@/features/life/actions/thought-actions";
 import { getAllSpheresAction } from "@/features/life/actions/task-actions";
+import { getCurrentSprintProjectsAction } from "@/features/life/actions/sprint-actions";
 import { ThoughtFields } from "./ThoughtFields";
 import type { ThoughtType } from "@/features/life/logic/thought-types";
 import type { LifeSphereData } from "@/features/life/types";
+
+type SprintProject = {
+  id: string;
+  title: string;
+  groups: { id: string; title: string; childCount: number }[];
+};
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -44,6 +51,10 @@ export function QuickCaptureButton() {
   const [templateData, setTemplateData] = useState<Record<string, string> | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  const [projects, setProjects] = useState<SprintProject[]>([]);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [selectedParentId, setSelectedParentId] = useState<string | null>(null);
+
   // Strip the ?capture=1 param once consumed — a history mutation, not
   // React state, so it's a legitimate effect side effect.
   useEffect(() => {
@@ -75,6 +86,8 @@ export function QuickCaptureButton() {
     setSphereId(null);
     setType(null);
     setTemplateData(null);
+    setSelectedProjectId(null);
+    setSelectedParentId(null);
   };
 
   const close = () => {
@@ -96,9 +109,13 @@ export function QuickCaptureButton() {
     if (!draft.trim()) return;
     setStep("enrich");
     setSpheresLoading(true);
-    getAllSpheresAction().then((result) => {
+    Promise.all([
+      getAllSpheresAction(),
+      getCurrentSprintProjectsAction(),
+    ]).then(([spheresResult, projectsResult]) => {
       setSpheresLoading(false);
-      if (result.success) setSpheres(result.data);
+      if (spheresResult.success) setSpheres(spheresResult.data);
+      if (projectsResult.success) setProjects(projectsResult.data || []);
     });
   };
 
@@ -107,18 +124,56 @@ export function QuickCaptureButton() {
     if (!trimmed || isPending) return;
 
     startTransition(async () => {
-      const result = await quickCaptureAction(
-        trimmed,
-        step === "enrich" ? { sphereId, type, templateData } : undefined,
-      );
-      if (result.success) {
-        toast.success("Captured to Inbox");
-        close();
+      if (selectedProjectId) {
+        const captureResult = await quickCaptureAction(
+          trimmed,
+          step === "enrich" ? { sphereId, type, templateData } : undefined,
+        );
+        if (!captureResult.success) {
+          toast.error(captureResult.error || "Failed to capture thought");
+          return;
+        }
+
+        const thoughtId = captureResult.data.id;
+        const project = projects.find((p) => p.id === selectedProjectId);
+        const decomposeResult = await decomposeThoughtAction({
+          thoughtId,
+          type: "task",
+          taskTitle: trimmed,
+          sphereId,
+          description: null,
+          priority: "MEDIUM",
+          resistance: null,
+          projectId: selectedProjectId,
+          parentId: selectedParentId,
+        });
+
+        if (decomposeResult.success) {
+          const location = selectedParentId
+            ? `${project?.title} → ${project?.groups.find((g) => g.id === selectedParentId)?.title}`
+            : project?.title;
+          toast.success(`Created in ${location}`);
+          close();
+        } else {
+          toast.error(decomposeResult.error || "Failed to create task");
+        }
       } else {
-        toast.error(result.error || "Failed to capture thought");
+        const result = await quickCaptureAction(
+          trimmed,
+          step === "enrich" ? { sphereId, type, templateData } : undefined,
+        );
+        if (result.success) {
+          toast.success("Captured to Inbox");
+          close();
+        } else {
+          toast.error(result.error || "Failed to capture thought");
+        }
       }
     });
   };
+
+  const selectedProject = projects.find((p) => p.id === selectedProjectId);
+  const availableGroups = selectedProject?.groups || [];
 
   return (
     <>
@@ -156,15 +211,99 @@ export function QuickCaptureButton() {
 
           {step === "enrich" &&
             (spheresLoading ? (
-              <p className="text-caption">Loading spheres...</p>
+              <p className="text-caption">Loading...</p>
             ) : (
-              <ThoughtFields
-                spheres={spheres}
-                sphereId={sphereId}
-                type={type}
-                templateData={templateData}
-                onChange={handleFieldsChange}
-              />
+              <>
+                <ThoughtFields
+                  spheres={spheres}
+                  sphereId={sphereId}
+                  type={type}
+                  templateData={templateData}
+                  onChange={handleFieldsChange}
+                />
+
+                {projects.length > 0 && (
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[10px] font-mono text-zinc-450 uppercase">
+                      Route to project
+                    </label>
+                    <div className="flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedProjectId(null);
+                          setSelectedParentId(null);
+                        }}
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-mono transition-colors duration-150 border ${
+                          selectedProjectId === null
+                            ? "bg-accent/15 text-accent border-accent/30"
+                            : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:text-zinc-200"
+                        }`}
+                      >
+                        No project
+                      </button>
+                      {projects.map((p) => (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedProjectId(p.id);
+                            setSelectedParentId(null);
+                          }}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-mono transition-colors duration-150 border ${
+                            selectedProjectId === p.id
+                              ? "bg-accent/15 text-accent border-accent/30"
+                              : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:text-zinc-200"
+                          }`}
+                        >
+                          {p.title}
+                          {p.groups.length > 0 && (
+                            <span className="ml-1 opacity-50">{p.groups.length}</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {selectedProject && availableGroups.length > 0 && (
+                  <div className="flex flex-col gap-2">
+                    <label className="text-[10px] font-mono text-zinc-450 uppercase">
+                      Route to group
+                    </label>
+                    <div className="flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedParentId(null)}
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-mono transition-colors duration-150 border ${
+                          selectedParentId === null
+                            ? "bg-accent/15 text-accent border-accent/30"
+                            : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:text-zinc-200"
+                        }`}
+                      >
+                        Top level
+                      </button>
+                      {availableGroups.map((g) => (
+                        <button
+                          key={g.id}
+                          type="button"
+                          onClick={() => setSelectedParentId(g.id)}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-mono transition-colors duration-150 border ${
+                            selectedParentId === g.id
+                              ? "bg-accent/15 text-accent border-accent/30"
+                              : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:text-zinc-200"
+                          }`}
+                        >
+                          {g.title}
+                          {g.childCount > 0 && (
+                            <span className="ml-1 opacity-50">{g.childCount}</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
             ))}
 
           <div className="flex justify-end gap-2">

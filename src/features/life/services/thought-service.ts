@@ -181,6 +181,8 @@ export async function decomposeThought(
     atomTitle?: string;
     atomDescription?: string | null;
     resistance?: number | null;
+    projectId?: string | null;
+    parentId?: string | null;
   },
 ) {
   const {
@@ -194,6 +196,8 @@ export async function decomposeThought(
     atomTitle,
     atomDescription,
     resistance,
+    projectId,
+    parentId,
   } = input;
 
   // Verify thought ownership/existence
@@ -241,6 +245,8 @@ export async function decomposeThought(
           sphereId: sphereId || thought.sphereId,
           resistance,
           depth: 0,
+          projectId: projectId || undefined,
+          parentId: parentId || undefined,
         },
       });
 
