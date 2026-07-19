@@ -37,6 +37,7 @@ import {
   assignProjectToObjectiveAction,
   createSprintObjectiveAction,
   deleteProjectAction,
+  updateProjectAction,
 } from "@/features/life/actions/sprint-actions";
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
@@ -44,7 +45,7 @@ import { KanbanBoardClient } from "../sprints/KanbanBoardClient";
 import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields";
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
-import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
+import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
 
 const FILTER_TYPE_ICONS: Record<string, LucideIcon> = {
   AlertTriangle,
@@ -101,6 +102,10 @@ export function PlanningWizardClient({
   const [newObjectiveDesc, setNewObjectiveDesc] = useState("");
   const [showAddObjectiveForm, setShowAddObjectiveForm] = useState(false);
   const [backlogSearch, setBacklogSearch] = useState("");
+  const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
+  const [editProjectTitle, setEditProjectTitle] = useState("");
+  const [editProjectDesc, setEditProjectDesc] = useState("");
+  const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
 
   // Step 5 state
   const activeSprintProjects = useMemo(() => {
@@ -586,6 +591,66 @@ export function PlanningWizardClient({
         toast.error(result.error || "Failed to assign project");
       }
     });
+  };
+
+  const handleEditProject = () => {
+    const title = editProjectTitle.trim();
+    if (!title || !editingProjectId) return;
+
+    startActionTransition(async () => {
+      const result = await updateProjectAction(editingProjectId, title, editProjectDesc.trim() || undefined);
+      if (result.success) {
+        toast.success("Project updated!");
+        setEditingProjectId(null);
+
+        const updateInList = (projects: any[]) =>
+          projects.map((p: any) =>
+            p.id === editingProjectId ? { ...p, title, description: editProjectDesc.trim() || null } : p,
+          );
+
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: updateInList(obj.projects),
+          })),
+        }));
+        setBacklogProjects((prev) => updateInList(prev));
+      } else {
+        toast.error(result.error || "Failed to update project");
+      }
+    });
+  };
+
+  const handleDeleteProject = (projectId: string) => {
+    startActionTransition(async () => {
+      const result = await deleteProjectAction(projectId);
+      if (result.success) {
+        toast.success("Project deleted!");
+        setDeleteProjectId(null);
+
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.filter((p: any) => p.id !== projectId),
+          })),
+        }));
+        setBacklogProjects((prev) => prev.filter((p) => p.id !== projectId));
+
+        if (selectedDeconstructProjectId === projectId) {
+          setSelectedDeconstructProjectId(null);
+        }
+      } else {
+        toast.error(result.error || "Failed to delete project");
+      }
+    });
+  };
+
+  const handleOpenEditProject = (project: { id: string; title: string; description?: string | null }) => {
+    setEditingProjectId(project.id);
+    setEditProjectTitle(project.title);
+    setEditProjectDesc(project.description || "");
   };
 
   // Step 5 Handlers
@@ -2043,18 +2108,38 @@ export function PlanningWizardClient({
                         ) : (
                           <div className="flex flex-col gap-2">
                             {obj.projects.map((p: any) => (
-                              <div key={p.id} className="flex justify-between items-center bg-white/[0.01] border border-white/[0.04] p-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150">
-                                <span className="text-zinc-200 font-medium">
+                              <div key={p.id} className="group/item flex justify-between items-center bg-white/[0.01] border border-white/[0.04] p-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150">
+                                <span className="text-zinc-200 font-medium truncate">
                                   📂 {p.title}
                                 </span>
-                                <button
-                                  type="button"
-                                  onClick={() => handleAssignProject(p.id, null)}
-                                  className="text-[10px] text-rose-450 hover:text-rose-400 font-mono"
-                                  disabled={isActionPending}
-                                >
-                                  Unassign
-                                </button>
+                                <div className="flex items-center gap-1 opacity-0 group-hover/item:opacity-100 transition-opacity duration-150 shrink-0">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleOpenEditProject(p)}
+                                    className="p-1 rounded text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150"
+                                    title="Edit project"
+                                    disabled={isActionPending}
+                                  >
+                                    <Pencil size={12} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setDeleteProjectId(p.id)}
+                                    className="p-1 rounded text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors duration-150"
+                                    title="Delete project"
+                                    disabled={isActionPending}
+                                  >
+                                    <Trash2 size={12} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleAssignProject(p.id, null)}
+                                    className="text-[10px] text-rose-450 hover:text-rose-400 font-mono ml-1"
+                                    disabled={isActionPending}
+                                  >
+                                    Unassign
+                                  </button>
+                                </div>
                               </div>
                             ))}
                           </div>
@@ -2093,8 +2178,30 @@ export function PlanningWizardClient({
                   backlogProjects
                     .filter(p => p.title.toLowerCase().includes(backlogSearch.toLowerCase()))
                     .map((p) => (
-                      <div key={p.id} className="glass-card p-3 border-white/[0.04] bg-white/[0.01] rounded-lg text-xs flex flex-col gap-2">
-                        <span className="text-zinc-200 font-medium break-words">📂 {p.title}</span>
+                      <div key={p.id} className="group/backlog glass-card p-3 border-white/[0.04] bg-white/[0.01] rounded-lg text-xs flex flex-col gap-2">
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-zinc-200 font-medium break-words truncate">📂 {p.title}</span>
+                          <div className="flex items-center gap-0.5 opacity-0 group-hover/backlog:opacity-100 transition-opacity duration-150 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEditProject(p)}
+                              className="p-1 rounded text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150"
+                              title="Edit project"
+                              disabled={isActionPending}
+                            >
+                              <Pencil size={12} />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setDeleteProjectId(p.id)}
+                              className="p-1 rounded text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors duration-150"
+                              title="Delete project"
+                              disabled={isActionPending}
+                            >
+                              <Trash2 size={12} />
+                            </button>
+                          </div>
+                        </div>
                         {p.description && (
                           <span className="text-[10px] text-zinc-505 line-clamp-2">{p.description}</span>
                         )}
@@ -2192,21 +2299,48 @@ export function PlanningWizardClient({
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const taskCount = p.tasks?.length || 0;
                   return (
-                    <button
-                      key={p.id}
-                      type="button"
-                      onClick={() => setSelectedDeconstructProjectId(p.id)}
-                      className={`w-full text-left p-3 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
-                        isSelected
-                          ? "bg-accent/10 border-accent/30 text-accent font-semibold shadow-sm"
-                          : "bg-white/[0.01] border-white/[0.04] text-zinc-400 hover:bg-white/[0.02]"
-                      }`}
-                    >
-                      <span className="truncate w-full">📂 {p.title}</span>
-                      <span className="text-[9px] opacity-75 font-mono">
-                        {taskCount} task atoms
-                      </span>
-                    </button>
+                    <div key={p.id} className="group/proj relative">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedDeconstructProjectId(p.id)}
+                        className={`w-full text-left p-3 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
+                          isSelected
+                            ? "bg-accent/10 border-accent/30 text-accent font-semibold shadow-sm"
+                            : "bg-white/[0.01] border-white/[0.04] text-zinc-400 hover:bg-white/[0.02]"
+                        }`}
+                      >
+                        <span className="truncate w-full">📂 {p.title}</span>
+                        <span className="text-[9px] opacity-75 font-mono">
+                          {taskCount} task atoms
+                        </span>
+                      </button>
+                      <div className="absolute top-2 right-2 flex items-center gap-0.5 opacity-0 group-hover/proj:opacity-100 transition-opacity duration-150 z-10">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenEditProject(p);
+                          }}
+                          className="p-1 rounded text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150 bg-canvas/80 backdrop-blur-sm"
+                          title="Edit project"
+                          disabled={isActionPending}
+                        >
+                          <Pencil size={11} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteProjectId(p.id);
+                          }}
+                          className="p-1 rounded text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors duration-150 bg-canvas/80 backdrop-blur-sm"
+                          title="Delete project"
+                          disabled={isActionPending}
+                        >
+                          <Trash2 size={11} />
+                        </button>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
@@ -2216,17 +2350,41 @@ export function PlanningWizardClient({
                 <div className="flex flex-col gap-6">
                   {/* Selected Project Info */}
                   <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]">
-                    <span className="text-[9px] font-mono text-accent uppercase tracking-wider block font-semibold mb-1">
-                      Currently Deconstructing
-                    </span>
-                    <h4 className="text-base font-bold text-zinc-150">
-                      📂 {selectedDeconstructProject.title}
-                    </h4>
-                    {selectedDeconstructProject.description && (
-                      <p className="text-xs text-zinc-450 mt-1 whitespace-pre-wrap">
-                        {selectedDeconstructProject.description}
-                      </p>
-                    )}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[9px] font-mono text-accent uppercase tracking-wider block font-semibold mb-1">
+                          Currently Deconstructing
+                        </span>
+                        <h4 className="text-base font-bold text-zinc-150 truncate">
+                          📂 {selectedDeconstructProject.title}
+                        </h4>
+                        {selectedDeconstructProject.description && (
+                          <p className="text-xs text-zinc-450 mt-1 whitespace-pre-wrap">
+                            {selectedDeconstructProject.description}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEditProject(selectedDeconstructProject)}
+                          className="p-1.5 rounded-lg text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150"
+                          title="Edit project"
+                          disabled={isActionPending}
+                        >
+                          <Pencil size={13} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDeleteProjectId(selectedDeconstructProject.id)}
+                          className="p-1.5 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors duration-150"
+                          title="Delete project"
+                          disabled={isActionPending}
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Add Atom Form */}
@@ -2419,6 +2577,76 @@ export function PlanningWizardClient({
           }}
           title="Delete Thought"
           description="Are you sure you want to permanently delete this thought? This action cannot be undone."
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          variant="danger"
+        />
+      )}
+
+      {editingProjectId && (
+        <Dialog
+          isOpen={true}
+          onClose={() => setEditingProjectId(null)}
+          title="Edit Project"
+          description="Update the project title and description."
+          maxWidth="480px"
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Title</label>
+              <Input
+                value={editProjectTitle}
+                onChange={(e) => setEditProjectTitle(e.target.value)}
+                placeholder="Project title"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleEditProject();
+                  }
+                }}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Description</label>
+              <Textarea
+                value={editProjectDesc}
+                onChange={(e) => setEditProjectDesc(e.target.value)}
+                placeholder="Optional description"
+                rows={3}
+              />
+            </div>
+            <div className="flex gap-2 justify-end mt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setEditingProjectId(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleEditProject}
+                disabled={!editProjectTitle.trim() || isActionPending}
+              >
+                Save Changes
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      )}
+
+      {deleteProjectId && (
+        <ConfirmationDialog
+          isOpen={deleteProjectId !== null}
+          onClose={() => setDeleteProjectId(null)}
+          onConfirm={() => {
+            if (deleteProjectId) {
+              handleDeleteProject(deleteProjectId);
+            }
+          }}
+          title="Delete Project"
+          description="Are you sure you want to delete this project? All associated tasks will also be permanently deleted."
           confirmLabel="Delete"
           cancelLabel="Cancel"
           variant="danger"
