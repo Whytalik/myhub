@@ -132,6 +132,7 @@ export function PlanningWizardClient({
   const [newAtomPriority, setNewAtomPriority] = useState<any>("MEDIUM");
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
   const [newSubAtomTitle, setNewSubAtomTitle] = useState("");
+  const [newSubAtomDesc, setNewSubAtomDesc] = useState("");
   const [createMode, setCreateMode] = useState<"group" | "atom">("group");
 
   // Step 1: Brain Dump state
@@ -674,7 +675,7 @@ export function PlanningWizardClient({
 
       const result = await upsertTaskAction({
         title,
-        description: isGroup ? (newAtomDesc.trim() || null) : undefined,
+        description: newAtomDesc.trim() || null,
         projectId: selectedDeconstructProjectId,
         sphereId,
         status: "TODO",
@@ -726,6 +727,7 @@ export function PlanningWizardClient({
 
       const result = await upsertTaskAction({
         title,
+        description: newSubAtomDesc.trim() || null,
         projectId: selectedDeconstructProjectId,
         parentId: parentGroupId,
         sphereId,
@@ -736,6 +738,7 @@ export function PlanningWizardClient({
       if (result.success) {
         toast.success("Atom added!");
         setNewSubAtomTitle("");
+        setNewSubAtomDesc("");
 
         const newTask = result.data;
         setSprint((prev: any) => ({
@@ -2498,51 +2501,49 @@ export function PlanningWizardClient({
                           }}
                         />
                       </div>
-                      {createMode === "group" && (
-                        <>
-                          <div className="flex flex-col gap-1">
-                            <label className="text-[10px] font-mono text-zinc-450 uppercase">Description / Links (optional)</label>
-                            <Textarea
-                              value={newAtomDesc}
-                              onChange={(e) => setNewAtomDesc(e.target.value)}
-                              placeholder="Notes, references or urls..."
-                              rows={2}
-                            />
-                          </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] font-mono text-zinc-450 uppercase">Description / Links (optional)</label>
+                        <Textarea
+                          value={newAtomDesc}
+                          onChange={(e) => setNewAtomDesc(e.target.value)}
+                          placeholder="Notes, references or urls..."
+                          rows={2}
+                        />
+                      </div>
 
-                          <div className="flex flex-col gap-3">
-                            <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
-                              <span>Internal resistance before action</span>
-                              <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              {[1, 2, 3, 4, 5].map((val) => (
-                                <button
-                                  key={val}
-                                  type="button"
-                                  onClick={() => setNewAtomResistance(val)}
-                                  className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
-                                    newAtomResistance === val
-                                      ? val >= 4
-                                        ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                                        : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                                      : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
-                                  }`}
-                                >
-                                  {val}
-                                </button>
-                              ))}
-                            </div>
-                            {newAtomResistance >= 4 && (
-                              <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
-                                <AlertTriangle size={11} className="shrink-0" />
-                                <span>
-                                  Resistance is high: better split this step into an even simpler one!
-                                </span>
-                              </p>
-                            )}
+                      {createMode === "group" && (
+                        <div className="flex flex-col gap-3">
+                          <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+                            <span>Internal resistance before action</span>
+                            <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
                           </div>
-                        </>
+                          <div className="flex items-center gap-1.5">
+                            {[1, 2, 3, 4, 5].map((val) => (
+                              <button
+                                key={val}
+                                type="button"
+                                onClick={() => setNewAtomResistance(val)}
+                                className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
+                                  newAtomResistance === val
+                                    ? val >= 4
+                                      ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                                      : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                    : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
+                                }`}
+                              >
+                                {val}
+                              </button>
+                            ))}
+                          </div>
+                          {newAtomResistance >= 4 && (
+                            <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
+                              <AlertTriangle size={11} className="shrink-0" />
+                              <span>
+                                Resistance is high: better split this step into an even simpler one!
+                              </span>
+                            </p>
+                          )}
+                        </div>
                       )}
 
                       <Button
@@ -2661,33 +2662,45 @@ export function PlanningWizardClient({
                                   )}
 
                                   {/* Inline add atom form */}
-                                  <div className="flex items-center gap-2 pl-5 pt-1">
+                                  <div className="flex flex-col gap-1.5 pl-5 pt-1">
+                                    <div className="flex items-center gap-2">
+                                      <Input
+                                        value={expandedGroupId === task.id ? newSubAtomTitle : ""}
+                                        onChange={(e) => {
+                                          setExpandedGroupId(task.id);
+                                          setNewSubAtomTitle(e.target.value);
+                                        }}
+                                        onFocus={() => setExpandedGroupId(task.id)}
+                                        onKeyDown={(e) => {
+                                          if (e.key === "Enter" && !e.shiftKey) {
+                                            e.preventDefault();
+                                            handleAddAtomToGroup(task.id);
+                                          }
+                                        }}
+                                        placeholder="Add an atom..."
+                                        className="h-7 text-[11px]"
+                                      />
+                                      <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => handleAddAtomToGroup(task.id)}
+                                        disabled={!newSubAtomTitle.trim() || isActionPending}
+                                        className="h-7 px-2 text-[10px]"
+                                      >
+                                        <Plus size={12} />
+                                      </Button>
+                                    </div>
                                     <Input
-                                      value={expandedGroupId === task.id ? newSubAtomTitle : ""}
+                                      value={expandedGroupId === task.id ? newSubAtomDesc : ""}
                                       onChange={(e) => {
                                         setExpandedGroupId(task.id);
-                                        setNewSubAtomTitle(e.target.value);
+                                        setNewSubAtomDesc(e.target.value);
                                       }}
                                       onFocus={() => setExpandedGroupId(task.id)}
-                                      onKeyDown={(e) => {
-                                        if (e.key === "Enter" && !e.shiftKey) {
-                                          e.preventDefault();
-                                          handleAddAtomToGroup(task.id);
-                                        }
-                                      }}
-                                      placeholder="Add an atom..."
-                                      className="h-7 text-[11px]"
+                                      placeholder="Description (optional)..."
+                                      className="h-7 text-[10px] text-zinc-400"
                                     />
-                                    <Button
-                                      type="button"
-                                      variant="ghost"
-                                      size="sm"
-                                      onClick={() => handleAddAtomToGroup(task.id)}
-                                      disabled={!newSubAtomTitle.trim() || isActionPending}
-                                      className="h-7 px-2 text-[10px]"
-                                    >
-                                      <Plus size={12} />
-                                    </Button>
                                   </div>
                                 </div>
                               )}
