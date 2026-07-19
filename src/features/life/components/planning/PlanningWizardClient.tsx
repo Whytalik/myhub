@@ -10,6 +10,7 @@ import {
   Trash2,
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
   ArrowRight,
   FolderKanban,
   CheckSquare,
@@ -129,6 +130,9 @@ export function PlanningWizardClient({
   const [newAtomDesc, setNewAtomDesc] = useState("");
   const [newAtomResistance, setNewAtomResistance] = useState(3);
   const [newAtomPriority, setNewAtomPriority] = useState<any>("MEDIUM");
+  const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
+  const [newSubAtomTitle, setNewSubAtomTitle] = useState("");
+  const [createMode, setCreateMode] = useState<"group" | "atom">("group");
 
   // Step 1: Brain Dump state
   const [newThoughtText, setNewThoughtText] = useState("");
@@ -654,9 +658,10 @@ export function PlanningWizardClient({
   };
 
   // Step 5 Handlers
-  const handleAddAtomToProject = () => {
+  const handleAddTopLevelTask = () => {
     const title = newAtomTitle.trim();
     if (!title || !selectedDeconstructProjectId || !sprint) return;
+    const isGroup = createMode === "group";
 
     startActionTransition(async () => {
       let sphereId: string | null = null;
@@ -669,16 +674,16 @@ export function PlanningWizardClient({
 
       const result = await upsertTaskAction({
         title,
-        description: newAtomDesc.trim() || null,
+        description: isGroup ? (newAtomDesc.trim() || null) : undefined,
         projectId: selectedDeconstructProjectId,
         sphereId,
         status: "TODO",
         priority: newAtomPriority,
-        resistance: newAtomResistance,
+        resistance: isGroup ? newAtomResistance : undefined,
       });
 
       if (result.success) {
-        toast.success("Task atom created!");
+        toast.success(isGroup ? "Group created!" : "Atom created!");
         setNewAtomTitle("");
         setNewAtomDesc("");
         setNewAtomResistance(3);
@@ -701,7 +706,63 @@ export function PlanningWizardClient({
           })),
         }));
       } else {
-        toast.error(result.error || "Failed to add task atom");
+        toast.error(result.error || "Failed to create");
+      }
+    });
+  };
+
+  const handleAddAtomToGroup = (parentGroupId: string) => {
+    const title = newSubAtomTitle.trim();
+    if (!title || !selectedDeconstructProjectId || !sprint) return;
+
+    startActionTransition(async () => {
+      let sphereId: string | null = null;
+      for (const obj of sprint.objectives) {
+        if (obj.projects.some((p: any) => p.id === selectedDeconstructProjectId)) {
+          sphereId = obj.sphereId;
+          break;
+        }
+      }
+
+      const result = await upsertTaskAction({
+        title,
+        projectId: selectedDeconstructProjectId,
+        parentId: parentGroupId,
+        sphereId,
+        status: "TODO",
+        priority: "MEDIUM",
+      });
+
+      if (result.success) {
+        toast.success("Atom added!");
+        setNewSubAtomTitle("");
+
+        const newTask = result.data;
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.map((p: any) => {
+              if (p.id === selectedDeconstructProjectId) {
+                return {
+                  ...p,
+                  tasks: (p.tasks || []).map((t: any) => {
+                    if (t.id === parentGroupId) {
+                      return {
+                        ...t,
+                        children: [...(t.children || []), newTask],
+                      };
+                    }
+                    return t;
+                  }),
+                };
+              }
+              return p;
+            }),
+          })),
+        }));
+      } else {
+        toast.error(result.error || "Failed to add atom");
       }
     });
   };
@@ -2246,7 +2307,7 @@ export function PlanningWizardClient({
                 Step 5: Project Deconstruction
               </h3>
               <p className="text-[11px] text-zinc-500 mt-0.5">
-                Break down active sprint projects into micro-tasks (atoms) to remove resistance.
+                Break down active sprint projects into groups and atomic actions to remove resistance.
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -2298,6 +2359,7 @@ export function PlanningWizardClient({
                 {activeSprintProjects.map((p: any) => {
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const taskCount = p.tasks?.length || 0;
+                  const subAtomCount = (p.tasks || []).reduce((sum: number, t: any) => sum + (t.children?.length || 0), 0);
                   return (
                     <div key={p.id} className="group/proj relative">
                       <button
@@ -2311,7 +2373,7 @@ export function PlanningWizardClient({
                       >
                         <span className="truncate w-full">📂 {p.title}</span>
                         <span className="text-[9px] opacity-75 font-mono">
-                          {taskCount} task atoms
+                          {taskCount} tasks{subAtomCount > 0 ? `, ${subAtomCount} atoms` : ""}
                         </span>
                       </button>
                       <div className="absolute top-2 right-2 flex items-center gap-0.5 opacity-0 group-hover/proj:opacity-100 transition-opacity duration-150 z-10">
@@ -2387,115 +2449,247 @@ export function PlanningWizardClient({
                     </div>
                   </div>
 
-                  {/* Add Atom Form */}
+                  {/* Add Task Form */}
                   <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.01] flex flex-col gap-4">
-                    <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-wider font-semibold">
-                      ➕ Add Actionable Atom
-                    </span>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-wider font-semibold">
+                        ➕ Add Task
+                      </span>
+                      <div className="flex items-center bg-white/[0.04] rounded-lg p-0.5 border border-white/[0.06]">
+                        <button
+                          type="button"
+                          onClick={() => setCreateMode("group")}
+                          className={`text-[10px] font-mono px-2.5 py-1 rounded-md transition-colors duration-150 ${
+                            createMode === "group"
+                              ? "bg-accent/15 text-accent"
+                              : "text-zinc-500 hover:text-zinc-300"
+                          }`}
+                        >
+                          Group
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCreateMode("atom")}
+                          className={`text-[10px] font-mono px-2.5 py-1 rounded-md transition-colors duration-150 ${
+                            createMode === "atom"
+                              ? "bg-accent/15 text-accent"
+                              : "text-zinc-500 hover:text-zinc-300"
+                          }`}
+                        >
+                          Atom
+                        </button>
+                      </div>
+                    </div>
                     <div className="flex flex-col gap-3">
                       <div className="flex flex-col gap-1">
-                        <label className="text-[10px] font-mono text-zinc-450 uppercase">Task Title</label>
+                        <label className="text-[10px] font-mono text-zinc-450 uppercase">
+                          {createMode === "group" ? "Group Title" : "Atom Title"}
+                        </label>
                         <Input
                           value={newAtomTitle}
                           onChange={(e) => setNewAtomTitle(e.target.value)}
-                          placeholder="e.g. Write design spec drafts, Install package dependencies..."
+                          placeholder={createMode === "group" ? "e.g. Design phase, Backend setup..." : "e.g. Create wireframe, Write tests..."}
                           onKeyDown={(e) => {
                             if (e.key === "Enter" && !e.shiftKey) {
                               e.preventDefault();
-                              handleAddAtomToProject();
+                              handleAddTopLevelTask();
                             }
                           }}
                         />
                       </div>
-                      <div className="flex flex-col gap-1">
-                        <label className="text-[10px] font-mono text-zinc-450 uppercase">Description / Links (optional)</label>
-                        <Textarea
-                          value={newAtomDesc}
-                          onChange={(e) => setNewAtomDesc(e.target.value)}
-                          placeholder="Notes, references or urls..."
-                          rows={2}
-                        />
-                      </div>
+                      {createMode === "group" && (
+                        <>
+                          <div className="flex flex-col gap-1">
+                            <label className="text-[10px] font-mono text-zinc-450 uppercase">Description / Links (optional)</label>
+                            <Textarea
+                              value={newAtomDesc}
+                              onChange={(e) => setNewAtomDesc(e.target.value)}
+                              placeholder="Notes, references or urls..."
+                              rows={2}
+                            />
+                          </div>
 
-                      <div className="flex flex-col gap-3">
-                        <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
-                          <span>Internal resistance before action</span>
-                          <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          {[1, 2, 3, 4, 5].map((val) => (
-                            <button
-                              key={val}
-                              type="button"
-                              onClick={() => setNewAtomResistance(val)}
-                              className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
-                                newAtomResistance === val
-                                  ? val >= 4
-                                    ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                                    : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                                  : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
-                              }`}
-                            >
-                              {val}
-                            </button>
-                          ))}
-                        </div>
-                        {newAtomResistance >= 4 && (
-                          <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
-                            <AlertTriangle size={11} className="shrink-0" />
-                            <span>
-                              Resistance is high: better split this step into an even simpler one!
-                            </span>
-                          </p>
-                        )}
-                      </div>
+                          <div className="flex flex-col gap-3">
+                            <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+                              <span>Internal resistance before action</span>
+                              <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              {[1, 2, 3, 4, 5].map((val) => (
+                                <button
+                                  key={val}
+                                  type="button"
+                                  onClick={() => setNewAtomResistance(val)}
+                                  className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
+                                    newAtomResistance === val
+                                      ? val >= 4
+                                        ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                                        : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                      : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
+                                  }`}
+                                >
+                                  {val}
+                                </button>
+                              ))}
+                            </div>
+                            {newAtomResistance >= 4 && (
+                              <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
+                                <AlertTriangle size={11} className="shrink-0" />
+                                <span>
+                                  Resistance is high: better split this step into an even simpler one!
+                                </span>
+                              </p>
+                            )}
+                          </div>
+                        </>
+                      )}
 
                       <Button
                         type="button"
                         variant="primary"
                         size="sm"
-                        onClick={handleAddAtomToProject}
+                        onClick={handleAddTopLevelTask}
                         disabled={!newAtomTitle.trim() || isActionPending}
                         className="w-fit self-end mt-1"
                       >
-                        Add Atom to Project
+                        {createMode === "group" ? "Add Group to Project" : "Add Atom to Project"}
                       </Button>
                     </div>
                   </div>
 
-                  {/* Tasks List */}
+                  {/* Groups List */}
                   <div className="flex flex-col gap-2">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold border-b border-white/[0.04] pb-1">
                       Project Tasks ({selectedDeconstructProject.tasks?.length || 0})
                     </span>
                     {(!selectedDeconstructProject.tasks || selectedDeconstructProject.tasks.length === 0) ? (
                       <div className="text-zinc-500 text-xs italic py-6 text-center">
-                        No tasks added to this project yet. Use the form above to add task atoms.
+                        No tasks added yet. Use the form above to add a group or atom.
                       </div>
                     ) : (
-                      <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto pr-1">
-                        {selectedDeconstructProject.tasks.map((task: any) => (
-                          <div key={task.id} className="flex justify-between items-center bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg text-xs group hover:bg-white/[0.02] transition-colors duration-150">
-                            <div className="flex flex-col gap-0.5">
-                              <span className="text-zinc-200 font-medium">✔️ {task.title}</span>
-                              {task.description && (
-                                <span className="text-[10px] text-zinc-505">{task.description}</span>
-                              )}
-                              {task.resistance && (
-                                <span className="text-[9px] font-mono text-orange-400">Friction: {task.resistance}/5</span>
+                      <div className="flex flex-col gap-1.5 max-h-[500px] overflow-y-auto pr-1">
+                        {selectedDeconstructProject.tasks.map((task: any) => {
+                          const hasChildren = (task.children || []).length > 0;
+                          const isExpanded = expandedGroupId === task.id;
+                          const children = task.children || [];
+                          const childCount = children.length;
+                          const doneCount = children.filter((c: any) => c.status === "DONE").length;
+
+                          if (!hasChildren) {
+                            return (
+                              <div key={task.id} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150 group">
+                                <span className={`flex-1 truncate ${task.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}>
+                                  {task.status === "DONE" ? "✔️" : "○"} {task.title}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteAtomFromProject(task.id)}
+                                  className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                  title="Delete atom"
+                                  disabled={isActionPending}
+                                >
+                                  <Trash2 size={11} />
+                                </button>
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <div key={task.id} className="border border-white/[0.04] rounded-lg overflow-hidden bg-white/[0.01]">
+                              {/* Group header */}
+                              <div className="flex items-center gap-2 p-3 text-xs group hover:bg-white/[0.02] transition-colors duration-150">
+                                <button
+                                  type="button"
+                                  onClick={() => setExpandedGroupId(isExpanded ? null : task.id)}
+                                  className="p-0.5 rounded text-zinc-500 hover:text-zinc-200 transition-colors shrink-0"
+                                >
+                                  <ChevronDown
+                                    size={14}
+                                    className={`transition-transform duration-150 ${isExpanded ? "rotate-0" : "-rotate-90"}`}
+                                  />
+                                </button>
+                                <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                                  <span className="text-zinc-200 font-medium truncate">📋 {task.title}</span>
+                                  {task.description && (
+                                    <span className="text-[10px] text-zinc-505 line-clamp-1">{task.description}</span>
+                                  )}
+                                </div>
+                                {childCount > 0 && (
+                                  <span className="text-[9px] font-mono text-zinc-500 shrink-0">
+                                    {doneCount}/{childCount}
+                                  </span>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteAtomFromProject(task.id)}
+                                  className="p-1 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                  title="Delete group"
+                                  disabled={isActionPending}
+                                >
+                                  <Trash2 size={13} />
+                                </button>
+                              </div>
+
+                              {/* Expanded: sub-atoms + inline form */}
+                              {isExpanded && (
+                                <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
+                                  {children.length > 0 ? (
+                                    children.map((atom: any) => (
+                                      <div key={atom.id} className="flex items-center gap-2 pl-5 pr-1 py-1.5 rounded text-xs group/atom hover:bg-white/[0.02] transition-colors duration-150">
+                                        <span className={`flex-1 truncate ${atom.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}>
+                                          {atom.status === "DONE" ? "✔️" : "○"} {atom.title}
+                                        </span>
+                                        <button
+                                          type="button"
+                                          onClick={() => handleDeleteAtomFromProject(atom.id)}
+                                          className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
+                                          title="Delete atom"
+                                          disabled={isActionPending}
+                                        >
+                                          <Trash2 size={11} />
+                                        </button>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <div className="pl-5 py-1 text-[10px] text-zinc-500 italic">
+                                      No atoms yet. Add one below.
+                                    </div>
+                                  )}
+
+                                  {/* Inline add atom form */}
+                                  <div className="flex items-center gap-2 pl-5 pt-1">
+                                    <Input
+                                      value={expandedGroupId === task.id ? newSubAtomTitle : ""}
+                                      onChange={(e) => {
+                                        setExpandedGroupId(task.id);
+                                        setNewSubAtomTitle(e.target.value);
+                                      }}
+                                      onFocus={() => setExpandedGroupId(task.id)}
+                                      onKeyDown={(e) => {
+                                        if (e.key === "Enter" && !e.shiftKey) {
+                                          e.preventDefault();
+                                          handleAddAtomToGroup(task.id);
+                                        }
+                                      }}
+                                      placeholder="Add an atom..."
+                                      className="h-7 text-[11px]"
+                                    />
+                                    <Button
+                                      type="button"
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => handleAddAtomToGroup(task.id)}
+                                      disabled={!newSubAtomTitle.trim() || isActionPending}
+                                      className="h-7 px-2 text-[10px]"
+                                    >
+                                      <Plus size={12} />
+                                    </Button>
+                                  </div>
+                                </div>
                               )}
                             </div>
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteAtomFromProject(task.id)}
-                              className="p-1 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
-                              title="Delete task atom"
-                              disabled={isActionPending}
-                            >
-                              <Trash2 size={13} />
-                            </button>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     )}
                   </div>
