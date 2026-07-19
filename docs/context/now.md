@@ -11,6 +11,8 @@ Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS
 
 ## Recently shipped
 
+- Planning Wizard deconstruction panel: Group/Atom toggle (create groups or standalone atoms), groups show as accordions with sub-atom management, atoms render as flat rows, sidebar counts include sub-atoms — shipped to main.
+- Edit/delete project capabilities in Planning Wizard (dialog modals, optimistic updates) — shipped to main.
 - Detailed thought capture in the Planning Wizard (multi-line textarea, sphere/type/template selection, and UI formatting preservation) — shipped to main.
 - Nutrition macro calculation system (actual kcal/protein/fat/carbs from meal ingredients) — shipped to main.
 - Life domain restructuring: History split into its own space, day-type/routine consolidation.
