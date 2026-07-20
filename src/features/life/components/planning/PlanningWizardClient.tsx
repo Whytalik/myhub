@@ -135,6 +135,10 @@ export function PlanningWizardClient({
   const [newSubAtomTitle, setNewSubAtomTitle] = useState("");
   const [newSubAtomDesc, setNewSubAtomDesc] = useState("");
   const [createMode, setCreateMode] = useState<"group" | "atom">("group");
+  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
+  const [editGroupTitle, setEditGroupTitle] = useState("");
+  const [editGroupDesc, setEditGroupDesc] = useState("");
+  const [editGroupResistance, setEditGroupResistance] = useState(3);
 
   // Step 1: Brain Dump state
   const [newThoughtText, setNewThoughtText] = useState("");
@@ -709,6 +713,49 @@ export function PlanningWizardClient({
         }));
       } else {
         toast.error(result.error || "Failed to create");
+      }
+    });
+  };
+
+  const handleOpenEditGroup = (task: any) => {
+    setEditingGroupId(task.id);
+    setEditGroupTitle(task.title);
+    setEditGroupDesc(task.description || "");
+    setEditGroupResistance(task.resistance || 3);
+  };
+
+  const handleEditGroup = () => {
+    const title = editGroupTitle.trim();
+    if (!title || !editingGroupId || !sprint) return;
+
+    startActionTransition(async () => {
+      const result = await upsertTaskAction({
+        id: editingGroupId,
+        title,
+        description: editGroupDesc.trim() || null,
+        resistance: editGroupResistance,
+      });
+
+      if (result.success) {
+        toast.success("Group updated!");
+        setEditingGroupId(null);
+
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.map((p: any) => ({
+              ...p,
+              tasks: p.tasks.map((t: any) =>
+                t.id === editingGroupId
+                  ? { ...t, title, description: editGroupDesc.trim() || null, resistance: editGroupResistance }
+                  : t,
+              ),
+            })),
+          })),
+        }));
+      } else {
+        toast.error(result.error || "Failed to update group");
       }
     });
   };
@@ -2304,7 +2351,7 @@ export function PlanningWizardClient({
 
       {/* STEP 5: PROJECT DECONSTRUCTION */}
       {step === 5 && (
-        <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6">
+        <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6 min-h-0 flex-1">
           <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
             <div>
               <h3 className="text-panel-title font-semibold text-zinc-200">
@@ -2354,9 +2401,9 @@ export function PlanningWizardClient({
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6 min-h-0 flex-1">
               {/* Left Project List */}
-              <div className="flex flex-col gap-2 border-r border-white/[0.04] pr-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="flex flex-col gap-2 border-r border-white/[0.04] pr-4 min-h-0 overflow-y-auto">
                 <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold mb-1">
                   Active Projects
                 </span>
@@ -2624,6 +2671,15 @@ export function PlanningWizardClient({
                                 )}
                                 <button
                                   type="button"
+                                  onClick={() => handleOpenEditGroup(task)}
+                                  className="p-1 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                  title="Edit group"
+                                  disabled={isActionPending}
+                                >
+                                  <Pencil size={13} />
+                                </button>
+                                <button
+                                  type="button"
                                   onClick={() => setDeleteTaskId(task.id)}
                                   className="p-1 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
                                   title="Delete group"
@@ -2838,6 +2894,78 @@ export function PlanningWizardClient({
                 size="sm"
                 onClick={handleEditProject}
                 disabled={!editProjectTitle.trim() || isActionPending}
+              >
+                Save Changes
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      )}
+
+      {editingGroupId && (
+        <Dialog
+          isOpen={true}
+          onClose={() => setEditingGroupId(null)}
+          title="Edit Group"
+          description="Update group title, description, and resistance level."
+          maxWidth="480px"
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Title</label>
+              <Input
+                value={editGroupTitle}
+                onChange={(e) => setEditGroupTitle(e.target.value)}
+                placeholder="Group title"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleEditGroup();
+                  }
+                }}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Description</label>
+              <Textarea
+                value={editGroupDesc}
+                onChange={(e) => setEditGroupDesc(e.target.value)}
+                placeholder="Optional description"
+                rows={3}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Resistance (1-5)</label>
+              <div className="flex gap-1.5">
+                {[1, 2, 3, 4, 5].map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => setEditGroupResistance(r)}
+                    className={`w-8 h-8 rounded-lg text-xs font-mono transition-all duration-150 ${
+                      editGroupResistance === r
+                        ? "bg-accent/20 border border-accent/40 text-accent font-semibold"
+                        : "bg-white/[0.04] border border-white/[0.06] text-zinc-500 hover:bg-white/[0.06]"
+                    }`}
+                  >
+                    {r}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end mt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setEditingGroupId(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleEditGroup}
+                disabled={!editGroupTitle.trim() || isActionPending}
               >
                 Save Changes
               </Button>
