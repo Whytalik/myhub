@@ -2468,9 +2468,17 @@ export function PlanningWizardClient({
                 {activeSprintProjects.map((p: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const isPlanned = p.status === "DONE";
-                  const taskCount = p.tasks?.length || 0;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  const groupCount = (p.tasks || []).filter((t: any) => (t.children || []).length > 0).length;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  const atomCount = (p.tasks || []).filter((t: any) => (t.children || []).length === 0).length;
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const subAtomCount = (p.tasks || []).reduce((sum: number, t: any) => sum + (t.children?.length || 0), 0);
+                  const labelParts: string[] = [];
+                  if (groupCount > 0) labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
+                  if (atomCount > 0) labelParts.push(`${atomCount} atom${atomCount > 1 ? "s" : ""}`);
+                  if (subAtomCount > 0) labelParts.push(`${subAtomCount} sub-atoms`);
+                  const label = labelParts.length > 0 ? labelParts.join(", ") : "empty";
                   return (
                     <div key={p.id} className="group/proj relative">
                       <button
@@ -2486,10 +2494,10 @@ export function PlanningWizardClient({
                       >
                         <span className="truncate w-full">📂 {p.title}</span>
                         <span className="text-[9px] opacity-75 font-mono">
-                          {taskCount} groups{subAtomCount > 0 ? `, ${subAtomCount} atoms` : ""}
+                          {label}
                         </span>
                       </button>
-                      <div className="absolute top-2 right-2 flex items-center gap-0.5 opacity-0 group-hover/proj:opacity-100 transition-opacity duration-150 z-10">
+                      <div className="absolute top-2 right-2 flex items-center gap-0.5 transition-opacity duration-150 z-10">
                         <button
                           type="button"
                           onClick={(e) => {
