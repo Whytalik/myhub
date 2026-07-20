@@ -2471,13 +2471,13 @@ export function PlanningWizardClient({
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const groupCount = (p.tasks || []).filter((t: any) => (t.children || []).length > 0).length;
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const atomCount = (p.tasks || []).filter((t: any) => (t.children || []).length === 0).length;
+                  const standaloneAtomCount = (p.tasks || []).filter((t: any) => (t.children || []).length === 0).length;
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const subAtomCount = (p.tasks || []).reduce((sum: number, t: any) => sum + (t.children?.length || 0), 0);
+                  const totalAtoms = standaloneAtomCount + subAtomCount;
                   const labelParts: string[] = [];
                   if (groupCount > 0) labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
-                  if (atomCount > 0) labelParts.push(`${atomCount} atom${atomCount > 1 ? "s" : ""}`);
-                  if (subAtomCount > 0) labelParts.push(`${subAtomCount} sub-atoms`);
+                  if (totalAtoms > 0) labelParts.push(`${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}`);
                   const label = labelParts.length > 0 ? labelParts.join(", ") : "empty";
                   return (
                     <div key={p.id} className="group/proj relative">
@@ -2608,7 +2608,6 @@ export function PlanningWizardClient({
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {selectedDeconstructProject.tasks.filter((t: any) => !t.parentId).map((task: any) => {
                           const isGroup = (task.children || []).length > 0;
-                          const hasChildren = (task.children || []).length > 0;
                           const isExpanded = expandedGroupId === task.id;
                           const children = task.children || [];
                           const childCount = children.length;
@@ -2690,7 +2689,6 @@ export function PlanningWizardClient({
                               {/* Expanded: sub-atoms + inline form */}
                               {isExpanded && (
                                 <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
-                                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                                   {children.length > 0 ? (
                                     children.map((atom: any) => (
                                       <div key={atom.id} className="flex items-center gap-2 pl-5 pr-1 py-1.5 rounded text-xs group/atom hover:bg-white/[0.02] transition-colors duration-150">
@@ -2809,10 +2807,16 @@ export function PlanningWizardClient({
                 {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                 {activeSprintProjects.map((p: any) => {
                   const topLevelTasks = (p.tasks || []).filter((t: any) => !t.parentId);
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  const groupCount = topLevelTasks.filter((t: any) => (t.children || []).length > 0).length;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  const standaloneAtomCount = topLevelTasks.filter((t: any) => (t.children || []).length === 0).length;
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const subAtomCount = (p.tasks || []).reduce(
                     (sum: number, t: any) => sum + (t.children?.length || 0),
                     0,
                   );
+                  const totalAtoms = standaloneAtomCount + subAtomCount;
                   const isExpanded = expandedGroupId === `step6_${p.id}`;
                   return (
                     <div key={p.id} className="group/proj rounded-xl border border-white/[0.04] bg-white/[0.01] overflow-hidden">
@@ -2827,7 +2831,7 @@ export function PlanningWizardClient({
                         />
                         <span className="text-zinc-300 font-medium truncate">📂 {p.title}</span>
                         <span className="text-[9px] font-mono text-zinc-600 shrink-0">
-                          {topLevelTasks.length} groups{subAtomCount > 0 ? `, ${subAtomCount} atoms` : ""}
+                          {groupCount} group{groupCount !== 1 ? "s" : ""}{totalAtoms > 0 ? `, ${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}` : ""}
                         </span>
                       </button>
                       {isExpanded && (
