@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
@@ -33,6 +33,13 @@ export function TaskCreateForm({
   const [description, setDescription] = useState("");
   const [resistance, setResistance] = useState(3);
   const [projectId, setProjectId] = useState(defaultProjectId ?? (projects.length === 1 ? projects[0].id : ""));
+
+  useEffect(() => {
+    if (defaultProjectId && projects.some((p) => p.id === defaultProjectId)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setProjectId(defaultProjectId);
+    }
+  }, [defaultProjectId, projects]);
 
   const isGroup = mode === "group";
   const projectOptions = projects.map((p) => ({ id: p.id, label: p.title }));
