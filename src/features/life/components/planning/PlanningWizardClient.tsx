@@ -2527,9 +2527,10 @@ export function PlanningWizardClient({
                 {activeSprintProjects.map((p: SprintProject) => {
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const isPlanned = p.status === "DONE";
-                  const groupCount = (p.tasks || []).filter((t: SprintTask) => t.resistance === null).length;
-                  const atomCount = (p.tasks || []).filter((t: SprintTask) => t.resistance !== null).length;
-                  const totalAtoms = atomCount + (p.tasks || []).reduce((sum: number, t: SprintTask) => sum + (t.children?.length || 0), 0);
+                  const groupCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length > 0).length;
+                  const standaloneAtomCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length === 0).length;
+                  const subAtomCount = (p.tasks || []).reduce((sum: number, t: SprintTask) => sum + (t.children?.length || 0), 0);
+                  const totalAtoms = standaloneAtomCount + subAtomCount;
                   const labelParts: string[] = [];
                   if (groupCount > 0) labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
                   if (totalAtoms > 0) labelParts.push(`${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}`);
