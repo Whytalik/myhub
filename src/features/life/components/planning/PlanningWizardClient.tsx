@@ -245,8 +245,6 @@ export function PlanningWizardClient({
   // Project fields
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDesc, setProjectDesc] = useState("");
-  const [firstAtomTitle, setFirstAtomTitle] = useState("");
-  const [firstAtomDesc, setFirstAtomDesc] = useState("");
 
   const [selectedSphereId, setSelectedSphereId] = useState<string>(spheres[0]?.id || "");
   const [resistance, setResistance] = useState<number>(3); // 1-5
@@ -487,8 +485,6 @@ export function PlanningWizardClient({
     setTaskDesc("");
     setProjectTitle("");
     setProjectDesc("");
-    setFirstAtomTitle("");
-    setFirstAtomDesc("");
     setResistance(3);
 
     startActionTransition(async () => {
@@ -900,7 +896,6 @@ export function PlanningWizardClient({
     if (currentDecomposeThought) {
       setTaskTitle(currentDecomposeThought.content);
       setProjectTitle(currentDecomposeThought.content);
-      setFirstAtomTitle("First action for: " + currentDecomposeThought.content.slice(0, 30));
       setSelectedSphereId(currentDecomposeThought.sphereId || "");
     }
   }, [currentDecomposeThought]);
