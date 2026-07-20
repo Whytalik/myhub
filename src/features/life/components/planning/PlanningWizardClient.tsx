@@ -681,7 +681,7 @@ export function PlanningWizardClient({
         sphereId,
         status: "TODO",
         priority: newAtomPriority,
-        resistance: isGroup ? newAtomResistance : undefined,
+        resistance: newAtomResistance,
       });
 
       if (result.success) {
@@ -2512,40 +2512,38 @@ export function PlanningWizardClient({
                         />
                       </div>
 
-                      {createMode === "group" && (
-                        <div className="flex flex-col gap-3">
-                          <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
-                            <span>Internal resistance before action</span>
-                            <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            {[1, 2, 3, 4, 5].map((val) => (
-                              <button
-                                key={val}
-                                type="button"
-                                onClick={() => setNewAtomResistance(val)}
-                                className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
-                                  newAtomResistance === val
-                                    ? val >= 4
-                                      ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                                      : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                                    : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
-                                }`}
-                              >
-                                {val}
-                              </button>
-                            ))}
-                          </div>
-                          {newAtomResistance >= 4 && (
-                            <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
-                              <AlertTriangle size={11} className="shrink-0" />
-                              <span>
-                                Resistance is high: better split this step into an even simpler one!
-                              </span>
-                            </p>
-                          )}
+                      <div className="flex flex-col gap-3">
+                        <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+                          <span>Internal resistance before action</span>
+                          <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
                         </div>
-                      )}
+                        <div className="flex items-center gap-1.5">
+                          {[1, 2, 3, 4, 5].map((val) => (
+                            <button
+                              key={val}
+                              type="button"
+                              onClick={() => setNewAtomResistance(val)}
+                              className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
+                                newAtomResistance === val
+                                  ? val >= 4
+                                    ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                                    : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                  : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
+                              }`}
+                            >
+                              {val}
+                            </button>
+                          ))}
+                        </div>
+                        {newAtomResistance >= 4 && (
+                          <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
+                            <AlertTriangle size={11} className="shrink-0" />
+                            <span>
+                              Resistance is high: better split this step into an even simpler one!
+                            </span>
+                          </p>
+                        )}
+                      </div>
 
                       <Button
                         type="button"
