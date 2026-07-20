@@ -2414,7 +2414,7 @@ export function PlanningWizardClient({
 
               {/* Right Deconstruction Panel */}
               {selectedDeconstructProject ? (
-                <div className="flex flex-col gap-6 max-h-[calc(100vh-200px)] overflow-y-auto overscroll-contain pr-1">
+                <div className="flex flex-col gap-6 min-h-0 flex-1">
                   {/* Selected Project Info */}
                   <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]">
                     <div className="flex items-start justify-between gap-3">
@@ -2559,7 +2559,7 @@ export function PlanningWizardClient({
                   </div>
 
                   {/* Groups List */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 flex-1 min-h-0">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold border-b border-white/[0.04] pb-1">
                       Project Tasks ({(selectedDeconstructProject.tasks || []).filter((t: any) => !t.parentId).length})
                     </span>
@@ -2568,7 +2568,7 @@ export function PlanningWizardClient({
                         No tasks added yet. Use the form above to add a group or atom.
                       </div>
                     ) : (
-                      <div className="flex flex-col gap-1.5 max-h-[500px] overflow-y-auto pr-1">
+                      <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {selectedDeconstructProject.tasks.filter((t: any) => !t.parentId).map((task: any) => {
                           const isGroup = !!(task.description || task.resistance);
