@@ -166,6 +166,21 @@ export async function getSprintDashboard(userId: string) {
 
   const doneTasks = allTasks.filter((t) => t.status === "DONE" || t.status === "CANCELLED");
 
+  // 4. Get standalone atoms (tasks without projectId, not children)
+  const standaloneAtoms = await prisma.task.findMany({
+    where: {
+      userId,
+      projectId: null,
+      parentId: null,
+      status: { in: ["TODO", "IN_PROGRESS", "BACKLOG"] },
+    },
+    include: {
+      sphere: true,
+      children: true,
+    },
+    orderBy: { createdAt: "asc" },
+  });
+
   return {
     sprint,
     backlogProjects,
@@ -175,6 +190,7 @@ export async function getSprintDashboard(userId: string) {
       done: doneTasks,
     },
     allTasks,
+    standaloneAtoms,
   };
 }
 

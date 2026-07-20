@@ -116,6 +116,7 @@ interface PlanningWizardClientProps {
   activeSprint: SprintData;
   initialBacklogProjects: SprintProject[];
   initialColumns: Record<string, unknown>;
+  initialStandaloneAtoms: SprintTask[];
 }
 
 export function PlanningWizardClient({
@@ -124,6 +125,7 @@ export function PlanningWizardClient({
   activeSprint,
   initialBacklogProjects,
   initialColumns: _initialColumns,
+  initialStandaloneAtoms,
 }: PlanningWizardClientProps) {
   const router = useRouter();
   const [step, setStep] = useState(() => {
@@ -139,6 +141,7 @@ export function PlanningWizardClient({
   const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts);
   const [sprint, setSprint] = useState<SprintData>(activeSprint);
   const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects);
+  const [standaloneAtoms, setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms);
 
   // Step 4 state
   const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
@@ -2980,6 +2983,47 @@ export function PlanningWizardClient({
               </div>
             )}
           </div>
+
+          {/* Standalone Atoms */}
+          {standaloneAtoms.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3">
+                <CheckSquare size={14} className="text-zinc-400" />
+                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                  Standalone Atoms ({standaloneAtoms.length})
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {standaloneAtoms.map((atom: SprintTask) => (
+                  <button
+                    key={atom.id}
+                    type="button"
+                    onClick={() => {
+                      setSchedulingTaskId(atom.id);
+                      setScheduleDate(
+                        atom.plannedDate
+                          ? format(new Date(atom.plannedDate), "yyyy-MM-dd")
+                          : "",
+                      );
+                    }}
+                    className={`text-[10px] px-2.5 py-1 rounded-full border transition-all duration-150 ${
+                      atom.plannedDate
+                        ? "bg-accent/10 border-accent/20 text-accent"
+                        : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
+                    }`}
+                    title={atom.title}
+                  >
+                    {atom.title.length > 25
+                      ? atom.title.slice(0, 25) + "…"
+                      : atom.title}
+                    {atom.resistance != null && (
+                      <span className="ml-1 text-[8px] opacity-60">[{atom.resistance}]</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Finish Banner */}
           <div className="glass-card p-4 bg-emerald-500/5 border-emerald-500/10 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">

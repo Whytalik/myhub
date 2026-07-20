@@ -42,6 +42,7 @@ export default async function PlanningWizardPage() {
         activeSprint={dashboard.sprint as any}
         initialBacklogProjects={dashboard.backlogProjects as any}
         initialColumns={dashboard.columns as any}
+        initialStandaloneAtoms={dashboard.standaloneAtoms as any}
       />
     </div>
   );
