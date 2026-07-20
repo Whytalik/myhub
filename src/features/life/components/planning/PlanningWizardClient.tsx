@@ -844,17 +844,39 @@ export function PlanningWizardClient({
       return;
     }
     const newMode = editTaskMode === "group" ? "atom" : "group";
+    const newResistance = newMode === "atom" ? editTaskResistance : null;
 
     startActionTransition(async () => {
       const result = await upsertTaskAction({
         id: editingTaskId,
-        resistance: newMode === "atom" ? editTaskResistance : null,
+        resistance: newResistance,
       });
 
       if (result.success) {
         setEditTaskMode(newMode);
         setEditTaskHasChildren(false);
         toast.success(newMode === "group" ? "Converted to Group" : "Converted to Atom");
+
+        setSprint((prev: SprintData) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
+            ...obj,
+            projects: obj.projects.map((p: SprintProject) => ({
+              ...p,
+              tasks: p.tasks.map((t: SprintTask) => {
+                if (t.id === editingTaskId) {
+                  return { ...t, resistance: newResistance };
+                }
+                return {
+                  ...t,
+                  children: (t.children || []).map((c: SprintTask) =>
+                    c.id === editingTaskId ? { ...c, resistance: newResistance } : c,
+                  ),
+                };
+              }),
+            })),
+          })),
+        }));
       } else {
         toast.error(result.error || "Failed to convert");
       }
@@ -2505,11 +2527,9 @@ export function PlanningWizardClient({
                 {activeSprintProjects.map((p: SprintProject) => {
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const isPlanned = p.status === "DONE";
-                  const groupCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length > 0).length;
-                  const standaloneAtomCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length === 0).length;
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const subAtomCount = (p.tasks || []).reduce((sum: number, t: any) => sum + (t.children?.length || 0), 0);
-                  const totalAtoms = standaloneAtomCount + subAtomCount;
+                  const groupCount = (p.tasks || []).filter((t: SprintTask) => t.resistance === null).length;
+                  const atomCount = (p.tasks || []).filter((t: SprintTask) => t.resistance !== null).length;
+                  const totalAtoms = atomCount + (p.tasks || []).reduce((sum: number, t: SprintTask) => sum + (t.children?.length || 0), 0);
                   const labelParts: string[] = [];
                   if (groupCount > 0) labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
                   if (totalAtoms > 0) labelParts.push(`${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}`);
@@ -2519,7 +2539,7 @@ export function PlanningWizardClient({
                       <button
                         type="button"
                         onClick={() => setSelectedDeconstructProjectId(p.id)}
-                        className={`w-full text-left p-3 pr-10 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
+                        className={`w-full text-left p-3 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
                           isSelected
                             ? "bg-accent/10 border-accent/30 text-accent font-semibold shadow-sm"
                             : isPlanned
@@ -2532,48 +2552,6 @@ export function PlanningWizardClient({
                           {label}
                         </span>
                       </button>
-                      <div className="absolute top-2 right-2 flex items-center gap-0.5 transition-opacity duration-150 z-10">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleMarkProjectPlanned(p.id);
-                          }}
-                          className={`p-1 rounded transition-colors duration-150 bg-canvas/80 backdrop-blur-sm ${
-                            isPlanned
-                              ? "text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
-                              : "text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10"
-                          }`}
-                          title={isPlanned ? "Mark as not planned" : "Mark as planned"}
-                          disabled={isActionPending}
-                        >
-                          <Check size={11} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenEditProject(p);
-                          }}
-                          className="p-1 rounded text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150 bg-canvas/80 backdrop-blur-sm"
-                          title="Edit project"
-                          disabled={isActionPending}
-                        >
-                          <Pencil size={11} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setDeleteProjectId(p.id);
-                          }}
-                          className="p-1 rounded text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors duration-150 bg-canvas/80 backdrop-blur-sm"
-                          title="Delete project"
-                          disabled={isActionPending}
-                        >
-                          <Trash2 size={11} />
-                        </button>
-                      </div>
                     </div>
                   );
                 })}
@@ -2599,6 +2577,19 @@ export function PlanningWizardClient({
                         )}
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => handleMarkProjectPlanned(selectedDeconstructProject.id)}
+                          className={`p-1.5 rounded-lg transition-colors duration-150 ${
+                            selectedDeconstructProject.status === "DONE"
+                              ? "text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
+                              : "text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10"
+                          }`}
+                          title={selectedDeconstructProject.status === "DONE" ? "Mark as not planned" : "Mark as planned"}
+                          disabled={isActionPending}
+                        >
+                          <Check size={13} />
+                        </button>
                         <button
                           type="button"
                           onClick={() => handleOpenEditProject(selectedDeconstructProject)}
@@ -2641,7 +2632,7 @@ export function PlanningWizardClient({
                     ) : (
                       <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
                         {selectedDeconstructProject.tasks.filter((t: SprintTask) => !t.parentId).map((task: SprintTask) => {
-                          const isGroup = (task.children || []).length > 0;
+                          const isGroup = task.resistance === null;
                           const isExpanded = expandedGroupId === task.id;
                           const children = task.children || [];
                           const childCount = children.length;
