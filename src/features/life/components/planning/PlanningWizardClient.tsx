@@ -2632,7 +2632,7 @@ export function PlanningWizardClient({
                     ) : (
                       <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
                         {selectedDeconstructProject.tasks.filter((t: SprintTask) => !t.parentId).map((task: SprintTask) => {
-                          const isGroup = task.resistance === null;
+                          const isGroup = (task.children || []).length > 0;
                           const isExpanded = expandedGroupId === task.id;
                           const children = task.children || [];
                           const childCount = children.length;
