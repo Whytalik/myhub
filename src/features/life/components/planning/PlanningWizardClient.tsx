@@ -45,7 +45,7 @@ import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/th
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
 import { DatePicker } from "@/components/ui/inputs/date-picker";
-import { format, addWeeks, startOfWeek, addDays, endOfWeek, isSameDay } from "date-fns";
+import { format, addWeeks, startOfWeek, addDays, endOfWeek } from "date-fns";
 import { TaskCreateForm, type TaskCreateFormData } from "./TaskCreateForm";
 import { WeeklyStatusBoard } from "@/features/life/components/sprints/WeeklyStatusBoard";
 
@@ -142,7 +142,7 @@ export function PlanningWizardClient({
   const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts);
   const [sprint, setSprint] = useState<SprintData>(activeSprint);
   const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects);
-  const [standaloneAtoms, setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms || []);
+  const [standaloneAtoms, _setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms || []);
 
   // Step 4 state
   const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
@@ -184,7 +184,7 @@ export function PlanningWizardClient({
   const [editTaskHasChildren, setEditTaskHasChildren] = useState(false);
 
   // Step 6 state
-  const [sprintStartDate, setSprintStartDate] = useState(
+  const [sprintStartDate, _setSprintStartDate] = useState(
     sprint?.startDate ? format(new Date(sprint.startDate), "yyyy-MM-dd") : "",
   );
   const [schedulingTaskId, setSchedulingTaskId] = useState<string | null>(null);
@@ -258,7 +258,7 @@ export function PlanningWizardClient({
     if (!sprint?.startDate) return null;
     const d = new Date(sprint.startDate);
     return isNaN(d.getTime()) ? null : startOfWeek(d, { weekStartsOn: 1 });
-  }, [sprint?.startDate]);
+  }, [sprint]);
   const weekStart = useMemo(
     () => sprintStart ? addDays(sprintStart, selectedWeekIndex * 7) : null,
     [sprintStart, selectedWeekIndex],
@@ -973,7 +973,7 @@ export function PlanningWizardClient({
     });
   };
 
-  const handleSaveSprintDates = () => {
+  const _handleSaveSprintDates = () => {
     if (!sprintStartDate || !sprint) return;
     const start = new Date(sprintStartDate);
     const end = addWeeks(start, 12);
@@ -2878,11 +2878,11 @@ export function PlanningWizardClient({
               </span>
             </div>
             <WeeklyStatusBoard
-              tasks={(allAtomsForDistribution || []) as any}
+              tasks={allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[]}
               weekStart={weekStart}
               locked={false}
               onTasksChange={(updater) => {
-                const currentTasks = allAtomsForDistribution as any[];
+                const currentTasks = allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[];
                 const updatedTasks = updater(currentTasks);
                 setSprint((prev: SprintData) => {
                   if (!prev || !prev.objectives) return prev;
