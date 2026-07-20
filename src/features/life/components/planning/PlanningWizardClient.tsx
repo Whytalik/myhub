@@ -143,6 +143,9 @@ export function PlanningWizardClient({
   const [editGroupTitle, setEditGroupTitle] = useState("");
   const [editGroupDesc, setEditGroupDesc] = useState("");
   const [editGroupResistance, setEditGroupResistance] = useState(3);
+  const [editingAtomId, setEditingAtomId] = useState<string | null>(null);
+  const [editAtomTitle, setEditAtomTitle] = useState("");
+  const [editAtomDesc, setEditAtomDesc] = useState("");
 
   // Step 6 state
   const [sprintStartDate, setSprintStartDate] = useState(
@@ -767,6 +770,55 @@ export function PlanningWizardClient({
         }));
       } else {
         toast.error(result.error || "Failed to update group");
+      }
+    });
+  };
+
+  const handleOpenEditAtom = (atom: any) => {
+    setEditingAtomId(atom.id);
+    setEditAtomTitle(atom.title);
+    setEditAtomDesc(atom.description || "");
+  };
+
+  const handleEditAtom = () => {
+    const title = editAtomTitle.trim();
+    if (!title || !editingAtomId || !sprint) return;
+
+    startActionTransition(async () => {
+      const result = await upsertTaskAction({
+        id: editingAtomId,
+        title,
+        description: editAtomDesc.trim() || null,
+      });
+
+      if (result.success) {
+        toast.success("Atom updated!");
+        setEditingAtomId(null);
+
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.map((p: any) => ({
+              ...p,
+              tasks: p.tasks.map((t: any) => {
+                if (t.id === editingAtomId) {
+                  return { ...t, title, description: editAtomDesc.trim() || null };
+                }
+                return {
+                  ...t,
+                  children: (t.children || []).map((c: any) =>
+                    c.id === editingAtomId
+                      ? { ...c, title, description: editAtomDesc.trim() || null }
+                      : c,
+                  ),
+                };
+              }),
+            })),
+          })),
+        }));
+      } else {
+        toast.error(result.error || "Failed to update atom");
       }
     });
   };
@@ -2696,6 +2748,15 @@ export function PlanningWizardClient({
                                 </span>
                                 <button
                                   type="button"
+                                  onClick={() => handleOpenEditAtom(task)}
+                                  className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                  title="Edit atom"
+                                  disabled={isActionPending}
+                                >
+                                  <Pencil size={11} />
+                                </button>
+                                <button
+                                  type="button"
                                   onClick={() => setDeleteTaskId(task.id)}
                                   className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
                                   title="Delete atom"
@@ -2762,6 +2823,15 @@ export function PlanningWizardClient({
                                         <span className={`flex-1 truncate ${atom.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}>
                                           {atom.status === "DONE" ? "✔️" : "○"} {atom.title}
                                         </span>
+                                        <button
+                                          type="button"
+                                          onClick={() => handleOpenEditAtom(atom)}
+                                          className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
+                                          title="Edit atom"
+                                          disabled={isActionPending}
+                                        >
+                                          <Pencil size={11} />
+                                        </button>
                                         <button
                                           type="button"
                                           onClick={() => setDeleteTaskId(atom.id)}
@@ -3190,6 +3260,59 @@ export function PlanningWizardClient({
                 size="sm"
                 onClick={handleEditGroup}
                 disabled={!editGroupTitle.trim() || isActionPending}
+              >
+                Save Changes
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      )}
+
+      {editingAtomId && (
+        <Dialog
+          isOpen={true}
+          onClose={() => setEditingAtomId(null)}
+          title="Edit Atom"
+          description="Update the atom title and description."
+          maxWidth="480px"
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Title</label>
+              <Input
+                value={editAtomTitle}
+                onChange={(e) => setEditAtomTitle(e.target.value)}
+                placeholder="Atom title"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleEditAtom();
+                  }
+                }}
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Description</label>
+              <Textarea
+                value={editAtomDesc}
+                onChange={(e) => setEditAtomDesc(e.target.value)}
+                placeholder="Optional description"
+                rows={3}
+              />
+            </div>
+            <div className="flex gap-2 justify-end mt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setEditingAtomId(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleEditAtom}
+                disabled={!editAtomTitle.trim() || isActionPending}
               >
                 Save Changes
               </Button>
