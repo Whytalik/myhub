@@ -115,7 +115,7 @@ export function TaskCreateForm({
           </div>
         )}
 
-        {isGroup && (
+        {!isGroup && (
           <div className="flex flex-col gap-1">
             <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
               <span>Internal resistance before action</span>

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   Sparkles,
-  Lightbulb,
   CheckCircle2,
   Trash2,
   ChevronRight,
@@ -15,10 +14,6 @@ import {
   FolderKanban,
   CheckSquare,
   AlertTriangle,
-  Play,
-  Layers,
-  Zap,
-  HelpCircle,
   Pencil,
   Plus,
   Calendar,
@@ -36,7 +31,6 @@ import {
   deleteThoughtAction,
 } from "@/features/life/actions/thought-actions";
 import {
-  createProjectAction,
   assignProjectToObjectiveAction,
   createSprintObjectiveAction,
   deleteProjectAction,
@@ -46,13 +40,12 @@ import {
 } from "@/features/life/actions/sprint-actions";
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
-import { KanbanBoardClient } from "../sprints/KanbanBoardClient";
 import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields";
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
 import { DatePicker } from "@/components/ui/inputs/date-picker";
-import { format, addWeeks, parseISO } from "date-fns";
+import { format, addWeeks } from "date-fns";
 import { TaskCreateForm, type TaskCreateFormData } from "./TaskCreateForm";
 
 const FILTER_TYPE_ICONS: Record<string, LucideIcon> = {
@@ -87,7 +80,7 @@ export function PlanningWizardClient({
   spheres,
   activeSprint,
   initialBacklogProjects,
-  initialColumns,
+  initialColumns: _initialColumns,
 }: PlanningWizardClientProps) {
   const router = useRouter();
   const [step, setStep] = useState(() => {
@@ -162,7 +155,7 @@ export function PlanningWizardClient({
   const [activeFilterSphereId, setActiveFilterSphereId] = useState<string | null>(null);
   const [isGroupedBySphere, setIsGroupedBySphere] = useState(false);
   const [isActionPending, startActionTransition] = useTransition();
-  const [isSavePending, startSaveTransition] = useTransition();
+  const [_isSavePending, startSaveTransition] = useTransition();
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [deleteThoughtId, setDeleteThoughtId] = useState<string | null>(null);
 
@@ -694,7 +687,7 @@ export function PlanningWizardClient({
         sphereId,
         status: "TODO",
         priority: "MEDIUM",
-        resistance: isGroup ? data.resistance : null,
+        resistance: isGroup ? null : data.resistance,
       });
 
       if (result.success) {
@@ -765,7 +758,7 @@ export function PlanningWizardClient({
         id: editingTaskId,
         title,
         description: editTaskDesc.trim() || null,
-        resistance: editTaskMode === "group" ? editTaskResistance : null,
+        resistance: editTaskMode === "atom" ? editTaskResistance : null,
       });
 
       if (result.success) {
@@ -780,7 +773,7 @@ export function PlanningWizardClient({
               ...p,
               tasks: p.tasks.map((t: any) => {
                 if (t.id === editingTaskId) {
-                  return { ...t, title, description: editTaskDesc.trim() || null, resistance: editTaskMode === "group" ? editTaskResistance : null };
+                  return { ...t, title, description: editTaskDesc.trim() || null, resistance: editTaskMode === "atom" ? editTaskResistance : null };
                 }
                 return {
                   ...t,
@@ -811,7 +804,7 @@ export function PlanningWizardClient({
     startActionTransition(async () => {
       const result = await upsertTaskAction({
         id: editingTaskId,
-        resistance: newMode === "group" ? editTaskResistance : null,
+        resistance: newMode === "atom" ? editTaskResistance : null,
       });
 
       if (result.success) {
@@ -2484,7 +2477,7 @@ export function PlanningWizardClient({
                       <button
                         type="button"
                         onClick={() => setSelectedDeconstructProjectId(p.id)}
-                        className={`w-full text-left p-3 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
+                        className={`w-full text-left p-3 pr-10 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
                           isSelected
                             ? "bg-accent/10 border-accent/30 text-accent font-semibold shadow-sm"
                             : isPlanned
@@ -3065,7 +3058,7 @@ export function PlanningWizardClient({
               />
             </div>
 
-            {editTaskMode === "group" && (
+            {editTaskMode === "atom" && (
               <div className="flex flex-col gap-1">
                 <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
                   <span>Resistance (1-5)</span>
