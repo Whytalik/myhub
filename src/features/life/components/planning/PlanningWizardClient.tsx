@@ -135,15 +135,12 @@ export function PlanningWizardClient({
   }, [activeSprintProjects, selectedDeconstructProjectId]);
 
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
-  const [newSubAtomTitle, setNewSubAtomTitle] = useState("");
-  const [newSubAtomDesc, setNewSubAtomDesc] = useState("");
-  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
-  const [editGroupTitle, setEditGroupTitle] = useState("");
-  const [editGroupDesc, setEditGroupDesc] = useState("");
-  const [editGroupResistance, setEditGroupResistance] = useState(3);
-  const [editingAtomId, setEditingAtomId] = useState<string | null>(null);
-  const [editAtomTitle, setEditAtomTitle] = useState("");
-  const [editAtomDesc, setEditAtomDesc] = useState("");
+  const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
+  const [editTaskTitle, setEditTaskTitle] = useState("");
+  const [editTaskDesc, setEditTaskDesc] = useState("");
+  const [editTaskResistance, setEditTaskResistance] = useState(3);
+  const [editTaskMode, setEditTaskMode] = useState<"group" | "atom">("atom");
+  const [editTaskHasChildren, setEditTaskHasChildren] = useState(false);
 
   // Step 6 state
   const [sprintStartDate, setSprintStartDate] = useState(
@@ -696,7 +693,7 @@ export function PlanningWizardClient({
         projectId: data.projectId,
         sphereId,
         status: "TODO",
-        priority: data.priority,
+        priority: "MEDIUM",
         resistance: isGroup ? data.resistance : null,
       });
 
@@ -750,69 +747,30 @@ export function PlanningWizardClient({
     });
   };
 
-  const handleOpenEditGroup = (task: any) => {
-    setEditingGroupId(task.id);
-    setEditGroupTitle(task.title);
-    setEditGroupDesc(task.description || "");
-    setEditGroupResistance(task.resistance || 3);
+  const handleOpenEditTask = (task: any, mode: "group" | "atom") => {
+    setEditingTaskId(task.id);
+    setEditTaskTitle(task.title);
+    setEditTaskDesc(task.description || "");
+    setEditTaskResistance(task.resistance || 3);
+    setEditTaskMode(mode);
+    setEditTaskHasChildren((task.children || []).length > 0);
   };
 
-  const handleEditGroup = () => {
-    const title = editGroupTitle.trim();
-    if (!title || !editingGroupId || !sprint) return;
+  const handleEditTask = () => {
+    const title = editTaskTitle.trim();
+    if (!title || !editingTaskId || !sprint) return;
 
     startActionTransition(async () => {
       const result = await upsertTaskAction({
-        id: editingGroupId,
+        id: editingTaskId,
         title,
-        description: editGroupDesc.trim() || null,
-        resistance: editGroupResistance,
+        description: editTaskDesc.trim() || null,
+        resistance: editTaskMode === "group" ? editTaskResistance : null,
       });
 
       if (result.success) {
-        toast.success("Group updated!");
-        setEditingGroupId(null);
-
-        setSprint((prev: any) => ({
-          ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
-            ...obj,
-            projects: obj.projects.map((p: any) => ({
-              ...p,
-              tasks: p.tasks.map((t: any) =>
-                t.id === editingGroupId
-                  ? { ...t, title, description: editGroupDesc.trim() || null, resistance: editGroupResistance }
-                  : t,
-              ),
-            })),
-          })),
-        }));
-      } else {
-        toast.error(result.error || "Failed to update group");
-      }
-    });
-  };
-
-  const handleOpenEditAtom = (atom: any) => {
-    setEditingAtomId(atom.id);
-    setEditAtomTitle(atom.title);
-    setEditAtomDesc(atom.description || "");
-  };
-
-  const handleEditAtom = () => {
-    const title = editAtomTitle.trim();
-    if (!title || !editingAtomId || !sprint) return;
-
-    startActionTransition(async () => {
-      const result = await upsertTaskAction({
-        id: editingAtomId,
-        title,
-        description: editAtomDesc.trim() || null,
-      });
-
-      if (result.success) {
-        toast.success("Atom updated!");
-        setEditingAtomId(null);
+        toast.success(editTaskMode === "group" ? "Group updated!" : "Atom updated!");
+        setEditingTaskId(null);
 
         setSprint((prev: any) => ({
           ...prev,
@@ -821,14 +779,14 @@ export function PlanningWizardClient({
             projects: obj.projects.map((p: any) => ({
               ...p,
               tasks: p.tasks.map((t: any) => {
-                if (t.id === editingAtomId) {
-                  return { ...t, title, description: editAtomDesc.trim() || null };
+                if (t.id === editingTaskId) {
+                  return { ...t, title, description: editTaskDesc.trim() || null, resistance: editTaskMode === "group" ? editTaskResistance : null };
                 }
                 return {
                   ...t,
                   children: (t.children || []).map((c: any) =>
-                    c.id === editingAtomId
-                      ? { ...c, title, description: editAtomDesc.trim() || null }
+                    c.id === editingTaskId
+                      ? { ...c, title, description: editTaskDesc.trim() || null }
                       : c,
                   ),
                 };
@@ -837,65 +795,31 @@ export function PlanningWizardClient({
           })),
         }));
       } else {
-        toast.error(result.error || "Failed to update atom");
+        toast.error(result.error || "Failed to update");
       }
     });
   };
 
-  const handleAddAtomToGroup = (parentGroupId: string) => {
-    const title = newSubAtomTitle.trim();
-    if (!title || !selectedDeconstructProjectId || !sprint) return;
+  const handleConvertTask = () => {
+    if (!editingTaskId || !sprint) return;
+    if (editTaskMode === "group" && editTaskHasChildren) {
+      toast.error("Cannot convert a group that has atoms. Remove all atoms first.");
+      return;
+    }
+    const newMode = editTaskMode === "group" ? "atom" : "group";
 
     startActionTransition(async () => {
-      let sphereId: string | null = null;
-      for (const obj of sprint.objectives) {
-        if (obj.projects.some((p: any) => p.id === selectedDeconstructProjectId)) {
-          sphereId = obj.sphereId;
-          break;
-        }
-      }
-
       const result = await upsertTaskAction({
-        title,
-        description: newSubAtomDesc.trim() || null,
-        projectId: selectedDeconstructProjectId,
-        parentId: parentGroupId,
-        sphereId,
-        status: "TODO",
-        priority: "MEDIUM",
+        id: editingTaskId,
+        resistance: newMode === "group" ? editTaskResistance : null,
       });
 
       if (result.success) {
-        toast.success("Atom added!");
-        setNewSubAtomTitle("");
-        setNewSubAtomDesc("");
-
-        const newTask = result.data;
-        setSprint((prev: any) => ({
-          ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
-            ...obj,
-            projects: obj.projects.map((p: any) => {
-              if (p.id === selectedDeconstructProjectId) {
-                return {
-                  ...p,
-                  tasks: (p.tasks || []).map((t: any) => {
-                    if (t.id === parentGroupId) {
-                      return {
-                        ...t,
-                        children: [...(t.children || []), newTask],
-                      };
-                    }
-                    return t;
-                  }),
-                };
-              }
-              return p;
-            }),
-          })),
-        }));
+        setEditTaskMode(newMode);
+        setEditTaskHasChildren(false);
+        toast.success(newMode === "group" ? "Converted to Group" : "Converted to Atom");
       } else {
-        toast.error(result.error || "Failed to add atom");
+        toast.error(result.error || "Failed to convert");
       }
     });
   };
@@ -2675,7 +2599,7 @@ export function PlanningWizardClient({
                       <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {selectedDeconstructProject.tasks.filter((t: any) => !t.parentId).map((task: any) => {
-                          const isGroup = !!(task.description || task.resistance);
+                          const isGroup = (task.children || []).length > 0;
                           const hasChildren = (task.children || []).length > 0;
                           const isExpanded = expandedGroupId === task.id;
                           const children = task.children || [];
@@ -2690,7 +2614,7 @@ export function PlanningWizardClient({
                                 </span>
                                 <button
                                   type="button"
-                                  onClick={() => handleOpenEditAtom(task)}
+                                  onClick={() => handleOpenEditTask(task, "atom")}
                                   className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
                                   title="Edit atom"
                                   disabled={isActionPending}
@@ -2737,7 +2661,7 @@ export function PlanningWizardClient({
                                 )}
                                 <button
                                   type="button"
-                                  onClick={() => handleOpenEditGroup(task)}
+                                  onClick={() => handleOpenEditTask(task, "group")}
                                   className="p-1 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
                                   title="Edit group"
                                   disabled={isActionPending}
@@ -2767,7 +2691,7 @@ export function PlanningWizardClient({
                                         </span>
                                         <button
                                           type="button"
-                                          onClick={() => handleOpenEditAtom(atom)}
+                                          onClick={() => handleOpenEditTask(atom, "atom")}
                                           className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
                                           title="Edit atom"
                                           disabled={isActionPending}
@@ -2787,51 +2711,9 @@ export function PlanningWizardClient({
                                     ))
                                   ) : (
                                     <div className="pl-5 py-1 text-[10px] text-zinc-500 italic">
-                                      No atoms yet. Add one below.
+                                      No atoms yet.
                                     </div>
                                   )}
-
-                                  {/* Inline add atom form */}
-                                  <div className="flex flex-col gap-1.5 pl-5 pt-1">
-                                    <div className="flex items-center gap-2">
-                                      <Input
-                                        value={expandedGroupId === task.id ? newSubAtomTitle : ""}
-                                        onChange={(e) => {
-                                          setExpandedGroupId(task.id);
-                                          setNewSubAtomTitle(e.target.value);
-                                        }}
-                                        onFocus={() => setExpandedGroupId(task.id)}
-                                        onKeyDown={(e) => {
-                                          if (e.key === "Enter" && !e.shiftKey) {
-                                            e.preventDefault();
-                                            handleAddAtomToGroup(task.id);
-                                          }
-                                        }}
-                                        placeholder="Add an atom..."
-                                        className="h-7 text-[11px]"
-                                      />
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => handleAddAtomToGroup(task.id)}
-                                        disabled={!newSubAtomTitle.trim() || isActionPending}
-                                        className="h-7 px-2 text-[10px]"
-                                      >
-                                        <Plus size={12} />
-                                      </Button>
-                                    </div>
-                                    <Input
-                                      value={expandedGroupId === task.id ? newSubAtomDesc : ""}
-                                      onChange={(e) => {
-                                        setExpandedGroupId(task.id);
-                                        setNewSubAtomDesc(e.target.value);
-                                      }}
-                                      onFocus={() => setExpandedGroupId(task.id)}
-                                      placeholder="Description (optional)..."
-                                      className="h-7 text-[10px] text-zinc-400"
-                                    />
-                                  </div>
                                 </div>
                               )}
                             </div>
@@ -3138,25 +3020,25 @@ export function PlanningWizardClient({
         </Dialog>
       )}
 
-      {editingGroupId && (
+      {editingTaskId && (
         <Dialog
           isOpen={true}
-          onClose={() => setEditingGroupId(null)}
-          title="Edit Group"
-          description="Update group title, description, and resistance level."
+          onClose={() => setEditingTaskId(null)}
+          title={`Edit ${editTaskMode === "group" ? "Group" : "Atom"}`}
+          description={`Update the ${editTaskMode} title and description.`}
           maxWidth="480px"
         >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <label className="text-[10px] font-mono text-zinc-400 uppercase">Title</label>
               <Input
-                value={editGroupTitle}
-                onChange={(e) => setEditGroupTitle(e.target.value)}
-                placeholder="Group title"
+                value={editTaskTitle}
+                onChange={(e) => setEditTaskTitle(e.target.value)}
+                placeholder={`${editTaskMode === "group" ? "Group" : "Atom"} title`}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
-                    handleEditGroup();
+                    handleEditTask();
                   }
                 }}
               />
@@ -3164,100 +3046,66 @@ export function PlanningWizardClient({
             <div className="flex flex-col gap-1">
               <label className="text-[10px] font-mono text-zinc-400 uppercase">Description</label>
               <Textarea
-                value={editGroupDesc}
-                onChange={(e) => setEditGroupDesc(e.target.value)}
+                value={editTaskDesc}
+                onChange={(e) => setEditTaskDesc(e.target.value)}
                 placeholder="Optional description"
                 rows={3}
               />
             </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-mono text-zinc-400 uppercase">Resistance (1-5)</label>
-              <div className="flex gap-1.5">
-                {[1, 2, 3, 4, 5].map((r) => (
-                  <button
-                    key={r}
-                    type="button"
-                    onClick={() => setEditGroupResistance(r)}
-                    className={`w-8 h-8 rounded-lg text-xs font-mono transition-all duration-150 ${
-                      editGroupResistance === r
-                        ? "bg-accent/20 border border-accent/40 text-accent font-semibold"
-                        : "bg-white/[0.04] border border-white/[0.06] text-zinc-500 hover:bg-white/[0.06]"
-                    }`}
-                  >
-                    {r}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex gap-2 justify-end mt-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setEditingGroupId(null)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleEditGroup}
-                disabled={!editGroupTitle.trim() || isActionPending}
-              >
-                Save Changes
-              </Button>
-            </div>
-          </div>
-        </Dialog>
-      )}
 
-      {editingAtomId && (
-        <Dialog
-          isOpen={true}
-          onClose={() => setEditingAtomId(null)}
-          title="Edit Atom"
-          description="Update the atom title and description."
-          maxWidth="480px"
-        >
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-mono text-zinc-400 uppercase">Title</label>
-              <Input
-                value={editAtomTitle}
-                onChange={(e) => setEditAtomTitle(e.target.value)}
-                placeholder="Atom title"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleEditAtom();
-                  }
-                }}
-              />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-mono text-zinc-400 uppercase">Description</label>
-              <Textarea
-                value={editAtomDesc}
-                onChange={(e) => setEditAtomDesc(e.target.value)}
-                placeholder="Optional description"
-                rows={3}
-              />
-            </div>
-            <div className="flex gap-2 justify-end mt-1">
+            {editTaskMode === "group" && (
+              <div className="flex flex-col gap-1">
+                <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+                  <span>Resistance (1-5)</span>
+                  <span className="text-orange-400 font-bold">{editTaskResistance} / 5</span>
+                </div>
+                <div className="flex gap-1.5">
+                  {[1, 2, 3, 4, 5].map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setEditTaskResistance(r)}
+                      className={`w-8 h-8 rounded-lg text-xs font-mono transition-all duration-150 ${
+                        editTaskResistance === r
+                          ? "bg-accent/20 border border-accent/40 text-accent font-semibold"
+                          : "bg-white/[0.04] border border-white/[0.06] text-zinc-500 hover:bg-white/[0.06]"
+                      }`}
+                    >
+                      {r}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-2 justify-between mt-1">
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                onClick={() => setEditingAtomId(null)}
+                onClick={handleConvertTask}
+                disabled={editTaskMode === "group" && editTaskHasChildren}
+                className="text-[10px]"
+                title={editTaskMode === "group" && editTaskHasChildren ? "Remove all atoms first" : undefined}
               >
-                Cancel
+                {editTaskMode === "group" ? "Convert to Atom" : "Convert to Group"}
               </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleEditAtom}
-                disabled={!editAtomTitle.trim() || isActionPending}
-              >
-                Save Changes
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setEditingTaskId(null)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleEditTask}
+                  disabled={!editTaskTitle.trim() || isActionPending}
+                >
+                  Save Changes
+                </Button>
+              </div>
             </div>
           </div>
         </Dialog>

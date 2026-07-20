@@ -5,15 +5,13 @@ import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { CustomSelect } from "@/components/ui/inputs/custom-select";
-import { AlertTriangle, Plus } from "lucide-react";
-import type { TaskPriority } from "@/features/life/types";
+import { AlertTriangle } from "lucide-react";
 
 export interface TaskCreateFormData {
   title: string;
   description: string;
   mode: "group" | "atom";
   resistance: number;
-  priority: TaskPriority;
   projectId: string;
 }
 
@@ -23,13 +21,6 @@ interface TaskCreateFormProps {
   onSubmit: (data: TaskCreateFormData) => void;
   isPending: boolean;
 }
-
-const PRIORITY_OPTIONS = [
-  { id: "LOW", label: "Low" },
-  { id: "MEDIUM", label: "Medium" },
-  { id: "HIGH", label: "High" },
-  { id: "URGENT", label: "Urgent" },
-];
 
 export function TaskCreateForm({
   projects,
@@ -41,7 +32,6 @@ export function TaskCreateForm({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [resistance, setResistance] = useState(3);
-  const [priority, setPriority] = useState<TaskPriority>("MEDIUM");
   const [projectId, setProjectId] = useState(defaultProjectId ?? (projects.length === 1 ? projects[0].id : ""));
 
   const isGroup = mode === "group";
@@ -55,13 +45,11 @@ export function TaskCreateForm({
       description: description.trim(),
       mode,
       resistance,
-      priority,
       projectId,
     });
     setTitle("");
     setDescription("");
     setResistance(3);
-    setPriority("MEDIUM");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -127,50 +115,38 @@ export function TaskCreateForm({
           </div>
         )}
 
-        <div className="flex gap-3">
-          <div className="flex flex-col gap-1 flex-1">
-            <label className="text-[10px] font-mono text-zinc-450 uppercase">Priority</label>
-            <CustomSelect
-              value={priority}
-              onChange={(v) => setPriority(v as TaskPriority)}
-              options={PRIORITY_OPTIONS}
-              placeholder="Priority"
-            />
-          </div>
-
-          {isGroup && (
-            <div className="flex flex-col gap-1 flex-1">
-              <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
-                <span>Resistance</span>
-                <span className="text-orange-400 font-bold">{resistance} / 5</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                {[1, 2, 3, 4, 5].map((val) => (
-                  <button
-                    key={val}
-                    type="button"
-                    onClick={() => setResistance(val)}
-                    className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
-                      resistance === val
-                        ? val >= 4
-                          ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                          : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                        : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
-                    }`}
-                  >
-                    {val}
-                  </button>
-                ))}
-              </div>
-              {resistance >= 4 && (
-                <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
-                  <AlertTriangle size={11} className="shrink-0" />
-                  <span>Resistance is high: better split this step into an even simpler one!</span>
-                </p>
-              )}
+        {isGroup && (
+          <div className="flex flex-col gap-1">
+            <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+              <span>Internal resistance before action</span>
+              <span className="text-orange-400 font-bold">{resistance} / 5</span>
             </div>
-          )}
-        </div>
+            <div className="flex items-center gap-1.5">
+              {[1, 2, 3, 4, 5].map((val) => (
+                <button
+                  key={val}
+                  type="button"
+                  onClick={() => setResistance(val)}
+                  className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
+                    resistance === val
+                      ? val >= 4
+                        ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                        : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                      : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
+                  }`}
+                >
+                  {val}
+                </button>
+              ))}
+            </div>
+            {resistance >= 4 && (
+              <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
+                <AlertTriangle size={11} className="shrink-0" />
+                <span>Resistance is high: better split this step into an even simpler one!</span>
+              </p>
+            )}
+          </div>
+        )}
 
         <Button
           type="button"
