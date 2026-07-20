@@ -107,6 +107,7 @@ export function PlanningWizardClient({
   const [editProjectTitle, setEditProjectTitle] = useState("");
   const [editProjectDesc, setEditProjectDesc] = useState("");
   const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
+  const [deleteTaskId, setDeleteTaskId] = useState<string | null>(null);
 
   // Step 5 state
   const activeSprintProjects = useMemo(() => {
@@ -2587,7 +2588,7 @@ export function PlanningWizardClient({
                                 </span>
                                 <button
                                   type="button"
-                                  onClick={() => handleDeleteAtomFromProject(task.id)}
+                                  onClick={() => setDeleteTaskId(task.id)}
                                   className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
                                   title="Delete atom"
                                   disabled={isActionPending}
@@ -2625,7 +2626,7 @@ export function PlanningWizardClient({
                                 )}
                                 <button
                                   type="button"
-                                  onClick={() => handleDeleteAtomFromProject(task.id)}
+                                  onClick={() => setDeleteTaskId(task.id)}
                                   className="p-1 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
                                   title="Delete group"
                                   disabled={isActionPending}
@@ -2646,7 +2647,7 @@ export function PlanningWizardClient({
                                         </span>
                                         <button
                                           type="button"
-                                          onClick={() => handleDeleteAtomFromProject(atom.id)}
+                                          onClick={() => setDeleteTaskId(atom.id)}
                                           className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
                                           title="Delete atom"
                                           disabled={isActionPending}
@@ -2845,6 +2846,23 @@ export function PlanningWizardClient({
             </div>
           </div>
         </Dialog>
+      )}
+
+      {deleteTaskId && (
+        <ConfirmationDialog
+          isOpen={deleteTaskId !== null}
+          onClose={() => setDeleteTaskId(null)}
+          onConfirm={() => {
+            if (deleteTaskId) {
+              handleDeleteAtomFromProject(deleteTaskId);
+            }
+          }}
+          title="Delete Task"
+          description="Are you sure you want to delete this task? All child tasks will also be permanently deleted."
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          variant="danger"
+        />
       )}
 
       {deleteProjectId && (
