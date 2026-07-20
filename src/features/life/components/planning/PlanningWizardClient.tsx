@@ -22,6 +22,7 @@ import {
   Pencil,
   Plus,
   Calendar,
+  Check,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
@@ -40,6 +41,7 @@ import {
   createSprintObjectiveAction,
   deleteProjectAction,
   updateProjectAction,
+  updateProjectStatusAction,
   updateSprintDatesAction,
 } from "@/features/life/actions/sprint-actions";
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
@@ -51,6 +53,7 @@ import { ThoughtDetailDialog } from "@/features/life/components/thoughts/Thought
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
 import { DatePicker } from "@/components/ui/inputs/date-picker";
 import { format, addWeeks, parseISO } from "date-fns";
+import { TaskCreateForm, type TaskCreateFormData } from "./TaskCreateForm";
 
 const FILTER_TYPE_ICONS: Record<string, LucideIcon> = {
   AlertTriangle,
@@ -131,14 +134,9 @@ export function PlanningWizardClient({
     return activeSprintProjects.find((p: any) => p.id === selectedDeconstructProjectId) || null;
   }, [activeSprintProjects, selectedDeconstructProjectId]);
 
-  const [newAtomTitle, setNewAtomTitle] = useState("");
-  const [newAtomDesc, setNewAtomDesc] = useState("");
-  const [newAtomResistance, setNewAtomResistance] = useState(3);
-  const [newAtomPriority, setNewAtomPriority] = useState<any>("MEDIUM");
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
   const [newSubAtomTitle, setNewSubAtomTitle] = useState("");
   const [newSubAtomDesc, setNewSubAtomDesc] = useState("");
-  const [createMode, setCreateMode] = useState<"group" | "atom">("group");
   const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
   const [editGroupTitle, setEditGroupTitle] = useState("");
   const [editGroupDesc, setEditGroupDesc] = useState("");
@@ -678,15 +676,15 @@ export function PlanningWizardClient({
   };
 
   // Step 5 Handlers
-  const handleAddTopLevelTask = () => {
-    const title = newAtomTitle.trim();
-    if (!title || !selectedDeconstructProjectId || !sprint) return;
-    const isGroup = createMode === "group";
+  const handleAddTopLevelTask = (data: TaskCreateFormData) => {
+    const title = data.title.trim();
+    if (!title || !data.projectId || !sprint) return;
+    const isGroup = data.mode === "group";
 
     startActionTransition(async () => {
       let sphereId: string | null = null;
       for (const obj of sprint.objectives) {
-        if (obj.projects.some((p: any) => p.id === selectedDeconstructProjectId)) {
+        if (obj.projects.some((p: any) => p.id === data.projectId)) {
           sphereId = obj.sphereId;
           break;
         }
@@ -694,20 +692,16 @@ export function PlanningWizardClient({
 
       const result = await upsertTaskAction({
         title,
-        description: newAtomDesc.trim() || null,
-        projectId: selectedDeconstructProjectId,
+        description: data.description.trim() || null,
+        projectId: data.projectId,
         sphereId,
         status: "TODO",
-        priority: newAtomPriority,
-        resistance: newAtomResistance,
+        priority: data.priority,
+        resistance: isGroup ? data.resistance : null,
       });
 
       if (result.success) {
         toast.success(isGroup ? "Group created!" : "Atom created!");
-        setNewAtomTitle("");
-        setNewAtomDesc("");
-        setNewAtomResistance(3);
-        setNewAtomPriority("MEDIUM");
 
         const newTask = result.data;
         setSprint((prev: any) => ({
@@ -715,7 +709,7 @@ export function PlanningWizardClient({
           objectives: prev.objectives.map((obj: any) => ({
             ...obj,
             projects: obj.projects.map((p: any) => {
-              if (p.id === selectedDeconstructProjectId) {
+              if (p.id === data.projectId) {
                 return {
                   ...p,
                   tasks: [...(p.tasks || []), newTask],
@@ -727,6 +721,31 @@ export function PlanningWizardClient({
         }));
       } else {
         toast.error(result.error || "Failed to create");
+      }
+    });
+  };
+
+  const handleMarkProjectPlanned = (projectId: string) => {
+    if (!sprint) return;
+    const project = activeSprintProjects.find((p: any) => p.id === projectId);
+    if (!project) return;
+    const newStatus = project.status === "DONE" ? "TODO" : "DONE";
+
+    startActionTransition(async () => {
+      const result = await updateProjectStatusAction(projectId, newStatus);
+      if (result.success) {
+        toast.success(newStatus === "DONE" ? "Project marked as planned!" : "Project unmarked");
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.map((p: any) =>
+              p.id === projectId ? { ...p, status: newStatus } : p,
+            ),
+          })),
+        }));
+      } else {
+        toast.error(result.error || "Failed to update project");
       }
     });
   };
@@ -2524,6 +2543,7 @@ export function PlanningWizardClient({
                 </span>
                 {activeSprintProjects.map((p: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
                   const isSelected = p.id === selectedDeconstructProjectId;
+                  const isPlanned = p.status === "DONE";
                   const taskCount = p.tasks?.length || 0;
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const subAtomCount = (p.tasks || []).reduce((sum: number, t: any) => sum + (t.children?.length || 0), 0);
@@ -2535,15 +2555,33 @@ export function PlanningWizardClient({
                         className={`w-full text-left p-3 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
                           isSelected
                             ? "bg-accent/10 border-accent/30 text-accent font-semibold shadow-sm"
-                            : "bg-white/[0.01] border-white/[0.04] text-zinc-400 hover:bg-white/[0.02]"
+                            : isPlanned
+                              ? "bg-emerald-500/5 border-emerald-500/15 text-zinc-400 hover:bg-emerald-500/8"
+                              : "bg-white/[0.01] border-white/[0.04] text-zinc-400 hover:bg-white/[0.02]"
                         }`}
                       >
                         <span className="truncate w-full">📂 {p.title}</span>
                         <span className="text-[9px] opacity-75 font-mono">
-                          {taskCount} tasks{subAtomCount > 0 ? `, ${subAtomCount} atoms` : ""}
+                          {taskCount} groups{subAtomCount > 0 ? `, ${subAtomCount} atoms` : ""}
                         </span>
                       </button>
                       <div className="absolute top-2 right-2 flex items-center gap-0.5 opacity-0 group-hover/proj:opacity-100 transition-opacity duration-150 z-10">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleMarkProjectPlanned(p.id);
+                          }}
+                          className={`p-1 rounded transition-colors duration-150 bg-canvas/80 backdrop-blur-sm ${
+                            isPlanned
+                              ? "text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
+                              : "text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10"
+                          }`}
+                          title={isPlanned ? "Mark as not planned" : "Mark as planned"}
+                          disabled={isActionPending}
+                        >
+                          <Check size={11} />
+                        </button>
                         <button
                           type="button"
                           onClick={(e) => {
@@ -2617,117 +2655,21 @@ export function PlanningWizardClient({
                   </div>
 
                   {/* Add Task Form */}
-                  <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.01] flex flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-wider font-semibold">
-                        ➕ Add Task
-                      </span>
-                      <div className="flex items-center bg-white/[0.04] rounded-lg p-0.5 border border-white/[0.06]">
-                        <button
-                          type="button"
-                          onClick={() => setCreateMode("group")}
-                          className={`text-[10px] font-mono px-2.5 py-1 rounded-md transition-colors duration-150 ${
-                            createMode === "group"
-                              ? "bg-accent/15 text-accent"
-                              : "text-zinc-500 hover:text-zinc-300"
-                          }`}
-                        >
-                          Group
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setCreateMode("atom")}
-                          className={`text-[10px] font-mono px-2.5 py-1 rounded-md transition-colors duration-150 ${
-                            createMode === "atom"
-                              ? "bg-accent/15 text-accent"
-                              : "text-zinc-500 hover:text-zinc-300"
-                          }`}
-                        >
-                          Atom
-                        </button>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      <div className="flex flex-col gap-1">
-                        <label className="text-[10px] font-mono text-zinc-450 uppercase">
-                          {createMode === "group" ? "Group Title" : "Atom Title"}
-                        </label>
-                        <Input
-                          value={newAtomTitle}
-                          onChange={(e) => setNewAtomTitle(e.target.value)}
-                          placeholder={createMode === "group" ? "e.g. Design phase, Backend setup..." : "e.g. Create wireframe, Write tests..."}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" && !e.shiftKey) {
-                              e.preventDefault();
-                              handleAddTopLevelTask();
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <label className="text-[10px] font-mono text-zinc-450 uppercase">Description / Links (optional)</label>
-                        <Textarea
-                          value={newAtomDesc}
-                          onChange={(e) => setNewAtomDesc(e.target.value)}
-                          placeholder="Notes, references or urls..."
-                          rows={2}
-                        />
-                      </div>
-
-                      <div className="flex flex-col gap-3">
-                        <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
-                          <span>Internal resistance before action</span>
-                          <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                          {[1, 2, 3, 4, 5].map((val) => (
-                            <button
-                              key={val}
-                              type="button"
-                              onClick={() => setNewAtomResistance(val)}
-                              className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
-                                newAtomResistance === val
-                                  ? val >= 4
-                                    ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                                    : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                                  : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
-                              }`}
-                            >
-                              {val}
-                            </button>
-                          ))}
-                        </div>
-                        {newAtomResistance >= 4 && (
-                          <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
-                            <AlertTriangle size={11} className="shrink-0" />
-                            <span>
-                              Resistance is high: better split this step into an even simpler one!
-                            </span>
-                          </p>
-                        )}
-                      </div>
-
-                      <Button
-                        type="button"
-                        variant="primary"
-                        size="sm"
-                        onClick={handleAddTopLevelTask}
-                        disabled={!newAtomTitle.trim() || isActionPending}
-                        className="w-fit self-end mt-1"
-                      >
-                        {createMode === "group" ? "Add Group to Project" : "Add Atom to Project"}
-                      </Button>
-                    </div>
-                  </div>
+                  <TaskCreateForm
+                    projects={activeSprintProjects}
+                    defaultProjectId={selectedDeconstructProjectId}
+                    onSubmit={handleAddTopLevelTask}
+                    isPending={isActionPending}
+                  />
 
                   {/* Groups List */}
                   <div className="flex flex-col gap-2 flex-1 min-h-0">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold border-b border-white/[0.04] pb-1">
-                      Project Tasks ({(selectedDeconstructProject.tasks || []).filter((t: any) => !t.parentId).length})
+                      Project Groups ({(selectedDeconstructProject.tasks || []).filter((t: any) => !t.parentId).length})
                     </span>
                     {(!(selectedDeconstructProject.tasks || []).some((t: any) => !t.parentId)) ? (
                       <div className="text-zinc-500 text-xs italic py-6 text-center">
-                        No tasks added yet. Use the form above to add a group or atom.
+                        No groups added yet. Use the form above to add a group or atom.
                       </div>
                     ) : (
                       <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
@@ -3331,7 +3273,7 @@ export function PlanningWizardClient({
             }
           }}
           title="Delete Task"
-          description="Are you sure you want to delete this task? All child tasks will also be permanently deleted."
+          description="Are you sure you want to delete this task? All child atoms will also be permanently deleted."
           confirmLabel="Delete"
           cancelLabel="Cancel"
           variant="danger"
@@ -3434,7 +3376,7 @@ export function PlanningWizardClient({
             }
           }}
           title="Delete Project"
-          description="Are you sure you want to delete this project? All associated tasks will also be permanently deleted."
+          description="Are you sure you want to delete this project? All associated groups and atoms will also be permanently deleted."
           confirmLabel="Delete"
           cancelLabel="Cancel"
           variant="danger"
