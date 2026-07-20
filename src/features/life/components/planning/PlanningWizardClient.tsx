@@ -67,12 +67,55 @@ interface ThoughtItem {
   templateData?: Record<string, string> | null;
 }
 
+interface SprintTask {
+  id: string;
+  title: string;
+  description: string | null;
+  status: string;
+  priority: string;
+  resistance: number | null;
+  parentId: string | null;
+  projectId?: string | null;
+  sphereId: string | null;
+  plannedDate: Date | string | null;
+  children: SprintTask[];
+}
+
+interface SprintProject {
+  id: string;
+  title: string;
+  description: string | null;
+  status: string;
+  objectiveId: string | null;
+  tasks: SprintTask[];
+}
+
+interface SprintObjective {
+  id: string;
+  title: string;
+  description: string | null;
+  sphereId: string;
+  sphere: { id: string; name: string; color: string } | null;
+  projects: SprintProject[];
+}
+
+interface SprintData {
+  id: string;
+  title: string;
+  number: number;
+  year: number;
+  startDate: Date | string;
+  endDate: Date | string;
+  status: string;
+  objectives: SprintObjective[];
+}
+
 interface PlanningWizardClientProps {
   initialThoughts: ThoughtItem[];
   spheres: LifeSphereData[];
-  activeSprint: any;
-  initialBacklogProjects: any[];
-  initialColumns: any;
+  activeSprint: SprintData;
+  initialBacklogProjects: SprintProject[];
+  initialColumns: Record<string, unknown>;
 }
 
 export function PlanningWizardClient({
@@ -94,8 +137,8 @@ export function PlanningWizardClient({
     return 0; // 0: Intro, 1: Brain Dump, 2: Filter, 3: Decompose, 4: Sprint Goals, 5: Project Deconstruct, 6: Distribute
   });
   const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts);
-  const [sprint, setSprint] = useState<any>(activeSprint);
-  const [backlogProjects, setBacklogProjects] = useState<any[]>(initialBacklogProjects);
+  const [sprint, setSprint] = useState<SprintData>(activeSprint);
+  const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects);
 
   // Step 4 state
   const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
@@ -112,19 +155,20 @@ export function PlanningWizardClient({
   // Step 5 state
   const activeSprintProjects = useMemo(() => {
     if (!sprint?.objectives) return [];
-    return sprint.objectives.flatMap((obj: any) => obj.projects || []);
+    return sprint.objectives.flatMap((obj: SprintObjective) => obj.projects || []);
   }, [sprint]);
   const [selectedDeconstructProjectId, setSelectedDeconstructProjectId] = useState<string | null>(null);
   
   // Set default selected project when entering Step 5
   useEffect(() => {
     if (step === 5 && !selectedDeconstructProjectId && activeSprintProjects.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSelectedDeconstructProjectId(activeSprintProjects[0].id);
     }
   }, [step, activeSprintProjects, selectedDeconstructProjectId]);
 
   const selectedDeconstructProject = useMemo(() => {
-    return activeSprintProjects.find((p: any) => p.id === selectedDeconstructProjectId) || null;
+    return activeSprintProjects.find((p: SprintProject) => p.id === selectedDeconstructProjectId) || null;
   }, [activeSprintProjects, selectedDeconstructProjectId]);
 
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
@@ -353,12 +397,14 @@ export function PlanningWizardClient({
   // Keep filterIndex and decomposeIndex in bounds when inboxThoughts/decomposableThoughts change
   useEffect(() => {
     if (filterIndex >= inboxThoughts.length && inboxThoughts.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFilterIndex(inboxThoughts.length - 1);
     }
   }, [inboxThoughts.length, filterIndex]);
 
   useEffect(() => {
     if (decomposeIndex >= decomposableThoughts.length && decomposableThoughts.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDecomposeIndex(decomposableThoughts.length - 1);
     }
   }, [decomposableThoughts.length, decomposeIndex]);
@@ -366,6 +412,7 @@ export function PlanningWizardClient({
   useEffect(() => {
     if (step === 2) {
       if (initialFilterCount === null || initialFilterCount < inboxThoughts.length) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setInitialFilterCount(inboxThoughts.length);
       }
     } else {
@@ -376,6 +423,7 @@ export function PlanningWizardClient({
   const currentFilterThoughtId = inboxThoughts[filterIndex]?.id;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFilterStage("q1");
     setFilterStageHistory([]);
     setWantType(null);
@@ -531,7 +579,7 @@ export function PlanningWizardClient({
           sphere: spheres.find((s) => s.id === newObjectiveSphereId),
           projects: [],
         };
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
           objectives: [...(prev?.objectives || []), newObj],
         }));
@@ -547,14 +595,14 @@ export function PlanningWizardClient({
       if (result.success) {
         toast.success(objectiveId ? "Project assigned to objective!" : "Project moved to backlog!");
         
-        let projectToMove: any = null;
+        let projectToMove: SprintProject | null = null;
         
         const backlogIndex = backlogProjects.findIndex((p) => p.id === projectId);
         if (backlogIndex !== -1) {
           projectToMove = backlogProjects[backlogIndex];
         } else {
           for (const obj of sprint.objectives) {
-            const idx = obj.projects.findIndex((p: any) => p.id === projectId);
+            const idx = obj.projects.findIndex((p: SprintProject) => p.id === projectId);
             if (idx !== -1) {
               projectToMove = obj.projects[idx];
               break;
@@ -571,20 +619,20 @@ export function PlanningWizardClient({
         };
 
         setBacklogProjects((prev) => prev.filter((p) => p.id !== projectId));
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
             ...obj,
-            projects: obj.projects.filter((p: any) => p.id !== projectId),
+            projects: obj.projects.filter((p: SprintProject) => p.id !== projectId),
           })),
         }));
 
         if (objectiveId === null) {
           setBacklogProjects((prev) => [updatedProject, ...prev]);
         } else {
-          setSprint((prev: any) => ({
+          setSprint((prev: SprintData) => ({
             ...prev,
-            objectives: prev.objectives.map((obj: any) => {
+            objectives: prev.objectives.map((obj: SprintObjective) => {
               if (obj.id === objectiveId) {
                 return {
                   ...obj,
@@ -611,14 +659,14 @@ export function PlanningWizardClient({
         toast.success("Project updated!");
         setEditingProjectId(null);
 
-        const updateInList = (projects: any[]) =>
-          projects.map((p: any) =>
+        const updateInList = (projects: SprintProject[]) =>
+          projects.map((p: SprintProject) =>
             p.id === editingProjectId ? { ...p, title, description: editProjectDesc.trim() || null } : p,
           );
 
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
             ...obj,
             projects: updateInList(obj.projects),
           })),
@@ -637,11 +685,11 @@ export function PlanningWizardClient({
         toast.success("Project deleted!");
         setDeleteProjectId(null);
 
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
             ...obj,
-            projects: obj.projects.filter((p: any) => p.id !== projectId),
+            projects: obj.projects.filter((p: SprintProject) => p.id !== projectId),
           })),
         }));
         setBacklogProjects((prev) => prev.filter((p) => p.id !== projectId));
@@ -670,7 +718,7 @@ export function PlanningWizardClient({
     startActionTransition(async () => {
       let sphereId: string | null = null;
       for (const obj of sprint.objectives) {
-        if (obj.projects.some((p: any) => p.id === data.projectId)) {
+        if (obj.projects.some((p: SprintProject) => p.id === data.projectId)) {
           sphereId = obj.sphereId;
           break;
         }
@@ -690,11 +738,11 @@ export function PlanningWizardClient({
         toast.success(isGroup ? "Group created!" : "Atom created!");
 
         const newTask = result.data;
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
             ...obj,
-            projects: obj.projects.map((p: any) => {
+            projects: obj.projects.map((p: SprintProject) => {
               if (p.id === data.projectId) {
                 return {
                   ...p,
@@ -713,7 +761,7 @@ export function PlanningWizardClient({
 
   const handleMarkProjectPlanned = (projectId: string) => {
     if (!sprint) return;
-    const project = activeSprintProjects.find((p: any) => p.id === projectId);
+    const project = activeSprintProjects.find((p: SprintProject) => p.id === projectId);
     if (!project) return;
     const newStatus = project.status === "DONE" ? "TODO" : "DONE";
 
@@ -721,11 +769,11 @@ export function PlanningWizardClient({
       const result = await updateProjectStatusAction(projectId, newStatus);
       if (result.success) {
         toast.success(newStatus === "DONE" ? "Project marked as planned!" : "Project unmarked");
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
             ...obj,
-            projects: obj.projects.map((p: any) =>
+            projects: obj.projects.map((p: SprintProject) =>
               p.id === projectId ? { ...p, status: newStatus } : p,
             ),
           })),
@@ -736,7 +784,7 @@ export function PlanningWizardClient({
     });
   };
 
-  const handleOpenEditTask = (task: any, mode: "group" | "atom") => {
+  const handleOpenEditTask = (task: SprintTask, mode: "group" | "atom") => {
     setEditingTaskId(task.id);
     setEditTaskTitle(task.title);
     setEditTaskDesc(task.description || "");
@@ -761,19 +809,19 @@ export function PlanningWizardClient({
         toast.success(editTaskMode === "group" ? "Group updated!" : "Atom updated!");
         setEditingTaskId(null);
 
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
             ...obj,
-            projects: obj.projects.map((p: any) => ({
+            projects: obj.projects.map((p: SprintProject) => ({
               ...p,
-              tasks: p.tasks.map((t: any) => {
+              tasks: p.tasks.map((t: SprintTask) => {
                 if (t.id === editingTaskId) {
                   return { ...t, title, description: editTaskDesc.trim() || null, resistance: editTaskMode === "atom" ? editTaskResistance : null };
                 }
                 return {
                   ...t,
-                  children: (t.children || []).map((c: any) =>
+                  children: (t.children || []).map((c: SprintTask) =>
                     c.id === editingTaskId
                       ? { ...c, title, description: editTaskDesc.trim() || null }
                       : c,
@@ -818,15 +866,15 @@ export function PlanningWizardClient({
       const result = await deleteTaskAction(taskId);
       if (result.success) {
         toast.success("Task atom deleted");
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
             ...obj,
-            projects: obj.projects.map((p: any) => {
+            projects: obj.projects.map((p: SprintProject) => {
               if (p.id === selectedDeconstructProjectId) {
                 return {
                   ...p,
-                  tasks: (p.tasks || []).filter((t: any) => t.id !== taskId),
+                  tasks: (p.tasks || []).filter((t: SprintTask) => t.id !== taskId),
                 };
               }
               return p;
@@ -851,7 +899,7 @@ export function PlanningWizardClient({
       );
       if (result.success) {
         toast.success("Sprint dates updated!");
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
           startDate: start.toISOString(),
           endDate: end.toISOString(),
@@ -873,13 +921,13 @@ export function PlanningWizardClient({
         toast.success("Task scheduled!");
         setSchedulingTaskId(null);
         setScheduleDate("");
-        setSprint((prev: any) => ({
+        setSprint((prev: SprintData) => ({
           ...prev,
-          objectives: prev.objectives.map((obj: any) => ({
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
             ...obj,
-            projects: obj.projects.map((p: any) => ({
+            projects: obj.projects.map((p: SprintProject) => ({
               ...p,
-              tasks: p.tasks.map((t: any) =>
+              tasks: p.tasks.map((t: SprintTask) =>
                 t.id === schedulingTaskId ? { ...t, plannedDate: scheduleDate } : t,
               ),
             })),
@@ -894,6 +942,7 @@ export function PlanningWizardClient({
   const currentDecomposeThought = decomposableThoughts[decomposeIndex];
   useEffect(() => {
     if (currentDecomposeThought) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTaskTitle(currentDecomposeThought.content);
       setProjectTitle(currentDecomposeThought.content);
       setSelectedSphereId(currentDecomposeThought.sphereId || "");
@@ -2231,7 +2280,7 @@ export function PlanningWizardClient({
                 </div>
               ) : (
                 <div className="flex flex-col gap-4">
-                  {sprint.objectives.map((obj: any) => (
+                  {sprint.objectives.map((obj: SprintObjective) => (
                     <div key={obj.id} className="glass-card p-4 border-white/[0.06] bg-white/[0.02] rounded-xl flex flex-col gap-3">
                       <div className="flex justify-between items-start">
                         <div className="flex items-center gap-2">
@@ -2265,7 +2314,7 @@ export function PlanningWizardClient({
                           </div>
                         ) : (
                           <div className="flex flex-col gap-2">
-                            {obj.projects.map((p: any) => (
+                            {obj.projects.map((p: SprintProject) => (
                               <div key={p.id} className="group/item flex justify-between items-center bg-white/[0.01] border border-white/[0.04] p-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150">
                                 <span className="text-zinc-200 font-medium truncate">
                                   📂 {p.title}
@@ -2369,7 +2418,7 @@ export function PlanningWizardClient({
                               Assign to Objective:
                             </span>
                             <div className="flex flex-wrap gap-1.5">
-                              {sprint.objectives.map((obj: any) => (
+                              {sprint.objectives.map((obj: SprintObjective) => (
                                 <button
                                   key={obj.id}
                                   type="button"
@@ -2453,13 +2502,11 @@ export function PlanningWizardClient({
                 <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold mb-1">
                   Active Projects
                 </span>
-                {activeSprintProjects.map((p: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+                {activeSprintProjects.map((p: SprintProject) => {
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const isPlanned = p.status === "DONE";
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const groupCount = (p.tasks || []).filter((t: any) => (t.children || []).length > 0).length;
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const standaloneAtomCount = (p.tasks || []).filter((t: any) => (t.children || []).length === 0).length;
+                  const groupCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length > 0).length;
+                  const standaloneAtomCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length === 0).length;
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const subAtomCount = (p.tasks || []).reduce((sum: number, t: any) => sum + (t.children?.length || 0), 0);
                   const totalAtoms = standaloneAtomCount + subAtomCount;
@@ -2585,21 +2632,20 @@ export function PlanningWizardClient({
                   {/* Groups List */}
                   <div className="flex flex-col gap-2 flex-1 min-h-0">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold border-b border-white/[0.04] pb-1">
-                      Project Groups ({(selectedDeconstructProject.tasks || []).filter((t: any) => !t.parentId).length})
+                      Project Groups ({(selectedDeconstructProject.tasks || []).filter((t: SprintTask) => !t.parentId).length})
                     </span>
-                    {(!(selectedDeconstructProject.tasks || []).some((t: any) => !t.parentId)) ? (
+                    {(!(selectedDeconstructProject.tasks || []).some((t: SprintTask) => !t.parentId)) ? (
                       <div className="text-zinc-500 text-xs italic py-6 text-center">
                         No groups added yet. Use the form above to add a group or atom.
                       </div>
                     ) : (
                       <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
-                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                        {selectedDeconstructProject.tasks.filter((t: any) => !t.parentId).map((task: any) => {
+                        {selectedDeconstructProject.tasks.filter((t: SprintTask) => !t.parentId).map((task: SprintTask) => {
                           const isGroup = (task.children || []).length > 0;
                           const isExpanded = expandedGroupId === task.id;
                           const children = task.children || [];
                           const childCount = children.length;
-                          const doneCount = children.filter((c: any) => c.status === "DONE").length;
+                          const doneCount = children.filter((c: SprintTask) => c.status === "DONE").length;
 
                           if (!isGroup) {
                             return (
@@ -2678,7 +2724,7 @@ export function PlanningWizardClient({
                               {isExpanded && (
                                 <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
                                   {children.length > 0 ? (
-                                    children.map((atom: any) => (
+                                    children.map((atom: SprintTask) => (
                                       <div key={atom.id} className="flex items-center gap-2 pl-5 pr-1 py-1.5 rounded text-xs group/atom hover:bg-white/[0.02] transition-colors duration-150">
                                         <span className={`flex-1 truncate ${atom.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}>
                                           {atom.status === "DONE" ? "✔️" : "○"} {atom.title}
@@ -2792,16 +2838,12 @@ export function PlanningWizardClient({
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                {activeSprintProjects.map((p: any) => {
-                  const topLevelTasks = (p.tasks || []).filter((t: any) => !t.parentId);
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const groupCount = topLevelTasks.filter((t: any) => (t.children || []).length > 0).length;
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const standaloneAtomCount = topLevelTasks.filter((t: any) => (t.children || []).length === 0).length;
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                {activeSprintProjects.map((p: SprintProject) => {
+                  const topLevelTasks = (p.tasks || []).filter((t: SprintTask) => !t.parentId);
+                  const groupCount = topLevelTasks.filter((t: SprintTask) => (t.children || []).length > 0).length;
+                  const standaloneAtomCount = topLevelTasks.filter((t: SprintTask) => (t.children || []).length === 0).length;
                   const subAtomCount = (p.tasks || []).reduce(
-                    (sum: number, t: any) => sum + (t.children?.length || 0),
+                    (sum: number, t: SprintTask) => sum + (t.children?.length || 0),
                     0,
                   );
                   const totalAtoms = standaloneAtomCount + subAtomCount;
@@ -2825,7 +2867,7 @@ export function PlanningWizardClient({
                       {isExpanded && (
                         <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
                           {topLevelTasks.length > 0 ? (
-                            topLevelTasks.map((group: any) => {
+                            topLevelTasks.map((group: SprintTask) => {
                               const children = group.children || [];
                               return (
                                 <div key={group.id} className="flex flex-col gap-1">
@@ -2839,7 +2881,7 @@ export function PlanningWizardClient({
                                   </div>
                                   {children.length > 0 ? (
                                     <div className="flex flex-wrap gap-1 pl-6">
-                                      {children.map((atom: any) => (
+                                      {children.map((atom: SprintTask) => (
                                         <button
                                           key={atom.id}
                                           type="button"
@@ -3179,13 +3221,13 @@ export function PlanningWizardClient({
                           toast.success("Schedule cleared");
                           setSchedulingTaskId(null);
                           setScheduleDate("");
-                          setSprint((prev: any) => ({
+                          setSprint((prev: SprintData) => ({
                             ...prev,
-                            objectives: prev.objectives.map((obj: any) => ({
+                            objectives: prev.objectives.map((obj: SprintObjective) => ({
                               ...obj,
-                              projects: obj.projects.map((p: any) => ({
+                              projects: obj.projects.map((p: SprintProject) => ({
                                 ...p,
-                                tasks: p.tasks.map((t: any) =>
+                                tasks: p.tasks.map((t: SprintTask) =>
                                   t.id === schedulingTaskId
                                     ? { ...t, plannedDate: null }
                                     : t,
