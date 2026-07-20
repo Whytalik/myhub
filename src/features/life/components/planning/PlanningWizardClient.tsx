@@ -2561,16 +2561,16 @@ export function PlanningWizardClient({
                   {/* Groups List */}
                   <div className="flex flex-col gap-2">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold border-b border-white/[0.04] pb-1">
-                      Project Tasks ({selectedDeconstructProject.tasks?.length || 0})
+                      Project Tasks ({(selectedDeconstructProject.tasks || []).filter((t: any) => !t.parentId).length})
                     </span>
-                    {(!selectedDeconstructProject.tasks || selectedDeconstructProject.tasks.length === 0) ? (
+                    {(!(selectedDeconstructProject.tasks || []).some((t: any) => !t.parentId)) ? (
                       <div className="text-zinc-500 text-xs italic py-6 text-center">
                         No tasks added yet. Use the form above to add a group or atom.
                       </div>
                     ) : (
                       <div className="flex flex-col gap-1.5 max-h-[500px] overflow-y-auto pr-1">
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                        {selectedDeconstructProject.tasks.map((task: any) => {
+                        {selectedDeconstructProject.tasks.filter((t: any) => !t.parentId).map((task: any) => {
                           const isGroup = !!(task.description || task.resistance);
                           const hasChildren = (task.children || []).length > 0;
                           const isExpanded = expandedGroupId === task.id;
