@@ -117,7 +117,7 @@ interface PlanningWizardClientProps {
   activeSprint: SprintData;
   initialBacklogProjects: SprintProject[];
   initialColumns: Record<string, unknown>;
-  initialStandaloneAtoms: SprintTask[];
+  initialStandaloneAtoms?: SprintTask[];
 }
 
 export function PlanningWizardClient({
@@ -142,7 +142,7 @@ export function PlanningWizardClient({
   const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts);
   const [sprint, setSprint] = useState<SprintData>(activeSprint);
   const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects);
-  const [standaloneAtoms, setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms);
+  const [standaloneAtoms, setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms || []);
 
   // Step 4 state
   const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
@@ -254,10 +254,11 @@ export function PlanningWizardClient({
   }, [activeSprintProjects, standaloneAtoms]);
 
   // Step 6 week navigation
-  const sprintStart = useMemo(
-    () => sprint?.startDate ? startOfWeek(new Date(sprint.startDate), { weekStartsOn: 1 }) : null,
-    [sprint?.startDate],
-  );
+  const sprintStart = useMemo(() => {
+    if (!sprint?.startDate) return null;
+    const d = new Date(sprint.startDate);
+    return isNaN(d.getTime()) ? null : startOfWeek(d, { weekStartsOn: 1 });
+  }, [sprint?.startDate]);
   const weekStart = useMemo(
     () => sprintStart ? addDays(sprintStart, selectedWeekIndex * 7) : null,
     [sprintStart, selectedWeekIndex],
@@ -2877,20 +2878,19 @@ export function PlanningWizardClient({
               </span>
             </div>
             <WeeklyStatusBoard
-              tasks={allAtomsForDistribution as any}
+              tasks={(allAtomsForDistribution || []) as any}
               weekStart={weekStart}
               locked={false}
               onTasksChange={(updater) => {
                 const currentTasks = allAtomsForDistribution as any[];
                 const updatedTasks = updater(currentTasks);
-                // Update sprint state with the new task dates
                 setSprint((prev: SprintData) => {
-                  if (!prev) return prev;
+                  if (!prev || !prev.objectives) return prev;
                   return {
                     ...prev,
                     objectives: prev.objectives.map((obj: SprintObjective) => ({
                       ...obj,
-                      projects: obj.projects.map((p: SprintProject) => ({
+                      projects: (obj.projects || []).map((p: SprintProject) => ({
                         ...p,
                         tasks: (p.tasks || []).map((t: SprintTask) => {
                           const updated = updatedTasks.find((u: SprintTask) => u.id === t.id);
