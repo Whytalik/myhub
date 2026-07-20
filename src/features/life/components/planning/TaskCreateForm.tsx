@@ -42,14 +42,9 @@ export function TaskCreateForm({
 
   useEffect(() => {
     if (defaultProjectId && projects.some((p) => p.id === defaultProjectId)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setProjectId(defaultProjectId);
     }
   }, [defaultProjectId, projects]);
-
-  useEffect(() => {
-    setGroupId(defaultGroupId);
-  }, [defaultGroupId]);
 
   useEffect(() => {
     setGroupId(defaultGroupId);
@@ -76,7 +71,6 @@ export function TaskCreateForm({
     setTitle("");
     setDescription("");
     setResistance(0);
-    setGroupId(null);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
