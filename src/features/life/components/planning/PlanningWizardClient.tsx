@@ -172,6 +172,10 @@ export function PlanningWizardClient({
   }, [activeSprintProjects, selectedDeconstructProjectId]);
 
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
+  const [addingAtomToGroupId, setAddingAtomToGroupId] = useState<string | null>(null);
+  const [newAtomTitle, setNewAtomTitle] = useState("");
+  const [newAtomDesc, setNewAtomDesc] = useState("");
+  const [newAtomResistance, setNewAtomResistance] = useState(3);
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editTaskTitle, setEditTaskTitle] = useState("");
   const [editTaskDesc, setEditTaskDesc] = useState("");
@@ -905,6 +909,65 @@ export function PlanningWizardClient({
         }));
       } else {
         toast.error(result.error || "Failed to delete task atom");
+      }
+    });
+  };
+
+  const handleAddSubAtom = (groupId: string) => {
+    const title = newAtomTitle.trim();
+    if (!title || !sprint) return;
+
+    startActionTransition(async () => {
+      let sphereId: string | null = null;
+      let foundProjectId: string | null = null;
+      for (const obj of sprint.objectives) {
+        const project = obj.projects.find((p: SprintProject) => p.id === selectedDeconstructProjectId);
+        if (project) {
+          sphereId = obj.sphereId;
+          foundProjectId = project.id;
+          break;
+        }
+      }
+
+      const result = await upsertTaskAction({
+        title,
+        description: newAtomDesc.trim() || null,
+        projectId: foundProjectId,
+        sphereId,
+        status: "TODO",
+        priority: "MEDIUM",
+        resistance: newAtomResistance,
+        parentId: groupId,
+      });
+
+      if (result.success) {
+        toast.success("Atom added to group!");
+        setNewAtomTitle("");
+        setNewAtomDesc("");
+        setNewAtomResistance(3);
+
+        setSprint((prev: SprintData) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: SprintObjective) => ({
+            ...obj,
+            projects: obj.projects.map((p: SprintProject) => {
+              if (p.id === selectedDeconstructProjectId) {
+                return {
+                  ...p,
+                  tasks: (p.tasks || []).map((t: SprintTask) => {
+                    if (t.id === groupId) {
+                      return { ...t, children: [...(t.children || []), result.data] };
+                    }
+                    return t;
+                  }),
+                };
+              }
+              return p;
+            }),
+          })),
+        }));
+      } else {
+        toast.error(result.error || "Failed to add atom");
       }
     });
   };
@@ -2633,7 +2696,7 @@ export function PlanningWizardClient({
                     ) : (
                       <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
                         {selectedDeconstructProject.tasks.filter((t: SprintTask) => !t.parentId).map((task: SprintTask) => {
-                          const isGroup = (task.children || []).length > 0 || task.resistance !== null;
+                          const isGroup = task.resistance === null;
                           const isExpanded = expandedGroupId === task.id;
                           const children = task.children || [];
                           const childCount = children.length;
@@ -2749,6 +2812,100 @@ export function PlanningWizardClient({
                                       No atoms yet.
                                     </div>
                                   )}
+
+                                  {/* Inline add atom form */}
+                                  <div className="border-t border-white/[0.04] pt-2 mt-1">
+                                    {addingAtomToGroupId === task.id ? (
+                                      <div className="flex flex-col gap-2 pl-2">
+                                        <div className="flex flex-col gap-1">
+                                          <label className="text-[10px] font-mono text-zinc-450 uppercase">Atom Title</label>
+                                          <Input
+                                            value={newAtomTitle}
+                                            onChange={(e) => setNewAtomTitle(e.target.value)}
+                                            placeholder="e.g. Research project types..."
+                                            onKeyDown={(e) => {
+                                              if (e.key === "Enter" && !e.shiftKey) {
+                                                e.preventDefault();
+                                                handleAddSubAtom(task.id);
+                                              }
+                                              if (e.key === "Escape") {
+                                                setAddingAtomToGroupId(null);
+                                                setNewAtomTitle("");
+                                                setNewAtomDesc("");
+                                                setNewAtomResistance(3);
+                                              }
+                                            }}
+                                            autoFocus
+                                          />
+                                        </div>
+                                        <div className="flex flex-col gap-1">
+                                          <label className="text-[10px] font-mono text-zinc-450 uppercase">Note (optional)</label>
+                                          <Input
+                                            value={newAtomDesc}
+                                            onChange={(e) => setNewAtomDesc(e.target.value)}
+                                            placeholder="Additional context..."
+                                          />
+                                        </div>
+                                        <div className="flex flex-col gap-1">
+                                          <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
+                                            <span>Resistance</span>
+                                            <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
+                                          </div>
+                                          <div className="flex items-center gap-1.5">
+                                            {[1, 2, 3, 4, 5].map((val) => (
+                                              <button
+                                                key={val}
+                                                type="button"
+                                                onClick={() => setNewAtomResistance(val)}
+                                                className={`flex-1 h-6 rounded text-[10px] font-mono transition-colors ${
+                                                  newAtomResistance === val
+                                                    ? val >= 4
+                                                      ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                                                      : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                                    : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
+                                                }`}
+                                              >
+                                                {val}
+                                              </button>
+                                            ))}
+                                          </div>
+                                        </div>
+                                        <div className="flex items-center gap-2 mt-1">
+                                          <Button
+                                            variant="primary"
+                                            size="sm"
+                                            onClick={() => handleAddSubAtom(task.id)}
+                                            disabled={!newAtomTitle.trim() || isActionPending}
+                                            className="text-[10px] px-3 py-1"
+                                          >
+                                            Add Atom
+                                          </Button>
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => {
+                                              setAddingAtomToGroupId(null);
+                                              setNewAtomTitle("");
+                                              setNewAtomDesc("");
+                                              setNewAtomResistance(3);
+                                            }}
+                                            className="text-[10px] px-3 py-1"
+                                          >
+                                            Cancel
+                                          </Button>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <button
+                                        type="button"
+                                        onClick={() => setAddingAtomToGroupId(task.id)}
+                                        className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg border border-dashed border-white/[0.08] text-[10px] font-mono text-zinc-500 hover:text-zinc-300 hover:border-white/[0.15] transition-colors duration-150"
+                                      >
+                                        <Plus size={11} />
+                                        <span>Add Atom to Group</span>
+                                      </button>
+                                    )}
+                                  </div>
                                 </div>
                               )}
                             </div>
