@@ -2880,13 +2880,13 @@ export function PlanningWizardClient({
             </div>
           </div>
 
-          {/* Compact Objectives & Projects Overview */}
+          {/* Active Projects — same style as Step 5 left panel */}
           <div className="glass-card p-4 bg-black/15 border border-white/[0.04] rounded-2xl">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <Layers size={14} className="text-accent" />
+                <FolderKanban size={14} className="text-accent" />
                 <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
-                  Sprint Overview
+                  Active Projects
                 </span>
               </div>
               <Button
@@ -2898,107 +2898,114 @@ export function PlanningWizardClient({
                 <Pencil size={11} className="mr-1" /> Edit in Step 5
               </Button>
             </div>
-            {sprint?.objectives && sprint.objectives.length > 0 ? (
-              <div className="flex flex-col gap-3">
-                {sprint.objectives.map((obj: any) => (
-                  <div key={obj.id} className="flex flex-col gap-1.5">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono text-accent/70 uppercase">
-                        {obj.title}
-                      </span>
-                      {obj.sphere && (
-                        <span className="text-[9px] font-mono text-zinc-600">
-                          [{obj.sphere.name}]
+            {activeSprintProjects.length === 0 ? (
+              <div className="text-[10px] text-zinc-500 italic py-4 text-center">
+                No projects assigned. Go back to Step 4.
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {activeSprintProjects.map((p: any) => {
+                  const topLevelTasks = (p.tasks || []).filter((t: any) => !t.parentId);
+                  const subAtomCount = (p.tasks || []).reduce(
+                    (sum: number, t: any) => sum + (t.children?.length || 0),
+                    0,
+                  );
+                  const isExpanded = expandedGroupId === `step6_${p.id}`;
+                  return (
+                    <div key={p.id} className="group/proj rounded-xl border border-white/[0.04] bg-white/[0.01] overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setExpandedGroupId(isExpanded ? null : `step6_${p.id}`)}
+                        className="w-full text-left p-3 text-xs transition-all duration-150 flex items-center gap-2 hover:bg-white/[0.02]"
+                      >
+                        <ChevronDown
+                          size={12}
+                          className={`text-zinc-500 shrink-0 transition-transform duration-150 ${isExpanded ? "rotate-0" : "-rotate-90"}`}
+                        />
+                        <span className="text-zinc-300 font-medium truncate">📂 {p.title}</span>
+                        <span className="text-[9px] font-mono text-zinc-600 shrink-0">
+                          {topLevelTasks.length} groups{subAtomCount > 0 ? `, ${subAtomCount} atoms` : ""}
                         </span>
-                      )}
-                    </div>
-                    {obj.projects?.length > 0 ? (
-                      <div className="flex flex-col gap-1.5 pl-3 border-l border-white/[0.04]">
-                        {obj.projects.map((project: any) => {
-                          const topLevelTasks = (project.tasks || []).filter(
-                            (t: any) => !t.parentId,
-                          );
-                          return (
-                            <div key={project.id} className="flex flex-col gap-1">
-                              <div className="flex items-center gap-2 text-xs">
-                                <span className="text-zinc-300 font-medium">📂 {project.title}</span>
-                                {topLevelTasks.length > 0 && (
-                                  <span className="text-[9px] font-mono text-zinc-600">
-                                    {topLevelTasks.length} groups
-                                  </span>
-                                )}
-                              </div>
-                              {topLevelTasks.length > 0 && (
-                                <div className="flex flex-wrap gap-1 pl-5">
-                                  {topLevelTasks.map((group: any) => (
-                                    <div key={group.id} className="flex items-center gap-1">
-                                      {(group.children || []).length > 0 ? (
-                                        (group.children || []).map((atom: any) => (
-                                          <button
-                                            key={atom.id}
-                                            type="button"
-                                            onClick={() => {
-                                              setSchedulingTaskId(atom.id);
-                                              setScheduleDate(
-                                                atom.plannedDate
-                                                  ? format(new Date(atom.plannedDate), "yyyy-MM-dd")
-                                                  : "",
-                                              );
-                                            }}
-                                            className={`text-[10px] px-2 py-0.5 rounded-full border transition-all duration-150 ${
-                                              atom.plannedDate
-                                                ? "bg-accent/10 border-accent/20 text-accent"
-                                                : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
-                                            }`}
-                                            title={atom.title}
-                                          >
-                                            {atom.title.length > 16
-                                              ? atom.title.slice(0, 16) + "…"
-                                              : atom.title}
-                                          </button>
-                                        ))
-                                      ) : (
+                      </button>
+                      {isExpanded && (
+                        <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
+                          {topLevelTasks.length > 0 ? (
+                            topLevelTasks.map((group: any) => {
+                              const children = group.children || [];
+                              return (
+                                <div key={group.id} className="flex flex-col gap-1">
+                                  <div className="flex items-center gap-2 pl-2 text-[10px]">
+                                    <span className="text-zinc-400">📋 {group.title}</span>
+                                    {children.length > 0 && (
+                                      <span className="text-[9px] font-mono text-zinc-600">
+                                        {children.length} atoms
+                                      </span>
+                                    )}
+                                  </div>
+                                  {children.length > 0 ? (
+                                    <div className="flex flex-wrap gap-1 pl-6">
+                                      {children.map((atom: any) => (
                                         <button
+                                          key={atom.id}
                                           type="button"
                                           onClick={() => {
-                                            setSchedulingTaskId(group.id);
+                                            setSchedulingTaskId(atom.id);
                                             setScheduleDate(
-                                              group.plannedDate
-                                                ? format(new Date(group.plannedDate), "yyyy-MM-dd")
+                                              atom.plannedDate
+                                                ? format(new Date(atom.plannedDate), "yyyy-MM-dd")
                                                 : "",
                                             );
                                           }}
                                           className={`text-[10px] px-2 py-0.5 rounded-full border transition-all duration-150 ${
-                                            group.plannedDate
+                                            atom.plannedDate
                                               ? "bg-accent/10 border-accent/20 text-accent"
                                               : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
                                           }`}
-                                          title={group.title}
+                                          title={atom.title}
                                         >
-                                          {group.title.length > 16
-                                            ? group.title.slice(0, 16) + "…"
-                                            : group.title}
+                                          {atom.title.length > 20
+                                            ? atom.title.slice(0, 20) + "…"
+                                            : atom.title}
                                         </button>
-                                      )}
+                                      ))}
                                     </div>
-                                  ))}
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setSchedulingTaskId(group.id);
+                                        setScheduleDate(
+                                          group.plannedDate
+                                            ? format(new Date(group.plannedDate), "yyyy-MM-dd")
+                                            : "",
+                                        );
+                                      }}
+                                      className={`ml-6 text-[10px] px-2 py-0.5 rounded-full border transition-all duration-150 ${
+                                        group.plannedDate
+                                          ? "bg-accent/10 border-accent/20 text-accent"
+                                          : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
+                                      }`}
+                                      title={group.title}
+                                    >
+                                      {group.title.length > 20
+                                        ? group.title.slice(0, 20) + "…"
+                                        : group.title}
+                                    </button>
+                                  )}
                                 </div>
-                              )}
+                              );
+                            })
+                          ) : (
+                            <div className="pl-2 text-[10px] text-zinc-600 italic">
+                              No groups yet
                             </div>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <div className="text-[10px] text-zinc-600 italic pl-3">
-                        No projects assigned
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-[10px] text-zinc-500 italic py-4 text-center">
-                No objectives set. Go back to Step 4.
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
