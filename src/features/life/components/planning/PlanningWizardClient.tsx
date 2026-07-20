@@ -2354,9 +2354,9 @@ export function PlanningWizardClient({
               </Button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-6">
               {/* Left Project List */}
-              <div className="flex flex-col gap-2 border-r border-white/[0.04] pr-4 max-h-[500px] overflow-y-auto">
+              <div className="flex flex-col gap-2 border-r border-white/[0.04] pr-4 max-h-[calc(100vh-200px)] overflow-y-auto">
                 <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold mb-1">
                   Active Projects
                 </span>
