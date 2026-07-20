@@ -13,18 +13,23 @@ export interface TaskCreateFormData {
   mode: "group" | "atom";
   resistance: number;
   projectId: string;
+  groupId: string | null;
 }
 
 interface TaskCreateFormProps {
   projects: { id: string; title: string }[];
+  groups: { id: string; title: string }[];
   defaultProjectId?: string | null;
+  defaultGroupId?: string | null;
   onSubmit: (data: TaskCreateFormData) => void;
   isPending: boolean;
 }
 
 export function TaskCreateForm({
   projects,
+  groups,
   defaultProjectId = null,
+  defaultGroupId = null,
   onSubmit,
   isPending,
 }: TaskCreateFormProps) {
@@ -33,6 +38,7 @@ export function TaskCreateForm({
   const [description, setDescription] = useState("");
   const [resistance, setResistance] = useState(0);
   const [projectId, setProjectId] = useState(defaultProjectId ?? (projects.length === 1 ? projects[0].id : ""));
+  const [groupId, setGroupId] = useState<string | null>(defaultGroupId);
 
   useEffect(() => {
     if (defaultProjectId && projects.some((p) => p.id === defaultProjectId)) {
@@ -41,8 +47,20 @@ export function TaskCreateForm({
     }
   }, [defaultProjectId, projects]);
 
+  useEffect(() => {
+    setGroupId(defaultGroupId);
+  }, [defaultGroupId]);
+
+  useEffect(() => {
+    setGroupId(defaultGroupId);
+  }, [defaultGroupId]);
+
   const isGroup = mode === "group";
   const projectOptions = projects.map((p) => ({ id: p.id, label: p.title }));
+  const groupOptions = [
+    { id: "", label: "No group (standalone)" },
+    ...groups.map((g) => ({ id: g.id, label: g.title })),
+  ];
   const canSubmit = title.trim() && projectId && !isPending;
 
   const handleSubmit = () => {
@@ -53,10 +71,12 @@ export function TaskCreateForm({
       mode,
       resistance,
       projectId,
+      groupId: groupId || null,
     });
     setTitle("");
     setDescription("");
     setResistance(0);
+    setGroupId(null);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -122,6 +142,18 @@ export function TaskCreateForm({
           </div>
         )}
 
+        {!isGroup && groups.length > 0 && (
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] font-mono text-zinc-450 uppercase">Group (optional)</label>
+            <CustomSelect
+              value={groupId ?? ""}
+              onChange={(val) => setGroupId(val || null)}
+              options={groupOptions}
+              placeholder="No group..."
+            />
+          </div>
+        )}
+
         {!isGroup && (
           <div className="flex flex-col gap-1">
             <div className="flex justify-between text-[10px] font-mono text-zinc-300 uppercase">
@@ -171,7 +203,11 @@ export function TaskCreateForm({
           disabled={!canSubmit}
           className="w-fit self-end mt-1"
         >
-          {isGroup ? "Add Group to Project" : "Add Atom to Project"}
+          {isGroup
+            ? "Add Group to Project"
+            : groupId
+              ? "Add Atom to Group"
+              : "Add Atom to Project"}
         </Button>
       </div>
     </div>
