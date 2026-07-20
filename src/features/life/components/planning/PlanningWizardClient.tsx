@@ -2527,10 +2527,10 @@ export function PlanningWizardClient({
                 {activeSprintProjects.map((p: SprintProject) => {
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const isPlanned = p.status === "DONE";
-                  const groupCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length > 0).length;
-                  const standaloneAtomCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length === 0).length;
+                  const groupCount = (p.tasks || []).filter((t: SprintTask) => t.resistance !== null).length;
+                  const atomCount = (p.tasks || []).filter((t: SprintTask) => t.resistance === null).length;
                   const subAtomCount = (p.tasks || []).reduce((sum: number, t: SprintTask) => sum + (t.children?.length || 0), 0);
-                  const totalAtoms = standaloneAtomCount + subAtomCount;
+                  const totalAtoms = atomCount + subAtomCount;
                   const labelParts: string[] = [];
                   if (groupCount > 0) labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
                   if (totalAtoms > 0) labelParts.push(`${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}`);
@@ -2633,7 +2633,7 @@ export function PlanningWizardClient({
                     ) : (
                       <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
                         {selectedDeconstructProject.tasks.filter((t: SprintTask) => !t.parentId).map((task: SprintTask) => {
-                          const isGroup = (task.children || []).length > 0;
+                          const isGroup = task.resistance !== null;
                           const isExpanded = expandedGroupId === task.id;
                           const children = task.children || [];
                           const childCount = children.length;
@@ -2835,13 +2835,13 @@ export function PlanningWizardClient({
               <div className="flex flex-col gap-2">
                 {activeSprintProjects.map((p: SprintProject) => {
                   const topLevelTasks = (p.tasks || []).filter((t: SprintTask) => !t.parentId);
-                  const groupCount = topLevelTasks.filter((t: SprintTask) => (t.children || []).length > 0).length;
-                  const standaloneAtomCount = topLevelTasks.filter((t: SprintTask) => (t.children || []).length === 0).length;
+                  const groupCount = topLevelTasks.filter((t: SprintTask) => t.resistance !== null).length;
+                  const atomCount = topLevelTasks.filter((t: SprintTask) => t.resistance === null).length;
                   const subAtomCount = (p.tasks || []).reduce(
                     (sum: number, t: SprintTask) => sum + (t.children?.length || 0),
                     0,
                   );
-                  const totalAtoms = standaloneAtomCount + subAtomCount;
+                  const totalAtoms = atomCount + subAtomCount;
                   const isExpanded = expandedGroupId === `step6_${p.id}`;
                   return (
                     <div key={p.id} className="group/proj rounded-xl border border-white/[0.04] bg-white/[0.01] overflow-hidden">
