@@ -45,8 +45,9 @@ import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/th
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
 import { DatePicker } from "@/components/ui/inputs/date-picker";
-import { format, addWeeks } from "date-fns";
+import { format, addWeeks, startOfWeek, addDays, endOfWeek, isSameDay } from "date-fns";
 import { TaskCreateForm, type TaskCreateFormData } from "./TaskCreateForm";
+import { WeeklyStatusBoard } from "@/features/life/components/sprints/WeeklyStatusBoard";
 
 const FILTER_TYPE_ICONS: Record<string, LucideIcon> = {
   AlertTriangle,
@@ -188,6 +189,7 @@ export function PlanningWizardClient({
   );
   const [schedulingTaskId, setSchedulingTaskId] = useState<string | null>(null);
   const [scheduleDate, setScheduleDate] = useState("");
+  const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
 
   // Step 1: Brain Dump state
   const [newThoughtText, setNewThoughtText] = useState("");
@@ -226,6 +228,52 @@ export function PlanningWizardClient({
     });
     return groups;
   }, [thoughts]);
+
+  // Collect all atoms from projects + standalone for Step 6
+  const allAtomsForDistribution = useMemo(() => {
+    const atoms: (SprintTask & { projectName?: string; groupName?: string })[] = [];
+
+    // Atoms from projects (both standalone and inside groups)
+    for (const project of activeSprintProjects) {
+      for (const task of project.tasks || []) {
+        if (task.resistance !== null) {
+          atoms.push({ ...task, projectName: project.title });
+        }
+        for (const child of task.children || []) {
+          atoms.push({ ...child, projectName: project.title, groupName: task.title });
+        }
+      }
+    }
+
+    // Standalone atoms
+    for (const atom of standaloneAtoms) {
+      atoms.push({ ...atom });
+    }
+
+    return atoms;
+  }, [activeSprintProjects, standaloneAtoms]);
+
+  // Step 6 week navigation
+  const sprintStart = useMemo(
+    () => sprint?.startDate ? startOfWeek(new Date(sprint.startDate), { weekStartsOn: 1 }) : null,
+    [sprint?.startDate],
+  );
+  const weekStart = useMemo(
+    () => sprintStart ? addDays(sprintStart, selectedWeekIndex * 7) : null,
+    [sprintStart, selectedWeekIndex],
+  );
+  const sprintWeeks = useMemo(() => {
+    if (!sprintStart) return [];
+    return Array.from({ length: 12 }, (_, i) => {
+      const start = addDays(sprintStart, i * 7);
+      const end = endOfWeek(start, { weekStartsOn: 1 });
+      return {
+        index: i,
+        label: `W${i + 1}`,
+        dateRange: `${format(start, "dd.MM")} - ${format(end, "dd.MM")}`,
+      };
+    });
+  }, [sprintStart]);
 
   // Step 2: Filter states
   const inboxThoughts = useMemo(() => {
@@ -2783,246 +2831,211 @@ export function PlanningWizardClient({
         </div>
       )}
 
-      {/* 📅 STEP 6: KANBAN DISTRIBUTION */}
-      {step === 6 && (
+      {/* 📅 STEP 6: WEEKLY KANBAN DISTRIBUTION */}
+      {step === 6 && sprintStart && weekStart && (
         <div className="flex flex-col gap-6">
-          {/* Sprint Dates */}
+          {/* Week Selector */}
           <div className="glass-card p-4 bg-black/15 border border-white/[0.04] rounded-2xl">
-            <div className="flex items-center gap-3 mb-3">
-              <Calendar size={14} className="text-accent" />
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
-                Sprint Period
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <Calendar size={14} className="text-accent" />
+                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                  Sprint Week Selector
+                </span>
+              </div>
+              <span className="text-xs font-semibold text-zinc-300 font-mono">
+                {weekStart ? `${format(weekStart, "MMMM d")} — ${format(endOfWeek(weekStart, { weekStartsOn: 1 }), "MMMM d, yyyy")}` : ""}
               </span>
             </div>
-            <div className="flex items-end gap-4">
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-mono text-zinc-400 uppercase">Start Date</label>
-                <DatePicker
-                  value={sprintStartDate}
-                  onChange={(v) => {
-                    setSprintStartDate(v);
-                  }}
-                  className="w-48"
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-[10px] font-mono text-zinc-400 uppercase">End Date (auto)</label>
-                <div className="h-10 px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-xs text-zinc-500 flex items-center font-mono">
-                  {sprintStartDate
-                    ? format(addWeeks(new Date(sprintStartDate), 12), "dd.MM.yyyy")
-                    : "—"}
+            <div className="flex flex-wrap gap-1.5">
+              {sprintWeeks.map((w) => {
+                const isSelected = w.index === selectedWeekIndex;
+                return (
+                  <button
+                    key={w.index}
+                    type="button"
+                    onClick={() => setSelectedWeekIndex(w.index)}
+                    className={`px-3 py-1.5 rounded-xl border text-xs font-mono transition-all duration-150 ${
+                      isSelected
+                        ? "bg-amber-500/10 text-amber-400 border-amber-500/40 shadow-sm font-bold"
+                        : "bg-transparent text-zinc-500 border-transparent hover:text-zinc-300 hover:bg-white/[0.02]"
+                    }`}
+                  >
+                    {w.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Weekly Kanban Board */}
+          <div className="glass-card p-4 bg-black/10 border border-white/[0.04] rounded-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <FolderKanban size={14} className="text-accent" />
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                Weekly Board — {weekStart ? `${format(weekStart, "dd.MM")} - ${format(endOfWeek(weekStart, { weekStartsOn: 1 }), "dd.MM")}` : ""}
+              </span>
+            </div>
+            <WeeklyStatusBoard
+              tasks={allAtomsForDistribution as any}
+              weekStart={weekStart}
+              locked={false}
+              onTasksChange={(updater) => {
+                const currentTasks = allAtomsForDistribution as any[];
+                const updatedTasks = updater(currentTasks);
+                // Update sprint state with the new task dates
+                setSprint((prev: SprintData) => {
+                  if (!prev) return prev;
+                  return {
+                    ...prev,
+                    objectives: prev.objectives.map((obj: SprintObjective) => ({
+                      ...obj,
+                      projects: obj.projects.map((p: SprintProject) => ({
+                        ...p,
+                        tasks: (p.tasks || []).map((t: SprintTask) => {
+                          const updated = updatedTasks.find((u: SprintTask) => u.id === t.id);
+                          if (updated) {
+                            return { ...t, plannedDate: updated.plannedDate, status: updated.status };
+                          }
+                          return {
+                            ...t,
+                            children: (t.children || []).map((c: SprintTask) => {
+                              const childUpdated = updatedTasks.find((u: SprintTask) => u.id === c.id);
+                              return childUpdated ? { ...c, plannedDate: childUpdated.plannedDate, status: childUpdated.status } : c;
+                            }),
+                          };
+                        }),
+                      })),
+                    })),
+                  };
+                });
+              }}
+            />
+          </div>
+
+          {/* Unscheduled Atoms Pool */}
+          <div className="glass-card p-4 bg-black/15 border border-white/[0.04] rounded-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <CheckSquare size={14} className="text-zinc-400" />
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                Unscheduled Atoms
+              </span>
+              <span className="text-[9px] font-mono text-zinc-600 bg-white/[0.04] px-2 py-0.5 rounded">
+                {allAtomsForDistribution.filter((a) => !a.plannedDate).length} unscheduled
+              </span>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              {activeSprintProjects.map((project: SprintProject) => {
+                const projectAtoms = (project.tasks || []).flatMap((task: SprintTask) => {
+                  if (task.resistance !== null && !task.plannedDate) {
+                    return [{ ...task, projectName: project.title }];
+                  }
+                  return (task.children || [])
+                    .filter((c: SprintTask) => !c.plannedDate)
+                    .map((c: SprintTask) => ({ ...c, projectName: project.title, groupName: task.title }));
+                });
+
+                if (projectAtoms.length === 0) return null;
+
+                return (
+                  <div key={project.id} className="flex flex-col gap-2">
+                    <span className="text-[10px] font-mono text-zinc-400 font-semibold">
+                      📂 {project.title}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5 pl-3">
+                      {projectAtoms.map((atom: SprintTask & { groupName?: string }) => (
+                        <button
+                          key={atom.id}
+                          type="button"
+                          onClick={() => {
+                            setSchedulingTaskId(atom.id);
+                            setScheduleDate("");
+                          }}
+                          className="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] bg-white/[0.03] text-zinc-400 hover:bg-white/[0.05] hover:text-zinc-200 transition-colors duration-150"
+                          title={atom.title}
+                        >
+                          {atom.groupName && <span className="opacity-50">{atom.groupName} → </span>}
+                          {atom.title.length > 30 ? atom.title.slice(0, 30) + "…" : atom.title}
+                          {atom.resistance != null && (
+                            <span className="ml-1 text-[8px] opacity-60">[{atom.resistance}]</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).length > 0 && (
+                <div className="flex flex-col gap-2 pt-2 border-t border-white/[0.04]">
+                  <span className="text-[10px] font-mono text-zinc-400 font-semibold">
+                    Standalone
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 pl-3">
+                    {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).map((atom: SprintTask) => (
+                      <button
+                        key={atom.id}
+                        type="button"
+                        onClick={() => {
+                          setSchedulingTaskId(atom.id);
+                          setScheduleDate("");
+                        }}
+                        className="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] bg-white/[0.03] text-zinc-400 hover:bg-white/[0.05] hover:text-zinc-200 transition-colors duration-150"
+                        title={atom.title}
+                      >
+                        {atom.title.length > 30 ? atom.title.slice(0, 30) + "…" : atom.title}
+                        {atom.resistance != null && (
+                          <span className="ml-1 text-[8px] opacity-60">[{atom.resistance}]</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Schedule Modal */}
+          {schedulingTaskId && (
+            <Dialog
+              isOpen={true}
+              onClose={() => { setSchedulingTaskId(null); setScheduleDate(""); }}
+              title="Schedule Atom"
+              maxWidth="400px"
+            >
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] font-mono text-zinc-400 uppercase">Date</label>
+                  <DatePicker
+                    value={scheduleDate}
+                    onChange={(v) => setScheduleDate(v)}
+                    className="w-full"
+                  />
+                </div>
+                <div className="flex gap-2 justify-end">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => { setSchedulingTaskId(null); setScheduleDate(""); }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={() => {
+                      if (schedulingTaskId && scheduleDate) {
+                        handleScheduleTask();
+                      }
+                    }}
+                    disabled={!scheduleDate || isActionPending}
+                  >
+                    Schedule
+                  </Button>
                 </div>
               </div>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleSaveSprintDates}
-                disabled={!sprintStartDate || isActionPending}
-              >
-                Save Dates
-              </Button>
-            </div>
-          </div>
-
-          {/* Active Sprint Objectives */}
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <FolderKanban size={14} className="text-accent" />
-                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
-                  Active Sprint Objectives
-                </span>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setStep(5)}
-                className="text-[10px]"
-              >
-                <Pencil size={11} className="mr-1" /> Edit in Step 5
-              </Button>
-            </div>
-
-            {activeSprintProjects.length === 0 ? (
-              <div className="text-[10px] text-zinc-500 italic py-4 text-center glass-card p-6 border-white/[0.04]">
-                No projects assigned. Go back to Step 4.
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                {sprint.objectives.map((obj: SprintObjective) => {
-                  const objProjects = obj.projects || [];
-                  if (objProjects.length === 0) return null;
-
-                  return (
-                    <div key={obj.id} className="glass-card p-4 border-white/[0.06] bg-white/[0.02] rounded-xl flex flex-col gap-3">
-                      <div className="flex justify-between items-start">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="w-2.5 h-2.5 rounded-full shrink-0"
-                            style={{ backgroundColor: obj.sphere?.color }}
-                          />
-                          <h5 className="text-sm font-semibold text-zinc-200">
-                            {obj.title}
-                          </h5>
-                        </div>
-                        <span className="text-[9px] font-mono text-zinc-500 uppercase bg-white/[0.04] px-2 py-0.5 rounded">
-                          {obj.sphere?.name}
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col gap-2 mt-1">
-                        {objProjects.map((p: SprintProject) => {
-                          const topLevelTasks = (p.tasks || []).filter((t: SprintTask) => !t.parentId);
-                          const groupCount = topLevelTasks.filter((t: SprintTask) => t.resistance === null).length;
-                          const atomCount = topLevelTasks.filter((t: SprintTask) => t.resistance !== null).length;
-                          const subAtomCount = (p.tasks || []).reduce(
-                            (sum: number, t: SprintTask) => sum + (t.children?.length || 0),
-                            0,
-                          );
-                          const totalAtoms = atomCount + subAtomCount;
-                          const isExpanded = expandedGroupId === `step6_${p.id}`;
-
-                          return (
-                            <div key={p.id} className="rounded-xl border border-white/[0.04] bg-white/[0.01] overflow-hidden">
-                              <button
-                                type="button"
-                                onClick={() => setExpandedGroupId(isExpanded ? null : `step6_${p.id}`)}
-                                className="w-full text-left p-3 text-xs transition-all duration-150 flex items-center gap-2 hover:bg-white/[0.02]"
-                              >
-                                <ChevronDown
-                                  size={12}
-                                  className={`text-zinc-500 shrink-0 transition-transform duration-150 ${isExpanded ? "rotate-0" : "-rotate-90"}`}
-                                />
-                                <span className="text-zinc-300 font-medium truncate">📂 {p.title}</span>
-                                <span className="text-[9px] font-mono text-zinc-600 shrink-0">
-                                  {groupCount} group{groupCount !== 1 ? "s" : ""}{totalAtoms > 0 ? `, ${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}` : ""}
-                                </span>
-                              </button>
-                              {isExpanded && (
-                                <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
-                                  {topLevelTasks.length > 0 ? (
-                                    topLevelTasks.map((group: SprintTask) => {
-                                      const children = group.children || [];
-                                      return (
-                                        <div key={group.id} className="flex flex-col gap-1">
-                                          <div className="flex items-center gap-2 pl-2 text-[10px]">
-                                            <span className="text-zinc-400">📋 {group.title}</span>
-                                            {children.length > 0 && (
-                                              <span className="text-[9px] font-mono text-zinc-600">
-                                                {children.length} atoms
-                                              </span>
-                                            )}
-                                          </div>
-                                          {children.length > 0 ? (
-                                            <div className="flex flex-wrap gap-1 pl-6">
-                                              {children.map((atom: SprintTask) => (
-                                                <button
-                                                  key={atom.id}
-                                                  type="button"
-                                                  onClick={() => {
-                                                    setSchedulingTaskId(atom.id);
-                                                    setScheduleDate(
-                                                      atom.plannedDate
-                                                        ? format(new Date(atom.plannedDate), "yyyy-MM-dd")
-                                                        : "",
-                                                    );
-                                                  }}
-                                                  className={`text-[10px] px-2 py-0.5 rounded-full border transition-all duration-150 ${
-                                                    atom.plannedDate
-                                                      ? "bg-accent/10 border-accent/20 text-accent"
-                                                      : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
-                                                  }`}
-                                                  title={atom.title}
-                                                >
-                                                  {atom.title.length > 20
-                                                    ? atom.title.slice(0, 20) + "…"
-                                                    : atom.title}
-                                                </button>
-                                              ))}
-                                            </div>
-                                          ) : (
-                                            <button
-                                              type="button"
-                                              onClick={() => {
-                                                setSchedulingTaskId(group.id);
-                                                setScheduleDate(
-                                                  group.plannedDate
-                                                    ? format(new Date(group.plannedDate), "yyyy-MM-dd")
-                                                    : "",
-                                                );
-                                              }}
-                                              className={`ml-6 text-[10px] px-2 py-0.5 rounded-full border transition-all duration-150 ${
-                                                group.plannedDate
-                                                  ? "bg-accent/10 border-accent/20 text-accent"
-                                                  : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
-                                              }`}
-                                              title={group.title}
-                                            >
-                                              {group.title.length > 20
-                                                ? group.title.slice(0, 20) + "…"
-                                                : group.title}
-                                            </button>
-                                          )}
-                                        </div>
-                                      );
-                                    })
-                                  ) : (
-                                    <div className="pl-2 text-[10px] text-zinc-600 italic">
-                                      No groups yet
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Standalone Atoms */}
-          {standaloneAtoms.length > 0 && (
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-3">
-                <CheckSquare size={14} className="text-zinc-400" />
-                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
-                  Standalone Atoms ({standaloneAtoms.length})
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {standaloneAtoms.map((atom: SprintTask) => (
-                  <button
-                    key={atom.id}
-                    type="button"
-                    onClick={() => {
-                      setSchedulingTaskId(atom.id);
-                      setScheduleDate(
-                        atom.plannedDate
-                          ? format(new Date(atom.plannedDate), "yyyy-MM-dd")
-                          : "",
-                      );
-                    }}
-                    className={`text-[10px] px-2.5 py-1 rounded-full border transition-all duration-150 ${
-                      atom.plannedDate
-                        ? "bg-accent/10 border-accent/20 text-accent"
-                        : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
-                    }`}
-                    title={atom.title}
-                  >
-                    {atom.title.length > 25
-                      ? atom.title.slice(0, 25) + "…"
-                      : atom.title}
-                    {atom.resistance != null && (
-                      <span className="ml-1 text-[8px] opacity-60">[{atom.resistance}]</span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
+            </Dialog>
           )}
 
           {/* Finish Banner */}
@@ -3031,10 +3044,10 @@ export function PlanningWizardClient({
               <span className="text-xl">🎉</span>
               <div>
                 <h4 className="text-sm font-bold text-zinc-100 font-mono">
-                  Ready to distribute!
+                  Planning complete!
                 </h4>
                 <p className="text-xs text-zinc-400">
-                  Click atoms above to schedule them to specific days, or go to the Kanban board.
+                  Atoms are distributed across the week. Review on the Kanban board.
                 </p>
               </div>
             </div>
