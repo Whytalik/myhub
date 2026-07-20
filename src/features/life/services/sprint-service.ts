@@ -438,3 +438,20 @@ export async function getCurrentSprintProjects(userId: string) {
     })),
   }));
 }
+
+export async function updateSprintDates(
+  userId: string,
+  sprintId: string,
+  startDate: Date,
+  endDate: Date,
+) {
+  const sprint = await prisma.sprint.findFirst({
+    where: { id: sprintId, userId },
+  });
+  if (!sprint) throw new Error("Sprint not found");
+
+  return prisma.sprint.update({
+    where: { id: sprintId },
+    data: { startDate, endDate },
+  });
+}

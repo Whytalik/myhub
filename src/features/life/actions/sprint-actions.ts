@@ -107,3 +107,20 @@ export async function getCurrentSprintProjectsAction(): Promise<ActionResult<any
     return await sprintService.getCurrentSprintProjects(userId);
   });
 }
+
+export async function updateSprintDatesAction(
+  sprintId: string,
+  startDate: string,
+  endDate: string,
+): Promise<ActionResult<any>> {
+  return withAction(async (userId) => {
+    const result = await sprintService.updateSprintDates(
+      userId,
+      sprintId,
+      new Date(startDate),
+      new Date(endDate),
+    );
+    invalidateTaskCache(userId);
+    return result;
+  });
+}

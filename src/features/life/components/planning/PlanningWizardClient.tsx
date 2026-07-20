@@ -21,6 +21,7 @@ import {
   HelpCircle,
   Pencil,
   Plus,
+  Calendar,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
@@ -39,6 +40,7 @@ import {
   createSprintObjectiveAction,
   deleteProjectAction,
   updateProjectAction,
+  updateSprintDatesAction,
 } from "@/features/life/actions/sprint-actions";
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
@@ -47,6 +49,8 @@ import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
+import { DatePicker } from "@/components/ui/inputs/date-picker";
+import { format, addWeeks, parseISO } from "date-fns";
 
 const FILTER_TYPE_ICONS: Record<string, LucideIcon> = {
   AlertTriangle,
@@ -139,6 +143,13 @@ export function PlanningWizardClient({
   const [editGroupTitle, setEditGroupTitle] = useState("");
   const [editGroupDesc, setEditGroupDesc] = useState("");
   const [editGroupResistance, setEditGroupResistance] = useState(3);
+
+  // Step 6 state
+  const [sprintStartDate, setSprintStartDate] = useState(
+    sprint?.startDate ? format(new Date(sprint.startDate), "yyyy-MM-dd") : "",
+  );
+  const [schedulingTaskId, setSchedulingTaskId] = useState<string | null>(null);
+  const [scheduleDate, setScheduleDate] = useState("");
 
   // Step 1: Brain Dump state
   const [newThoughtText, setNewThoughtText] = useState("");
@@ -840,6 +851,58 @@ export function PlanningWizardClient({
         }));
       } else {
         toast.error(result.error || "Failed to delete task atom");
+      }
+    });
+  };
+
+  const handleSaveSprintDates = () => {
+    if (!sprintStartDate || !sprint) return;
+    const start = new Date(sprintStartDate);
+    const end = addWeeks(start, 12);
+    startActionTransition(async () => {
+      const result = await updateSprintDatesAction(
+        sprint.id,
+        start.toISOString(),
+        end.toISOString(),
+      );
+      if (result.success) {
+        toast.success("Sprint dates updated!");
+        setSprint((prev: any) => ({
+          ...prev,
+          startDate: start.toISOString(),
+          endDate: end.toISOString(),
+        }));
+      } else {
+        toast.error(result.error || "Failed to update sprint dates");
+      }
+    });
+  };
+
+  const handleScheduleTask = () => {
+    if (!schedulingTaskId || !scheduleDate) return;
+    startActionTransition(async () => {
+      const result = await upsertTaskAction({
+        id: schedulingTaskId,
+        plannedDate: scheduleDate,
+      });
+      if (result.success) {
+        toast.success("Task scheduled!");
+        setSchedulingTaskId(null);
+        setScheduleDate("");
+        setSprint((prev: any) => ({
+          ...prev,
+          objectives: prev.objectives.map((obj: any) => ({
+            ...obj,
+            projects: obj.projects.map((p: any) => ({
+              ...p,
+              tasks: p.tasks.map((t: any) =>
+                t.id === schedulingTaskId ? { ...t, plannedDate: scheduleDate } : t,
+              ),
+            })),
+          })),
+        }));
+      } else {
+        toast.error(result.error || "Failed to schedule task");
       }
     });
   };
@@ -2779,16 +2842,177 @@ export function PlanningWizardClient({
       {/* 📅 STEP 6: KANBAN DISTRIBUTION */}
       {step === 6 && (
         <div className="flex flex-col gap-6">
+          {/* Sprint Dates */}
+          <div className="glass-card p-4 bg-black/15 border border-white/[0.04] rounded-2xl">
+            <div className="flex items-center gap-3 mb-3">
+              <Calendar size={14} className="text-accent" />
+              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                Sprint Period
+              </span>
+            </div>
+            <div className="flex items-end gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-mono text-zinc-400 uppercase">Start Date</label>
+                <DatePicker
+                  value={sprintStartDate}
+                  onChange={(v) => {
+                    setSprintStartDate(v);
+                  }}
+                  className="w-48"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[10px] font-mono text-zinc-400 uppercase">End Date (auto)</label>
+                <div className="h-10 px-3 py-2 rounded-lg bg-white/[0.04] border border-white/[0.06] text-xs text-zinc-500 flex items-center font-mono">
+                  {sprintStartDate
+                    ? format(addWeeks(new Date(sprintStartDate), 12), "dd.MM.yyyy")
+                    : "—"}
+                </div>
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleSaveSprintDates}
+                disabled={!sprintStartDate || isActionPending}
+              >
+                Save Dates
+              </Button>
+            </div>
+          </div>
+
+          {/* Compact Objectives & Projects Overview */}
+          <div className="glass-card p-4 bg-black/15 border border-white/[0.04] rounded-2xl">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <Layers size={14} className="text-accent" />
+                <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
+                  Sprint Overview
+                </span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setStep(5)}
+                className="text-[10px]"
+              >
+                <Pencil size={11} className="mr-1" /> Edit in Step 5
+              </Button>
+            </div>
+            {sprint?.objectives && sprint.objectives.length > 0 ? (
+              <div className="flex flex-col gap-3">
+                {sprint.objectives.map((obj: any) => (
+                  <div key={obj.id} className="flex flex-col gap-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono text-accent/70 uppercase">
+                        {obj.title}
+                      </span>
+                      {obj.sphere && (
+                        <span className="text-[9px] font-mono text-zinc-600">
+                          [{obj.sphere.name}]
+                        </span>
+                      )}
+                    </div>
+                    {obj.projects?.length > 0 ? (
+                      <div className="flex flex-col gap-1.5 pl-3 border-l border-white/[0.04]">
+                        {obj.projects.map((project: any) => {
+                          const topLevelTasks = (project.tasks || []).filter(
+                            (t: any) => !t.parentId,
+                          );
+                          return (
+                            <div key={project.id} className="flex flex-col gap-1">
+                              <div className="flex items-center gap-2 text-xs">
+                                <span className="text-zinc-300 font-medium">📂 {project.title}</span>
+                                {topLevelTasks.length > 0 && (
+                                  <span className="text-[9px] font-mono text-zinc-600">
+                                    {topLevelTasks.length} groups
+                                  </span>
+                                )}
+                              </div>
+                              {topLevelTasks.length > 0 && (
+                                <div className="flex flex-wrap gap-1 pl-5">
+                                  {topLevelTasks.map((group: any) => (
+                                    <div key={group.id} className="flex items-center gap-1">
+                                      {(group.children || []).length > 0 ? (
+                                        (group.children || []).map((atom: any) => (
+                                          <button
+                                            key={atom.id}
+                                            type="button"
+                                            onClick={() => {
+                                              setSchedulingTaskId(atom.id);
+                                              setScheduleDate(
+                                                atom.plannedDate
+                                                  ? format(new Date(atom.plannedDate), "yyyy-MM-dd")
+                                                  : "",
+                                              );
+                                            }}
+                                            className={`text-[10px] px-2 py-0.5 rounded-full border transition-all duration-150 ${
+                                              atom.plannedDate
+                                                ? "bg-accent/10 border-accent/20 text-accent"
+                                                : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
+                                            }`}
+                                            title={atom.title}
+                                          >
+                                            {atom.title.length > 16
+                                              ? atom.title.slice(0, 16) + "…"
+                                              : atom.title}
+                                          </button>
+                                        ))
+                                      ) : (
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            setSchedulingTaskId(group.id);
+                                            setScheduleDate(
+                                              group.plannedDate
+                                                ? format(new Date(group.plannedDate), "yyyy-MM-dd")
+                                                : "",
+                                            );
+                                          }}
+                                          className={`text-[10px] px-2 py-0.5 rounded-full border transition-all duration-150 ${
+                                            group.plannedDate
+                                              ? "bg-accent/10 border-accent/20 text-accent"
+                                              : "bg-white/[0.03] border-white/[0.06] text-zinc-500 hover:bg-white/[0.05]"
+                                          }`}
+                                          title={group.title}
+                                        >
+                                          {group.title.length > 16
+                                            ? group.title.slice(0, 16) + "…"
+                                            : group.title}
+                                        </button>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="text-[10px] text-zinc-600 italic pl-3">
+                        No projects assigned
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-[10px] text-zinc-500 italic py-4 text-center">
+                No objectives set. Go back to Step 4.
+              </div>
+            )}
+          </div>
+
+          {/* Finish Banner */}
           <div className="glass-card p-4 bg-emerald-500/5 border-emerald-500/10 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-3">
               <span className="text-xl">🎉</span>
               <div>
                 <h4 className="text-sm font-bold text-zinc-100 font-mono">
-                  Deconstruction complete! Step 6: Distribute
+                  Ready to distribute!
                 </h4>
                 <p className="text-xs text-zinc-400">
-                  All your new projects are added to the Backlog, and atoms to the Weekly Plan.
-                  Distribute them now:
+                  Click atoms above to schedule them to specific days, or go to the Kanban board.
                 </p>
               </div>
             </div>
@@ -2798,16 +3022,9 @@ export function PlanningWizardClient({
               onClick={() => router.push("/life/planning/kanban")}
               className="flex items-center gap-1.5"
             >
-              Finish Planning <CheckCircle2 size={14} />
+              Open Kanban <CheckCircle2 size={14} />
             </Button>
           </div>
-
-          <KanbanBoardClient
-            initialSprint={sprint}
-            initialBacklogProjects={backlogProjects}
-            initialColumns={initialColumns}
-            spheres={spheres}
-          />
         </div>
       )}
 
@@ -2989,6 +3206,92 @@ export function PlanningWizardClient({
           cancelLabel="Cancel"
           variant="danger"
         />
+      )}
+
+      {schedulingTaskId && (
+        <Dialog
+          isOpen={true}
+          onClose={() => {
+            setSchedulingTaskId(null);
+            setScheduleDate("");
+          }}
+          title="Schedule Task"
+          description="Pick a day to schedule this task. It will appear on that day in the Kanban board."
+          maxWidth="380px"
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Day</label>
+              <DatePicker
+                value={scheduleDate}
+                onChange={setScheduleDate}
+                placeholder="Pick a day"
+              />
+            </div>
+            {scheduleDate && (
+              <div className="text-[10px] text-zinc-500 font-mono">
+                Scheduled for: {format(new Date(scheduleDate), "dd.MM.yyyy (EEE)", { weekStartsOn: 1 })}
+              </div>
+            )}
+            <div className="flex gap-2 justify-end mt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSchedulingTaskId(null);
+                  setScheduleDate("");
+                }}
+              >
+                Cancel
+              </Button>
+              {scheduleDate && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    if (schedulingTaskId) {
+                      startActionTransition(async () => {
+                        const result = await upsertTaskAction({
+                          id: schedulingTaskId,
+                          plannedDate: null,
+                        });
+                        if (result.success) {
+                          toast.success("Schedule cleared");
+                          setSchedulingTaskId(null);
+                          setScheduleDate("");
+                          setSprint((prev: any) => ({
+                            ...prev,
+                            objectives: prev.objectives.map((obj: any) => ({
+                              ...obj,
+                              projects: obj.projects.map((p: any) => ({
+                                ...p,
+                                tasks: p.tasks.map((t: any) =>
+                                  t.id === schedulingTaskId
+                                    ? { ...t, plannedDate: null }
+                                    : t,
+                                ),
+                              })),
+                            })),
+                          }));
+                        }
+                      });
+                    }
+                  }}
+                >
+                  Clear
+                </Button>
+              )}
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleScheduleTask}
+                disabled={!scheduleDate || isActionPending}
+              >
+                Schedule
+              </Button>
+            </div>
+          </div>
+        </Dialog>
       )}
 
       {deleteProjectId && (
