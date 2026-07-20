@@ -2413,7 +2413,7 @@ export function PlanningWizardClient({
 
               {/* Right Deconstruction Panel */}
               {selectedDeconstructProject ? (
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 max-h-[calc(100vh-200px)] overflow-y-auto overscroll-contain pr-1">
                   {/* Selected Project Info */}
                   <div className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]">
                     <div className="flex items-start justify-between gap-3">
