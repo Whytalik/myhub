@@ -355,9 +355,11 @@ export function TaskCardBase({
           {task.resistance != null && (
             <div
               className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-mono font-semibold ${
-                task.resistance >= 4
-                  ? "bg-rose-500/10 text-rose-400"
-                  : "bg-orange-500/10 text-orange-400"
+                task.resistance === 0
+                  ? "bg-emerald-500/10 text-emerald-400"
+                  : task.resistance >= 4
+                    ? "bg-rose-500/10 text-rose-400"
+                    : "bg-orange-500/10 text-orange-400"
               }`}
               title="Resistance"
             >

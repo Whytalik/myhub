@@ -175,7 +175,7 @@ export function PlanningWizardClient({
   const [addingAtomToGroupId, setAddingAtomToGroupId] = useState<string | null>(null);
   const [newAtomTitle, setNewAtomTitle] = useState("");
   const [newAtomDesc, setNewAtomDesc] = useState("");
-  const [newAtomResistance, setNewAtomResistance] = useState(3);
+  const [newAtomResistance, setNewAtomResistance] = useState(0);
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editTaskTitle, setEditTaskTitle] = useState("");
   const [editTaskDesc, setEditTaskDesc] = useState("");
@@ -944,7 +944,7 @@ export function PlanningWizardClient({
         toast.success("Atom added to group!");
         setNewAtomTitle("");
         setNewAtomDesc("");
-        setNewAtomResistance(3);
+        setNewAtomResistance(0);
 
         setSprint((prev: SprintData) => ({
           ...prev,
@@ -2590,8 +2590,8 @@ export function PlanningWizardClient({
                 {activeSprintProjects.map((p: SprintProject) => {
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const isPlanned = p.status === "DONE";
-                  const groupCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length > 0 || t.resistance !== null).length;
-                  const standaloneAtomCount = (p.tasks || []).filter((t: SprintTask) => (t.children || []).length === 0 && t.resistance === null).length;
+                  const groupCount = (p.tasks || []).filter((t: SprintTask) => t.resistance === null).length;
+                  const standaloneAtomCount = (p.tasks || []).filter((t: SprintTask) => t.resistance !== null).length;
                   const subAtomCount = (p.tasks || []).reduce((sum: number, t: SprintTask) => sum + (t.children?.length || 0), 0);
                   const totalAtoms = standaloneAtomCount + subAtomCount;
                   const labelParts: string[] = [];
@@ -2832,7 +2832,7 @@ export function PlanningWizardClient({
                                                 setAddingAtomToGroupId(null);
                                                 setNewAtomTitle("");
                                                 setNewAtomDesc("");
-                                                setNewAtomResistance(3);
+                                                setNewAtomResistance(0);
                                               }
                                             }}
                                             autoFocus
@@ -2852,16 +2852,18 @@ export function PlanningWizardClient({
                                             <span className="text-orange-400 font-bold">{newAtomResistance} / 5</span>
                                           </div>
                                           <div className="flex items-center gap-1.5">
-                                            {[1, 2, 3, 4, 5].map((val) => (
+                                            {[0, 1, 2, 3, 4, 5].map((val) => (
                                               <button
                                                 key={val}
                                                 type="button"
                                                 onClick={() => setNewAtomResistance(val)}
                                                 className={`flex-1 h-6 rounded text-[10px] font-mono transition-colors ${
                                                   newAtomResistance === val
-                                                    ? val >= 4
-                                                      ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                                                      : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                                                    ? val === 0
+                                                      ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                                                      : val >= 4
+                                                        ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                                                        : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
                                                     : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
                                                 }`}
                                               >
@@ -2887,7 +2889,7 @@ export function PlanningWizardClient({
                                               setAddingAtomToGroupId(null);
                                               setNewAtomTitle("");
                                               setNewAtomDesc("");
-                                              setNewAtomResistance(3);
+                                              setNewAtomResistance(0);
                                             }}
                                             className="text-[10px] px-3 py-1"
                                           >
@@ -2992,8 +2994,8 @@ export function PlanningWizardClient({
               <div className="flex flex-col gap-2">
                 {activeSprintProjects.map((p: SprintProject) => {
                   const topLevelTasks = (p.tasks || []).filter((t: SprintTask) => !t.parentId);
-                  const groupCount = topLevelTasks.filter((t: SprintTask) => (t.children || []).length > 0 || t.resistance !== null).length;
-                  const atomCount = topLevelTasks.filter((t: SprintTask) => (t.children || []).length === 0 && t.resistance === null).length;
+                  const groupCount = topLevelTasks.filter((t: SprintTask) => t.resistance === null).length;
+                  const atomCount = topLevelTasks.filter((t: SprintTask) => t.resistance !== null).length;
                   const subAtomCount = (p.tasks || []).reduce(
                     (sum: number, t: SprintTask) => sum + (t.children?.length || 0),
                     0,

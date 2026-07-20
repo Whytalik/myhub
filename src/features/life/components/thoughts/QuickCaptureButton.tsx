@@ -143,7 +143,7 @@ export function QuickCaptureButton() {
           sphereId,
           description: null,
           priority: "MEDIUM",
-          resistance: null,
+          resistance: 0,
           projectId: selectedProjectId,
           parentId: selectedParentId,
         });

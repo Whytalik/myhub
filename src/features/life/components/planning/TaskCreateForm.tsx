@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { CustomSelect } from "@/components/ui/inputs/custom-select";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, CheckCircle2 } from "lucide-react";
 
 export interface TaskCreateFormData {
   title: string;
@@ -31,7 +31,7 @@ export function TaskCreateForm({
   const [mode, setMode] = useState<"group" | "atom">("atom");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [resistance, setResistance] = useState(3);
+  const [resistance, setResistance] = useState(0);
   const [projectId, setProjectId] = useState(defaultProjectId ?? (projects.length === 1 ? projects[0].id : ""));
 
   useEffect(() => {
@@ -56,7 +56,7 @@ export function TaskCreateForm({
     });
     setTitle("");
     setDescription("");
-    setResistance(3);
+    setResistance(0);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -129,16 +129,18 @@ export function TaskCreateForm({
               <span className="text-orange-400 font-bold">{resistance} / 5</span>
             </div>
             <div className="flex items-center gap-1.5">
-              {[1, 2, 3, 4, 5].map((val) => (
+              {[0, 1, 2, 3, 4, 5].map((val) => (
                 <button
                   key={val}
                   type="button"
                   onClick={() => setResistance(val)}
                   className={`flex-1 h-7 rounded text-xs font-mono transition-colors ${
                     resistance === val
-                      ? val >= 4
-                        ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                        : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                      ? val === 0
+                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                        : val >= 4
+                          ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                          : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
                       : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
                   }`}
                 >
@@ -150,6 +152,12 @@ export function TaskCreateForm({
               <p className="text-[10px] text-rose-400 font-mono flex items-center gap-1 bg-rose-500/5 p-1.5 rounded border border-rose-500/10">
                 <AlertTriangle size={11} className="shrink-0" />
                 <span>Resistance is high: better split this step into an even simpler one!</span>
+              </p>
+            )}
+            {resistance === 0 && (
+              <p className="text-[10px] text-emerald-400 font-mono flex items-center gap-1 bg-emerald-500/5 p-1.5 rounded border border-emerald-500/10">
+                <CheckCircle2 size={11} className="shrink-0" />
+                <span>Effortless — just do it!</span>
               </p>
             )}
           </div>
