@@ -2639,10 +2639,13 @@ export function PlanningWizardClient({
                           const doneCount = children.filter((c: SprintTask) => c.status === "DONE").length;
 
                           if (!isGroup) {
+                            const resistanceLabel = task.resistance != null
+                              ? ` [${task.resistance}/5]`
+                              : "";
                             return (
                               <div key={task.id} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150 group">
                                 <span className={`flex-1 truncate ${task.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}>
-                                  {task.status === "DONE" ? "✔️" : "○"} {task.title}
+                                  {task.status === "DONE" ? "✔️" : "○"} {task.title}{resistanceLabel && <span className="text-[10px] text-orange-400/70 ml-1 font-mono">{resistanceLabel}</span>}
                                 </span>
                                 <button
                                   type="button"
