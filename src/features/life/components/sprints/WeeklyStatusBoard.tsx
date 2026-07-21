@@ -84,10 +84,10 @@ export function WeeklyStatusBoard({
   onTasksChange,
 }: WeeklyStatusBoardProps) {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
-  const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+  const days = weekStart ? Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)) : [];
 
   const cellTasks = (status: TaskStatus, day: Date | null): TaskData[] =>
-    tasks.filter((t) => {
+    (tasks || []).filter((t) => {
       if (t.status !== status) return false;
       if (day === null) return !t.plannedDate;
       return t.plannedDate ? isSameDay(new Date(t.plannedDate), day) : false;

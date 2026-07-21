@@ -140,7 +140,10 @@ export function PlanningWizardClient({
     return 0; // 0: Intro, 1: Brain Dump, 2: Filter, 3: Decompose, 4: Sprint Goals, 5: Project Deconstruct, 6: Distribute
   });
   const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts);
-  const [sprint, setSprint] = useState<SprintData>(activeSprint);
+  const [sprint, setSprint] = useState<SprintData>({
+    ...activeSprint,
+    objectives: activeSprint?.objectives || [],
+  } as SprintData);
   const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects);
   const [standaloneAtoms, _setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms || []);
 
@@ -158,8 +161,8 @@ export function PlanningWizardClient({
 
   // Step 5 state
   const activeSprintProjects = useMemo(() => {
-    if (!sprint?.objectives) return [];
-    return sprint.objectives.flatMap((obj: SprintObjective) => obj.projects || []);
+    const objectives = sprint?.objectives || [];
+    return objectives.flatMap((obj: SprintObjective) => obj.projects || []);
   }, [sprint]);
   const [selectedDeconstructProjectId, setSelectedDeconstructProjectId] = useState<string | null>(null);
   
@@ -2365,7 +2368,7 @@ export function PlanningWizardClient({
               </div>
             ) : (
               <div className="flex flex-col gap-4">
-                {sprint.objectives.map((obj: SprintObjective) => (
+                {(sprint.objectives || []).map((obj: SprintObjective) => (
                   <div key={obj.id} className="glass-card p-4 border-white/[0.06] bg-white/[0.02] rounded-xl flex flex-col gap-3">
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-2">
@@ -2497,13 +2500,13 @@ export function PlanningWizardClient({
                       {p.description && (
                         <span className="text-[10px] text-zinc-505 line-clamp-2">{p.description}</span>
                       )}
-                      {sprint.objectives.length > 0 ? (
+                      {sprint.objectives && sprint.objectives.length > 0 ? (
                         <div className="flex flex-col gap-1 mt-1 pt-1.5 border-t border-white/[0.04]">
                           <span className="text-[8px] font-mono text-zinc-505 uppercase">
                             Assign to Objective:
                           </span>
                           <div className="flex flex-wrap gap-1.5">
-                            {sprint.objectives.map((obj: SprintObjective) => (
+                            {(sprint.objectives || []).map((obj: SprintObjective) => (
                               <button
                                 key={obj.id}
                                 type="button"
