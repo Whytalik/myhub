@@ -30,9 +30,21 @@ interface WeeklyStatusBoardProps {
   weekStart: Date;
   locked: boolean;
   onTasksChange: (updater: (prev: TaskData[]) => TaskData[]) => void;
+  onTaskEdit?: (task: TaskData) => void;
+  onTaskDelete?: (taskId: string) => void;
 }
 
-function BoardCard({ task, locked }: { task: TaskData; locked: boolean }) {
+function BoardCard({
+  task,
+  locked,
+  onTaskEdit,
+  onTaskDelete,
+}: {
+  task: TaskData;
+  locked: boolean;
+  onTaskEdit?: (task: TaskData) => void;
+  onTaskDelete?: (taskId: string) => void;
+}) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: task.id,
     data: task,
@@ -46,7 +58,13 @@ function BoardCard({ task, locked }: { task: TaskData; locked: boolean }) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <TaskCardBase task={task} variant="atom" isDragging={isDragging} onEdit={() => {}} />
+      <TaskCardBase
+        task={task}
+        variant="atom"
+        isDragging={isDragging}
+        onEdit={() => onTaskEdit?.(task)}
+        onDelete={onTaskDelete ? () => onTaskDelete(task.id) : undefined}
+      />
     </div>
   );
 }
@@ -55,10 +73,14 @@ function BoardCell({
   id,
   cellTasks,
   locked,
+  onTaskEdit,
+  onTaskDelete,
 }: {
   id: string;
   cellTasks: TaskData[];
   locked: boolean;
+  onTaskEdit?: (task: TaskData) => void;
+  onTaskDelete?: (taskId: string) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id, disabled: locked });
 
@@ -70,7 +92,7 @@ function BoardCell({
       }`}
     >
       {cellTasks.map((t) => (
-        <BoardCard key={t.id} task={t} locked={locked} />
+        <BoardCard key={t.id} task={t} locked={locked} onTaskEdit={onTaskEdit} onTaskDelete={onTaskDelete} />
       ))}
       {cellTasks.length === 0 && <span className="text-[10px] text-zinc-600 italic px-1">—</span>}
     </div>
@@ -82,6 +104,8 @@ export function WeeklyStatusBoard({
   weekStart,
   locked,
   onTasksChange,
+  onTaskEdit,
+  onTaskDelete,
 }: WeeklyStatusBoardProps) {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
   const days = weekStart ? Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)) : [];
@@ -155,6 +179,8 @@ export function WeeklyStatusBoard({
               id={`${c.id}|${UNPLANNED_KEY}`}
               cellTasks={cellTasks(c.id, null)}
               locked={locked}
+              onTaskEdit={onTaskEdit}
+              onTaskDelete={onTaskDelete}
             />
           ))}
 
@@ -176,6 +202,8 @@ export function WeeklyStatusBoard({
                     id={`${c.id}|${dayKey}`}
                     cellTasks={cellTasks(c.id, day)}
                     locked={locked}
+                    onTaskEdit={onTaskEdit}
+                    onTaskDelete={onTaskDelete}
                   />
                 ))}
               </Fragment>

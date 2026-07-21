@@ -123,9 +123,13 @@ interface PlanningWizardClientProps {
 function AtomCard({
   atom,
   onSchedule,
+  onEdit,
+  onDelete,
 }: {
   atom: SprintTask & { projectName?: string; groupName?: string };
   onSchedule: (id: string) => void;
+  onEdit: (task: SprintTask) => void;
+  onDelete: (id: string) => void;
 }) {
   const resistanceClass =
     atom.resistance === 0
@@ -146,14 +150,32 @@ function AtomCard({
           {atom.resistance}/5
         </span>
       )}
-      <button
-        type="button"
-        onClick={() => onSchedule(atom.id)}
-        className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-zinc-500 hover:text-accent hover:bg-accent/10 transition-all duration-150 shrink-0"
-        title="Schedule"
-      >
-        <Calendar size={11} />
-      </button>
+      <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 shrink-0">
+        <button
+          type="button"
+          onClick={() => onSchedule(atom.id)}
+          className="p-1 rounded-md text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150"
+          title="Schedule"
+        >
+          <Calendar size={11} />
+        </button>
+        <button
+          type="button"
+          onClick={() => onEdit(atom)}
+          className="p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors duration-150"
+          title="Edit"
+        >
+          <Pencil size={11} />
+        </button>
+        <button
+          type="button"
+          onClick={() => onDelete(atom.id)}
+          className="p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors duration-150"
+          title="Delete"
+        >
+          <Trash2 size={11} />
+        </button>
+      </div>
     </div>
   );
 }
@@ -183,7 +205,7 @@ export function PlanningWizardClient({
     objectives: activeSprint?.objectives || [],
   } as SprintData);
   const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects || []);
-  const [standaloneAtoms, _setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms || []);
+  const [standaloneAtoms, setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms || []);
 
   // Step 4 state
   const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
@@ -291,23 +313,31 @@ export function PlanningWizardClient({
 
   // Collect all atoms from projects + standalone for Step 6
   const allAtomsForDistribution = useMemo(() => {
+    const seen = new Set<string>();
     const atoms: (SprintTask & { projectName?: string; groupName?: string })[] = [];
 
     // Atoms from projects (both standalone and inside groups)
     for (const project of activeSprintProjects) {
       for (const task of project.tasks || []) {
-        if (task.resistance !== null) {
+        if (task.resistance !== null && !seen.has(task.id)) {
+          seen.add(task.id);
           atoms.push({ ...task, projectName: project.title });
         }
         for (const child of task.children || []) {
-          atoms.push({ ...child, projectName: project.title, groupName: task.title });
+          if (!seen.has(child.id)) {
+            seen.add(child.id);
+            atoms.push({ ...child, projectName: project.title, groupName: task.title });
+          }
         }
       }
     }
 
-    // Standalone atoms
+    // Standalone atoms (skip if already included via a project)
     for (const atom of standaloneAtoms) {
-      atoms.push({ ...atom });
+      if (!seen.has(atom.id)) {
+        seen.add(atom.id);
+        atoms.push({ ...atom });
+      }
     }
 
     return atoms;
@@ -1007,30 +1037,44 @@ export function PlanningWizardClient({
     });
   };
 
-  const handleDeleteAtomFromProject = (taskId: string) => {
+  const handleDeleteTaskAnywhere = (taskId: string) => {
     startActionTransition(async () => {
       const result = await deleteTaskAction(taskId);
       if (result.success) {
-        toast.success("Task atom deleted");
-        setSprint((prev: SprintData) => ({
-          ...prev,
-          objectives: prev.objectives.map((obj: SprintObjective) => ({
-            ...obj,
-            projects: obj.projects.map((p: SprintProject) => {
-              if (p.id === selectedDeconstructProjectId) {
-                return {
-                  ...p,
-                  tasks: (p.tasks || []).filter((t: SprintTask) => t.id !== taskId),
-                };
-              }
-              return p;
-            }),
-          })),
-        }));
+        toast.success("Task deleted");
+        setSprint((prev: SprintData) => {
+          if (!prev || !prev.objectives) return prev;
+          return {
+            ...prev,
+            objectives: prev.objectives.map((obj: SprintObjective) => ({
+              ...obj,
+              projects: (obj.projects || []).map((p: SprintProject) => ({
+                ...p,
+                tasks: (p.tasks || [])
+                  .filter((t: SprintTask) => t.id !== taskId)
+                  .map((t: SprintTask) => ({
+                    ...t,
+                    children: (t.children || []).filter((c: SprintTask) => c.id !== taskId),
+                  })),
+              })),
+            })),
+          };
+        });
+        setStandaloneAtoms((prev) => prev.filter((a) => a.id !== taskId));
       } else {
-        toast.error(result.error || "Failed to delete task atom");
+        toast.error(result.error || "Failed to delete task");
       }
     });
+  };
+
+  const handleOpenEditTaskFromAnywhere = (task: SprintTask) => {
+    const isAtom = task.resistance !== null;
+    setEditingTaskId(task.id);
+    setEditTaskTitle(task.title);
+    setEditTaskDesc(task.description || "");
+    setEditTaskResistance(task.resistance ?? 3);
+    setEditTaskMode(isAtom ? "atom" : "group");
+    setEditTaskHasChildren((task.children || []).length > 0);
   };
 
   const _handleSaveSprintDates = () => {
@@ -2952,6 +2996,8 @@ export function PlanningWizardClient({
               tasks={allAtomsForDistribution.filter((a) => a.plannedDate) as unknown as import("@/features/life/types").TaskData[]}
               weekStart={weekStart}
               locked={false}
+              onTaskEdit={(task) => handleOpenEditTaskFromAnywhere(task as unknown as SprintTask)}
+              onTaskDelete={(id) => setDeleteTaskId(id)}
               onTasksChange={(updater) => {
                 const currentTasks = allAtomsForDistribution.filter((a) => a.plannedDate) as unknown as import("@/features/life/types").TaskData[];
                 const updatedTasks = updater(currentTasks);
@@ -3064,7 +3110,7 @@ export function PlanningWizardClient({
                             {!isGroupCollapsed && (
                               <div className="flex flex-col gap-1 pl-4">
                                 {atoms.map((atom) => (
-                                  <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} />
+                                  <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} onEdit={handleOpenEditTaskFromAnywhere} onDelete={(id) => setDeleteTaskId(id)} />
                                 ))}
                               </div>
                             )}
@@ -3072,7 +3118,7 @@ export function PlanningWizardClient({
                         );
                       })}
                       {projectDirectAtoms.map((atom) => (
-                        <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} />
+                        <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} onEdit={handleOpenEditTaskFromAnywhere} onDelete={(id) => setDeleteTaskId(id)} />
                       ))}
                     </div>
                   )}
@@ -3100,7 +3146,7 @@ export function PlanningWizardClient({
                 {!collapsedProjects.has("__standalone__") && (
                   <div className="px-3 pb-3 flex flex-col gap-1">
                     {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).map((atom: SprintTask) => (
-                      <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} />
+                      <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} onEdit={handleOpenEditTaskFromAnywhere} onDelete={(id) => setDeleteTaskId(id)} />
                     ))}
                   </div>
                 )}
@@ -3321,7 +3367,8 @@ export function PlanningWizardClient({
           onClose={() => setDeleteTaskId(null)}
           onConfirm={() => {
             if (deleteTaskId) {
-              handleDeleteAtomFromProject(deleteTaskId);
+              handleDeleteTaskAnywhere(deleteTaskId);
+              setDeleteTaskId(null);
             }
           }}
           title="Delete Task"
