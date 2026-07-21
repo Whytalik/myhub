@@ -70,8 +70,9 @@ export function TaskCardBase({
     return now >= start && now <= end;
   }, [task.status, task.plannedDate, task.plannedEndDate, now]);
 
-  const hasChildren = task.children.length > 0;
-  const completedSubtasks = task.children.filter((c) => c.status === "DONE").length;
+  const safeChildren = task.children || [];
+  const hasChildren = safeChildren.length > 0;
+  const completedSubtasks = safeChildren.filter((c) => c.status === "DONE").length;
   const isAtom = variant === "atom";
   const isCompact = variant === "compact" || isAtom;
 
@@ -210,7 +211,7 @@ export function TaskCardBase({
     ? `від ${new Date(task.carriedFromDate).toLocaleDateString("uk-UA", { day: "numeric", month: "short" })}`
     : "";
   const subtaskProgressPct = hasChildren
-    ? Math.round((completedSubtasks / task.children.length) * 100)
+    ? Math.round((completedSubtasks / safeChildren.length) * 100)
     : 0;
 
   return (
