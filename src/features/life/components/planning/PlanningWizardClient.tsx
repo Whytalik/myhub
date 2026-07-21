@@ -253,11 +253,11 @@ export function PlanningWizardClient({
   const [schedulingTaskId, setSchedulingTaskId] = useState<string | null>(null);
   const [scheduleDate, setScheduleDate] = useState("");
   const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
-  const [collapsedProjects, setCollapsedProjects] = useState<Set<string>>(new Set());
-  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
+  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
   const toggleProjectCollapse = (projectId: string) => {
-    setCollapsedProjects((prev) => {
+    setExpandedProjects((prev) => {
       const next = new Set(prev);
       if (next.has(projectId)) next.delete(projectId);
       else next.add(projectId);
@@ -265,7 +265,7 @@ export function PlanningWizardClient({
     });
   };
   const toggleGroupCollapse = (groupId: string) => {
-    setCollapsedGroups((prev) => {
+    setExpandedGroups((prev) => {
       const next = new Set(prev);
       if (next.has(groupId)) next.delete(groupId);
       else next.add(groupId);
@@ -3066,7 +3066,7 @@ export function PlanningWizardClient({
                 }));
 
               const projectDirectAtoms = projectAtoms.filter((a) => !a.groupName);
-              const isProjectCollapsed = collapsedProjects.has(project.id);
+              const isProjectCollapsed = !expandedProjects.has(project.id);
               const unscheduledCount = projectAtoms.length;
 
               return (
@@ -3090,7 +3090,7 @@ export function PlanningWizardClient({
                   {!isProjectCollapsed && (
                     <div className="px-3 pb-3 flex flex-col gap-2">
                       {projectGroups.map(({ group, atoms }) => {
-                        const isGroupCollapsed = collapsedGroups.has(group.id);
+                        const isGroupCollapsed = !expandedGroups.has(group.id);
                         return (
                           <div key={group.id} className="flex flex-col gap-1">
                             <button
@@ -3135,7 +3135,7 @@ export function PlanningWizardClient({
                 >
                   <ChevronDown
                     size={12}
-                    className={`text-zinc-500 transition-transform duration-150 ${collapsedProjects.has("__standalone__") ? "-rotate-90" : ""}`}
+                    className={`text-zinc-500 transition-transform duration-150 ${!expandedProjects.has("__standalone__") ? "-rotate-90" : ""}`}
                   />
                   <CheckSquare size={12} className="text-zinc-500 shrink-0" />
                   <span className="text-xs font-semibold text-zinc-200 truncate">Standalone</span>
@@ -3143,7 +3143,7 @@ export function PlanningWizardClient({
                     {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).length}
                   </span>
                 </button>
-                {!collapsedProjects.has("__standalone__") && (
+                {expandedProjects.has("__standalone__") && (
                   <div className="px-3 pb-3 flex flex-col gap-1">
                     {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).map((atom: SprintTask) => (
                       <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} onEdit={handleOpenEditTaskFromAnywhere} onDelete={(id) => setDeleteTaskId(id)} />
