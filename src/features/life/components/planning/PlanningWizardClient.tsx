@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ArrowRight,
   FolderKanban,
+  Folder,
   CheckSquare,
   AlertTriangle,
   Pencil,
@@ -44,7 +45,6 @@ import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
-import { DatePicker } from "@/components/ui/inputs/date-picker";
 import { format, addWeeks, startOfWeek, addDays, endOfWeek } from "date-fns";
 import { TaskCreateForm, type TaskCreateFormData } from "./TaskCreateForm";
 import { WeeklyStatusBoard } from "@/features/life/components/sprints/WeeklyStatusBoard";
@@ -120,6 +120,44 @@ interface PlanningWizardClientProps {
   initialStandaloneAtoms?: SprintTask[];
 }
 
+function AtomCard({
+  atom,
+  onSchedule,
+}: {
+  atom: SprintTask & { projectName?: string; groupName?: string };
+  onSchedule: (id: string) => void;
+}) {
+  const resistanceClass =
+    atom.resistance === 0
+      ? "bg-emerald-500/10 text-emerald-400"
+      : atom.resistance != null && atom.resistance >= 4
+        ? "bg-rose-500/10 text-rose-400"
+        : atom.resistance != null
+          ? "bg-orange-500/10 text-orange-400"
+          : "";
+
+  return (
+    <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.04] hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-150 group">
+      <span className="text-xs text-zinc-300 truncate flex-1 min-w-0" title={atom.title}>
+        {atom.title}
+      </span>
+      {atom.resistance != null && (
+        <span className={`text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded shrink-0 ${resistanceClass}`}>
+          {atom.resistance}/5
+        </span>
+      )}
+      <button
+        type="button"
+        onClick={() => onSchedule(atom.id)}
+        className="opacity-0 group-hover:opacity-100 p-1 rounded-md text-zinc-500 hover:text-accent hover:bg-accent/10 transition-all duration-150 shrink-0"
+        title="Schedule"
+      >
+        <Calendar size={11} />
+      </button>
+    </div>
+  );
+}
+
 export function PlanningWizardClient({
   initialThoughts,
   spheres,
@@ -193,6 +231,25 @@ export function PlanningWizardClient({
   const [schedulingTaskId, setSchedulingTaskId] = useState<string | null>(null);
   const [scheduleDate, setScheduleDate] = useState("");
   const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
+  const [collapsedProjects, setCollapsedProjects] = useState<Set<string>>(new Set());
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
+
+  const toggleProjectCollapse = (projectId: string) => {
+    setCollapsedProjects((prev) => {
+      const next = new Set(prev);
+      if (next.has(projectId)) next.delete(projectId);
+      else next.add(projectId);
+      return next;
+    });
+  };
+  const toggleGroupCollapse = (groupId: string) => {
+    setCollapsedGroups((prev) => {
+      const next = new Set(prev);
+      if (next.has(groupId)) next.delete(groupId);
+      else next.add(groupId);
+      return next;
+    });
+  };
 
   // Step 1: Brain Dump state
   const [newThoughtText, setNewThoughtText] = useState("");
@@ -2881,11 +2938,11 @@ export function PlanningWizardClient({
               </span>
             </div>
             <WeeklyStatusBoard
-              tasks={allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[]}
+              tasks={allAtomsForDistribution.filter((a) => a.plannedDate) as unknown as import("@/features/life/types").TaskData[]}
               weekStart={weekStart}
               locked={false}
               onTasksChange={(updater) => {
-                const currentTasks = allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[];
+                const currentTasks = allAtomsForDistribution.filter((a) => a.plannedDate) as unknown as import("@/features/life/types").TaskData[];
                 const updatedTasks = updater(currentTasks);
                 setSprint((prev: SprintData) => {
                   if (!prev || !prev.objectives) return prev;
@@ -2917,8 +2974,8 @@ export function PlanningWizardClient({
           </div>
 
           {/* Unscheduled Atoms Pool */}
-          <div className="glass-card p-4 bg-black/15 border border-white/[0.04] rounded-2xl">
-            <div className="flex items-center gap-3 mb-4">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3 px-1">
               <CheckSquare size={14} className="text-zinc-400" />
               <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
                 Unscheduled Atoms
@@ -2928,118 +2985,117 @@ export function PlanningWizardClient({
               </span>
             </div>
 
-            <div className="flex flex-col gap-3">
-              {activeSprintProjects.map((project: SprintProject) => {
-                const projectAtoms = (project.tasks || []).flatMap((task: SprintTask) => {
-                  if (task.resistance !== null && !task.plannedDate) {
-                    return [{ ...task, projectName: project.title }];
+            {activeSprintProjects.map((project: SprintProject) => {
+              const projectAtoms: (SprintTask & { projectName?: string; groupName?: string })[] = (project.tasks || []).flatMap((task: SprintTask) => {
+                const items: (SprintTask & { projectName?: string; groupName?: string })[] = [];
+                if (task.resistance !== null && !task.plannedDate) {
+                  items.push({ ...task, projectName: project.title });
+                }
+                for (const c of task.children || []) {
+                  if (!c.plannedDate) {
+                    items.push({ ...c, projectName: project.title, groupName: task.title });
                   }
-                  return (task.children || [])
-                    .filter((c: SprintTask) => !c.plannedDate)
-                    .map((c: SprintTask) => ({ ...c, projectName: project.title, groupName: task.title }));
-                });
+                }
+                return items;
+              });
 
-                if (projectAtoms.length === 0) return null;
+              if (projectAtoms.length === 0) return null;
 
-                return (
-                  <div key={project.id} className="flex flex-col gap-2">
-                    <span className="text-[10px] font-mono text-zinc-400 font-semibold">
-                      📂 {project.title}
+              const projectGroups = (project.tasks || [])
+                .filter((t: SprintTask) => (t.children || []).length > 0 && t.resistance === null)
+                .map((t: SprintTask) => ({
+                  group: t,
+                  atoms: projectAtoms.filter((a) => a.groupName === t.title),
+                }));
+
+              const projectDirectAtoms = projectAtoms.filter((a) => !a.groupName);
+              const isProjectCollapsed = collapsedProjects.has(project.id);
+              const unscheduledCount = projectAtoms.length;
+
+              return (
+                <div key={project.id} className="glass-card bg-black/10 border border-white/[0.04] rounded-xl overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => toggleProjectCollapse(project.id)}
+                    className="w-full flex items-center gap-2.5 px-4 py-2.5 hover:bg-white/[0.02] transition-colors duration-150"
+                  >
+                    <ChevronDown
+                      size={12}
+                      className={`text-zinc-500 transition-transform duration-150 ${isProjectCollapsed ? "-rotate-90" : ""}`}
+                    />
+                    <Folder size={12} className="text-amber-500/70 shrink-0" />
+                    <span className="text-xs font-semibold text-zinc-200 truncate">{project.title}</span>
+                    <span className="text-[9px] font-mono text-zinc-600 bg-white/[0.04] px-1.5 py-0.5 rounded ml-auto shrink-0">
+                      {unscheduledCount}
                     </span>
-                    <div className="flex flex-wrap gap-1.5 pl-3">
-                      {projectAtoms.map((atom: SprintTask & { groupName?: string }) => (
-                        <button
-                          key={atom.id}
-                          type="button"
-                          onClick={() => {
-                            setSchedulingTaskId(atom.id);
-                            setScheduleDate("");
-                          }}
-                          className="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] bg-white/[0.03] text-zinc-400 hover:bg-white/[0.05] hover:text-zinc-200 transition-colors duration-150"
-                          title={atom.title}
-                        >
-                          {atom.groupName && <span className="opacity-50">{atom.groupName} → </span>}
-                          {atom.title.length > 30 ? atom.title.slice(0, 30) + "…" : atom.title}
-                          {atom.resistance != null && (
-                            <span className="ml-1 text-[8px] opacity-60">[{atom.resistance}]</span>
-                          )}
-                        </button>
+                  </button>
+
+                  {!isProjectCollapsed && (
+                    <div className="px-3 pb-3 flex flex-col gap-2">
+                      {projectGroups.map(({ group, atoms }) => {
+                        const isGroupCollapsed = collapsedGroups.has(group.id);
+                        return (
+                          <div key={group.id} className="flex flex-col gap-1">
+                            <button
+                              type="button"
+                              onClick={() => toggleGroupCollapse(group.id)}
+                              className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-white/[0.02] rounded-lg transition-colors duration-150"
+                            >
+                              <ChevronDown
+                                size={10}
+                                className={`text-zinc-600 transition-transform duration-150 ${isGroupCollapsed ? "-rotate-90" : ""}`}
+                              />
+                              <span className="text-[10px] font-mono text-zinc-400 font-semibold truncate">{group.title}</span>
+                              <span className="text-[8px] font-mono text-zinc-600 bg-white/[0.04] px-1 py-0.5 rounded ml-auto shrink-0">
+                                {atoms.length}
+                              </span>
+                            </button>
+                            {!isGroupCollapsed && (
+                              <div className="flex flex-col gap-1 pl-4">
+                                {atoms.map((atom) => (
+                                  <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} />
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                      {projectDirectAtoms.map((atom) => (
+                        <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} />
                       ))}
                     </div>
-                  </div>
-                );
-              })}
+                  )}
+                </div>
+              );
+            })}
 
-              {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).length > 0 && (
-                <div className="flex flex-col gap-2 pt-2 border-t border-white/[0.04]">
-                  <span className="text-[10px] font-mono text-zinc-400 font-semibold">
-                    Standalone
+            {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).length > 0 && (
+              <div className="glass-card bg-black/10 border border-white/[0.04] rounded-xl overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => toggleProjectCollapse("__standalone__")}
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 hover:bg-white/[0.02] transition-colors duration-150"
+                >
+                  <ChevronDown
+                    size={12}
+                    className={`text-zinc-500 transition-transform duration-150 ${collapsedProjects.has("__standalone__") ? "-rotate-90" : ""}`}
+                  />
+                  <CheckSquare size={12} className="text-zinc-500 shrink-0" />
+                  <span className="text-xs font-semibold text-zinc-200 truncate">Standalone</span>
+                  <span className="text-[9px] font-mono text-zinc-600 bg-white/[0.04] px-1.5 py-0.5 rounded ml-auto shrink-0">
+                    {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).length}
                   </span>
-                  <div className="flex flex-wrap gap-1.5 pl-3">
+                </button>
+                {!collapsedProjects.has("__standalone__") && (
+                  <div className="px-3 pb-3 flex flex-col gap-1">
                     {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).map((atom: SprintTask) => (
-                      <button
-                        key={atom.id}
-                        type="button"
-                        onClick={() => {
-                          setSchedulingTaskId(atom.id);
-                          setScheduleDate("");
-                        }}
-                        className="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] bg-white/[0.03] text-zinc-400 hover:bg-white/[0.05] hover:text-zinc-200 transition-colors duration-150"
-                        title={atom.title}
-                      >
-                        {atom.title.length > 30 ? atom.title.slice(0, 30) + "…" : atom.title}
-                        {atom.resistance != null && (
-                          <span className="ml-1 text-[8px] opacity-60">[{atom.resistance}]</span>
-                        )}
-                      </button>
+                      <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} />
                     ))}
                   </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Schedule Modal */}
-          {schedulingTaskId && (
-            <Dialog
-              isOpen={true}
-              onClose={() => { setSchedulingTaskId(null); setScheduleDate(""); }}
-              title="Schedule Atom"
-              maxWidth="400px"
-            >
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[10px] font-mono text-zinc-400 uppercase">Date</label>
-                  <DatePicker
-                    value={scheduleDate}
-                    onChange={(v) => setScheduleDate(v)}
-                    className="w-full"
-                  />
-                </div>
-                <div className="flex gap-2 justify-end">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => { setSchedulingTaskId(null); setScheduleDate(""); }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => {
-                      if (schedulingTaskId && scheduleDate) {
-                        handleScheduleTask();
-                      }
-                    }}
-                    disabled={!scheduleDate || isActionPending}
-                  >
-                    Schedule
-                  </Button>
-                </div>
+                )}
               </div>
-            </Dialog>
-          )}
+            )}
+          </div>
 
           {/* Finish Banner */}
           <div className="glass-card p-4 bg-emerald-500/5 border-emerald-500/10 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
@@ -3272,18 +3328,33 @@ export function PlanningWizardClient({
             setSchedulingTaskId(null);
             setScheduleDate("");
           }}
-          title="Schedule Task"
-          description="Pick a day to schedule this task. It will appear on that day in the Kanban board."
-          maxWidth="380px"
+          title="Schedule Atom"
+          maxWidth="420px"
         >
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-mono text-zinc-400 uppercase">Day</label>
-              <DatePicker
-                value={scheduleDate}
-                onChange={setScheduleDate}
-                placeholder="Pick a day"
-              />
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">Pick a day (Week 1)</label>
+              <div className="grid grid-cols-7 gap-1.5">
+                {sprintStart && Array.from({ length: 7 }, (_, i) => addDays(sprintStart, i)).map((day) => {
+                  const dateStr = format(day, "yyyy-MM-dd");
+                  const isSelected = scheduleDate === dateStr;
+                  return (
+                    <button
+                      key={dateStr}
+                      type="button"
+                      onClick={() => setScheduleDate(dateStr)}
+                      className={`flex flex-col items-center gap-0.5 py-2 px-1 rounded-lg border text-xs transition-all duration-150 ${
+                        isSelected
+                          ? "border-accent bg-accent/10 text-accent font-semibold"
+                          : "border-white/[0.06] bg-white/[0.02] text-zinc-400 hover:bg-white/[0.05] hover:text-zinc-200"
+                      }`}
+                    >
+                      <span className="text-[9px] font-mono uppercase">{format(day, "EEE")}</span>
+                      <span className="text-sm">{format(day, "d")}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
             {scheduleDate && (
               <div className="text-[10px] text-zinc-500 font-mono">

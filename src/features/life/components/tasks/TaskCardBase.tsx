@@ -330,18 +330,22 @@ export function TaskCardBase({
         )}
 
         <div className="flex items-center gap-1.5 flex-wrap">
-          <StatusToggle
-            taskId={task.id}
-            status={task.status}
-            variant="badge"
-            size={isCompact ? "sm" : "default"}
-          />
+          {!isAtom && (
+            <StatusToggle
+              taskId={task.id}
+              status={task.status}
+              variant="badge"
+              size={isCompact ? "sm" : "default"}
+            />
+          )}
 
-          <PriorityToggle
-            taskId={task.id}
-            priority={task.priority}
-            size={isCompact ? "sm" : "default"}
-          />
+          {!isAtom && (
+            <PriorityToggle
+              taskId={task.id}
+              priority={task.priority}
+              size={isCompact ? "sm" : "default"}
+            />
+          )}
 
           {task.sphere && (
             <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide">
