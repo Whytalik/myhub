@@ -45,7 +45,7 @@ import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
-import { format, addWeeks, startOfWeek, addDays, endOfWeek } from "date-fns";
+import { format, addWeeks, startOfWeek, addDays, endOfWeek, isSameWeek } from "date-fns";
 import { TaskCreateForm, type TaskCreateFormData } from "./TaskCreateForm";
 import { WeeklyStatusBoard } from "@/features/life/components/sprints/WeeklyStatusBoard";
 
@@ -318,7 +318,7 @@ export function PlanningWizardClient({
 
     // Atoms from projects (both standalone and inside groups)
     for (const project of activeSprintProjects) {
-      for (const task of project.tasks || []) {
+      for (const task of (project.tasks || []).filter((task) => !task.parentId)) {
         if (task.resistance !== null && !seen.has(task.id)) {
           seen.add(task.id);
           atoms.push({ ...task, projectName: project.title });
@@ -365,6 +365,14 @@ export function PlanningWizardClient({
       };
     });
   }, [sprintStart]);
+  const futureScheduledAtoms = useMemo(() => {
+    if (!weekStart) return [];
+    return allAtomsForDistribution.filter((atom) => {
+      if (!atom.plannedDate) return false;
+      const planned = new Date(atom.plannedDate);
+      return !isSameWeek(planned, weekStart, { weekStartsOn: 1 });
+    });
+  }, [allAtomsForDistribution, weekStart]);
 
   // Step 2: Filter states
   const inboxThoughts = useMemo(() => {
@@ -985,6 +993,18 @@ export function PlanningWizardClient({
             })),
           })),
         }));
+        setStandaloneAtoms((prev) =>
+          prev.map((atom) =>
+            atom.id === editingTaskId
+              ? {
+                  ...atom,
+                  title,
+                  description: editTaskDesc.trim() || null,
+                  resistance: editTaskMode === "atom" ? editTaskResistance : null,
+                }
+              : atom,
+          ),
+        );
       } else {
         toast.error(result.error || "Failed to update");
       }
@@ -1031,6 +1051,11 @@ export function PlanningWizardClient({
             })),
           })),
         }));
+        setStandaloneAtoms((prev) =>
+          prev.map((atom) =>
+            atom.id === editingTaskId ? { ...atom, resistance: newResistance } : atom,
+          ),
+        );
       } else {
         toast.error(result.error || "Failed to convert");
       }
@@ -2993,13 +3018,13 @@ export function PlanningWizardClient({
               </span>
             </div>
             <WeeklyStatusBoard
-              tasks={allAtomsForDistribution.filter((a) => a.plannedDate) as unknown as import("@/features/life/types").TaskData[]}
+              tasks={allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[]}
               weekStart={weekStart}
               locked={false}
               onTaskEdit={(task) => handleOpenEditTaskFromAnywhere(task as unknown as SprintTask)}
               onTaskDelete={(id) => setDeleteTaskId(id)}
               onTasksChange={(updater) => {
-                const currentTasks = allAtomsForDistribution.filter((a) => a.plannedDate) as unknown as import("@/features/life/types").TaskData[];
+                const currentTasks = allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[];
                 const updatedTasks = updater(currentTasks);
                 setSprint((prev: SprintData) => {
                   if (!prev || !prev.objectives) return prev;
@@ -3026,9 +3051,42 @@ export function PlanningWizardClient({
                     })),
                   };
                 });
+                setStandaloneAtoms((prev) =>
+                  prev.map((atom) => {
+                    const updatedAtom = updatedTasks.find((u: SprintTask) => u.id === atom.id);
+                    return updatedAtom ? { ...atom, plannedDate: updatedAtom.plannedDate, status: updatedAtom.status } : atom;
+                  }),
+                );
               }}
             />
           </div>
+
+          {futureScheduledAtoms.length > 0 && (
+            <div className="glass-card p-4 bg-black/10 border border-white/[0.04] rounded-2xl">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Calendar size={14} className="text-zinc-400" />
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">
+                    Scheduled outside selected week
+                  </span>
+                </div>
+                <span className="text-[9px] font-mono text-zinc-600 bg-white/[0.04] px-2 py-0.5 rounded">
+                  {futureScheduledAtoms.length} atom{futureScheduledAtoms.length > 1 ? "s" : ""}
+                </span>
+              </div>
+              <div className="grid gap-2">
+                {futureScheduledAtoms.map((atom) => (
+                  <AtomCard
+                    key={atom.id}
+                    atom={atom}
+                    onSchedule={setSchedulingTaskId}
+                    onEdit={handleOpenEditTaskFromAnywhere}
+                    onDelete={(id) => setDeleteTaskId(id)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Unscheduled Atoms Pool */}
           <div className="flex flex-col gap-2">
@@ -3043,7 +3101,8 @@ export function PlanningWizardClient({
             </div>
 
             {activeSprintProjects.map((project: SprintProject) => {
-              const projectAtoms: (SprintTask & { projectName?: string; groupName?: string })[] = (project.tasks || []).flatMap((task: SprintTask) => {
+              const topLevelTasks = (project.tasks || []).filter((task: SprintTask) => !task.parentId);
+              const projectAtoms: (SprintTask & { projectName?: string; groupName?: string })[] = topLevelTasks.flatMap((task: SprintTask) => {
                 const items: (SprintTask & { projectName?: string; groupName?: string })[] = [];
                 if (task.resistance !== null && !task.plannedDate) {
                   items.push({ ...task, projectName: project.title });
@@ -3058,7 +3117,7 @@ export function PlanningWizardClient({
 
               if (projectAtoms.length === 0) return null;
 
-              const projectGroups = (project.tasks || [])
+              const projectGroups = topLevelTasks
                 .filter((t: SprintTask) => (t.children || []).length > 0 && t.resistance === null)
                 .map((t: SprintTask) => ({
                   group: t,
