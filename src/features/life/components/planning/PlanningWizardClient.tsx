@@ -139,17 +139,17 @@ export function PlanningWizardClient({
     }
     return 0; // 0: Intro, 1: Brain Dump, 2: Filter, 3: Decompose, 4: Sprint Goals, 5: Project Deconstruct, 6: Distribute
   });
-  const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts);
+  const [thoughts, setThoughts] = useState<ThoughtItem[]>(initialThoughts || []);
   const [sprint, setSprint] = useState<SprintData>({
     ...activeSprint,
     objectives: activeSprint?.objectives || [],
   } as SprintData);
-  const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects);
+  const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects || []);
   const [standaloneAtoms, _setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms || []);
 
   // Step 4 state
   const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
-  const [newObjectiveSphereId, setNewObjectiveSphereId] = useState(spheres[0]?.id || "");
+  const [newObjectiveSphereId, setNewObjectiveSphereId] = useState(spheres?.[0]?.id || "");
   const [newObjectiveDesc, setNewObjectiveDesc] = useState("");
   const [showAddObjectiveForm, setShowAddObjectiveForm] = useState(false);
   const [backlogSearch, setBacklogSearch] = useState("");
@@ -345,7 +345,7 @@ export function PlanningWizardClient({
   const [projectTitle, setProjectTitle] = useState("");
   const [projectDesc, setProjectDesc] = useState("");
 
-  const [selectedSphereId, setSelectedSphereId] = useState<string>(spheres[0]?.id || "");
+  const [selectedSphereId, setSelectedSphereId] = useState<string>(spheres?.[0]?.id || "");
   const [resistance, setResistance] = useState<number>(3); // 1-5
 
   // Handlers
@@ -1338,7 +1338,7 @@ export function PlanningWizardClient({
                 💡 Life Areas (click to filter and pre-select):
               </span>
               <div className="flex flex-wrap gap-1.5">
-                {spheres.map((currentSphere) => {
+                {(spheres || []).map((currentSphere) => {
                   const isSelected = activeFilterSphereId === currentSphere.id;
                   return (
                     <button
@@ -1449,7 +1449,7 @@ export function PlanningWizardClient({
                 )}
 
                 {/* 2. Spheres Groups */}
-                {spheres.map((currentSphere) => {
+                {(spheres || []).map((currentSphere) => {
                   const thoughtsInSphere = groupedThoughts[currentSphere.id] || [];
                   if (thoughtsInSphere.length === 0) return null;
 
@@ -2319,7 +2319,7 @@ export function PlanningWizardClient({
                     onChange={(e) => setNewObjectiveSphereId(e.target.value)}
                     className="bg-black/30 border border-white/8 rounded-lg px-3 py-1.5 text-sm text-zinc-150"
                   >
-                    {spheres.map((s) => (
+                    {(spheres || []).map((s) => (
                       <option key={s.id} value={s.id}>
                         {s.name}
                       </option>
