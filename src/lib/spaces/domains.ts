@@ -47,27 +47,6 @@ export interface Domain {
 
 export const DOMAINS: Domain[] = [
   {
-    id: "review",
-    label: "Review",
-    href: "/life/review",
-    icon: LineChart,
-    accent: "#fbbf24",
-    spaces: [
-      {
-        label: "Retrospective",
-        icon: ListChecks,
-        accent: "#fbbf24",
-        href: "/life/review",
-        pages: [
-          { href: "/life/review", label: "Life & Habits", icon: LineChart },
-          { href: "/life/planning/review", label: "Thoughts Filter", icon: Sparkles },
-          { href: "/health/training/review", label: "Training Review", icon: TrendingUp },
-          { href: "/health/training/stats", label: "Training Stats", icon: BarChart3 },
-        ],
-      },
-    ],
-  },
-  {
     id: "life",
     label: "Life",
     href: "/life",
@@ -83,6 +62,7 @@ export const DOMAINS: Domain[] = [
           { href: "/life/journal", label: "Journal", icon: BookText },
           { href: "/life/habits", label: "Habits", icon: Zap },
           { href: "/life/week", label: "Week Template", icon: CalendarDays },
+          { href: "/life/review", label: "Weekly Review", icon: LineChart },
         ],
       },
       {
@@ -94,6 +74,7 @@ export const DOMAINS: Domain[] = [
           { href: "/life/planning/mission", label: "Mission", icon: Compass },
           { href: "/life/planning/spheres", label: "Life Spheres", icon: LayoutGrid },
           { href: "/life/planning", label: "Inbox Thoughts", icon: Lightbulb },
+          { href: "/life/planning/review", label: "Thoughts Filter", icon: Sparkles },
           { href: "/life/planning/wizard", label: "Planning Wizard", icon: Sparkles },
           { href: "/life/planning/kanban", label: "Sprint Kanban", icon: FolderKanban },
         ],
@@ -129,6 +110,8 @@ export const DOMAINS: Domain[] = [
           { href: "/health/training", label: "Plan", icon: ClipboardList },
           { href: "/health/training/exercises", label: "Exercises", icon: Dumbbell },
           { href: "/health/training/sessions", label: "Sessions", icon: LineChart },
+          { href: "/health/training/review", label: "Training Review", icon: TrendingUp },
+          { href: "/health/training/stats", label: "Training Stats", icon: BarChart3 },
         ],
       },
     ],
