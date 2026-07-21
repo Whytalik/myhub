@@ -23,8 +23,6 @@ const STATUS_COLUMNS: { id: TaskStatus; label: string }[] = [
   { id: "DONE", label: "Done" },
 ];
 
-const UNPLANNED_KEY = "unplanned";
-
 interface WeeklyStatusBoardProps {
   tasks: TaskData[];
   weekStart: Date;
@@ -110,10 +108,9 @@ export function WeeklyStatusBoard({
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
   const days = weekStart ? Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)) : [];
 
-  const cellTasks = (status: TaskStatus, day: Date | null): TaskData[] =>
+  const cellTasks = (status: TaskStatus, day: Date): TaskData[] =>
     (tasks || []).filter((t) => {
       if (t.status !== status) return false;
-      if (day === null) return !t.plannedDate;
       return t.plannedDate ? isSameDay(new Date(t.plannedDate), day) : false;
     });
 
@@ -128,10 +125,10 @@ export function WeeklyStatusBoard({
 
     const currentDayKey = task.plannedDate
       ? format(new Date(task.plannedDate), "yyyy-MM-dd")
-      : UNPLANNED_KEY;
+      : null;
     if (task.status === status && currentDayKey === dayKey) return;
 
-    const newPlannedDate = dayKey === UNPLANNED_KEY ? null : new Date(dayKey);
+    const newPlannedDate = new Date(dayKey);
 
     onTasksChange((prev) =>
       prev.map((t) =>
@@ -170,18 +167,6 @@ export function WeeklyStatusBoard({
             >
               {c.label}
             </div>
-          ))}
-
-          <div className="text-[11px] font-mono text-zinc-500 px-2 py-2">Unplanned</div>
-          {STATUS_COLUMNS.map((c) => (
-            <BoardCell
-              key={`${c.id}|${UNPLANNED_KEY}`}
-              id={`${c.id}|${UNPLANNED_KEY}`}
-              cellTasks={cellTasks(c.id, null)}
-              locked={locked}
-              onTaskEdit={onTaskEdit}
-              onTaskDelete={onTaskDelete}
-            />
           ))}
 
           {days.map((day) => {
