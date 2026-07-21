@@ -1067,18 +1067,29 @@ export function PlanningWizardClient({
         toast.success("Task scheduled!");
         setSchedulingTaskId(null);
         setScheduleDate("");
-        setSprint((prev: SprintData) => ({
-          ...prev,
-          objectives: prev.objectives.map((obj: SprintObjective) => ({
-            ...obj,
-            projects: obj.projects.map((p: SprintProject) => ({
-              ...p,
-              tasks: p.tasks.map((t: SprintTask) =>
-                t.id === schedulingTaskId ? { ...t, plannedDate: scheduleDate } : t,
-              ),
+        setSprint((prev: SprintData) => {
+          if (!prev || !prev.objectives) return prev;
+          return {
+            ...prev,
+            objectives: prev.objectives.map((obj: SprintObjective) => ({
+              ...obj,
+              projects: (obj.projects || []).map((p: SprintProject) => ({
+                ...p,
+                tasks: (p.tasks || []).map((t: SprintTask) => {
+                  if (t.id === schedulingTaskId) {
+                    return { ...t, plannedDate: scheduleDate };
+                  }
+                  return {
+                    ...t,
+                    children: (t.children || []).map((c: SprintTask) =>
+                      c.id === schedulingTaskId ? { ...c, plannedDate: scheduleDate } : c,
+                    ),
+                  };
+                }),
+              })),
             })),
-          })),
-        }));
+          };
+        });
       } else {
         toast.error(result.error || "Failed to schedule task");
       }
