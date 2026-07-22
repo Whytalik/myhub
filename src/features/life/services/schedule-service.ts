@@ -1,6 +1,6 @@
 import { scheduleRepository } from "../repositories/schedule.repository";
 import { trainingDayRepository } from "@/features/health/training/repositories/training-day.repository";
-import type { UpsertDayScheduleInput } from "../types";
+import type { UpsertDayScheduleInput, ContextBlock } from "../types";
 import { getDefaultBlocks } from "../logic/context-blocks";
 
 function toDayOfWeek(date: Date): number {
@@ -14,7 +14,7 @@ export async function getScheduleByDate(userId: string, date: Date) {
   }
   return {
     ...template,
-    contextBlocks: (template.contextBlocks as any) || getDefaultBlocks(template.dayOfWeek),
+    contextBlocks: (template.contextBlocks as ContextBlock[] | null) || getDefaultBlocks(template.dayOfWeek),
   };
 }
 
@@ -22,7 +22,7 @@ export async function getAllTemplates(userId: string) {
   const templates = await scheduleRepository.findAll(userId);
   return templates.map((template) => ({
     ...template,
-    contextBlocks: (template.contextBlocks as any) || getDefaultBlocks(template.dayOfWeek),
+    contextBlocks: (template.contextBlocks as ContextBlock[] | null) || getDefaultBlocks(template.dayOfWeek),
   }));
 }
 

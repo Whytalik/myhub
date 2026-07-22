@@ -7,9 +7,7 @@ import {
   endOfMonth,
   startOfWeek,
   endOfWeek,
-  startOfDay,
   eachDayOfInterval,
-  eachHourOfInterval,
   isSameMonth,
   isSameDay,
   addMonths,
@@ -19,7 +17,6 @@ import {
   addDays,
   subDays,
   addMinutes,
-  setHours,
   parseISO,
   isToday,
   differenceInMinutes,
@@ -28,7 +25,6 @@ import {
 import {
   Calendar as CalendarIcon,
   Plus,
-  Clock,
   ChevronLeft,
   ChevronRight,
   Flag,
@@ -39,8 +35,6 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
-  DragStartEvent,
-  DragMoveEvent,
   useDraggable,
   useDroppable,
 } from "@dnd-kit/core";
@@ -56,8 +50,6 @@ import { TaskFormDialog } from "./TaskFormDialog";
 import { getAllTemplatesAction } from "@/features/life/actions/schedule-actions";
 import { getDefaultBlocks } from "@/features/life/logic/context-blocks";
 import { TaskCardBase } from "./TaskCardBase";
-import { StatusToggle } from "./StatusToggle";
-import { PRIORITY_CONFIG } from "./PriorityBadge";
 import { ALL_ICONS } from "./lucide-icons-map";
 
 interface TaskCalendarProps {
@@ -431,7 +423,7 @@ export function TaskCalendar({
           dayOfWeek: t.dayOfWeek,
           trainingDayId: t.trainingDayId,
           trainingDayName: t.trainingDay?.name ?? null,
-          contextBlocks: t.contextBlocks as any,
+          contextBlocks: t.contextBlocks as ContextBlock[] | null,
           createdAt: new Date(t.createdAt),
           updatedAt: new Date(t.updatedAt),
         }));
@@ -498,10 +490,6 @@ export function TaskCalendar({
     setDialogOpen(true);
   };
 
-  const handleTaskStatusChange = (taskId: string, newStatus: TaskData["status"]) => {
-    setLocalTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t)));
-  };
-
   const handleTaskDeleted = () => {
     setDialogVersion((v) => v + 1);
     setDialogOpen(false);
@@ -540,15 +528,7 @@ export function TaskCalendar({
 
   const HOUR_WIDTH = 120;
   const DAY_START = 0;
-  const DAY_END = 24;
-  const TOTAL_HOURS = DAY_END - DAY_START;
-  const TOTAL_WIDTH = HOUR_WIDTH * TOTAL_HOURS;
 
-  const hours = useMemo(() => {
-    const start = setHours(startOfDay(currentDate), DAY_START);
-    const end = setHours(startOfDay(currentDate), DAY_END - 1);
-    return eachHourOfInterval({ start, end });
-  }, [currentDate]);
 
   const timelineContainerRef = useRef<HTMLDivElement>(null);
 
@@ -664,7 +644,7 @@ export function TaskCalendar({
     return hours * 60 + minutes;
   }, []);
 
-  const handleTimelineDragStart = (event: DragStartEvent) => {
+  const handleTimelineDragStart = () => {
     setIsDraggingAny(true);
   };
 

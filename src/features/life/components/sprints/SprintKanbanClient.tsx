@@ -11,8 +11,6 @@ import {
   Calendar,
   Sparkles,
   ArrowRight,
-  TrendingUp,
-  AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -325,7 +323,7 @@ export function SprintKanbanClient({
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">Проекти цілі</span>
                     
                     {objective.projects.length === 0 ? (
-                      <p className="text-[11px] text-zinc-600 italic">Немає прив'язаних проектів.</p>
+                      <p className="text-[11px] text-zinc-600 italic">Немає прив&apos;язаних проектів.</p>
                     ) : (
                       <div className="flex flex-col gap-2.5">
                         {objective.projects.map((project) => {
@@ -404,7 +402,7 @@ export function SprintKanbanClient({
               </div>
               <Link href="/life/review">
                 <Button size="sm" variant="ghost" className="text-xs flex items-center gap-1">
-                  Заповнити Рев'ю <ArrowRight size={13} />
+                  Заповнити Рев&apos;ю <ArrowRight size={13} />
                 </Button>
               </Link>
             </div>

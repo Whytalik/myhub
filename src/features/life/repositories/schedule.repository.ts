@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db/prisma";
+import { Prisma } from "@/app/generated/prisma";
 
 export const scheduleRepository = {
   findByDayOfWeek(userId: string, dayOfWeek: number) {
@@ -16,7 +17,12 @@ export const scheduleRepository = {
     });
   },
 
-  upsert(userId: string, dayOfWeek: number, trainingDayId: string | null, contextBlocks?: any) {
+  upsert(
+    userId: string,
+    dayOfWeek: number,
+    trainingDayId: string | null,
+    contextBlocks?: Prisma.InputJsonValue,
+  ) {
     const data = {
       trainingDayId,
       ...(contextBlocks !== undefined ? { contextBlocks } : {}),
