@@ -7,13 +7,13 @@ import { upsertDayScheduleAction } from "../actions/schedule-actions";
 import type { DayScheduleData, ContextBlock } from "../types";
 import { getDefaultBlocks } from "../logic/context-blocks";
 
-const DAY_NAMES = ["Пн", "Вв", "Ср", "Чт", "Пт", "Сб", "Нд"];
+const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const NONE_VALUE = "__none__";
 
 const EVENING_BLOCKS = {
   family: {
     id: "family",
-    name: "Сім'я / Романтика",
+    name: "Family / Romance",
     startTime: "18:00",
     endTime: "19:45",
     bufferMinutes: 15,
@@ -21,7 +21,7 @@ const EVENING_BLOCKS = {
   },
   hobby: {
     id: "hobby",
-    name: "Розвиток / Хобі",
+    name: "Growth / Hobby",
     startTime: "18:00",
     endTime: "19:45",
     bufferMinutes: 15,
@@ -136,7 +136,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
         <div className="glass-card p-4 flex items-center gap-2.5">
           <Dumbbell size={16} className="text-zinc-500 shrink-0" />
           <p className="text-caption">
-            Немає тренувальних днів — додайте їх у просторі тренувань.
+            No training days found — add them in Training space.
           </p>
         </div>
       )}
@@ -163,7 +163,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                 <span
                   className={`text-sm font-semibold ${isToday ? "text-accent" : "text-zinc-200"}`}
                 >
-                  {name} {isToday && <span className="text-[10px] font-normal opacity-85">(Сьогодні)</span>}
+                  {name} {isToday && <span className="text-[10px] font-normal opacity-85">(Today)</span>}
                 </span>
                 <div className={iconWrapClass}>
                   <Dumbbell size={14} />
@@ -172,7 +172,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
 
               <div className="flex flex-col gap-1.5">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
-                  Тренувальний день
+                  Training Day
                 </span>
                 <Select
                   disabled={isPending || trainingDays.length === 0}
@@ -181,7 +181,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                     setTrainingDay(dayOfWeek, e.target.value === NONE_VALUE ? null : e.target.value)
                   }
                 >
-                  <option value={NONE_VALUE}>Немає тренування</option>
+                  <option value={NONE_VALUE}>No Training</option>
                   {trainingDays.map((trainingDay) => (
                     <option key={trainingDay.id} value={trainingDay.id}>
                       {trainingDay.name}
@@ -190,11 +190,10 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                 </Select>
               </div>
 
-              {/* Contextual Time Blocks */}
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
-                    Контекстні блоки часу
+                    Contextual Time Blocks
                   </span>
                   <Clock size={12} className="text-zinc-500" />
                 </div>
@@ -219,10 +218,10 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                               className="text-xs font-semibold text-zinc-200 w-auto pr-6 font-sans"
                             >
                               <option value="family" className="bg-zinc-900 text-zinc-200 text-xs">
-                                Сім&apos;я / Романтика
+                                Family / Romance
                               </option>
                               <option value="hobby" className="bg-zinc-900 text-zinc-200 text-xs">
-                                Розвиток / Хобі
+                                Growth / Hobby
                               </option>
                             </Select>
                           ) : (
@@ -235,7 +234,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                         <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] text-zinc-500">
                           <span>
                             {block.startTime} – {block.endTime}
-                            {block.bufferMinutes > 0 && ` (+${block.bufferMinutes}хв буфер)`}
+                            {block.bufferMinutes > 0 && ` (+${block.bufferMinutes}m buffer)`}
                           </span>
                         </div>
 

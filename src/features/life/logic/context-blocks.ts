@@ -8,7 +8,7 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
   const eveningBlock: ContextBlock = isFamilyDay
     ? {
         id: "family",
-        name: "Сім'я / Романтика",
+        name: "Family / Romance",
         startTime: "18:00",
         endTime: "19:45",
         bufferMinutes: 15,
@@ -16,7 +16,7 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
       }
     : {
         id: "hobby",
-        name: "Розвиток / Хобі",
+        name: "Growth / Hobby",
         startTime: "18:00",
         endTime: "19:45",
         bufferMinutes: 15,
@@ -26,7 +26,7 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
   return [
     {
       id: "health",
-      name: "Здоров'я / Тіло",
+      name: "Health / Body",
       startTime: "07:00",
       endTime: "09:15",
       bufferMinutes: 15,
@@ -34,7 +34,7 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
     },
     {
       id: "work",
-      name: "Бізнес / Робота",
+      name: "Business / Work",
       startTime: "09:30",
       endTime: "17:30",
       bufferMinutes: 30,
@@ -43,7 +43,7 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
     eveningBlock,
     {
       id: "kaizen",
-      name: "Кайдзен (Система)",
+      name: "Kaizen (System)",
       startTime: "20:00",
       endTime: "20:45",
       bufferMinutes: 15,
@@ -51,7 +51,7 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
     },
     {
       id: "recovery",
-      name: "Відновлення HP / Stamina",
+      name: "Recovery HP / Stamina",
       startTime: "21:00",
       endTime: "22:45",
       bufferMinutes: 15,
@@ -104,10 +104,10 @@ export function validateTaskTime(
   if (!fitsAny) {
     const blockNames = matchingBlocks
       .map((block) => `"${block.name}" (${block.startTime} - ${block.endTime})`)
-      .join(" або ");
+      .join(" or ");
     return {
       isValid: false,
-      message: `Сфера "${sphereName}" дозволена лише в межах блоків: ${blockNames}. (Допускається похибка 30 хвилин).`,
+      message: `Sphere "${sphereName}" is only allowed within blocks: ${blockNames}. (30-minute tolerance allowed).`,
     };
   }
 
