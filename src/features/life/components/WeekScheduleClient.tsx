@@ -3,6 +3,8 @@
 import { useState, useTransition } from "react";
 import { Dumbbell, Clock, Settings } from "lucide-react";
 import { Select } from "@/components/ui/inputs/select";
+import { Checkbox } from "@/components/ui/inputs/checkbox";
+import { Input } from "@/components/ui/inputs/input";
 import { Button } from "@/components/ui/actions/button";
 import { upsertDayScheduleAction } from "../actions/schedule-actions";
 import type { DayScheduleData, ContextBlock } from "../types";
@@ -330,8 +332,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
 
             <div className="flex flex-col gap-3.5 my-2">
               <label className="flex items-center gap-2.5 cursor-pointer">
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={editingBlock.block.enabled !== false}
                   onChange={(e) =>
                     setEditingBlock((prev) => {
@@ -342,7 +343,6 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                       };
                     })
                   }
-                  className="rounded border-zinc-700 bg-zinc-800 text-accent focus:ring-accent"
                 />
                 <span className="text-xs font-semibold text-zinc-300">Active Block</span>
               </label>
@@ -350,7 +350,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">Start Time</span>
-                  <input
+                  <Input
                     type="time"
                     value={editingBlock.block.startTime}
                     onChange={(e) =>
@@ -362,13 +362,13 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                         };
                       })
                     }
-                    className="glass-input px-2.5 py-1.5 text-xs focus:glass-input-focus bg-black/25 text-zinc-200"
+                    className="px-2.5 py-1.5 text-xs bg-black/25 text-zinc-200"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">End Time</span>
-                  <input
+                  <Input
                     type="time"
                     value={editingBlock.block.endTime}
                     onChange={(e) =>
@@ -380,14 +380,14 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                         };
                       })
                     }
-                    className="glass-input px-2.5 py-1.5 text-xs focus:glass-input-focus bg-black/25 text-zinc-200"
+                    className="px-2.5 py-1.5 text-xs bg-black/25 text-zinc-200"
                   />
                 </div>
               </div>
 
               <div className="flex flex-col gap-1">
                 <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">Buffer Minutes</span>
-                <input
+                <Input
                   type="number"
                   min="0"
                   max="120"
@@ -401,7 +401,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                       };
                     })
                   }
-                  className="glass-input px-2.5 py-1.5 text-xs focus:glass-input-focus bg-black/25 text-zinc-200"
+                  className="px-2.5 py-1.5 text-xs bg-black/25 text-zinc-200"
                 />
               </div>
             </div>
