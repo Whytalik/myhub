@@ -11,6 +11,7 @@ import {
   Calendar,
   Sparkles,
   ArrowRight,
+  Lock,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -148,6 +149,8 @@ export function SprintKanbanClient({
               const isSelected = week.index === selectedWeekIndex;
               const hasReview = sprintReviews.some((r) => r.weekNumber === week.index + 1 && r.score !== null);
               const weekReview = sprintReviews.find((r) => r.weekNumber === week.index + 1);
+              const isCurrent = week.index === initialWeekIndex;
+              const isDisabled = !isCurrent;
               
               let weekBadgeColor = "border-white/[0.06] text-zinc-400 hover:bg-white/5";
               if (isSelected) {
@@ -161,9 +164,15 @@ export function SprintKanbanClient({
               return (
                 <button
                   key={week.index}
+                  disabled={isDisabled}
                   onClick={() => setSelectedWeekIndex(week.index)}
-                  className={`px-2.5 py-1 text-[11px] font-bold font-mono rounded-lg border transition-all duration-150 ${weekBadgeColor}`}
+                  className={`px-2.5 py-1 text-[11px] font-bold font-mono rounded-lg border transition-all duration-150 flex items-center gap-1.5 ${
+                    isDisabled
+                      ? "border-white/[0.03] text-zinc-600 bg-black/5 cursor-not-allowed opacity-50"
+                      : weekBadgeColor
+                  }`}
                 >
+                  {isDisabled && <Lock size={10} className="text-zinc-600 shrink-0" />}
                   {week.label}
                 </button>
               );
@@ -370,6 +379,8 @@ export function SprintKanbanClient({
                 const review = sprintReviews.find((r) => r.weekNumber === week.index + 1);
                 const hasReview = review !== undefined && review.score !== null;
                 const isSelected = week.index === selectedWeekIndex;
+                const isCurrent = week.index === initialWeekIndex;
+                const isDisabled = !isCurrent;
 
                 let scoreStyles = "border-white/[0.06] bg-black/5 hover:border-white/10 hover:bg-white/[0.02]";
                 if (isSelected) {
@@ -383,11 +394,21 @@ export function SprintKanbanClient({
                 return (
                   <button
                     key={week.index}
+                    disabled={isDisabled}
                     onClick={() => setSelectedWeekIndex(week.index)}
-                    className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-1 text-center transition-all duration-150 ${scoreStyles}`}
+                    className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-1 text-center transition-all duration-150 ${
+                      isDisabled
+                        ? "border-white/[0.03] bg-black/2 opacity-40 cursor-not-allowed text-zinc-600"
+                        : scoreStyles
+                    }`}
                   >
-                    <span className="text-[10px] font-mono font-bold text-zinc-500">Тиждень {week.index + 1}</span>
-                    <span className="text-sm font-bold font-mono text-zinc-200">
+                    <div className="flex items-center gap-1">
+                      {isDisabled && <Lock size={9} className="text-zinc-600 shrink-0" />}
+                      <span className={`text-[10px] font-mono font-bold ${isDisabled ? "text-zinc-600" : "text-zinc-500"}`}>
+                        Тиждень {week.index + 1}
+                      </span>
+                    </div>
+                    <span className={`text-sm font-bold font-mono ${isDisabled ? "text-zinc-700" : "text-zinc-200"}`}>
                       {hasReview && review?.score !== null ? `${review.score} / 10` : "—"}
                     </span>
                   </button>
