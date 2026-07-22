@@ -25,7 +25,7 @@ export default async function SprintKanbanPage() {
           { label: "sprint dashboard" },
         ]}
         title="Sprint Dashboard"
-        description="Аналізуйте прогрес цілей, оцінюйте тижні (W1–W12) та координуйте тактичні плани."
+        description="Analyze goal progress, evaluate weeks (W1–W12), and coordinate tactical plans."
       />
       <SprintKanbanClient
         sprint={dashboard.sprint as any}

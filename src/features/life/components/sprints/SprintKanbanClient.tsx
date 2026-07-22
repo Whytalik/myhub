@@ -123,7 +123,7 @@ export function SprintKanbanClient({
           <p className="text-label tracking-[0.24em] text-zinc-500">
             12-Week Year Sprint
           </p>
-          <h1 className="text-page-title mt-1">Спринт {sprint.number} · {sprint.year}</h1>
+          <h1 className="text-page-title mt-1">Sprint {sprint.number} · {sprint.year}</h1>
           <p className="text-caption mt-1">
             {format(sprintStart, "MMM d, yyyy")} — {format(new Date(sprint.endDate), "MMM d, yyyy")}
           </p>
@@ -189,7 +189,7 @@ export function SprintKanbanClient({
         >
           <span className="flex items-center gap-1.5">
             <Calendar size={13} />
-            Дошка тижня (W{selectedWeekIndex + 1})
+            Weekly Board (W{selectedWeekIndex + 1})
           </span>
         </button>
         <button
@@ -202,7 +202,7 @@ export function SprintKanbanClient({
         >
           <span className="flex items-center gap-1.5">
             <Target size={13} />
-            Цілі спринту (OKR)
+            Sprint Goals (OKR)
           </span>
         </button>
         <button
@@ -215,7 +215,7 @@ export function SprintKanbanClient({
         >
           <span className="flex items-center gap-1.5">
             <Trophy size={13} />
-            Звіт та Scorecard
+            Review & Scorecard
           </span>
         </button>
       </div>
@@ -226,13 +226,13 @@ export function SprintKanbanClient({
           <div className="glass-card p-4 bg-black/10">
             <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between border-b border-white/[0.04] pb-3 mb-4">
               <div>
-                <p className="text-label text-zinc-500">Розклад тижня</p>
+                <p className="text-label text-zinc-500">Weekly Schedule</p>
                 <h2 className="text-panel-title mt-1">
                   {format(weekStart, "MMM d")} — {format(endOfWeek(weekStart, { weekStartsOn: 1 }), "MMM d, yyyy")}
                 </h2>
               </div>
               <div className="text-[11px] text-zinc-500 font-mono">
-                {tasks.filter((t) => !t.plannedDate && t.status !== "DONE" && t.status !== "CANCELLED").length} нерозподілених атомів
+                {tasks.filter((t) => !t.plannedDate && t.status !== "DONE" && t.status !== "CANCELLED").length} unscheduled atoms
               </div>
             </div>
 
@@ -249,14 +249,14 @@ export function SprintKanbanClient({
       {activeTab === "goals" && (
         <div className="glass-card p-5 bg-black/10 flex flex-col gap-6">
           <div>
-            <h2 className="text-panel-title">Цілі та Ключові Результати Спринту</h2>
-            <p className="text-caption mt-1">Ваші орієнтири на цей 12-ти тижневий рік.</p>
+            <h2 className="text-panel-title">Sprint Objectives & Key Results</h2>
+            <p className="text-caption mt-1">Your targets for this 12-week year.</p>
           </div>
 
           {sprint.objectives.length === 0 ? (
             <div className="p-8 border border-dashed border-white/[0.08] rounded-2xl flex flex-col items-center justify-center text-center">
               <Target size={24} className="text-zinc-600 mb-2" />
-              <p className="text-caption text-zinc-500 italic">Цілей на цей спринт не створено.</p>
+              <p className="text-caption text-zinc-500 italic">No objectives created for this sprint.</p>
             </div>
           ) : (
             <div className="grid gap-6 md:grid-cols-2">
@@ -264,7 +264,7 @@ export function SprintKanbanClient({
                 <div key={objective.id} className="rounded-2xl border border-white/[0.06] bg-black/5 p-4 flex flex-col gap-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex flex-col gap-1">
-                      <span className="text-xs font-bold font-mono uppercase tracking-wider text-zinc-500">Ціль</span>
+                      <span className="text-xs font-bold font-mono uppercase tracking-wider text-zinc-500">Objective</span>
                       <h3 className="text-sm font-semibold text-zinc-100">{objective.title}</h3>
                       {objective.description && (
                         <p className="text-[11px] text-zinc-400 mt-0.5">{objective.description}</p>
@@ -283,10 +283,10 @@ export function SprintKanbanClient({
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">Проекти цілі</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">Objective Projects</span>
                     
                     {objective.projects.length === 0 ? (
-                      <p className="text-[11px] text-zinc-600 italic">Немає прив&apos;язаних проектів.</p>
+                      <p className="text-[11px] text-zinc-600 italic">No projects linked.</p>
                     ) : (
                       <div className="flex flex-col gap-2.5">
                         {objective.projects.map((project) => {
@@ -325,7 +325,7 @@ export function SprintKanbanClient({
           <div className="glass-card p-5 bg-black/10 flex flex-col gap-4">
             <div>
               <h2 className="text-panel-title">12-Week Scorecard</h2>
-              <p className="text-caption mt-1">Оцінки виконання планів та Kaizen-звіти за тижнями.</p>
+              <p className="text-caption mt-1">Weekly execution scores and Kaizen reports.</p>
             </div>
 
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
@@ -359,7 +359,7 @@ export function SprintKanbanClient({
                     <div className="flex items-center gap-1">
                       {isDisabled && <Lock size={9} className="text-zinc-600 shrink-0" />}
                       <span className={`text-[10px] font-mono font-bold ${isDisabled ? "text-zinc-600" : "text-zinc-500"}`}>
-                        Тиждень {week.index + 1}
+                        Week {week.index + 1}
                       </span>
                     </div>
                     <span className={`text-sm font-bold font-mono ${isDisabled ? "text-zinc-700" : "text-zinc-200"}`}>
@@ -372,12 +372,12 @@ export function SprintKanbanClient({
 
             <div className="mt-4 p-4 border border-dashed border-white/[0.08] rounded-xl flex items-center justify-between gap-4">
               <div className="flex flex-col">
-                <span className="text-xs font-semibold text-zinc-300">Тижневий ретроспективний аналіз</span>
-                <span className="text-[11px] text-zinc-500 mt-0.5">В кінці кожного тижня важливо оцінювати дисципліну.</span>
+                <span className="text-xs font-semibold text-zinc-300">Weekly Retrospective Analysis</span>
+                <span className="text-[11px] text-zinc-500 mt-0.5">Evaluate your execution at the end of each week.</span>
               </div>
               <Link href="/life/review">
                 <Button size="sm" variant="ghost" className="text-xs flex items-center gap-1">
-                  Заповнити Рев&apos;ю <ArrowRight size={13} />
+                  Complete Review <ArrowRight size={13} />
                 </Button>
               </Link>
             </div>
@@ -386,15 +386,15 @@ export function SprintKanbanClient({
           {/* 🧠 Weekly reflection viewer */}
           <div className="glass-card p-5 bg-black/10 flex flex-col gap-4">
             <div>
-              <p className="text-label text-zinc-500">Деталі тижня</p>
-              <h2 className="text-panel-title mt-1">Результати W{selectedWeekIndex + 1}</h2>
+              <p className="text-label text-zinc-500">Week Details</p>
+              <h2 className="text-panel-title mt-1">W{selectedWeekIndex + 1} Results</h2>
             </div>
 
             {selectedWeekReview ? (
               <div className="flex flex-col gap-4 mt-2">
                 {selectedWeekReview.score !== null && (
                   <div className="flex justify-between items-center p-3 rounded-xl border border-white/[0.06] bg-black/10">
-                    <span className="text-xs font-semibold text-zinc-400">Оцінка дисципліни:</span>
+                    <span className="text-xs font-semibold text-zinc-400">Execution Score:</span>
                     <span className={`px-2.5 py-0.5 rounded-lg border text-xs font-mono font-bold ${getScoreColorClass(selectedWeekReview.score)}`}>
                       {selectedWeekReview.score} / 10
                     </span>
@@ -403,7 +403,7 @@ export function SprintKanbanClient({
 
                 {selectedWeekReview.wins && (
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">🏆 Перемоги тижня</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">🏆 Weekly Wins</span>
                     <div className="p-3 rounded-xl border border-white/[0.04] bg-white/[0.01] text-xs text-zinc-300 whitespace-pre-line leading-relaxed">
                       {selectedWeekReview.wins}
                     </div>
@@ -412,7 +412,7 @@ export function SprintKanbanClient({
 
                 {selectedWeekReview.challenges && (
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">⚠️ Перешкоди</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">⚠️ Challenges</span>
                     <div className="p-3 rounded-xl border border-white/[0.04] bg-white/[0.01] text-xs text-zinc-300 whitespace-pre-line leading-relaxed">
                       {selectedWeekReview.challenges}
                     </div>
@@ -421,7 +421,7 @@ export function SprintKanbanClient({
 
                 {selectedWeekReview.adjustments && (
                   <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">🔄 Корективи (Kaizen)</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">🔄 Adjustments (Kaizen)</span>
                     <div className="p-3 rounded-xl border border-white/[0.04] bg-white/[0.01] text-xs text-zinc-300 whitespace-pre-line leading-relaxed">
                       {selectedWeekReview.adjustments}
                     </div>
@@ -431,10 +431,10 @@ export function SprintKanbanClient({
             ) : (
               <div className="flex flex-col items-center justify-center text-center p-8 border border-dashed border-white/[0.08] rounded-2xl mt-4">
                 <Sparkles size={20} className="text-zinc-600 mb-2 animate-pulse" />
-                <p className="text-caption text-zinc-500 italic">Звіт для W{selectedWeekIndex + 1} ще не заповнено.</p>
+                <p className="text-caption text-zinc-500 italic">Review for W{selectedWeekIndex + 1} has not been filled yet.</p>
                 <Link href="/life/review" className="mt-4">
                   <Button size="sm" variant="primary" className="text-xs">
-                    Заповнити звіт за тиждень
+                    Fill Weekly Review
                   </Button>
                 </Link>
               </div>
