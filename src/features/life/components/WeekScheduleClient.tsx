@@ -219,7 +219,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                               className="text-xs font-semibold text-zinc-200 w-auto pr-6 font-sans"
                             >
                               <option value="family" className="bg-zinc-900 text-zinc-200 text-xs">
-                                Сім'я / Романтика
+                                Сім&apos;я / Романтика
                               </option>
                               <option value="hobby" className="bg-zinc-900 text-zinc-200 text-xs">
                                 Розвиток / Хобі
