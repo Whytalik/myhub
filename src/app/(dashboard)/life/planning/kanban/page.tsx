@@ -6,7 +6,7 @@ import { getSprintDashboard } from "@/features/life/services/sprint-service";
 import { SprintKanbanClient } from "@/features/life/components/sprints/SprintKanbanClient";
 
 export const metadata: Metadata = {
-  title: "Sprint Kanban",
+  title: "Sprint Dashboard",
 };
 
 export default async function SprintKanbanPage() {
@@ -22,16 +22,17 @@ export default async function SprintKanbanPage() {
         breadcrumb={[
           { label: "life space", href: "/life" },
           { label: "planning", href: "/life/planning" },
-          { label: "kanban" },
+          { label: "sprint dashboard" },
         ]}
-        title="Sprint Kanban"
-        description="Track your active 12-week sprint and move atoms through the weekly board."
+        title="Sprint Dashboard"
+        description="Аналізуйте прогрес цілей, оцінюйте тижні (W1–W12) та координуйте тактичні плани."
       />
       <SprintKanbanClient
         sprint={dashboard.sprint as any}
         backlogProjects={dashboard.backlogProjects as any}
         standaloneAtoms={dashboard.standaloneAtoms as any}
         allTasks={dashboard.allTasks as any}
+        sprintReviews={dashboard.sprintReviews as any}
       />
     </div>
   );

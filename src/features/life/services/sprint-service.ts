@@ -181,6 +181,12 @@ export async function getSprintDashboard(userId: string) {
     orderBy: { createdAt: "asc" },
   });
 
+  // 5. Get sprint reviews to calculate scorecard
+  const sprintReviews = await prisma.sprintReview.findMany({
+    where: { sprintId: sprint.id },
+    orderBy: { weekNumber: "asc" },
+  });
+
   return {
     sprint,
     backlogProjects,
@@ -191,6 +197,7 @@ export async function getSprintDashboard(userId: string) {
     },
     allTasks,
     standaloneAtoms,
+    sprintReviews,
   };
 }
 
