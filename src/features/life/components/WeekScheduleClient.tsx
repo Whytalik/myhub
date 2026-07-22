@@ -39,9 +39,10 @@ function todayDayOfWeek(): number {
 interface Props {
   initialTemplates: DayScheduleData[];
   trainingDays: { id: string; name: string }[];
+  spheres: string[];
 }
 
-export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
+export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: Props) {
   const [daysData, setDaysData] = useState<
     Record<number, { trainingDayId: string | null; contextBlocks: ContextBlock[] }>
   >(() => {
@@ -403,6 +404,42 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                   }
                   className="px-2.5 py-1.5 text-xs bg-black/25 text-zinc-200"
                 />
+              </div>
+
+              <div className="flex flex-col gap-1.5 mt-1">
+                <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">
+                  Mapped Life Spheres
+                </span>
+                <div className="flex flex-col gap-2 max-h-32 overflow-y-auto border border-white/[0.06] bg-black/10 rounded-xl p-2.5">
+                  {spheres.length === 0 ? (
+                    <span className="text-xs text-zinc-500 italic">No active spheres</span>
+                  ) : (
+                    spheres.map((sphereName) => {
+                      const isChecked = editingBlock.block.sphereNames.includes(sphereName);
+                      return (
+                        <label key={sphereName} className="flex items-center gap-2 cursor-pointer">
+                          <Checkbox
+                            checked={isChecked}
+                            onChange={(e) => {
+                              setEditingBlock((prev) => {
+                                if (!prev) return null;
+                                const currentSphereNames = prev.block.sphereNames;
+                                const nextSphereNames = e.target.checked
+                                  ? [...currentSphereNames, sphereName]
+                                  : currentSphereNames.filter((name) => name !== sphereName);
+                                return {
+                                  ...prev,
+                                  block: { ...prev.block, sphereNames: nextSphereNames },
+                                };
+                              });
+                            }}
+                          />
+                          <span className="text-xs text-zinc-300">{sphereName}</span>
+                        </label>
+                      );
+                    })
+                  )}
+                </div>
               </div>
             </div>
 

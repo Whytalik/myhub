@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { getAllTemplates } from "@/features/life/services/schedule-service";
 import { getPlans } from "@/features/health/training/services/training-plan-service";
+import { getAllSpheres } from "@/features/life/services/task-service";
 import { WeekScheduleClient } from "@/features/life/components/WeekScheduleClient";
 import type { DayScheduleData } from "@/features/life/types";
 
@@ -16,7 +17,11 @@ export default async function WeekSchedulePage() {
   const userId = session?.user?.id;
   if (!userId) redirect("/login");
 
-  const [raw, plans] = await Promise.all([getAllTemplates(userId), getPlans(userId)]);
+  const [raw, plans, spheres] = await Promise.all([
+    getAllTemplates(userId),
+    getPlans(userId),
+    getAllSpheres(userId),
+  ]);
 
   const templates: DayScheduleData[] = raw.map((template) => ({
     id: template.id,
@@ -29,6 +34,7 @@ export default async function WeekSchedulePage() {
   }));
 
   const trainingDays = plans.flatMap((p) => p.days.map((d) => ({ id: d.id, name: d.name })));
+  const sphereNames = spheres.filter((s) => s.isActive).map((s) => s.name);
 
   return (
     <div className="flex flex-col gap-6">
@@ -38,7 +44,11 @@ export default async function WeekSchedulePage() {
         description="Assign a training day to each weekday — it also shows up in the Journal."
       />
 
-      <WeekScheduleClient initialTemplates={templates} trainingDays={trainingDays} />
+      <WeekScheduleClient
+        initialTemplates={templates}
+        trainingDays={trainingDays}
+        spheres={sphereNames}
+      />
     </div>
   );
 }
