@@ -107,15 +107,35 @@ const getBlockDisplayName = (blockId: string, originalName: string): string => {
     return "Family / Romance";
   }
   if (id.startsWith("hobby")) {
-    return "Growth / Hobby";
+    return "Hobby";
+  }
+  if (id.startsWith("growth")) {
+    return "Personal Growth";
   }
   if (id.startsWith("kaizen")) {
     return "Kaizen (System)";
   }
   if (id.startsWith("recovery")) {
-    return "Recovery HP / Stamina";
+    return "Recovery";
   }
   return originalName;
+};
+
+const getBlockHeight = (startTime: string, endTime: string): string => {
+  const [startH, startM] = startTime.split(":").map(Number);
+  const [endH, endM] = endTime.split(":").map(Number);
+  
+  let startMinutes = startH * 60 + startM;
+  let endMinutes = endH * 60 + endM;
+  
+  if (endMinutes < startMinutes) {
+    endMinutes += 24 * 60;
+  }
+  
+  const duration = endMinutes - startMinutes;
+  // Scaled height: 64px baseline, +0.2px per minute above 45m, capped at 180px
+  const calculatedHeight = Math.max(64, Math.min(180, 64 + (duration - 45) * 0.2));
+  return `${calculatedHeight}px`;
 };
 
 interface Props {
@@ -485,9 +505,10 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                     return (
                       <div
                         key={block.id + "-" + index}
-                        className={`flex flex-col gap-1.5 p-2.5 rounded-lg bg-white/[0.01] border border-white/[0.04] border-l-2 ${blockBorder} ${
+                        style={{ height: getBlockHeight(block.startTime, block.endTime) }}
+                        className={`flex flex-col justify-between p-2.5 rounded-lg bg-white/[0.01] border border-white/[0.04] border-l-2 ${blockBorder} ${
                           isBlockEnabled ? "" : "opacity-35"
-                        } transition-opacity duration-150`}
+                        } transition-all duration-150`}
                       >
                         <div className="flex items-center justify-between">
                           {block.id.startsWith("family") || block.id.startsWith("growth") ? (
@@ -530,25 +551,27 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                           </button>
                         </div>
 
-                        <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] text-zinc-500">
-                          <span>
-                            {block.startTime} – {block.endTime}
-                            {block.bufferMinutes > 0 && ` (+${block.bufferMinutes}m buffer)`}
-                          </span>
-                        </div>
-
-                        {isBlockEnabled && block.sphereNames.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-0.5">
-                            {block.sphereNames.map((sphereName) => (
-                              <span
-                                key={sphereName}
-                                className="px-1.5 py-0.2 rounded bg-white/[0.04] text-zinc-400 text-[9px] border border-white/[0.04]"
-                              >
-                                {sphereName}
-                              </span>
-                            ))}
+                        <div className="flex flex-col gap-1">
+                          <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] text-zinc-500">
+                            <span>
+                              {block.startTime} – {block.endTime}
+                              {block.bufferMinutes > 0 && ` (+${block.bufferMinutes}m buffer)`}
+                            </span>
                           </div>
-                        )}
+
+                          {isBlockEnabled && block.sphereNames.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-0.5">
+                              {block.sphereNames.map((sphereName) => (
+                                <span
+                                  key={sphereName}
+                                  className="px-1.5 py-0.2 rounded bg-white/[0.04] text-zinc-400 text-[9px] border border-white/[0.04]"
+                                >
+                                  {sphereName}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
