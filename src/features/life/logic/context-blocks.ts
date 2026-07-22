@@ -2,8 +2,99 @@ import type { ContextBlock } from "../types";
 
 export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
   // Monday = 0, Tuesday = 1, Wednesday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
-  // Check if it's Monday, Wednesday, Friday, or Sunday (which alternate as "Family / Romance")
-  const isFamilyDay = dayOfWeek === 0 || dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6;
+  if (dayOfWeek === 5) {
+    // Saturday
+    return [
+      {
+        id: "health",
+        name: "Health / Body",
+        startTime: "07:00",
+        endTime: "09:15",
+        bufferMinutes: 15,
+        sphereNames: ["Health", "Sport"],
+      },
+      {
+        id: "space",
+        name: "Environment / Space",
+        startTime: "09:30",
+        endTime: "12:30",
+        bufferMinutes: 15,
+        sphereNames: ["Environment / Space"],
+      },
+      {
+        id: "family",
+        name: "Family / Romance",
+        startTime: "13:00",
+        endTime: "19:45",
+        bufferMinutes: 15,
+        sphereNames: ["Family & Friends", "Romance"],
+      },
+      {
+        id: "kaizen",
+        name: "Kaizen (System)",
+        startTime: "20:00",
+        endTime: "20:45",
+        bufferMinutes: 15,
+        sphereNames: [],
+      },
+      {
+        id: "recovery",
+        name: "Recovery",
+        startTime: "21:00",
+        endTime: "22:45",
+        bufferMinutes: 15,
+        sphereNames: ["Health"],
+      },
+    ];
+  }
+
+  if (dayOfWeek === 6) {
+    // Sunday
+    return [
+      {
+        id: "health",
+        name: "Health / Body",
+        startTime: "07:00",
+        endTime: "09:15",
+        bufferMinutes: 15,
+        sphereNames: ["Health", "Sport"],
+      },
+      {
+        id: "hobby",
+        name: "Hobby",
+        startTime: "09:30",
+        endTime: "14:00",
+        bufferMinutes: 15,
+        sphereNames: ["Personal Growth", "Fun & Recreation"],
+      },
+      {
+        id: "family",
+        name: "Family / Romance",
+        startTime: "14:30",
+        endTime: "19:45",
+        bufferMinutes: 15,
+        sphereNames: ["Family & Friends", "Romance"],
+      },
+      {
+        id: "kaizen",
+        name: "Kaizen (System)",
+        startTime: "20:00",
+        endTime: "20:45",
+        bufferMinutes: 15,
+        sphereNames: [],
+      },
+      {
+        id: "recovery",
+        name: "Recovery",
+        startTime: "21:00",
+        endTime: "22:45",
+        bufferMinutes: 15,
+        sphereNames: ["Health"],
+      },
+    ];
+  }
+
+  const isFamilyDay = dayOfWeek === 0 || dayOfWeek === 2 || dayOfWeek === 4;
 
   const baseBlocks = [
     {

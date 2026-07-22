@@ -13,24 +13,7 @@ import { getDefaultBlocks } from "../logic/context-blocks";
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const NONE_VALUE = "__none__";
 
-const EVENING_BLOCKS = {
-  family: {
-    id: "family",
-    name: "Family / Romance",
-    startTime: "18:00",
-    endTime: "19:45",
-    bufferMinutes: 15,
-    sphereNames: ["Family & Friends", "Romance"],
-  },
-  hobby: {
-    id: "hobby",
-    name: "Growth / Hobby",
-    startTime: "18:00",
-    endTime: "19:45",
-    bufferMinutes: 15,
-    sphereNames: ["Personal Growth", "Fun & Recreation", "Environment / Space"],
-  },
-};
+
 
 const STANDARD_BLOCK_TEMPLATES = [
   {
@@ -191,72 +174,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
     });
   };
 
-  const changeEveningBlockType = (dayOfWeek: number, type: "family" | "hobby") => {
-    const current = daysData[dayOfWeek];
-    
-    // Filter out existing evening blocks (id starts with family, growth, or hobby)
-    const newBlocks = current.contextBlocks.filter(
-      (block) =>
-        !(
-          block.id.startsWith("family") ||
-          block.id.startsWith("growth") ||
-          block.id.startsWith("hobby")
-        )
-    );
 
-    // Insert the new blocks
-    if (type === "family") {
-      newBlocks.push({
-        id: `family-${Date.now()}`,
-        name: "Family / Romance",
-        startTime: "18:00",
-        endTime: "19:45",
-        bufferMinutes: 15,
-        sphereNames: ["Family & Friends", "Romance"],
-        enabled: true,
-      });
-    } else {
-      newBlocks.push({
-        id: `growth-${Date.now()}`,
-        name: "Personal Growth",
-        startTime: "18:00",
-        endTime: "18:45",
-        bufferMinutes: 15,
-        sphereNames: ["Personal Growth"],
-        enabled: true,
-      });
-      newBlocks.push({
-        id: `hobby-${Date.now()}`,
-        name: "Hobby",
-        startTime: "19:00",
-        endTime: "19:45",
-        bufferMinutes: 15,
-        sphereNames: ["Fun & Recreation", "Environment / Space"],
-        enabled: true,
-      });
-    }
-
-    newBlocks.sort((a, b) => a.startTime.localeCompare(b.startTime));
-
-    setPending(dayOfWeek);
-    const previousData = daysData[dayOfWeek];
-    setDaysData((state) => ({
-      ...state,
-      [dayOfWeek]: { ...state[dayOfWeek], contextBlocks: newBlocks },
-    }));
-
-    startTransition(async () => {
-      const result = await upsertDayScheduleAction({
-        dayOfWeek,
-        trainingDayId: current.trainingDayId,
-        contextBlocks: newBlocks,
-      });
-      if (!result.success) {
-        setDaysData((state) => ({ ...state, [dayOfWeek]: previousData }));
-      }
-      setPending(null);
-    });
-  };
 
   const saveBlockChanges = () => {
     if (!editingBlock) {
@@ -511,28 +429,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                         } transition-all duration-150`}
                       >
                         <div className="flex items-center justify-between">
-                          {block.id.startsWith("family") || block.id.startsWith("growth") ? (
-                            <Select
-                              variant="inline"
-                              disabled={isPending}
-                              value={block.id.startsWith("family") ? "family" : "hobby"}
-                              onChange={(e) =>
-                                changeEveningBlockType(dayOfWeek, e.target.value as "family" | "hobby")
-                              }
-                              className="text-xs font-semibold text-zinc-200 w-auto pr-6 font-sans"
-                            >
-                              <option value="family" className="bg-zinc-900 text-zinc-200 text-xs">
-                                Family / Romance
-                              </option>
-                              <option value="hobby" className="bg-zinc-900 text-zinc-200 text-xs">
-                                Growth & Hobby
-                              </option>
-                            </Select>
-                          ) : (
                             <span className="text-xs font-semibold text-zinc-200">
                               {getBlockDisplayName(block.id, block.name)} {!isBlockEnabled && "(Inactive)"}
                             </span>
-                          )}
 
                           <button
                             type="button"
