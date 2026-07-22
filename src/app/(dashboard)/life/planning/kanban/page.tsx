@@ -29,8 +29,6 @@ export default async function SprintKanbanPage() {
       />
       <SprintKanbanClient
         sprint={dashboard.sprint as any}
-        backlogProjects={dashboard.backlogProjects as any}
-        standaloneAtoms={dashboard.standaloneAtoms as any}
         allTasks={dashboard.allTasks as any}
         sprintReviews={dashboard.sprintReviews as any}
       />

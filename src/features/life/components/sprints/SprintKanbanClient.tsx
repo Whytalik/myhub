@@ -45,8 +45,6 @@ interface SprintKanbanClientProps {
       }[];
     }[];
   };
-  backlogProjects: { id: string; title: string; tasks: { id: string; title: string }[] }[];
-  standaloneAtoms: TaskData[];
   allTasks: TaskData[];
   sprintReviews: {
     id: string;
@@ -60,8 +58,6 @@ interface SprintKanbanClientProps {
 
 export function SprintKanbanClient({
   sprint,
-  backlogProjects,
-  standaloneAtoms,
   allTasks,
   sprintReviews,
 }: SprintKanbanClientProps) {
@@ -246,48 +242,6 @@ export function SprintKanbanClient({
               locked={false}
               onTasksChange={(updater) => setTasks((prev) => updater(prev))}
             />
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
-            <div className="glass-card p-4 bg-black/10">
-              <h3 className="text-panel-title mb-3">Проекти з беклогу</h3>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {backlogProjects.length === 0 ? (
-                  <p className="text-caption text-zinc-500 italic">Проектів у беклозі немає.</p>
-                ) : (
-                  backlogProjects.map((project) => (
-                    <div key={project.id} className="rounded-xl border border-white/[0.06] p-3 bg-black/5 flex flex-col gap-1">
-                      <span className="text-xs font-semibold text-zinc-200">{project.title}</span>
-                      <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-mono">
-                        {project.tasks.length} атомів
-                      </span>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-
-            <div className="glass-card p-4 bg-black/10">
-              <h3 className="text-panel-title mb-3">Окремі Кайдзен-атоми</h3>
-              <div className="flex flex-col gap-2 max-h-[240px] overflow-y-auto pr-1">
-                {standaloneAtoms.length === 0 ? (
-                  <p className="text-caption text-zinc-500 italic">Немає вільних атомів.</p>
-                ) : (
-                  standaloneAtoms.map((atom) => (
-                    <div key={atom.id} className="rounded-lg border border-white/[0.06] p-2 bg-black/5 text-xs text-zinc-300 flex items-center justify-between gap-2">
-                      <span className="truncate">{atom.title}</span>
-                      {atom.sphere && (
-                        <span
-                          className="w-1.5 h-1.5 rounded-full shrink-0"
-                          style={{ backgroundColor: atom.sphere.color }}
-                          title={atom.sphere.name}
-                        />
-                      )}
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
           </div>
         </div>
       )}
