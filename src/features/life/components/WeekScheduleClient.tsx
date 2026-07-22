@@ -87,6 +87,29 @@ function todayDayOfWeek(): number {
   return (new Date().getDay() + 6) % 7;
 }
 
+const getBlockDisplayName = (blockId: string, originalName: string): string => {
+  const id = blockId.toLowerCase();
+  if (id.startsWith("health")) {
+    return "Health / Body";
+  }
+  if (id.startsWith("work")) {
+    return "Business / Work";
+  }
+  if (id.startsWith("family")) {
+    return "Family / Romance";
+  }
+  if (id.startsWith("hobby")) {
+    return "Growth / Hobby";
+  }
+  if (id.startsWith("kaizen")) {
+    return "Kaizen (System)";
+  }
+  if (id.startsWith("recovery")) {
+    return "Recovery HP / Stamina";
+  }
+  return originalName;
+};
+
 interface Props {
   initialTemplates: DayScheduleData[];
   trainingDays: { id: string; name: string }[];
@@ -426,7 +449,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                             <Select
                               variant="inline"
                               disabled={isPending}
-                              value={block.id === "family" ? "family" : "hobby"}
+                              value={block.id.startsWith("family") ? "family" : "hobby"}
                               onChange={(e) =>
                                 changeEveningBlockType(dayOfWeek, e.target.value as "family" | "hobby")
                               }
@@ -441,7 +464,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                             </Select>
                           ) : (
                             <span className="text-xs font-semibold text-zinc-200">
-                              {block.name} {!isBlockEnabled && "(Inactive)"}
+                              {getBlockDisplayName(block.id, block.name)} {!isBlockEnabled && "(Inactive)"}
                             </span>
                           )}
 
@@ -525,7 +548,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                   : "Edit Time Block"}
               </h3>
               {editingBlock.blockIndex !== daysData[editingBlock.dayOfWeek].contextBlocks.length && (
-                <p className="text-[11px] text-zinc-400 mt-0.5">{editingBlock.block.name}</p>
+                <p className="text-[11px] text-zinc-400 mt-0.5">
+                  {getBlockDisplayName(editingBlock.block.id, editingBlock.block.name)}
+                </p>
               )}
             </div>
 
