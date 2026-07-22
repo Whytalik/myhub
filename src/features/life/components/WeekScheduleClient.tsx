@@ -58,12 +58,20 @@ const STANDARD_BLOCK_TEMPLATES = [
     sphereNames: ["Family & Friends", "Romance"],
   },
   {
-    id: "hobby",
-    name: "Growth / Hobby",
+    id: "growth",
+    name: "Personal Growth",
     startTime: "18:00",
+    endTime: "18:45",
+    bufferMinutes: 15,
+    sphereNames: ["Personal Growth"],
+  },
+  {
+    id: "hobby",
+    name: "Hobby",
+    startTime: "19:00",
     endTime: "19:45",
     bufferMinutes: 15,
-    sphereNames: ["Personal Growth", "Fun & Recreation", "Environment / Space"],
+    sphereNames: ["Fun & Recreation", "Environment / Space"],
   },
   {
     id: "kaizen",
@@ -75,7 +83,7 @@ const STANDARD_BLOCK_TEMPLATES = [
   },
   {
     id: "recovery",
-    name: "Recovery HP / Stamina",
+    name: "Recovery",
     startTime: "21:00",
     endTime: "22:45",
     bufferMinutes: 15,
@@ -165,16 +173,50 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
 
   const changeEveningBlockType = (dayOfWeek: number, type: "family" | "hobby") => {
     const current = daysData[dayOfWeek];
-    const newBlocks = [...current.contextBlocks];
-    const eveningBlockIndex = newBlocks.findIndex((block) => block.startTime === "18:00");
-    if (eveningBlockIndex === -1) {
-      return;
+    
+    // Filter out existing evening blocks (id starts with family, growth, or hobby)
+    const newBlocks = current.contextBlocks.filter(
+      (block) =>
+        !(
+          block.id.startsWith("family") ||
+          block.id.startsWith("growth") ||
+          block.id.startsWith("hobby")
+        )
+    );
+
+    // Insert the new blocks
+    if (type === "family") {
+      newBlocks.push({
+        id: `family-${Date.now()}`,
+        name: "Family / Romance",
+        startTime: "18:00",
+        endTime: "19:45",
+        bufferMinutes: 15,
+        sphereNames: ["Family & Friends", "Romance"],
+        enabled: true,
+      });
+    } else {
+      newBlocks.push({
+        id: `growth-${Date.now()}`,
+        name: "Personal Growth",
+        startTime: "18:00",
+        endTime: "18:45",
+        bufferMinutes: 15,
+        sphereNames: ["Personal Growth"],
+        enabled: true,
+      });
+      newBlocks.push({
+        id: `hobby-${Date.now()}`,
+        name: "Hobby",
+        startTime: "19:00",
+        endTime: "19:45",
+        bufferMinutes: 15,
+        sphereNames: ["Fun & Recreation", "Environment / Space"],
+        enabled: true,
+      });
     }
 
-    newBlocks[eveningBlockIndex] = {
-      ...EVENING_BLOCKS[type],
-      enabled: newBlocks[eveningBlockIndex].enabled,
-    };
+    newBlocks.sort((a, b) => a.startTime.localeCompare(b.startTime));
 
     setPending(dayOfWeek);
     const previousData = daysData[dayOfWeek];
@@ -306,6 +348,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
     }
     if (blockId.startsWith("family") || blockId.startsWith("romance")) {
       return "border-l-rose-500/60";
+    }
+    if (blockId.startsWith("growth")) {
+      return "border-l-purple-500/60";
     }
     if (blockId.startsWith("hobby")) {
       return "border-l-purple-500/60";
@@ -445,7 +490,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                         } transition-opacity duration-150`}
                       >
                         <div className="flex items-center justify-between">
-                          {block.startTime === "18:00" ? (
+                          {block.id.startsWith("family") || block.id.startsWith("growth") ? (
                             <Select
                               variant="inline"
                               disabled={isPending}
@@ -459,7 +504,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                                 Family / Romance
                               </option>
                               <option value="hobby" className="bg-zinc-900 text-zinc-200 text-xs">
-                                Growth / Hobby
+                                Growth & Hobby
                               </option>
                             </Select>
                           ) : (

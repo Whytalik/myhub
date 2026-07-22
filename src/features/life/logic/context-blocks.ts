@@ -5,25 +5,7 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
   // Check if it's Monday, Wednesday, Friday, or Sunday (which alternate as "Family / Romance")
   const isFamilyDay = dayOfWeek === 0 || dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6;
 
-  const eveningBlock: ContextBlock = isFamilyDay
-    ? {
-        id: "family",
-        name: "Family / Romance",
-        startTime: "18:00",
-        endTime: "19:45",
-        bufferMinutes: 15,
-        sphereNames: ["Family & Friends", "Romance"],
-      }
-    : {
-        id: "hobby",
-        name: "Growth / Hobby",
-        startTime: "18:00",
-        endTime: "19:45",
-        bufferMinutes: 15,
-        sphereNames: ["Personal Growth", "Fun & Recreation", "Environment / Space"],
-      };
-
-  return [
+  const baseBlocks = [
     {
       id: "health",
       name: "Health / Body",
@@ -40,7 +22,41 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
       bufferMinutes: 30,
       sphereNames: ["Work", "Trading", "Finance"],
     },
-    eveningBlock,
+  ];
+
+  const eveningBlocks: ContextBlock[] = isFamilyDay
+    ? [
+        {
+          id: "family",
+          name: "Family / Romance",
+          startTime: "18:00",
+          endTime: "19:45",
+          bufferMinutes: 15,
+          sphereNames: ["Family & Friends", "Romance"],
+        },
+      ]
+    : [
+        {
+          id: "growth",
+          name: "Personal Growth",
+          startTime: "18:00",
+          endTime: "18:45",
+          bufferMinutes: 15,
+          sphereNames: ["Personal Growth"],
+        },
+        {
+          id: "hobby",
+          name: "Hobby",
+          startTime: "19:00",
+          endTime: "19:45",
+          bufferMinutes: 15,
+          sphereNames: ["Fun & Recreation", "Environment / Space"],
+        },
+      ];
+
+  return [
+    ...baseBlocks,
+    ...eveningBlocks,
     {
       id: "kaizen",
       name: "Kaizen (System)",
@@ -51,7 +67,7 @@ export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
     },
     {
       id: "recovery",
-      name: "Recovery HP / Stamina",
+      name: "Recovery",
       startTime: "21:00",
       endTime: "22:45",
       bufferMinutes: 15,
