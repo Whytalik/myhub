@@ -274,6 +274,7 @@ export interface ContextBlock {
   endTime: string; // "HH:MM"
   bufferMinutes: number;
   sphereNames: string[]; // Spheres mapped to this block, e.g. ["Sport", "Health"]
+  enabled?: boolean;
 }
 
 export interface DayScheduleData {

@@ -71,8 +71,10 @@ export function validateTaskTime(
   plannedEndDate: Date | null,
   contextBlocks: ContextBlock[]
 ): TimeBlockValidationResult {
-  // Find blocks that allow this sphere
-  const matchingBlocks = contextBlocks.filter((block) => block.sphereNames.includes(sphereName));
+  // Find blocks that allow this sphere and are enabled
+  const matchingBlocks = contextBlocks.filter(
+    (block) => block.sphereNames.includes(sphereName) && block.enabled !== false
+  );
 
   if (matchingBlocks.length === 0) {
     return { isValid: true }; // No restrictions for this sphere
