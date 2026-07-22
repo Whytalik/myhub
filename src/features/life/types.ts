@@ -267,11 +267,21 @@ export interface ReorderHabitsInput {
   orderedHabitIds: string[];
 }
 
+export interface ContextBlock {
+  id: string;
+  name: string;
+  startTime: string; // "HH:MM"
+  endTime: string; // "HH:MM"
+  bufferMinutes: number;
+  sphereNames: string[]; // Spheres mapped to this block, e.g. ["Sport", "Health"]
+}
+
 export interface DayScheduleData {
   id: string;
   dayOfWeek: number;
   trainingDayId: string | null;
   trainingDayName: string | null;
+  contextBlocks: ContextBlock[] | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -279,6 +289,7 @@ export interface DayScheduleData {
 export interface UpsertDayScheduleInput {
   dayOfWeek: number;
   trainingDayId: string | null;
+  contextBlocks?: ContextBlock[] | null;
 }
 
 export interface ReviewEntryData {

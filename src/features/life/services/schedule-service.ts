@@ -1,23 +1,42 @@
 import { scheduleRepository } from "../repositories/schedule.repository";
 import { trainingDayRepository } from "@/features/health/training/repositories/training-day.repository";
 import type { UpsertDayScheduleInput } from "../types";
+import { getDefaultBlocks } from "../logic/context-blocks";
 
 function toDayOfWeek(date: Date): number {
   return (date.getDay() + 6) % 7;
 }
 
 export async function getScheduleByDate(userId: string, date: Date) {
-  return scheduleRepository.findByDayOfWeek(userId, toDayOfWeek(date));
+  const template = await scheduleRepository.findByDayOfWeek(userId, toDayOfWeek(date));
+  if (!template) {
+    return null;
+  }
+  return {
+    ...template,
+    contextBlocks: (template.contextBlocks as any) || getDefaultBlocks(template.dayOfWeek),
+  };
 }
 
 export async function getAllTemplates(userId: string) {
-  return scheduleRepository.findAll(userId);
+  const templates = await scheduleRepository.findAll(userId);
+  return templates.map((template) => ({
+    ...template,
+    contextBlocks: (template.contextBlocks as any) || getDefaultBlocks(template.dayOfWeek),
+  }));
 }
 
 export async function upsertSchedule(userId: string, input: UpsertDayScheduleInput) {
   if (input.trainingDayId) {
     const day = await trainingDayRepository.findById(input.trainingDayId);
-    if (!day || day.userId !== userId) throw new Error("Training day not found or unauthorized");
+    if (!day || day.userId !== userId) {
+      throw new Error("Training day not found or unauthorized");
+    }
   }
-  return scheduleRepository.upsert(userId, input.dayOfWeek, input.trainingDayId);
+  return scheduleRepository.upsert(
+    userId,
+    input.dayOfWeek,
+    input.trainingDayId,
+    input.contextBlocks ? JSON.parse(JSON.stringify(input.contextBlocks)) : undefined
+  );
 }

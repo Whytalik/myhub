@@ -6629,6 +6629,7 @@ export namespace Prisma {
     userId: number
     dayOfWeek: number
     trainingDayId: number
+    contextBlocks: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -6666,6 +6667,7 @@ export namespace Prisma {
     userId?: true
     dayOfWeek?: true
     trainingDayId?: true
+    contextBlocks?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -6762,6 +6764,7 @@ export namespace Prisma {
     userId: string
     dayOfWeek: number
     trainingDayId: string | null
+    contextBlocks: JsonValue | null
     createdAt: Date
     updatedAt: Date
     _count: WeekTemplateCountAggregateOutputType | null
@@ -6790,6 +6793,7 @@ export namespace Prisma {
     userId?: boolean
     dayOfWeek?: boolean
     trainingDayId?: boolean
+    contextBlocks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6801,6 +6805,7 @@ export namespace Prisma {
     userId?: boolean
     dayOfWeek?: boolean
     trainingDayId?: boolean
+    contextBlocks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6812,6 +6817,7 @@ export namespace Prisma {
     userId?: boolean
     dayOfWeek?: boolean
     trainingDayId?: boolean
+    contextBlocks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -6823,11 +6829,12 @@ export namespace Prisma {
     userId?: boolean
     dayOfWeek?: boolean
     trainingDayId?: boolean
+    contextBlocks?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type WeekTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayOfWeek" | "trainingDayId" | "createdAt" | "updatedAt", ExtArgs["result"]["weekTemplate"]>
+  export type WeekTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayOfWeek" | "trainingDayId" | "contextBlocks" | "createdAt" | "updatedAt", ExtArgs["result"]["weekTemplate"]>
   export type WeekTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     trainingDay?: boolean | WeekTemplate$trainingDayArgs<ExtArgs>
@@ -6852,6 +6859,7 @@ export namespace Prisma {
       userId: string
       dayOfWeek: number
       trainingDayId: string | null
+      contextBlocks: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["weekTemplate"]>
@@ -7283,6 +7291,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"WeekTemplate", 'String'>
     readonly dayOfWeek: FieldRef<"WeekTemplate", 'Int'>
     readonly trainingDayId: FieldRef<"WeekTemplate", 'String'>
+    readonly contextBlocks: FieldRef<"WeekTemplate", 'Json'>
     readonly createdAt: FieldRef<"WeekTemplate", 'DateTime'>
     readonly updatedAt: FieldRef<"WeekTemplate", 'DateTime'>
   }
@@ -46704,6 +46713,7 @@ export namespace Prisma {
     userId: 'userId',
     dayOfWeek: 'dayOfWeek',
     trainingDayId: 'trainingDayId',
+    contextBlocks: 'contextBlocks',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -47359,6 +47369,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -47418,20 +47442,6 @@ export namespace Prisma {
    * Reference to a field of type 'TaskPriority[]'
    */
   export type ListEnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -47662,6 +47672,7 @@ export namespace Prisma {
     userId?: StringFilter<"WeekTemplate"> | string
     dayOfWeek?: IntFilter<"WeekTemplate"> | number
     trainingDayId?: StringNullableFilter<"WeekTemplate"> | string | null
+    contextBlocks?: JsonNullableFilter<"WeekTemplate">
     createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -47673,6 +47684,7 @@ export namespace Prisma {
     userId?: SortOrder
     dayOfWeek?: SortOrder
     trainingDayId?: SortOrderInput | SortOrder
+    contextBlocks?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -47688,6 +47700,7 @@ export namespace Prisma {
     userId?: StringFilter<"WeekTemplate"> | string
     dayOfWeek?: IntFilter<"WeekTemplate"> | number
     trainingDayId?: StringNullableFilter<"WeekTemplate"> | string | null
+    contextBlocks?: JsonNullableFilter<"WeekTemplate">
     createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -47699,6 +47712,7 @@ export namespace Prisma {
     userId?: SortOrder
     dayOfWeek?: SortOrder
     trainingDayId?: SortOrderInput | SortOrder
+    contextBlocks?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: WeekTemplateCountOrderByAggregateInput
@@ -47716,6 +47730,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"WeekTemplate"> | string
     dayOfWeek?: IntWithAggregatesFilter<"WeekTemplate"> | number
     trainingDayId?: StringNullableWithAggregatesFilter<"WeekTemplate"> | string | null
+    contextBlocks?: JsonNullableWithAggregatesFilter<"WeekTemplate">
     createdAt?: DateTimeWithAggregatesFilter<"WeekTemplate"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"WeekTemplate"> | Date | string
   }
@@ -50785,6 +50800,7 @@ export namespace Prisma {
   export type WeekTemplateCreateInput = {
     id?: string
     dayOfWeek: number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekTemplatesInput
@@ -50796,6 +50812,7 @@ export namespace Prisma {
     userId: string
     dayOfWeek: number
     trainingDayId?: string | null
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -50803,6 +50820,7 @@ export namespace Prisma {
   export type WeekTemplateUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekTemplatesNestedInput
@@ -50814,6 +50832,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
     trainingDayId?: NullableStringFieldUpdateOperationsInput | string | null
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -50823,6 +50842,7 @@ export namespace Prisma {
     userId: string
     dayOfWeek: number
     trainingDayId?: string | null
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -50830,6 +50850,7 @@ export namespace Prisma {
   export type WeekTemplateUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -50839,6 +50860,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
     trainingDayId?: NullableStringFieldUpdateOperationsInput | string | null
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54430,6 +54452,29 @@ export namespace Prisma {
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
@@ -54451,6 +54496,7 @@ export namespace Prisma {
     userId?: SortOrder
     dayOfWeek?: SortOrder
     trainingDayId?: SortOrder
+    contextBlocks?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -54495,6 +54541,32 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type PushSubscriptionCountOrderByAggregateInput = {
@@ -55130,29 +55202,6 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type DailyEntryUserIdDateCompoundUniqueInput = {
     userId: string
@@ -55307,32 +55356,6 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type IntNullableListFilter<$PrismaModel = never> = {
@@ -59394,6 +59417,29 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type NestedEnumMappingSourceFilter<$PrismaModel = never> = {
     equals?: $Enums.MappingSource | EnumMappingSourceFieldRefInput<$PrismaModel>
@@ -59516,29 +59562,6 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumSphereLevelNullableFilter<$PrismaModel = never> = {
@@ -60173,6 +60196,7 @@ export namespace Prisma {
   export type WeekTemplateCreateWithoutUserInput = {
     id?: string
     dayOfWeek: number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     trainingDay?: TrainingDayCreateNestedOneWithoutWeekTemplatesInput
@@ -60182,6 +60206,7 @@ export namespace Prisma {
     id?: string
     dayOfWeek: number
     trainingDayId?: string | null
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -61000,6 +61025,7 @@ export namespace Prisma {
     userId?: StringFilter<"WeekTemplate"> | string
     dayOfWeek?: IntFilter<"WeekTemplate"> | number
     trainingDayId?: StringNullableFilter<"WeekTemplate"> | string | null
+    contextBlocks?: JsonNullableFilter<"WeekTemplate">
     createdAt?: DateTimeFilter<"WeekTemplate"> | Date | string
     updatedAt?: DateTimeFilter<"WeekTemplate"> | Date | string
   }
@@ -66249,6 +66275,7 @@ export namespace Prisma {
   export type WeekTemplateCreateWithoutTrainingDayInput = {
     id?: string
     dayOfWeek: number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutWeekTemplatesInput
@@ -66258,6 +66285,7 @@ export namespace Prisma {
     id?: string
     userId: string
     dayOfWeek: number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -68212,6 +68240,7 @@ export namespace Prisma {
     id?: string
     dayOfWeek: number
     trainingDayId?: string | null
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -68938,6 +68967,7 @@ export namespace Prisma {
   export type WeekTemplateUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     trainingDay?: TrainingDayUpdateOneWithoutWeekTemplatesNestedInput
@@ -68947,6 +68977,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
     trainingDayId?: NullableStringFieldUpdateOperationsInput | string | null
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -68955,6 +68986,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
     trainingDayId?: NullableStringFieldUpdateOperationsInput | string | null
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -70471,6 +70503,7 @@ export namespace Prisma {
     id?: string
     userId: string
     dayOfWeek: number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -70561,6 +70594,7 @@ export namespace Prisma {
   export type WeekTemplateUpdateWithoutTrainingDayInput = {
     id?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutWeekTemplatesNestedInput
@@ -70570,6 +70604,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -70578,6 +70613,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     dayOfWeek?: IntFieldUpdateOperationsInput | number
+    contextBlocks?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

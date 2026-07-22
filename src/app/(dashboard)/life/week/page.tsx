@@ -18,13 +18,14 @@ export default async function WeekSchedulePage() {
 
   const [raw, plans] = await Promise.all([getAllTemplates(userId), getPlans(userId)]);
 
-  const templates: DayScheduleData[] = raw.map((t) => ({
-    id: t.id,
-    dayOfWeek: t.dayOfWeek,
-    trainingDayId: t.trainingDayId,
-    trainingDayName: t.trainingDay?.name ?? null,
-    createdAt: t.createdAt,
-    updatedAt: t.updatedAt,
+  const templates: DayScheduleData[] = raw.map((template) => ({
+    id: template.id,
+    dayOfWeek: template.dayOfWeek,
+    trainingDayId: template.trainingDayId,
+    trainingDayName: template.trainingDay?.name ?? null,
+    contextBlocks: template.contextBlocks,
+    createdAt: template.createdAt,
+    updatedAt: template.updatedAt,
   }));
 
   const trainingDays = plans.flatMap((p) => p.days.map((d) => ({ id: d.id, name: d.name })));

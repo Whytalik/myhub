@@ -16,11 +16,15 @@ export const scheduleRepository = {
     });
   },
 
-  upsert(userId: string, dayOfWeek: number, trainingDayId: string | null) {
+  upsert(userId: string, dayOfWeek: number, trainingDayId: string | null, contextBlocks?: any) {
+    const data = {
+      trainingDayId,
+      ...(contextBlocks !== undefined ? { contextBlocks } : {}),
+    };
     return prisma.weekTemplate.upsert({
       where: { userId_dayOfWeek: { userId, dayOfWeek } },
-      create: { userId, dayOfWeek, trainingDayId },
-      update: { trainingDayId },
+      create: { userId, dayOfWeek, ...data },
+      update: data,
       include: { trainingDay: true },
     });
   },

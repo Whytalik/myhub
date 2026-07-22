@@ -46,13 +46,15 @@ import {
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
-import type { TaskData, LifeSphereData } from "@/features/life/types";
+import type { TaskData, LifeSphereData, DayScheduleData, ContextBlock } from "@/features/life/types";
 import {
   updateTaskRangeAction,
   updateTaskTimeRangeAction,
 } from "@/features/life/actions/task-actions";
 import { toast } from "sonner";
 import { TaskFormDialog } from "./TaskFormDialog";
+import { getAllTemplatesAction } from "@/features/life/actions/schedule-actions";
+import { getDefaultBlocks } from "@/features/life/logic/context-blocks";
 import { TaskCardBase } from "./TaskCardBase";
 import { StatusToggle } from "./StatusToggle";
 import { PRIORITY_CONFIG } from "./PriorityBadge";
@@ -418,6 +420,29 @@ export function TaskCalendar({
   const [now, setNow] = useState(() => new Date());
   const verticalScrollContainerRef = useRef<HTMLDivElement>(null);
 
+  const [weekTemplates, setWeekTemplates] = useState<DayScheduleData[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    getAllTemplatesAction().then((result) => {
+      if (result.success && result.data && active) {
+        const mapped: DayScheduleData[] = result.data.map((t) => ({
+          id: t.id,
+          dayOfWeek: t.dayOfWeek,
+          trainingDayId: t.trainingDayId,
+          trainingDayName: t.trainingDay?.name ?? null,
+          contextBlocks: t.contextBlocks as any,
+          createdAt: new Date(t.createdAt),
+          updatedAt: new Date(t.updatedAt),
+        }));
+        setWeekTemplates(mapped);
+      }
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   useEffect(() => {
     if (mode === "day" && verticalScrollContainerRef.current) {
       const currentHour = new Date().getHours();
@@ -627,6 +652,17 @@ export function TaskCalendar({
 
     return taskPlacements;
   }, [scheduledTasks]);
+
+  const currentBlocks = useMemo(() => {
+    const dayOfWeek = (currentDate.getDay() + 6) % 7;
+    const template = weekTemplates.find((t) => t.dayOfWeek === dayOfWeek);
+    return template?.contextBlocks || getDefaultBlocks(dayOfWeek);
+  }, [currentDate, weekTemplates]);
+
+  const parseTimeToMinutes = useCallback((timeStr: string): number => {
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    return hours * 60 + minutes;
+  }, []);
 
   const handleTimelineDragStart = (event: DragStartEvent) => {
     setIsDraggingAny(true);
@@ -1267,6 +1303,113 @@ export function TaskCalendar({
                           💤 Час для сну (22:00 — 24:00)
                         </span>
                       </div>
+
+                      {/* Context Blocks Visualization */}
+                      {(() => {
+                        const getBlockStyles = (blockId: string) => {
+                          switch (blockId) {
+                            case "health":
+                            case "recovery":
+                              return {
+                                bg: "bg-emerald-500/[0.02]",
+                                border: "border-l-emerald-500/30",
+                                text: "text-emerald-400",
+                              };
+                            case "work":
+                              return {
+                                bg: "bg-blue-500/[0.02]",
+                                border: "border-l-blue-500/30",
+                                text: "text-blue-400",
+                              };
+                            case "family":
+                            case "romance":
+                              return {
+                                bg: "bg-rose-500/[0.02]",
+                                border: "border-l-rose-500/30",
+                                text: "text-rose-400",
+                              };
+                            case "hobby":
+                              return {
+                                bg: "bg-purple-500/[0.02]",
+                                border: "border-l-purple-500/30",
+                                text: "text-purple-400",
+                              };
+                            case "kaizen":
+                              return {
+                                bg: "bg-amber-500/[0.02]",
+                                border: "border-l-amber-500/30",
+                                text: "text-amber-400",
+                              };
+                            default:
+                              return {
+                                bg: "bg-zinc-500/[0.02]",
+                                border: "border-l-zinc-500/30",
+                                text: "text-zinc-400",
+                              };
+                          }
+                        };
+
+                        return currentBlocks.map((block, index) => {
+                          const startMin = parseTimeToMinutes(block.startTime);
+                          const endMin = parseTimeToMinutes(block.endTime);
+                          const topPos = (startMin * HOUR_HEIGHT) / 60;
+                          const heightVal = ((endMin - startMin) * HOUR_HEIGHT) / 60;
+                          const styles = getBlockStyles(block.id);
+
+                          return (
+                            <React.Fragment key={block.id + "-" + index}>
+                              {/* Context Block Area */}
+                              <div
+                                className={`absolute left-16 sm:left-20 right-0 z-0 border-l-2 border-y border-y-white/[0.01] ${styles.bg} ${styles.border} flex flex-col justify-start p-2 pointer-events-none select-none`}
+                                style={{
+                                  top: `${topPos}px`,
+                                  height: `${heightVal}px`,
+                                }}
+                              >
+                                <div className="flex items-center gap-1.5 opacity-80">
+                                  <span className={`text-[9px] font-semibold uppercase tracking-wider ${styles.text}`}>
+                                    {block.name}
+                                  </span>
+                                  <span className="text-[8px] font-mono text-zinc-500">
+                                    ({block.startTime} — {block.endTime})
+                                  </span>
+                                </div>
+                                {block.sphereNames.length > 0 && (
+                                  <div className="flex flex-wrap gap-1 mt-0.5">
+                                    {block.sphereNames.map((sphereName) => (
+                                      <span key={sphereName} className="px-1 py-0.2 rounded bg-white/[0.04] text-zinc-500 text-[8px] font-mono border border-white/[0.04]">
+                                        {sphereName}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Buffer Zone */}
+                              {block.bufferMinutes > 0 && (() => {
+                                const bufferStartMin = endMin;
+                                const bufferTop = (bufferStartMin * HOUR_HEIGHT) / 60;
+                                const bufferHeight = (block.bufferMinutes * HOUR_HEIGHT) / 60;
+                                return (
+                                  <div
+                                    className="absolute left-16 sm:left-20 right-0 z-0 bg-white/[0.01] border-b border-white/[0.02] flex items-center px-3 pointer-events-none select-none"
+                                    style={{
+                                      top: `${bufferTop}px`,
+                                      height: `${bufferHeight}px`,
+                                      backgroundImage:
+                                        "repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 6px)",
+                                    }}
+                                  >
+                                    <span className="text-[8px] font-mono tracking-wider text-zinc-600 uppercase">
+                                      ⚡ Буфер ({block.bufferMinutes} хв)
+                                    </span>
+                                  </div>
+                                );
+                              })()}
+                            </React.Fragment>
+                          );
+                        });
+                      })()}
 
                       {/* Hours Column & Horizontal Guidelines */}
                       <div className="w-16 sm:w-20 shrink-0 border-r border-white/[0.04] bg-white/[0.01] relative select-none">

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, ChevronUp, ChevronDown, Clock } from "lucide-react";
 import { Select } from "@/components/ui/inputs/select";
 import { upsertDayScheduleAction } from "../actions/schedule-actions";
-import type { DayScheduleData } from "../types";
+import type { DayScheduleData, ContextBlock } from "../types";
+import { getDefaultBlocks } from "../logic/context-blocks";
 
-const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const DAY_NAMES = ["Пн", "Вв", "Ср", "Чт", "Пт", "Сб", "Нд"];
 const NONE_VALUE = "__none__";
 
 function todayDayOfWeek(): number {
@@ -19,13 +20,20 @@ interface Props {
 }
 
 export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
-  const [assignments, setAssignments] = useState<Record<number, string | null>>(() => {
-    const map: Record<number, string | null> = {};
-    for (const t of initialTemplates) {
-      map[t.dayOfWeek] = t.trainingDayId;
+  const [daysData, setDaysData] = useState<
+    Record<number, { trainingDayId: string | null; contextBlocks: ContextBlock[] }>
+  >(() => {
+    const map: Record<number, { trainingDayId: string | null; contextBlocks: ContextBlock[] }> = {};
+    for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+      const template = initialTemplates.find((t) => t.dayOfWeek === dayOfWeek);
+      map[dayOfWeek] = {
+        trainingDayId: template?.trainingDayId ?? null,
+        contextBlocks: template?.contextBlocks || getDefaultBlocks(dayOfWeek),
+      };
     }
     return map;
   });
+
   const [pending, setPending] = useState<number | null>(null);
   const [, startTransition] = useTransition();
 
@@ -33,16 +41,86 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
 
   const setTrainingDay = (dayOfWeek: number, trainingDayId: string | null) => {
     setPending(dayOfWeek);
-    const prev = assignments[dayOfWeek] ?? null;
-    setAssignments((s) => ({ ...s, [dayOfWeek]: trainingDayId }));
+    const previousData = daysData[dayOfWeek];
+    setDaysData((state) => ({
+      ...state,
+      [dayOfWeek]: { ...state[dayOfWeek], trainingDayId },
+    }));
 
     startTransition(async () => {
-      const res = await upsertDayScheduleAction({ dayOfWeek, trainingDayId });
-      if (!res.success) {
-        setAssignments((s) => ({ ...s, [dayOfWeek]: prev }));
+      const result = await upsertDayScheduleAction({
+        dayOfWeek,
+        trainingDayId,
+        contextBlocks: previousData.contextBlocks,
+      });
+      if (!result.success) {
+        setDaysData((state) => ({ ...state, [dayOfWeek]: previousData }));
       }
       setPending(null);
     });
+  };
+
+  const moveBlock = (dayOfWeek: number, index: number, direction: "up" | "down") => {
+    const current = daysData[dayOfWeek];
+    const newBlocks = [...current.contextBlocks];
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= newBlocks.length) {
+      return;
+    }
+
+    const blockA = { ...newBlocks[index] };
+    const blockB = { ...newBlocks[targetIndex] };
+
+    newBlocks[index] = {
+      ...blockA,
+      id: blockB.id,
+      name: blockB.name,
+      sphereNames: blockB.sphereNames,
+    };
+    newBlocks[targetIndex] = {
+      ...blockB,
+      id: blockA.id,
+      name: blockA.name,
+      sphereNames: blockA.sphereNames,
+    };
+
+    setPending(dayOfWeek);
+    const previousData = daysData[dayOfWeek];
+    setDaysData((state) => ({
+      ...state,
+      [dayOfWeek]: { ...state[dayOfWeek], contextBlocks: newBlocks },
+    }));
+
+    startTransition(async () => {
+      const result = await upsertDayScheduleAction({
+        dayOfWeek,
+        trainingDayId: current.trainingDayId,
+        contextBlocks: newBlocks,
+      });
+      if (!result.success) {
+        setDaysData((state) => ({ ...state, [dayOfWeek]: previousData }));
+      }
+      setPending(null);
+    });
+  };
+
+  const getBlockBorderColor = (blockId: string) => {
+    switch (blockId) {
+      case "health":
+      case "recovery":
+        return "border-l-emerald-500/60";
+      case "work":
+        return "border-l-blue-500/60";
+      case "family":
+      case "romance":
+        return "border-l-rose-500/60";
+      case "hobby":
+        return "border-l-purple-500/60";
+      case "kaizen":
+        return "border-l-amber-500/60";
+      default:
+        return "border-l-zinc-500/60";
+    }
   };
 
   return (
@@ -51,17 +129,21 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
         <div className="glass-card p-4 flex items-center gap-2.5">
           <Dumbbell size={16} className="text-zinc-500 shrink-0" />
           <p className="text-caption">
-            No training days yet — add some in Training Space to assign them here.
+            Немає тренувальних днів — додайте їх у просторі тренувань.
           </p>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
         {DAY_NAMES.map((name, dayOfWeek) => {
           const isToday = dayOfWeek === today;
-          const trainingDayId = assignments[dayOfWeek] ?? null;
+          const { trainingDayId, contextBlocks } = daysData[dayOfWeek];
           const isPending = pending === dayOfWeek;
-          const cardClass = `glass-card p-4 flex flex-col gap-3 border ${isToday ? "border-accent/30" : "border-white/[0.06]"} ${isPending ? "opacity-60" : ""}`;
+          
+          const cardClass = `glass-card p-4 flex flex-col gap-4 border ${
+            isToday ? "border-accent/40 bg-accent/[0.01]" : "border-white/[0.06]"
+          } ${isPending ? "opacity-60" : ""} transition-all duration-150`;
+
           const iconWrapClass = `flex items-center justify-center w-7 h-7 rounded-lg border ${
             trainingDayId
               ? "border-accent-training/40 bg-accent-training/10 text-accent-training"
@@ -74,27 +156,100 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                 <span
                   className={`text-sm font-semibold ${isToday ? "text-accent" : "text-zinc-200"}`}
                 >
-                  {name}
+                  {name} {isToday && <span className="text-[10px] font-normal opacity-85">(Сьогодні)</span>}
                 </span>
                 <div className={iconWrapClass}>
                   <Dumbbell size={14} />
                 </div>
               </div>
 
-              <Select
-                disabled={isPending || trainingDays.length === 0}
-                value={trainingDayId ?? NONE_VALUE}
-                onChange={(e) =>
-                  setTrainingDay(dayOfWeek, e.target.value === NONE_VALUE ? null : e.target.value)
-                }
-              >
-                <option value={NONE_VALUE}>No training</option>
-                {trainingDays.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
-              </Select>
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+                  Тренувальний день
+                </span>
+                <Select
+                  disabled={isPending || trainingDays.length === 0}
+                  value={trainingDayId ?? NONE_VALUE}
+                  onChange={(e) =>
+                    setTrainingDay(dayOfWeek, e.target.value === NONE_VALUE ? null : e.target.value)
+                  }
+                >
+                  <option value={NONE_VALUE}>Немає тренування</option>
+                  {trainingDays.map((trainingDay) => (
+                    <option key={trainingDay.id} value={trainingDay.id}>
+                      {trainingDay.name}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+
+              {/* Contextual Time Blocks */}
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+                    Контекстні блоки часу
+                  </span>
+                  <Clock size={12} className="text-zinc-500" />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  {contextBlocks.map((block, index) => {
+                    const blockBorder = getBlockBorderColor(block.id);
+                    return (
+                      <div
+                        key={block.id + "-" + index}
+                        className={`flex flex-col gap-1 p-2 rounded-lg bg-white/[0.01] border border-white/[0.04] border-l-2 ${blockBorder}`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-semibold text-zinc-200">
+                            {block.name}
+                          </span>
+                          
+                          {/* Swap actions */}
+                          <div className="flex items-center gap-0.5">
+                            <button
+                              disabled={index === 0 || isPending}
+                              onClick={() => moveBlock(dayOfWeek, index, "up")}
+                              className="p-1 rounded hover:bg-white/5 disabled:opacity-20 text-zinc-400 hover:text-zinc-200 transition-colors"
+                              title="Перемістити вище"
+                            >
+                              <ChevronUp size={13} />
+                            </button>
+                            <button
+                              disabled={index === contextBlocks.length - 1 || isPending}
+                              onClick={() => moveBlock(dayOfWeek, index, "down")}
+                              className="p-1 rounded hover:bg-white/5 disabled:opacity-20 text-zinc-400 hover:text-zinc-200 transition-colors"
+                              title="Перемістити нижче"
+                            >
+                              <ChevronDown size={13} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] text-zinc-500">
+                          <span>
+                            {block.startTime} – {block.endTime}
+                            {block.bufferMinutes > 0 && ` (+${block.bufferMinutes}хв буфер)`}
+                          </span>
+                        </div>
+
+                        {block.sphereNames.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-0.5">
+                            {block.sphereNames.map((sphereName) => (
+                              <span
+                                key={sphereName}
+                                className="px-1.5 py-0.2 rounded bg-white/[0.04] text-zinc-400 text-[9px] border border-white/[0.04]"
+                              >
+                                {sphereName}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           );
         })}

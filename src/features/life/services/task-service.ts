@@ -16,6 +16,8 @@ import type {
   UpsertTaskInput,
   UpsertSphereInput,
 } from "../types";
+import { getScheduleByDate } from "./schedule-service";
+import { getDefaultBlocks, validateTaskTime } from "../logic/context-blocks";
 
 function mapSphere(
   sphere: {
@@ -164,6 +166,39 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
         ? new Date(carriedFromDate)
         : null
       : undefined;
+
+  // Validate contextual time-blocking rules
+  let sphereIdToCheck = sphereId;
+  let plannedDateToCheck = parsedPlannedDate;
+  let plannedEndDateToCheck = parsedPlannedEndDate;
+  let hasPlannedTimeToCheck = hasPlannedTime;
+
+  if (id) {
+    const existing = await taskRepository.findById(id);
+    if (existing) {
+      if (sphereIdToCheck === undefined) sphereIdToCheck = existing.sphereId;
+      if (plannedDateToCheck === undefined) plannedDateToCheck = existing.plannedDate;
+      if (plannedEndDateToCheck === undefined) plannedEndDateToCheck = existing.plannedEndDate;
+      if (hasPlannedTimeToCheck === undefined) hasPlannedTimeToCheck = existing.hasPlannedTime;
+    }
+  }
+
+  if (plannedDateToCheck && hasPlannedTimeToCheck && sphereIdToCheck) {
+    const sphere = await prisma.lifeSphere.findUnique({ where: { id: sphereIdToCheck } });
+    if (sphere) {
+      const schedule = await getScheduleByDate(userId, plannedDateToCheck);
+      const blocks = schedule?.contextBlocks || getDefaultBlocks((plannedDateToCheck.getDay() + 6) % 7);
+      const validation = validateTaskTime(
+        sphere.name,
+        plannedDateToCheck,
+        plannedEndDateToCheck ?? null,
+        blocks
+      );
+      if (!validation.isValid) {
+        throw new Error(validation.message);
+      }
+    }
+  }
 
   const completedAt = status === "DONE" ? new Date() : status ? null : undefined;
 

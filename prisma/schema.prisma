@@ -48,6 +48,7 @@ model WeekTemplate {
   userId        String
   dayOfWeek     Int
   trainingDayId String?
+  contextBlocks Json?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
