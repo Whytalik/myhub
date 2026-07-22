@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Dumbbell, ChevronUp, ChevronDown, Clock } from "lucide-react";
+import { Dumbbell, Clock } from "lucide-react";
 import { Select } from "@/components/ui/inputs/select";
 import { upsertDayScheduleAction } from "../actions/schedule-actions";
 import type { DayScheduleData, ContextBlock } from "../types";
@@ -9,6 +9,25 @@ import { getDefaultBlocks } from "../logic/context-blocks";
 
 const DAY_NAMES = ["Пн", "Вв", "Ср", "Чт", "Пт", "Сб", "Нд"];
 const NONE_VALUE = "__none__";
+
+const EVENING_BLOCKS = {
+  family: {
+    id: "family",
+    name: "Сім'я / Романтика",
+    startTime: "18:00",
+    endTime: "19:45",
+    bufferMinutes: 15,
+    sphereNames: ["Family & Friends", "Romance"],
+  },
+  hobby: {
+    id: "hobby",
+    name: "Розвиток / Хобі",
+    startTime: "18:00",
+    endTime: "19:45",
+    bufferMinutes: 15,
+    sphereNames: ["Personal Growth", "Fun & Recreation", "Environment / Space"],
+  },
+};
 
 function todayDayOfWeek(): number {
   return (new Date().getDay() + 6) % 7;
@@ -60,28 +79,16 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
     });
   };
 
-  const moveBlock = (dayOfWeek: number, index: number, direction: "up" | "down") => {
+  const changeEveningBlockType = (dayOfWeek: number, type: "family" | "hobby") => {
     const current = daysData[dayOfWeek];
     const newBlocks = [...current.contextBlocks];
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
-    if (targetIndex < 0 || targetIndex >= newBlocks.length) {
+    const eveningBlockIndex = newBlocks.findIndex((block) => block.startTime === "18:00");
+    if (eveningBlockIndex === -1) {
       return;
     }
 
-    const blockA = { ...newBlocks[index] };
-    const blockB = { ...newBlocks[targetIndex] };
-
-    newBlocks[index] = {
-      ...blockA,
-      id: blockB.id,
-      name: blockB.name,
-      sphereNames: blockB.sphereNames,
-    };
-    newBlocks[targetIndex] = {
-      ...blockB,
-      id: blockA.id,
-      name: blockA.name,
-      sphereNames: blockA.sphereNames,
+    newBlocks[eveningBlockIndex] = {
+      ...EVENING_BLOCKS[type],
     };
 
     setPending(dayOfWeek);
@@ -198,32 +205,31 @@ export function WeekScheduleClient({ initialTemplates, trainingDays }: Props) {
                     return (
                       <div
                         key={block.id + "-" + index}
-                        className={`flex flex-col gap-1 p-2 rounded-lg bg-white/[0.01] border border-white/[0.04] border-l-2 ${blockBorder}`}
+                        className={`flex flex-col gap-1.5 p-2.5 rounded-lg bg-white/[0.01] border border-white/[0.04] border-l-2 ${blockBorder}`}
                       >
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-semibold text-zinc-200">
-                            {block.name}
-                          </span>
-                          
-                          {/* Swap actions */}
-                          <div className="flex items-center gap-0.5">
-                            <button
-                              disabled={index === 0 || isPending}
-                              onClick={() => moveBlock(dayOfWeek, index, "up")}
-                              className="p-1 rounded hover:bg-white/5 disabled:opacity-20 text-zinc-400 hover:text-zinc-200 transition-colors"
-                              title="Перемістити вище"
+                          {block.startTime === "18:00" ? (
+                            <Select
+                              variant="inline"
+                              disabled={isPending}
+                              value={block.id === "family" ? "family" : "hobby"}
+                              onChange={(e) =>
+                                changeEveningBlockType(dayOfWeek, e.target.value as "family" | "hobby")
+                              }
+                              className="text-xs font-semibold text-zinc-200 w-auto pr-6 font-sans"
                             >
-                              <ChevronUp size={13} />
-                            </button>
-                            <button
-                              disabled={index === contextBlocks.length - 1 || isPending}
-                              onClick={() => moveBlock(dayOfWeek, index, "down")}
-                              className="p-1 rounded hover:bg-white/5 disabled:opacity-20 text-zinc-400 hover:text-zinc-200 transition-colors"
-                              title="Перемістити нижче"
-                            >
-                              <ChevronDown size={13} />
-                            </button>
-                          </div>
+                              <option value="family" className="bg-zinc-900 text-zinc-200 text-xs">
+                                Сім'я / Романтика
+                              </option>
+                              <option value="hobby" className="bg-zinc-900 text-zinc-200 text-xs">
+                                Розвиток / Хобі
+                              </option>
+                            </Select>
+                          ) : (
+                            <span className="text-xs font-semibold text-zinc-200">
+                              {block.name}
+                            </span>
+                          )}
                         </div>
 
                         <div className="flex flex-wrap items-center justify-between gap-1 text-[10px] text-zinc-500">
