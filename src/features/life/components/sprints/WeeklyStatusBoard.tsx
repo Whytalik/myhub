@@ -37,11 +37,13 @@ function BoardCard({
   locked,
   onTaskEdit,
   onTaskDelete,
+  onTaskUnschedule,
 }: {
   task: TaskData;
   locked: boolean;
   onTaskEdit?: (task: TaskData) => void;
   onTaskDelete?: (taskId: string) => void;
+  onTaskUnschedule?: (taskId: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: task.id,
@@ -62,6 +64,7 @@ function BoardCard({
         isDragging={isDragging}
         onEdit={() => onTaskEdit?.(task)}
         onDelete={onTaskDelete ? () => onTaskDelete(task.id) : undefined}
+        onUnschedule={onTaskUnschedule ? () => onTaskUnschedule(task.id) : undefined}
       />
     </div>
   );
@@ -73,12 +76,14 @@ function BoardCell({
   locked,
   onTaskEdit,
   onTaskDelete,
+  onTaskUnschedule,
 }: {
   id: string;
   cellTasks: TaskData[];
   locked: boolean;
   onTaskEdit?: (task: TaskData) => void;
   onTaskDelete?: (taskId: string) => void;
+  onTaskUnschedule?: (taskId: string) => void;
 }) {
   const { setNodeRef, isOver } = useDroppable({ id, disabled: locked });
 
@@ -90,7 +95,14 @@ function BoardCell({
       }`}
     >
       {cellTasks.map((t) => (
-        <BoardCard key={t.id} task={t} locked={locked} onTaskEdit={onTaskEdit} onTaskDelete={onTaskDelete} />
+        <BoardCard
+          key={t.id}
+          task={t}
+          locked={locked}
+          onTaskEdit={onTaskEdit}
+          onTaskDelete={onTaskDelete}
+          onTaskUnschedule={onTaskUnschedule}
+        />
       ))}
       {cellTasks.length === 0 && <span className="text-[10px] text-zinc-600 italic px-1">—</span>}
     </div>
@@ -113,6 +125,32 @@ export function WeeklyStatusBoard({
       if (t.status !== status) return false;
       return t.plannedDate ? isSameDay(new Date(t.plannedDate), day) : false;
     });
+
+  const handleUnschedule = (taskId: string) => {
+    onTasksChange((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? {
+              ...t,
+              plannedDate: null,
+              plannedEndDate: null,
+            }
+          : t,
+      ),
+    );
+
+    upsertTaskAction({
+      id: taskId,
+      plannedDate: null,
+      plannedEndDate: null,
+    }).then((result) => {
+      if (result.success) {
+        toast.success("Атом повернено в беклог");
+      } else {
+        toast.error(result.error || "Failed to unschedule atom");
+      }
+    });
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -189,6 +227,7 @@ export function WeeklyStatusBoard({
                     locked={locked}
                     onTaskEdit={onTaskEdit}
                     onTaskDelete={onTaskDelete}
+                    onTaskUnschedule={handleUnschedule}
                   />
                 ))}
               </Fragment>

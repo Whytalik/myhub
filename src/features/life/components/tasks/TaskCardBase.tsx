@@ -11,6 +11,7 @@ import {
   Copy,
   RefreshCw,
   Folder,
+  CalendarOff,
 } from "lucide-react";
 import { deleteTaskAction, setTaskAsFrogAction } from "@/features/life/actions/task-actions";
 import type { TaskData } from "@/features/life/types";
@@ -27,6 +28,7 @@ export interface TaskCardBaseProps {
   onDuplicate?: (task: TaskData) => void;
   onAddChild?: (parent: TaskData) => void;
   onDelete?: () => void;
+  onUnschedule?: () => void;
   allTasks?: TaskData[];
   variant?: "default" | "compact" | "atom";
   isDragging?: boolean;
@@ -43,6 +45,7 @@ export function TaskCardBase({
   onDuplicate,
   onAddChild,
   onDelete,
+  onUnschedule,
   allTasks = [],
   variant = "default",
   isDragging = false,
@@ -227,6 +230,18 @@ export function TaskCardBase({
       style={style}
     >
       <div className={actionBarClass}>
+        {onUnschedule && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onUnschedule();
+            }}
+            className={actionButtonClass}
+            title="Зняти дату (повернути в беклог)"
+          >
+            <CalendarOff size={actionIconSize} />
+          </button>
+        )}
         {!isAtom && (
           <button
             onClick={(e) => {
