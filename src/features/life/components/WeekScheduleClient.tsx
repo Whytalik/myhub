@@ -32,6 +32,57 @@ const EVENING_BLOCKS = {
   },
 };
 
+const STANDARD_BLOCK_TEMPLATES = [
+  {
+    id: "health",
+    name: "Health / Body",
+    startTime: "07:00",
+    endTime: "09:15",
+    bufferMinutes: 15,
+    sphereNames: ["Health", "Sport"],
+  },
+  {
+    id: "work",
+    name: "Business / Work",
+    startTime: "09:30",
+    endTime: "17:30",
+    bufferMinutes: 30,
+    sphereNames: ["Work", "Trading", "Finance"],
+  },
+  {
+    id: "family",
+    name: "Family / Romance",
+    startTime: "18:00",
+    endTime: "19:45",
+    bufferMinutes: 15,
+    sphereNames: ["Family & Friends", "Romance"],
+  },
+  {
+    id: "hobby",
+    name: "Growth / Hobby",
+    startTime: "18:00",
+    endTime: "19:45",
+    bufferMinutes: 15,
+    sphereNames: ["Personal Growth", "Fun & Recreation", "Environment / Space"],
+  },
+  {
+    id: "kaizen",
+    name: "Kaizen (System)",
+    startTime: "20:00",
+    endTime: "20:45",
+    bufferMinutes: 15,
+    sphereNames: [],
+  },
+  {
+    id: "recovery",
+    name: "Recovery HP / Stamina",
+    startTime: "21:00",
+    endTime: "22:45",
+    bufferMinutes: 15,
+    sphereNames: ["Health"],
+  },
+];
+
 function todayDayOfWeek(): number {
   return (new Date().getDay() + 6) % 7;
 }
@@ -99,7 +150,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
 
     newBlocks[eveningBlockIndex] = {
       ...EVENING_BLOCKS[type],
-      enabled: newBlocks[eveningBlockIndex].enabled, // Preserve active state
+      enabled: newBlocks[eveningBlockIndex].enabled,
     };
 
     setPending(dayOfWeek);
@@ -130,7 +181,14 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
 
     const current = daysData[dayOfWeek];
     const newBlocks = [...current.contextBlocks];
-    newBlocks[blockIndex] = block;
+    
+    if (blockIndex === newBlocks.length) {
+      newBlocks.push(block);
+    } else {
+      newBlocks[blockIndex] = block;
+    }
+
+    newBlocks.sort((a, b) => a.startTime.localeCompare(b.startTime));
 
     setPending(dayOfWeek);
     const previousData = daysData[dayOfWeek];
@@ -153,27 +211,138 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
     });
   };
 
-  const getBlockBorderColor = (blockId: string) => {
-    switch (blockId) {
-      case "health":
-      case "recovery":
-        return "border-l-emerald-500/60";
-      case "work":
-        return "border-l-blue-500/60";
-      case "family":
-      case "romance":
-        return "border-l-rose-500/60";
-      case "hobby":
-        return "border-l-purple-500/60";
-      case "kaizen":
-        return "border-l-amber-500/60";
-      default:
-        return "border-l-zinc-500/60";
+  const deleteBlock = () => {
+    if (!editingBlock) {
+      return;
     }
+    const { dayOfWeek, blockIndex } = editingBlock;
+
+    const current = daysData[dayOfWeek];
+    const newBlocks = current.contextBlocks.filter((_, idx) => idx !== blockIndex);
+
+    setPending(dayOfWeek);
+    const previousData = daysData[dayOfWeek];
+    setDaysData((state) => ({
+      ...state,
+      [dayOfWeek]: { ...state[dayOfWeek], contextBlocks: newBlocks },
+    }));
+
+    startTransition(async () => {
+      const result = await upsertDayScheduleAction({
+        dayOfWeek,
+        trainingDayId: current.trainingDayId,
+        contextBlocks: newBlocks,
+      });
+      if (!result.success) {
+        setDaysData((state) => ({ ...state, [dayOfWeek]: previousData }));
+      }
+      setPending(null);
+      setEditingBlock(null);
+    });
+  };
+
+  const addTemplateToDay = (dayOfWeek: number, template: typeof STANDARD_BLOCK_TEMPLATES[0]) => {
+    const current = daysData[dayOfWeek];
+    const newBlock: ContextBlock = {
+      ...template,
+      id: `${template.id}-${Date.now()}`,
+    };
+
+    const newBlocks = [...current.contextBlocks, newBlock];
+    newBlocks.sort((a, b) => a.startTime.localeCompare(b.startTime));
+
+    setPending(dayOfWeek);
+    const previousData = daysData[dayOfWeek];
+    setDaysData((state) => ({
+      ...state,
+      [dayOfWeek]: { ...state[dayOfWeek], contextBlocks: newBlocks },
+    }));
+
+    startTransition(async () => {
+      const result = await upsertDayScheduleAction({
+        dayOfWeek,
+        trainingDayId: current.trainingDayId,
+        contextBlocks: newBlocks,
+      });
+      if (!result.success) {
+        setDaysData((state) => ({ ...state, [dayOfWeek]: previousData }));
+      }
+      setPending(null);
+    });
+  };
+
+  const getBlockBorderColor = (blockId: string) => {
+    if (blockId.startsWith("health")) {
+      return "border-l-emerald-500/60";
+    }
+    if (blockId.startsWith("recovery")) {
+      return "border-l-emerald-500/60";
+    }
+    if (blockId.startsWith("work")) {
+      return "border-l-blue-500/60";
+    }
+    if (blockId.startsWith("family") || blockId.startsWith("romance")) {
+      return "border-l-rose-500/60";
+    }
+    if (blockId.startsWith("hobby")) {
+      return "border-l-purple-500/60";
+    }
+    if (blockId.startsWith("kaizen")) {
+      return "border-l-amber-500/60";
+    }
+    return "border-l-zinc-500/60";
   };
 
   return (
     <div className="flex flex-col gap-6">
+      {/* 🧩 Block Templates Library */}
+      <div className="glass-card p-4 bg-black/10 flex flex-col gap-3">
+        <div>
+          <h2 className="text-panel-title">Block Templates Library</h2>
+          <p className="text-caption mt-0.5">Quickly add standard contextual blocks to any day of your week.</p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+          {STANDARD_BLOCK_TEMPLATES.map((template) => {
+            const blockBorder = getBlockBorderColor(template.id);
+            return (
+              <div
+                key={template.id}
+                className={`p-3 rounded-xl border border-white/[0.04] bg-white/[0.01] border-l-2 ${blockBorder} flex flex-col justify-between gap-2.5`}
+              >
+                <div>
+                  <h4 className="text-xs font-semibold text-zinc-200">{template.name}</h4>
+                  <span className="text-[10px] text-zinc-500 font-mono mt-0.5 block">
+                    {template.startTime} – {template.endTime}
+                  </span>
+                </div>
+
+                <Select
+                  variant="inline"
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value !== "") {
+                      addTemplateToDay(parseInt(e.target.value), template);
+                      e.target.value = "";
+                    }
+                  }}
+                  className="text-[10px] font-bold text-accent uppercase tracking-wider pr-6 bg-transparent"
+                >
+                  <option value="" className="bg-zinc-900 text-zinc-400">
+                    + Add to day...
+                  </option>
+                  {DAY_NAMES.map((dayName, idx) => (
+                    <option key={idx} value={idx} className="bg-zinc-900 text-zinc-200">
+                      {dayName}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {trainingDays.length === 0 && (
         <div className="glass-card p-4 flex items-center gap-2.5">
           <Dumbbell size={16} className="text-zinc-500 shrink-0" />
@@ -315,6 +484,29 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                       </div>
                     );
                   })}
+
+                  <button
+                    type="button"
+                    disabled={isPending}
+                    onClick={() => {
+                      const newBlock: ContextBlock = {
+                        id: "custom-" + Date.now(),
+                        name: "Custom Block",
+                        startTime: "12:00",
+                        endTime: "13:00",
+                        bufferMinutes: 0,
+                        sphereNames: [],
+                      };
+                      setEditingBlock({
+                        dayOfWeek,
+                        blockIndex: contextBlocks.length,
+                        block: newBlock,
+                      });
+                    }}
+                    className="w-full py-1.5 border border-dashed border-white/[0.08] hover:border-white/[0.2] rounded-lg text-[10px] font-semibold text-zinc-500 hover:text-zinc-300 transition-colors flex items-center justify-center gap-1 mt-1"
+                  >
+                    + Add Custom Block
+                  </button>
                 </div>
               </div>
             </div>
@@ -327,26 +519,54 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="glass-elevated p-6 w-full max-w-sm flex flex-col gap-4 bg-zinc-900/95 border border-white/[0.12] rounded-2xl shadow-2xl">
             <div>
-              <h3 className="text-[15px] font-semibold text-zinc-100">Edit Time Block</h3>
-              <p className="text-[11px] text-zinc-400 mt-0.5">{editingBlock.block.name}</p>
+              <h3 className="text-[15px] font-semibold text-zinc-100">
+                {editingBlock.blockIndex === daysData[editingBlock.dayOfWeek].contextBlocks.length
+                  ? "Add Time Block"
+                  : "Edit Time Block"}
+              </h3>
+              {editingBlock.blockIndex !== daysData[editingBlock.dayOfWeek].contextBlocks.length && (
+                <p className="text-[11px] text-zinc-400 mt-0.5">{editingBlock.block.name}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-3.5 my-2">
-              <label className="flex items-center gap-2.5 cursor-pointer">
-                <Checkbox
-                  checked={editingBlock.block.enabled !== false}
-                  onChange={(e) =>
-                    setEditingBlock((prev) => {
-                      if (!prev) return null;
-                      return {
-                        ...prev,
-                        block: { ...prev.block, enabled: e.target.checked },
-                      };
-                    })
-                  }
-                />
-                <span className="text-xs font-semibold text-zinc-300">Active Block</span>
-              </label>
+              {/* If it's a new custom block, let them type the block name! */}
+              {editingBlock.blockIndex === daysData[editingBlock.dayOfWeek].contextBlocks.length ? (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">Block Name</span>
+                  <Input
+                    type="text"
+                    value={editingBlock.block.name}
+                    onChange={(e) =>
+                      setEditingBlock((prev) => {
+                        if (!prev) return null;
+                        return {
+                          ...prev,
+                          block: { ...prev.block, name: e.target.value },
+                        };
+                      })
+                    }
+                    placeholder="e.g. Study Time"
+                    className="px-2.5 py-1.5 text-xs bg-black/25 text-zinc-200"
+                  />
+                </div>
+              ) : (
+                <label className="flex items-center gap-2.5 cursor-pointer">
+                  <Checkbox
+                    checked={editingBlock.block.enabled !== false}
+                    onChange={(e) =>
+                      setEditingBlock((prev) => {
+                        if (!prev) return null;
+                        return {
+                          ...prev,
+                          block: { ...prev.block, enabled: e.target.checked },
+                        };
+                      })
+                    }
+                  />
+                  <span className="text-xs font-semibold text-zinc-300">Active Block</span>
+                </label>
+              )}
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
@@ -443,23 +663,38 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 mt-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-xs"
-                onClick={() => setEditingBlock(null)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                className="text-xs"
-                onClick={saveBlockChanges}
-              >
-                Save
-              </Button>
+            <div className="flex items-center justify-between gap-2 mt-2 border-t border-white/[0.04] pt-3">
+              {editingBlock.blockIndex !== daysData[editingBlock.dayOfWeek].contextBlocks.length ? (
+                <Button
+                  variant="danger"
+                  size="sm"
+                  className="text-xs"
+                  onClick={deleteBlock}
+                >
+                  Delete Block
+                </Button>
+              ) : (
+                <div />
+              )}
+
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => setEditingBlock(null)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  className="text-xs"
+                  onClick={saveBlockChanges}
+                >
+                  Save
+                </Button>
+              </div>
             </div>
           </div>
         </div>
