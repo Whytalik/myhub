@@ -66,7 +66,18 @@ export default async function JournalPage({
       thoughtService.getBoard(userId),
     ]);
 
-  const inboxThoughtCount = board.find((status) => status.name === "Inbox")?.thoughts.length ?? 0;
+  const inboxThoughtCount = board
+    .filter((status) => {
+      const lowerName = status.name.toLowerCase();
+      return (
+        lowerName === "inbox" ||
+        lowerName === "інбокс" ||
+        lowerName === "беклог" ||
+        lowerName === "backlog" ||
+        lowerName === "вхідні"
+      );
+    })
+    .reduce((sum, status) => sum + status.thoughts.length, 0);
 
   const yesterdayCompletedTasks = yesterdayTasks
     .filter((t) => t.status === "DONE")
