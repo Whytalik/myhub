@@ -66,8 +66,20 @@ export function HabitCard({
 
   const behaviorDetails = BEHAVIOR_DETAILS.filter(({ key }) => habit[key]);
 
+  const getISODateString = (d: Date) => {
+    const isUTCMidnight = d.getUTCHours() === 0 && d.getUTCMinutes() === 0 && d.getUTCSeconds() === 0 && d.getUTCMilliseconds() === 0;
+    if (isUTCMidnight) {
+      return d.toISOString().slice(0, 10);
+    } else {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+  };
+
   const activeDate = date ? new Date(date) : new Date();
-  activeDate.setHours(0, 0, 0, 0);
+  const activeDateStr = getISODateString(activeDate);
 
   const isAvoidance = habit.type === "avoidance";
   const isWeekly = habit.scheduledWeekdays.length < 7;
@@ -76,7 +88,7 @@ export function HabitCard({
     .join(" ");
 
   const isCompletedOnDate = habit.completions.some(
-    (c) => new Date(c.date).getTime() === activeDate.getTime(),
+    (c) => new Date(c.date).toISOString().slice(0, 10) === activeDateStr,
   );
 
   const streak = calculateStreak(habit.completions, habit.scheduledWeekdays);
@@ -86,7 +98,7 @@ export function HabitCard({
 
   const handleToggle = () => {
     startTransition(async () => {
-      const result = await toggleHabitCompletionAction(habit.id, activeDate);
+      const result = await toggleHabitCompletionAction(habit.id, activeDateStr);
       if (result.success) {
         if (!isCompletedOnDate) {
           toast.success(

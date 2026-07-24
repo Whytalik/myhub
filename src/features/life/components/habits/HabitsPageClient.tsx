@@ -36,10 +36,15 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
   const archivedHabits = initialHabits.filter((h) => h.archived);
   const activeChains = initialChains.filter((c) => !c.archived);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const getISODateString = (d: Date) => {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+  const todayStr = getISODateString(new Date());
   const isCompletedToday = (habit: HabitData) =>
-    habit.completions.some((c) => new Date(c.date).getTime() === today.getTime());
+    habit.completions.some((c) => new Date(c.date).toISOString().slice(0, 10) === todayStr);
 
   const chainGroups = activeChains.map((chain) => {
     const habits = activeHabits

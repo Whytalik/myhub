@@ -48,15 +48,25 @@ export async function deleteHabit(userId: string, id: string) {
   return habitRepository.delete(id, userId);
 }
 
-export async function toggleHabitCompletion(userId: string, habitId: string, date: Date) {
+export async function toggleHabitCompletion(userId: string, habitId: string, date: Date | string) {
   const habit = await habitRepository.findById(habitId);
   if (!habit || habit.userId !== userId) throw new Error("Habit not found or unauthorized");
 
-  const startOfDay = getStartOfDay(date);
-  const existing = await habitRepository.findCompletion(habitId, startOfDay);
+  let targetDate: Date;
+  if (typeof date === "string") {
+    const [year, month, day] = date.split("-").map(Number);
+    targetDate = new Date(Date.UTC(year, month - 1, day));
+  } else {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    targetDate = new Date(Date.UTC(year, month, day));
+  }
+
+  const existing = await habitRepository.findCompletion(habitId, targetDate);
 
   if (existing) {
     return habitRepository.deleteCompletion(existing.id);
   }
-  return habitRepository.createCompletion(habitId, startOfDay);
+  return habitRepository.createCompletion(habitId, targetDate);
 }

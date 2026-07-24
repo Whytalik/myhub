@@ -24,7 +24,7 @@ export async function deleteHabitAction(id: string): Promise<ActionResult<void>>
 
 export async function toggleHabitCompletionAction(
   habitId: string,
-  date: Date,
+  date: Date | string,
 ): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
     await habitService.toggleHabitCompletion(userId, habitId, date);

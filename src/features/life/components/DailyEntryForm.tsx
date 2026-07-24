@@ -10,8 +10,6 @@ import { NutritionSection } from "./sections/NutritionSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
 import { TaskReviewSection } from "./sections/TaskReviewSection";
 import { StandupSection } from "./sections/StandupSection";
-import { ConfidenceSection } from "./sections/ConfidenceSection";
-import { PdcaSection } from "./sections/PdcaSection";
 import {
   upsertEntryAction,
   setDayStartedAction,
@@ -214,7 +212,20 @@ export function DailyEntryForm({
 
   const todayISO = todayStr;
   const tasksDone = tasks.filter((t) => t.status === "DONE").length;
-  const habitsDone = habits.filter((h) =>
+
+  const [year, month, day] = todayStr.split("-").map(Number);
+  const localDate = new Date(year, month - 1, day);
+  const dayOfWeek = localDate.getDay();
+
+  const todaysHabits = habits.filter((habit) => {
+    const isScheduled = habit.scheduledWeekdays.includes(dayOfWeek);
+    const isCompletedToday = habit.completions.some(
+      (c) => new Date(c.date).toISOString().slice(0, 10) === todayStr
+    );
+    return isScheduled || isCompletedToday;
+  });
+
+  const habitsDone = todaysHabits.filter((h) =>
     h.completions.some((c) => new Date(c.date).toISOString().slice(0, 10) === todayISO),
   ).length;
 
@@ -246,7 +257,7 @@ export function DailyEntryForm({
         stats={{
           tasksTotal: tasks.length,
           tasksDone,
-          habitsTotal: habits.length,
+          habitsTotal: todaysHabits.length,
           habitsDone,
           sleepHours: data.sleepHours ?? null,
           sleepQuality: data.sleepQuality ?? null,
@@ -374,22 +385,26 @@ export function DailyEntryForm({
           },
           {
             id: "habits",
-            label: `Habits (${habits.length})`,
+            label: `Habits (${habitsDone}/${todaysHabits.length})`,
             content: (
               <div>
-                {habits.length === 0 ? (
+                {todaysHabits.length === 0 ? (
                   <div className="glass-card p-8 flex flex-col items-center gap-3 text-center">
                     <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/10 text-accent">
                       <SparklesIcon size={32} />
                     </div>
-                    <p className="text-panel-title">No habits defined</p>
+                    <p className="text-panel-title">
+                      {habits.length === 0 ? "No habits defined" : "No habits scheduled for today"}
+                    </p>
                     <p className="text-caption max-w-sm">
-                      Configure your habits in the Habit Tracker to see them here.
+                      {habits.length === 0
+                        ? "Configure your habits in the Habit Tracker to see them here."
+                        : "Enjoy your day! Or configure your habits in the Habit Tracker."}
                     </p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-3">
-                    {habits.map((habit) => (
+                    {todaysHabits.map((habit) => (
                       <HabitCard
                         key={habit.id}
                         habit={habit}
@@ -508,15 +523,11 @@ export function DailyEntryForm({
                   </div>
                 </div>
 
-                <ConfidenceSection log={data.confidenceLog ?? null} onChange={patch} />
+
 
                 <TaskReviewSection tasks={tasks} date={todayStr} />
 
-                <PdcaSection
-                  pdcaLog={data.pdcaLog ?? null}
-                  standupPlan={data.standupPlan ?? null}
-                  onChange={patch}
-                />
+
 
                 <ReflectionSection
                   winToday={data.winToday ?? null}
