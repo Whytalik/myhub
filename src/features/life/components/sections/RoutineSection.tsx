@@ -20,7 +20,8 @@ import Link from "next/link";
 import { getMorningRoutine, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
 import { Input } from "@/components/ui/inputs/input";
 
-const SKIP_REASONS = ["Недосипання", "Хвороба / симптоми", "Брак часу"] as const;
+const SKIP_REASONS = ["Недосипання", "Хвороба / симптоми", "Брак часу", "Інше"] as const;
+const CUSTOM_SKIP_REASON = "Інше";
 
 const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   AlarmClock,
@@ -87,9 +88,16 @@ export function RoutineSection({
     setIsSkipPanelOpen(true);
   };
 
+  const isCustomReason = selectedReason === CUSTOM_SKIP_REASON;
+  const canConfirmSkip = isCustomReason ? !!skipNote.trim() : !!selectedReason;
+
   const confirmSkip = () => {
-    if (!selectedReason) return;
-    const reason = skipNote.trim() ? `${selectedReason} — ${skipNote.trim()}` : selectedReason;
+    if (!canConfirmSkip) return;
+    const reason = isCustomReason
+      ? skipNote.trim()
+      : skipNote.trim()
+        ? `${selectedReason} — ${skipNote.trim()}`
+        : selectedReason;
     onChange({ gymSkipped: true, gymSkipReason: reason });
     setIsSkipPanelOpen(false);
   };
@@ -162,7 +170,7 @@ export function RoutineSection({
               <Input
                 value={skipNote}
                 onChange={(e) => setSkipNote(e.target.value)}
-                placeholder="Деталі (необов'язково)..."
+                placeholder={isCustomReason ? "Опиши причину..." : "Деталі (необов'язково)..."}
                 className="text-xs"
               />
               <div className="flex justify-end gap-2">
@@ -176,7 +184,7 @@ export function RoutineSection({
                 <button
                   type="button"
                   onClick={confirmSkip}
-                  disabled={!selectedReason}
+                  disabled={!canConfirmSkip}
                   className="px-2.5 py-1 rounded-lg text-xs font-medium bg-accent text-white hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
                   Підтвердити
