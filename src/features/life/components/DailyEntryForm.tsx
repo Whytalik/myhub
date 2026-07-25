@@ -220,7 +220,7 @@ export function DailyEntryForm({
   const todaysHabits = habits.filter((habit) => {
     const isScheduled = habit.scheduledWeekdays.includes(dayOfWeek);
     const isCompletedToday = habit.completions.some(
-      (c) => new Date(c.date).toISOString().slice(0, 10) === todayStr
+      (c) => new Date(c.date).toISOString().slice(0, 10) === todayStr,
     );
     return isScheduled || isCompletedToday;
   });
@@ -499,9 +499,9 @@ export function DailyEntryForm({
                     </div>
                     <div className="flex items-center gap-1">
                       {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => {
-                        const isActive = data.eveningEnergy === value;
+                        const isFilled = data.eveningEnergy != null && value <= data.eveningEnergy;
                         const levelClass = `h-8 flex-1 rounded-lg text-xs font-mono font-semibold transition-colors duration-150 ${
-                          isActive
+                          isFilled
                             ? "bg-accent text-white"
                             : "bg-white/[0.03] text-zinc-500 hover:bg-white/5 hover:text-zinc-200"
                         }`;
@@ -523,11 +523,7 @@ export function DailyEntryForm({
                   </div>
                 </div>
 
-
-
                 <TaskReviewSection tasks={tasks} date={todayStr} />
-
-
 
                 <ReflectionSection
                   winToday={data.winToday ?? null}

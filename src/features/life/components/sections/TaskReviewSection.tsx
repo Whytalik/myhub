@@ -27,6 +27,10 @@ export function TaskReviewSection({ tasks, date }: Props) {
   const [customReason, setCustomReason] = useState("");
   const [showDone, setShowDone] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [isBulkPanelOpen, setIsBulkPanelOpen] = useState(false);
+  const [bulkPreset, setBulkPreset] = useState<string | null>(null);
+  const [bulkCustomReason, setBulkCustomReason] = useState("");
+  const [isBulkPending, startBulkTransition] = useTransition();
 
   const tomorrowISO = useMemo(() => {
     const [y, m, d] = date.split("-").map(Number);
@@ -68,6 +72,35 @@ export function TaskReviewSection({ tasks, date }: Props) {
   const handleDismiss = (taskId: string) => {
     setDismissedTaskIds((p) => [...p, taskId]);
     if (expandedId === taskId) setExpandedId(null);
+  };
+
+  const openBulkPanel = () => {
+    setExpandedId(null);
+    setBulkPreset(null);
+    setBulkCustomReason("");
+    setIsBulkPanelOpen(true);
+  };
+
+  const handleBulkConfirm = () => {
+    const reason = bulkPreset ?? (bulkCustomReason.trim() || null);
+    const taskIds = incompleteTasks.map((t) => t.id);
+    startBulkTransition(async () => {
+      const results = await Promise.all(
+        taskIds.map((taskId) => carryOverTaskAction(taskId, reason, tomorrowISO)),
+      );
+      const succeededIds = taskIds.filter((_, i) => results[i].success);
+      const failedCount = results.length - succeededIds.length;
+      if (succeededIds.length > 0) {
+        setCarriedTaskIds((p) => [...p, ...succeededIds]);
+        toast.success(`Перенесено на завтра: ${succeededIds.length}`);
+      }
+      if (failedCount > 0) {
+        toast.error(`Не вдалося перенести: ${failedCount}`);
+      }
+      setIsBulkPanelOpen(false);
+      setBulkPreset(null);
+      setBulkCustomReason("");
+    });
   };
 
   if (total === 0) return null;
@@ -143,6 +176,67 @@ export function TaskReviewSection({ tasks, date }: Props) {
 
       {incompleteTasks.length > 0 ? (
         <div className="flex flex-col gap-2">
+          {incompleteTasks.length > 1 && !isBulkPanelOpen && (
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={openBulkPanel}
+                className="flex items-center gap-1 px-2 py-1 rounded-md text-xs text-accent hover:bg-accent/10 transition-colors"
+              >
+                <RefreshCw size={10} />
+                Перенести всі ({incompleteTasks.length})
+              </button>
+            </div>
+          )}
+
+          {isBulkPanelOpen && (
+            <div className="flex flex-col gap-2 p-2.5 rounded-lg bg-accent/5 border border-accent/20">
+              <span className="text-caption">
+                Чому не виконав {incompleteTasks.length} завдань?
+              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {PRESETS.map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setBulkPreset((p) => (p === preset ? null : preset))}
+                    className={presetChipClass(bulkPreset === preset)}
+                  >
+                    {preset}
+                  </button>
+                ))}
+              </div>
+              <input
+                type="text"
+                value={bulkCustomReason}
+                onChange={(e) => {
+                  setBulkCustomReason(e.target.value);
+                  if (e.target.value) setBulkPreset(null);
+                }}
+                placeholder="Інша причина..."
+                className="glass-input px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 w-full"
+              />
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsBulkPanelOpen(false)}
+                  className="px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors"
+                >
+                  Скасувати
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBulkConfirm}
+                  disabled={isBulkPending}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium bg-accent text-white hover:opacity-90 transition-opacity disabled:opacity-50"
+                >
+                  <RefreshCw size={10} />
+                  Перенести всі
+                </button>
+              </div>
+            </div>
+          )}
+
           {incompleteTasks.map((task) => (
             <div key={task.id} className="flex flex-col gap-2 p-2.5 rounded-lg bg-white/[0.02]">
               <div className="flex items-center gap-2">
