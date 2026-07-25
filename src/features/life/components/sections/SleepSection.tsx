@@ -234,7 +234,7 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
                 key={value}
                 type="button"
                 onClick={() => onChange({ sleepQuality: quality === value ? null : value })}
-                className={levelButtonClass(quality === value)}
+                className={levelButtonClass(quality !== null && value <= quality)}
               >
                 {value}
               </button>

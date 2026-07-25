@@ -204,7 +204,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
               key={value}
               type="button"
               onClick={() => onChange({ energy: energy === value ? null : value })}
-              className={levelButtonClass(energy === value)}
+              className={levelButtonClass(energy !== null && value <= energy)}
             >
               {value}
             </button>
@@ -230,7 +230,7 @@ export function EnergySection({ energy, mood, note, onChange }: Props) {
               key={value}
               type="button"
               onClick={() => onChange({ mood: mood === value ? null : value })}
-              className={levelButtonClass(mood === value)}
+              className={levelButtonClass(mood !== null && value <= mood)}
             >
               {value}
             </button>

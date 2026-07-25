@@ -1,5 +1,6 @@
 "use client";
 import { Textarea } from "@/components/ui/inputs/textarea";
+import { HintTooltip } from "@/components/ui/overlays/tooltip";
 
 import { Trophy, RefreshCw, Heart, Trash2, Search } from "lucide-react";
 
@@ -24,30 +25,35 @@ const PROMPTS = [
     icon: Trophy,
     label: "Top Win",
     placeholder: "What specific thing went well today?",
+    hint: 'Write one concrete win and why it happened. Naming the cause is what makes this work — in Seligman\'s "Three Good Things" study, people who did it daily were measurably happier even 6 months later.',
   },
   {
     key: "gratitude" as const,
     icon: Heart,
     label: "Grateful For",
     placeholder: "A specific person, moment, or detail",
+    hint: 'Name a specific person, moment, or detail — not a generic "family" or "health". Fresh, concrete entries keep gratitude effective; repeating the same vague items dulls the benefit.',
   },
   {
     key: "brainDump" as const,
     icon: Trash2,
     label: "Brain Dump",
     placeholder: "Clear your mind before sleep. Worries, ideas, random thoughts...",
+    hint: "Unload every open loop: worries, ideas, tomorrow's tasks. Writing them out offloads working memory — in a Baylor sleep-lab study, a specific pre-bed to-do list helped people fall asleep ~9 minutes faster.",
   },
   {
     key: "frictionToday" as const,
     icon: Search,
     label: "Kaizen: Friction Today",
     placeholder: "What took more time or energy than it should have?",
+    hint: "Log one thing that took more time or energy than it deserved. Treat it as data, not self-blame — you're collecting friction points so tomorrow's fix has a real target.",
   },
   {
     key: "improveTomorrow" as const,
     icon: RefreshCw,
     label: "Kaizen: Fix for Tomorrow",
     placeholder: "One small tweak to make it easier next time",
+    hint: "Pick one tiny tweak that removes today's friction — so small it's impossible to skip. Kaizen compounds through 1% adjustments, not grand overhauls; check weekly which tweaks stuck.",
   },
 ];
 
@@ -70,7 +76,7 @@ export function ReflectionSection({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {PROMPTS.map(({ key, icon: Icon, label, placeholder }) => {
+        {PROMPTS.map(({ key, icon: Icon, label, placeholder, hint }) => {
           const hasValue = !!values[key];
           const labelClass = `text-label ${hasValue ? "text-accent" : ""}`;
 
@@ -79,6 +85,7 @@ export function ReflectionSection({
               <div className="flex items-center gap-1.5 text-zinc-500">
                 <Icon size={13} />
                 <label className={labelClass}>{label}</label>
+                <HintTooltip hint={hint} />
               </div>
               <Textarea
                 value={values[key] ?? ""}
