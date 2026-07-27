@@ -21,7 +21,6 @@ import {
   FileText,
   Link2Off,
   Eye,
-  EyeOff,
   Trash2,
   Calendar,
   LayoutGrid,
@@ -151,8 +150,8 @@ function UnifiedTaskForm({
   setSphereId,
   parentId,
   setParentId,
-  isPrivate,
-  setIsPrivate,
+  isPrivate: _isPrivate,
+  setIsPrivate: _setIsPrivate,
   plannedDate,
   setPlannedDate,
   plannedTime,
@@ -210,8 +209,6 @@ function UnifiedTaskForm({
   const timeCheckboxLabelClass = "flex items-center gap-1.5 text-xs text-zinc-400 cursor-pointer";
   const deadlineToggleClass =
     "text-xs font-semibold text-accent hover:opacity-80 transition-opacity";
-  const privateToggleClass =
-    "glass-card p-3 flex items-center gap-3 text-left hover:border-white/[0.12] transition-colors";
 
   const renderStepContent = () => {
     const sphere = spheres.find((s) => s.id === sphereId);
@@ -623,8 +620,8 @@ function TaskDetail({
   sphereId,
   parentId,
   setParentId,
-  isPrivate,
-  setIsPrivate,
+  isPrivate: _isPrivate,
+  setIsPrivate: _setIsPrivate,
   plannedDate,
   setPlannedDate,
   plannedTime,

@@ -89,9 +89,9 @@ export default async function JournalPage({
         morningRoutine: (raw.morningRoutine as RoutineMap | null) ?? null,
         eveningRoutine: (raw.eveningRoutine as RoutineMap | null) ?? null,
 
-        startedAt: ((raw as any).startedAt as Date | null) ?? null,
+        startedAt: raw.startedAt ?? null,
 
-        completedAt: ((raw as any).completedAt as Date | null) ?? null,
+        completedAt: raw.completedAt ?? null,
       }
     : null;
 

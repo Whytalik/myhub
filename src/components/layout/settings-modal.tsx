@@ -3,8 +3,14 @@
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { useSpace } from "@/components/providers/space-provider";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Moon, Palette, Sun, X, CloudSun, Leaf, Snowflake, Sprout, Utensils } from "lucide-react";
+
+function getSeasonFromCookie(): string {
+  if (typeof document === "undefined") return "auto";
+  const match = document.cookie.match(/(^| )nutrition-menu-season=([^;]+)/);
+  return match ? decodeURIComponent(match[2]) : "auto";
+}
 
 export function SettingsModal({
   isOpen,
@@ -16,14 +22,7 @@ export function SettingsModal({
 }) {
   const router = useRouter();
   const { theme, setTheme } = useSpace();
-  const [season, setSeasonState] = useState<string>("auto");
-
-  useEffect(() => {
-    const match = document.cookie.match(/(^| )nutrition-menu-season=([^;]+)/);
-    if (match) {
-      setSeasonState(decodeURIComponent(match[2]));
-    }
-  }, [isOpen]);
+  const [season, setSeasonState] = useState<string>(getSeasonFromCookie);
 
   const setSeason = (newSeason: string) => {
     setSeasonState(newSeason);

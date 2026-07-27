@@ -739,7 +739,7 @@ export function PlanningWizardClient({
         toast.success(isProject ? "Project created successfully!" : "Atom created successfully!");
         if (isProject && result.data?.project) {
           // Add project to backlog state
-          setBacklogProjects((prev) => [result.data.project, ...prev]);
+          setBacklogProjects((prev) => [result.data.project as unknown as SprintProject, ...prev]);
         }
       } else {
         // Rollback on failure
@@ -768,7 +768,7 @@ export function PlanningWizardClient({
         setShowAddObjectiveForm(false);
         const newObj = {
           ...result.data,
-          sphere: spheres.find((s) => s.id === newObjectiveSphereId),
+          sphere: spheres.find((s) => s.id === newObjectiveSphereId) ?? null,
           projects: [],
         };
         setSprint((prev: SprintData) => ({

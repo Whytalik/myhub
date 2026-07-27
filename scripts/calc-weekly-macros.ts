@@ -73,7 +73,7 @@ console.log(
 console.log();
 
 console.log("=== Daily macros for Vitalii (SUMMER) ===");
-let weekTotal = { kcal: 0, protein: 0, fat: 0, carbs: 0 };
+const weekTotal = { kcal: 0, protein: 0, fat: 0, carbs: 0 };
 
 for (const day of SUMMER_WEEK_PLAN) {
   const macros = calculateDayMacrosRaw(day.meals, "vitalii");

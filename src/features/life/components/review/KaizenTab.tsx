@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import {
   Compass,
   CheckCircle2,
-  AlertTriangle,
   ArrowRightLeft,
   Trash2,
   GitBranch,
@@ -25,6 +24,7 @@ import {
   Users,
   Wrench,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
@@ -34,10 +34,11 @@ import {
 } from "@/features/life/actions/task-actions";
 import { saveSprintReviewAction } from "@/features/life/actions/sprint-actions";
 import type { TaskData, WeekSummary, DailyVector } from "@/features/life/types";
+import type { Prisma } from "@/app/generated/prisma";
 
 const VECTOR_PROMPTS: {
   key: keyof DailyVector;
-  icon: any;
+  icon: LucideIcon;
   label: string;
   placeholder: string;
 }[] = [
@@ -75,7 +76,16 @@ interface KaizenTabProps {
     endDate: Date;
     status: string;
   } | null;
-  sprintReviews: any[];
+  sprintReviews: {
+    id: string;
+    sprintId: string;
+    weekNumber: number;
+    score: number | null;
+    wins: string | null;
+    challenges: string | null;
+    adjustments: string | null;
+    kaizenVector: DailyVector | null;
+  }[];
   weekStart: Date;
   summary: WeekSummary;
 }
@@ -105,7 +115,7 @@ export function KaizenTab({
   const currentReview = activeSprint
     ? sprintReviews.find(
         (r) => r.sprintId === activeSprint.id && r.weekNumber === weekNum
-      )
+      ) ?? null
     : null;
 
   return (
@@ -133,10 +143,26 @@ export function KaizenTab({
 // Inner form component with re-keyed state
 interface KaizenFormInnerProps {
   tasks: TaskData[];
-  activeSprint: any;
+  activeSprint: {
+    id: string;
+    number: number;
+    year: number;
+    startDate: Date;
+    endDate: Date;
+    status: string;
+  } | null;
   weekStart: Date;
   weekNum: number | null;
-  currentReview: any;
+  currentReview: {
+    id: string;
+    sprintId: string;
+    weekNumber: number;
+    score: number | null;
+    wins: string | null;
+    challenges: string | null;
+    adjustments: string | null;
+    kaizenVector: DailyVector | null;
+  } | null;
   summary: WeekSummary;
   localTasks: TaskData[];
   setLocalTasks: React.Dispatch<React.SetStateAction<TaskData[]>>;
@@ -146,7 +172,7 @@ interface KaizenFormInnerProps {
   setSubtaskTitle: (title: string) => void;
   isPending: boolean;
   startTransition: React.TransitionStartFunction;
-  router: any;
+  router: ReturnType<typeof import("next/navigation").useRouter>;
 }
 
 function KaizenFormInner({
@@ -176,7 +202,7 @@ function KaizenFormInner({
   const [challenges, setChallenges] = useState<string>(currentReview?.challenges ?? "");
   const [adjustments, setAdjustments] = useState<string>(currentReview?.adjustments ?? "");
   const [isVectorExpanded, setIsVectorExpanded] = useState(false);
-  const [kaizenVector, setKaizenVector] = useState<any>(
+  const [kaizenVector, setKaizenVector] = useState<DailyVector>(
     currentReview?.kaizenVector ?? {
       toImprove: null,
       toDo: null,
@@ -254,7 +280,7 @@ function KaizenFormInner({
         toast.success("Created a smaller atom!");
         setSubtaskTitle("");
         setDecomposingTaskId(null);
-        const newSub: TaskData = subtaskResult.data as any;
+        const newSub: TaskData = subtaskResult.data as TaskData;
         setLocalTasks((prev) => [newSub, ...prev]);
       } else {
         toast.error(subtaskResult.error || "Failed to create subtask");
@@ -278,7 +304,7 @@ function KaizenFormInner({
           wins,
           challenges,
           adjustments,
-          kaizenVector,
+          kaizenVector: kaizenVector as unknown as Prisma.InputJsonValue,
         }
       );
 
@@ -338,7 +364,7 @@ function KaizenFormInner({
       return (
         <h4 className="text-sm font-semibold text-purple-400 flex items-center gap-2 font-mono">
           <Sparkles size={14} />
-          Sprint Review / "Annual" Analysis (Week 12 / 12)
+          Sprint Review / &quot;Annual&quot; Analysis (Week 12 / 12)
         </h4>
       );
     }
@@ -625,7 +651,7 @@ function KaizenFormInner({
               {isVectorExpanded && (
                 <div className="grid grid-cols-1 gap-4 mt-4 bg-white/[0.01] border border-white/[0.04] p-4 rounded-xl">
                   {VECTOR_PROMPTS.map(({ key, icon: Icon, label, placeholder }) => {
-                    const value = kaizenVector ? (kaizenVector as any)[key] : null;
+                    const value = kaizenVector ? kaizenVector[key] : null;
                     const hasValue = !!value;
                     const labelClass = `text-[11px] font-mono ${hasValue ? "text-accent font-semibold" : "text-zinc-500"}`;
 
@@ -638,7 +664,7 @@ function KaizenFormInner({
                         <Textarea
                           value={value ?? ""}
                           onChange={(e) =>
-                            setKaizenVector((prev: any) => ({
+                            setKaizenVector((prev: DailyVector) => ({
                               ...(prev || {}),
                               [key]: e.target.value || null,
                             }))

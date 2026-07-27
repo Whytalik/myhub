@@ -5,6 +5,8 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { getSprintDashboard } from "@/features/life/services/sprint-service";
 import { SprintKanbanClient } from "@/features/life/components/sprints/SprintKanbanClient";
 
+type SprintKanbanClientProps = React.ComponentProps<typeof SprintKanbanClient>;
+
 export const metadata: Metadata = {
   title: "Sprint Dashboard",
 };
@@ -28,9 +30,9 @@ export default async function SprintKanbanPage() {
         description="Analyze goal progress, evaluate weeks (W1–W12), and coordinate tactical plans."
       />
       <SprintKanbanClient
-        sprint={dashboard.sprint as any}
-        allTasks={dashboard.allTasks as any}
-        sprintReviews={dashboard.sprintReviews as any}
+        sprint={dashboard.sprint as unknown as SprintKanbanClientProps['sprint']}
+        allTasks={dashboard.allTasks as unknown as SprintKanbanClientProps['allTasks']}
+        sprintReviews={dashboard.sprintReviews as unknown as SprintKanbanClientProps['sprintReviews']}
       />
     </div>
   );

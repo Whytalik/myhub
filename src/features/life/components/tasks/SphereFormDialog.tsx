@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
@@ -31,7 +31,6 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
     register,
     handleSubmit,
     control,
-    watch,
     formState: { errors },
   } = useForm<SphereFormData>({
     resolver: zodResolver(sphereSchema),
@@ -42,9 +41,9 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
     },
   });
 
-  const color = watch("color");
-  const icon = watch("icon");
-  const name = watch("name");
+  const color = useWatch({ control, name: "color" });
+  const icon = useWatch({ control, name: "icon" });
+  const name = useWatch({ control, name: "name" });
 
   const onSubmit = (data: SphereFormData) => {
     startTransition(async () => {

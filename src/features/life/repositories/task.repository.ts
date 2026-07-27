@@ -100,8 +100,8 @@ export const taskRepository = {
   async delete(id: string, userId: string) {
     try {
       return await prisma.task.delete({ where: { id, userId } });
-    } catch (error: any) {
-      if (error.code === "P2025") {
+    } catch (error: unknown) {
+      if (error instanceof Error && "code" in error && error.code === "P2025") {
         return null;
       }
       throw error;

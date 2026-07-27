@@ -1,6 +1,7 @@
 "use server";
 
 import * as thoughtService from "../services/thought-service";
+import type { DecomposeThoughtResult } from "../services/thought-service";
 import { invalidateThoughtCache } from "@/lib/cache/revalidate";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
@@ -94,12 +95,12 @@ export async function decomposeThoughtAction(input: {
   resistance?: number | null;
   projectId?: string | null;
   parentId?: string | null;
-}): Promise<ActionResult<any>> {
+}): Promise<ActionResult<import("@/features/life/services/thought-service").DecomposeThoughtResult>> {
   return withAction(async (userId) => {
     const result = await thoughtService.decomposeThought(userId, input);
     invalidateThoughtCache(userId);
     const { invalidateTaskCache } = await import("@/lib/cache/revalidate");
     invalidateTaskCache(userId);
-    return result;
+    return result as DecomposeThoughtResult;
   });
 }

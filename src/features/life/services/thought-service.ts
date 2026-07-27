@@ -4,7 +4,7 @@ import { thoughtRepository } from "../repositories/thought.repository";
 import { prisma } from "@/lib/db/prisma";
 import { sphereRepository } from "../repositories/sphere.repository";
 import { DEFAULT_THOUGHT_STATUSES } from "../constants";
-import { Prisma } from "@/app/generated/prisma";
+import { Prisma, type TaskPriority } from "@/app/generated/prisma";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
 import { getThoughtTypeConfig, type ThoughtType } from "../logic/thought-types";
 import { FILTER_OUTCOME_STATUS, type FilterOutcome } from "../logic/filter-outcomes";
@@ -168,6 +168,12 @@ export async function moveThought(
   );
 }
 
+export type DecomposeThoughtResult = {
+  type: "task" | "project";
+  task: { id: string; [key: string]: unknown } | null;
+  project: { id: string; [key: string]: unknown } | null;
+};
+
 export async function decomposeThought(
   userId: string,
   input: {
@@ -241,8 +247,7 @@ export async function decomposeThought(
           title,
           description: formattedDescription || null,
           status: "TODO",
-          priority: priority as any,
-          sphereId: sphereId || thought.sphereId,
+          priority: priority as TaskPriority,          sphereId: sphereId || thought.sphereId,
           resistance,
           depth: 0,
           projectId: projectId || undefined,
@@ -274,8 +279,7 @@ export async function decomposeThought(
             title: atomTitle,
             description: atomDescription || null,
             status: "TODO",
-            priority: priority as any,
-            projectId: createdProject.id,
+            priority: priority as TaskPriority,            projectId: createdProject.id,
             sphereId: sphereId || thought.sphereId,
             resistance,
             depth: 0,

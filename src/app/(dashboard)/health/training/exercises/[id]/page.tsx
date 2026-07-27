@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import * as exerciseService from "@/features/health/training/services/exercise-service";
 import { EXERCISE_DETAILS } from "@/features/health/training/data/exercise-details";
 import { ExerciseDetailClient } from "@/features/health/training/components/ExerciseDetailClient";
+import type { TrackingType } from "@/features/health/training/types";
 
 interface ExerciseDetailPageProps {
   params: Promise<{ id: string }>;
@@ -42,7 +43,7 @@ export default async function ExerciseDetailPage({ params }: ExerciseDetailPageP
     <ExerciseDetailClient
       exercise={{
         ...exercise,
-        trackingType: exercise.trackingType as any,
+        trackingType: exercise.trackingType as TrackingType,
       }}
       staticDetails={details}
     />

@@ -94,7 +94,7 @@ export function HabitFormDialog({
   });
 
   const habitType = useWatch({ control, name: "type" });
-  const selectedSphereId = useWatch({ control, name: "sphereId" });
+  const _selectedSphereId = useWatch({ control, name: "sphereId" });
   const isAvoidance = habitType === "avoidance";
 
   const onSubmit = (data: HabitFormData) => {
@@ -142,7 +142,7 @@ export function HabitFormDialog({
     "text-zinc-400 border-white/[0.08] hover:text-zinc-200 hover:bg-white/5";
   const activeChipClass = "bg-accent/15 text-accent border-accent/30";
   const iconInputWrapClass = "glass-input flex items-center gap-2 px-3";
-  const advancedActive = showAdvanced || showBehaviorDesign;
+  const _advancedActive = showAdvanced || showBehaviorDesign;
 
   return (
     <Dialog

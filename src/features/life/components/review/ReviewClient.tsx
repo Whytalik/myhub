@@ -10,7 +10,7 @@ import {
   compareWeeks,
   extractPatterns,
 } from "@/features/life/logic/review-analytics";
-import type { ReviewEntryData, HabitData, TaskData, WeekRange } from "@/features/life/types";
+import type { ReviewEntryData, HabitData, TaskData, WeekRange, DailyVector } from "@/features/life/types";
 import { SummaryTab } from "./SummaryTab";
 import { TrendsTab } from "./TrendsTab";
 import { PatternsTab } from "./PatternsTab";
@@ -21,8 +21,24 @@ interface Props {
   entries: ReviewEntryData[];
   habits: HabitData[];
   tasks: TaskData[];
-  activeSprint: any | null;
-  sprintReviews: any[];
+  activeSprint: {
+    id: string;
+    number: number;
+    year: number;
+    startDate: Date;
+    endDate: Date;
+    status: string;
+  } | null;
+  sprintReviews: {
+    id: string;
+    sprintId: string;
+    weekNumber: number;
+    score: number | null;
+    wins: string | null;
+    challenges: string | null;
+    adjustments: string | null;
+    kaizenVector: DailyVector | null;
+  }[];
 }
 
 function formatRange(range: WeekRange): string {

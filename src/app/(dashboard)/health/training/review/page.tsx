@@ -237,7 +237,7 @@ export default async function TrainingReviewPage({ searchParams }: TrainingRevie
       {/* Muscle Group Progression Grid */}
       <div className="flex flex-col gap-3">
         <h2 className="text-panel-title font-semibold text-zinc-300 pl-1">
-          Розподіл навантаження на м'язи
+          Розподіл навантаження на м&apos;язи
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {targets.map((item) => {

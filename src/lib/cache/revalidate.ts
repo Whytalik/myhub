@@ -37,7 +37,7 @@ export function invalidateHabitChainCache(userId: string) {
   revalidateTag("habits-review", INVALIDATE_PROFILE);
 }
 
-export function invalidateScheduleCache(userId: string) {
+export function invalidateScheduleCache(_userId: string) {
   revalidateTag("week-templates", INVALIDATE_PROFILE);
 }
 

@@ -8,7 +8,6 @@ import {
   LayoutGrid,
   Lightbulb,
   LineChart,
-  ListChecks,
   Sparkles,
   Utensils,
   Zap,

@@ -4,13 +4,35 @@ import { getAllTasks } from "./task-service";
 import * as sprintService from "./sprint-service";
 import { prisma } from "@/lib/db/prisma";
 import type { ReviewEntryData, HabitData, TaskData } from "../types";
+import type { DailyVector } from "../types";
+
+interface SprintReviewData {
+  id: string;
+  sprintId: string;
+  weekNumber: number;
+  date: Date;
+  score: number | null;
+  wins: string | null;
+  challenges: string | null;
+  adjustments: string | null;
+  kaizenVector: DailyVector | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export interface ReviewData {
   entries: ReviewEntryData[];
   habits: HabitData[];
   tasks: TaskData[];
-  activeSprint: any | null;
-  sprintReviews: any[];
+  activeSprint: {
+    id: string;
+    number: number;
+    year: number;
+    startDate: Date;
+    endDate: Date;
+    status: string;
+  } | null;
+  sprintReviews: SprintReviewData[];
 }
 
 export async function getReviewData(userId: string): Promise<ReviewData> {
@@ -31,6 +53,6 @@ export async function getReviewData(userId: string): Promise<ReviewData> {
     habits: habits as unknown as HabitData[],
     tasks,
     activeSprint: dashboard.sprint,
-    sprintReviews,
+    sprintReviews: sprintReviews as unknown as SprintReviewData[],
   };
 }

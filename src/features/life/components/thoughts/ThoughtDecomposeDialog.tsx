@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { FolderKanban, CheckSquare, AlertTriangle, ChevronRight, ChevronLeft } from "lucide-react";
+import { FolderKanban, CheckSquare, AlertTriangle, ChevronLeft } from "lucide-react";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";

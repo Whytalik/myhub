@@ -7,6 +7,8 @@ import * as taskService from "@/features/life/services/task-service";
 import { getSprintDashboard } from "@/features/life/services/sprint-service";
 import { PlanningWizardClient } from "@/features/life/components/planning/PlanningWizardClient";
 
+type PlanningWizardClientProps = React.ComponentProps<typeof PlanningWizardClient>;
+
 export const metadata: Metadata = {
   title: "Planning Wizard",
 };
@@ -37,12 +39,12 @@ export default async function PlanningWizardPage() {
         description="Guided Flow: Brain Dump → Prime Filter → Decomposition → Kanban."
       />
       <PlanningWizardClient
-        initialThoughts={thoughts as any}
+        initialThoughts={thoughts as unknown as PlanningWizardClientProps['initialThoughts']}
         spheres={spheres}
-        activeSprint={dashboard.sprint as any}
-        initialBacklogProjects={dashboard.backlogProjects as any}
-        initialColumns={dashboard.columns as any}
-        initialStandaloneAtoms={dashboard.standaloneAtoms as any}
+        activeSprint={dashboard.sprint as unknown as PlanningWizardClientProps['activeSprint']}
+        initialBacklogProjects={dashboard.backlogProjects as unknown as PlanningWizardClientProps['initialBacklogProjects']}
+        initialColumns={dashboard.columns as unknown as PlanningWizardClientProps['initialColumns']}
+        initialStandaloneAtoms={dashboard.standaloneAtoms as unknown as PlanningWizardClientProps['initialStandaloneAtoms']}
       />
     </div>
   );
