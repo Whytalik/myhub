@@ -45,7 +45,7 @@ import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
-import { format, addWeeks, startOfWeek, addDays, endOfWeek, isSameWeek } from "date-fns";
+import { format, addWeeks, startOfWeek, addDays, endOfWeek, isSameWeek, isToday } from "date-fns";
 import { TaskCreateForm, type TaskCreateFormData } from "./TaskCreateForm";
 import { WeeklyStatusBoard } from "@/features/life/components/sprints/WeeklyStatusBoard";
 
@@ -146,7 +146,9 @@ function AtomCard({
         {atom.title}
       </span>
       {atom.resistance != null && (
-        <span className={`text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded shrink-0 ${resistanceClass}`}>
+        <span
+          className={`text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded shrink-0 ${resistanceClass}`}
+        >
           {atom.resistance}/5
         </span>
       )}
@@ -204,8 +206,12 @@ export function PlanningWizardClient({
     ...activeSprint,
     objectives: activeSprint?.objectives || [],
   } as SprintData);
-  const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(initialBacklogProjects || []);
-  const [standaloneAtoms, setStandaloneAtoms] = useState<SprintTask[]>(initialStandaloneAtoms || []);
+  const [backlogProjects, setBacklogProjects] = useState<SprintProject[]>(
+    initialBacklogProjects || [],
+  );
+  const [standaloneAtoms, setStandaloneAtoms] = useState<SprintTask[]>(
+    initialStandaloneAtoms || [],
+  );
 
   // Step 4 state
   const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
@@ -224,8 +230,10 @@ export function PlanningWizardClient({
     const objectives = sprint?.objectives || [];
     return objectives.flatMap((obj: SprintObjective) => obj.projects || []);
   }, [sprint]);
-  const [selectedDeconstructProjectId, setSelectedDeconstructProjectId] = useState<string | null>(null);
-  
+  const [selectedDeconstructProjectId, setSelectedDeconstructProjectId] = useState<string | null>(
+    null,
+  );
+
   // Set default selected project when entering Step 5
   useEffect(() => {
     if (step === 5 && !selectedDeconstructProjectId && activeSprintProjects.length > 0) {
@@ -235,7 +243,9 @@ export function PlanningWizardClient({
   }, [step, activeSprintProjects, selectedDeconstructProjectId]);
 
   const selectedDeconstructProject = useMemo(() => {
-    return activeSprintProjects.find((p: SprintProject) => p.id === selectedDeconstructProjectId) || null;
+    return (
+      activeSprintProjects.find((p: SprintProject) => p.id === selectedDeconstructProjectId) || null
+    );
   }, [activeSprintProjects, selectedDeconstructProjectId]);
 
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
@@ -343,6 +353,9 @@ export function PlanningWizardClient({
     return atoms;
   }, [activeSprintProjects, standaloneAtoms]);
 
+  const isPendingAtom = (atom: SprintTask) =>
+    !atom.plannedDate && atom.status !== "DONE" && atom.status !== "CANCELLED";
+
   // Step 6 week navigation
   const sprintStart = useMemo(() => {
     if (!sprint?.startDate) return null;
@@ -350,7 +363,7 @@ export function PlanningWizardClient({
     return isNaN(d.getTime()) ? null : startOfWeek(d, { weekStartsOn: 1 });
   }, [sprint]);
   const weekStart = useMemo(
-    () => sprintStart ? addDays(sprintStart, selectedWeekIndex * 7) : null,
+    () => (sprintStart ? addDays(sprintStart, selectedWeekIndex * 7) : null),
     [sprintStart, selectedWeekIndex],
   );
   const sprintWeeks = useMemo(() => {
@@ -369,6 +382,7 @@ export function PlanningWizardClient({
     if (!weekStart) return [];
     return allAtomsForDistribution.filter((atom) => {
       if (!atom.plannedDate) return false;
+      if (atom.status === "DONE" || atom.status === "CANCELLED") return false;
       const planned = new Date(atom.plannedDate);
       return !isSameWeek(planned, weekStart, { weekStartsOn: 1 });
     });
@@ -718,7 +732,12 @@ export function PlanningWizardClient({
     if (!title || !sprint) return;
 
     startActionTransition(async () => {
-      const result = await createSprintObjectiveAction(sprint.id, title, newObjectiveSphereId, newObjectiveDesc);
+      const result = await createSprintObjectiveAction(
+        sprint.id,
+        title,
+        newObjectiveSphereId,
+        newObjectiveDesc,
+      );
       if (result.success) {
         toast.success("Objective created successfully!");
         setNewObjectiveTitle("");
@@ -744,9 +763,9 @@ export function PlanningWizardClient({
       const result = await assignProjectToObjectiveAction(projectId, objectiveId);
       if (result.success) {
         toast.success(objectiveId ? "Project assigned to objective!" : "Project moved to backlog!");
-        
+
         let projectToMove: SprintProject | null = null;
-        
+
         const backlogIndex = backlogProjects.findIndex((p) => p.id === projectId);
         if (backlogIndex !== -1) {
           projectToMove = backlogProjects[backlogIndex];
@@ -804,14 +823,20 @@ export function PlanningWizardClient({
     if (!title || !editingProjectId) return;
 
     startActionTransition(async () => {
-      const result = await updateProjectAction(editingProjectId, title, editProjectDesc.trim() || undefined);
+      const result = await updateProjectAction(
+        editingProjectId,
+        title,
+        editProjectDesc.trim() || undefined,
+      );
       if (result.success) {
         toast.success("Project updated!");
         setEditingProjectId(null);
 
         const updateInList = (projects: SprintProject[]) =>
           projects.map((p: SprintProject) =>
-            p.id === editingProjectId ? { ...p, title, description: editProjectDesc.trim() || null } : p,
+            p.id === editingProjectId
+              ? { ...p, title, description: editProjectDesc.trim() || null }
+              : p,
           );
 
         setSprint((prev: SprintData) => ({
@@ -853,7 +878,11 @@ export function PlanningWizardClient({
     });
   };
 
-  const handleOpenEditProject = (project: { id: string; title: string; description?: string | null }) => {
+  const handleOpenEditProject = (project: {
+    id: string;
+    title: string;
+    description?: string | null;
+  }) => {
     setEditingProjectId(project.id);
     setEditProjectTitle(project.title);
     setEditProjectDesc(project.description || "");
@@ -882,7 +911,7 @@ export function PlanningWizardClient({
         status: "TODO",
         priority: "MEDIUM",
         resistance: isGroup ? null : data.resistance,
-        parentId: isGroup ? null : (data.groupId || null),
+        parentId: isGroup ? null : data.groupId || null,
       });
 
       if (result.success) {
@@ -979,7 +1008,12 @@ export function PlanningWizardClient({
               ...p,
               tasks: p.tasks.map((t: SprintTask) => {
                 if (t.id === editingTaskId) {
-                  return { ...t, title, description: editTaskDesc.trim() || null, resistance: editTaskMode === "atom" ? editTaskResistance : null };
+                  return {
+                    ...t,
+                    title,
+                    description: editTaskDesc.trim() || null,
+                    resistance: editTaskMode === "atom" ? editTaskResistance : null,
+                  };
                 }
                 return {
                   ...t,
@@ -1319,8 +1353,8 @@ export function PlanningWizardClient({
           <div className="flex flex-col gap-2 max-w-lg">
             <h2 className="text-2xl font-bold text-zinc-100 font-mono">Kaizen Planning Cycle</h2>
             <p className="text-sm text-zinc-400 leading-relaxed">
-              Do not try to plan the chaos in your head. Let&apos;s declutter your mind, sift thoughts
-              through the Prime Filter, and break them down into atoms.
+              Do not try to plan the chaos in your head. Let&apos;s declutter your mind, sift
+              thoughts through the Prime Filter, and break them down into atoms.
             </p>
           </div>
 
@@ -2424,12 +2458,7 @@ export function PlanningWizardClient({
               >
                 <Plus size={14} /> New Objective
               </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={() => setStep(5)}
-                className="text-xs"
-              >
+              <Button variant="primary" size="sm" onClick={() => setStep(5)} className="text-xs">
                 Next: Deconstruct Projects <ChevronRight size={14} className="ml-1" />
               </Button>
             </div>
@@ -2473,11 +2502,7 @@ export function PlanningWizardClient({
                   />
                 </div>
                 <div className="flex gap-2 justify-end mt-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowAddObjectiveForm(false)}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => setShowAddObjectiveForm(false)}>
                     Cancel
                   </Button>
                   <Button
@@ -2499,48 +2524,50 @@ export function PlanningWizardClient({
               Sprint Objectives & Assigned Projects
             </h4>
 
-            {(!sprint?.objectives || sprint.objectives.length === 0) ? (
+            {!sprint?.objectives || sprint.objectives.length === 0 ? (
               <div className="text-zinc-500 text-xs italic py-8 text-center border border-dashed border-white/[0.06] rounded-xl">
                 No objectives defined for this sprint. Create one to assign projects.
               </div>
             ) : (
               <div className="flex flex-col gap-4">
                 {(sprint.objectives || []).map((obj: SprintObjective) => (
-                  <div key={obj.id} className="glass-card p-4 border-white/[0.06] bg-white/[0.02] rounded-xl flex flex-col gap-3">
+                  <div
+                    key={obj.id}
+                    className="glass-card p-4 border-white/[0.06] bg-white/[0.02] rounded-xl flex flex-col gap-3"
+                  >
                     <div className="flex justify-between items-start">
                       <div className="flex items-center gap-2">
                         <span
                           className="w-2.5 h-2.5 rounded-full shrink-0"
                           style={{ backgroundColor: obj.sphere?.color }}
                         />
-                        <h5 className="text-sm font-semibold text-zinc-200">
-                          {obj.title}
-                        </h5>
+                        <h5 className="text-sm font-semibold text-zinc-200">{obj.title}</h5>
                       </div>
                       <span className="text-[9px] font-mono text-zinc-500 uppercase bg-white/[0.04] px-2 py-0.5 rounded">
                         {obj.sphere?.name}
                       </span>
                     </div>
-                    
+
                     {obj.description && (
-                      <p className="text-xs text-zinc-400 italic">
-                        {obj.description}
-                      </p>
+                      <p className="text-xs text-zinc-400 italic">{obj.description}</p>
                     )}
 
                     <div className="flex flex-col gap-2 mt-2">
                       <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
                         Assigned Projects:
                       </span>
-                      
-                      {(!obj.projects || obj.projects.length === 0) ? (
+
+                      {!obj.projects || obj.projects.length === 0 ? (
                         <div className="text-[11px] text-zinc-500 italic py-2">
                           No projects linked. Assign a project from the backlog.
                         </div>
                       ) : (
                         <div className="flex flex-col gap-2">
                           {obj.projects.map((p: SprintProject) => (
-                            <div key={p.id} className="group/item flex justify-between items-center bg-white/[0.01] border border-white/[0.04] p-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150">
+                            <div
+                              key={p.id}
+                              className="group/item flex justify-between items-center bg-white/[0.01] border border-white/[0.04] p-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150"
+                            >
                               <span className="text-zinc-200 font-medium truncate">
                                 📂 {p.title}
                               </span>
@@ -2602,17 +2629,24 @@ export function PlanningWizardClient({
             />
 
             <div className="flex flex-col gap-2 max-h-[350px] overflow-y-auto pr-1">
-              {backlogProjects.filter(p => p.title.toLowerCase().includes(backlogSearch.toLowerCase())).length === 0 ? (
+              {backlogProjects.filter((p) =>
+                p.title.toLowerCase().includes(backlogSearch.toLowerCase()),
+              ).length === 0 ? (
                 <div className="text-zinc-500 text-xs italic py-8 text-center">
                   No backlog projects found.
                 </div>
               ) : (
                 backlogProjects
-                  .filter(p => p.title.toLowerCase().includes(backlogSearch.toLowerCase()))
+                  .filter((p) => p.title.toLowerCase().includes(backlogSearch.toLowerCase()))
                   .map((p) => (
-                    <div key={p.id} className="group/backlog glass-card p-3 border-white/[0.04] bg-white/[0.01] rounded-lg text-xs flex flex-col gap-2">
+                    <div
+                      key={p.id}
+                      className="group/backlog glass-card p-3 border-white/[0.04] bg-white/[0.01] rounded-lg text-xs flex flex-col gap-2"
+                    >
                       <div className="flex items-start justify-between gap-2">
-                        <span className="text-zinc-200 font-medium break-words truncate">📂 {p.title}</span>
+                        <span className="text-zinc-200 font-medium break-words truncate">
+                          📂 {p.title}
+                        </span>
                         <div className="flex items-center gap-0.5 opacity-0 group-hover/backlog:opacity-100 transition-opacity duration-150 shrink-0">
                           <button
                             type="button"
@@ -2635,7 +2669,9 @@ export function PlanningWizardClient({
                         </div>
                       </div>
                       {p.description && (
-                        <span className="text-[10px] text-zinc-505 line-clamp-2">{p.description}</span>
+                        <span className="text-[10px] text-zinc-505 line-clamp-2">
+                          {p.description}
+                        </span>
                       )}
                       {sprint.objectives && sprint.objectives.length > 0 ? (
                         <div className="flex flex-col gap-1 mt-1 pt-1.5 border-t border-white/[0.04]">
@@ -2658,7 +2694,9 @@ export function PlanningWizardClient({
                           </div>
                         </div>
                       ) : (
-                        <span className="text-[8px] text-zinc-500 italic">Create an objective first</span>
+                        <span className="text-[8px] text-zinc-500 italic">
+                          Create an objective first
+                        </span>
                       )}
                     </div>
                   ))
@@ -2677,16 +2715,12 @@ export function PlanningWizardClient({
                 Step 5: Project Deconstruction
               </h3>
               <p className="text-[11px] text-zinc-500 mt-0.5">
-                Break down active sprint projects into groups and atomic actions to remove resistance.
+                Break down active sprint projects into groups and atomic actions to remove
+                resistance.
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setStep(4)}
-                className="text-xs"
-              >
+              <Button variant="outline" size="sm" onClick={() => setStep(4)} className="text-xs">
                 <ChevronLeft size={14} className="mr-1" /> Back to Objectives
               </Button>
               <Button
@@ -2710,9 +2744,12 @@ export function PlanningWizardClient({
             <div className="flex flex-col items-center justify-center py-16 text-center gap-4">
               <AlertTriangle size={36} className="text-amber-400" />
               <div className="flex flex-col gap-1 max-w-sm">
-                <h4 className="text-sm font-semibold text-zinc-200 font-mono">No active projects!</h4>
+                <h4 className="text-sm font-semibold text-zinc-200 font-mono">
+                  No active projects!
+                </h4>
                 <p className="text-xs text-zinc-400">
-                  You haven&apos;t assigned any projects to this sprint. Go back and assign some to objectives.
+                  You haven&apos;t assigned any projects to this sprint. Go back and assign some to
+                  objectives.
                 </p>
               </div>
               <Button variant="outline" size="sm" onClick={() => setStep(4)} className="mt-2">
@@ -2729,13 +2766,22 @@ export function PlanningWizardClient({
                 {activeSprintProjects.map((p: SprintProject) => {
                   const isSelected = p.id === selectedDeconstructProjectId;
                   const isPlanned = p.status === "DONE";
-                  const groupCount = (p.tasks || []).filter((t: SprintTask) => t.resistance === null).length;
-                  const standaloneAtomCount = (p.tasks || []).filter((t: SprintTask) => t.resistance !== null).length;
-                  const subAtomCount = (p.tasks || []).reduce((sum: number, t: SprintTask) => sum + (t.children?.length || 0), 0);
+                  const groupCount = (p.tasks || []).filter(
+                    (t: SprintTask) => t.resistance === null,
+                  ).length;
+                  const standaloneAtomCount = (p.tasks || []).filter(
+                    (t: SprintTask) => t.resistance !== null,
+                  ).length;
+                  const subAtomCount = (p.tasks || []).reduce(
+                    (sum: number, t: SprintTask) => sum + (t.children?.length || 0),
+                    0,
+                  );
                   const totalAtoms = standaloneAtomCount + subAtomCount;
                   const labelParts: string[] = [];
-                  if (groupCount > 0) labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
-                  if (totalAtoms > 0) labelParts.push(`${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}`);
+                  if (groupCount > 0)
+                    labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
+                  if (totalAtoms > 0)
+                    labelParts.push(`${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}`);
                   const label = labelParts.length > 0 ? labelParts.join(", ") : "empty";
                   return (
                     <div key={p.id} className="group/proj relative">
@@ -2751,9 +2797,7 @@ export function PlanningWizardClient({
                         }`}
                       >
                         <span className="truncate w-full">📂 {p.title}</span>
-                        <span className="text-[9px] opacity-75 font-mono">
-                          {label}
-                        </span>
+                        <span className="text-[9px] opacity-75 font-mono">{label}</span>
                       </button>
                     </div>
                   );
@@ -2788,7 +2832,11 @@ export function PlanningWizardClient({
                               ? "text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
                               : "text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10"
                           }`}
-                          title={selectedDeconstructProject.status === "DONE" ? "Mark as not planned" : "Mark as planned"}
+                          title={
+                            selectedDeconstructProject.status === "DONE"
+                              ? "Mark as not planned"
+                              : "Mark as planned"
+                          }
                           disabled={isActionPending}
                         >
                           <Check size={13} />
@@ -2818,7 +2866,9 @@ export function PlanningWizardClient({
                   {/* Add Task Form */}
                   <TaskCreateForm
                     projects={activeSprintProjects}
-                    groups={(selectedDeconstructProject.tasks || []).filter((t: SprintTask) => !t.parentId && t.resistance === null).map((t: SprintTask) => ({ id: t.id, title: t.title }))}
+                    groups={(selectedDeconstructProject.tasks || [])
+                      .filter((t: SprintTask) => !t.parentId && t.resistance === null)
+                      .map((t: SprintTask) => ({ id: t.id, title: t.title }))}
                     defaultProjectId={selectedDeconstructProjectId}
                     defaultGroupId={expandedGroupId}
                     onSubmit={handleAddTopLevelTask}
@@ -2828,136 +2878,169 @@ export function PlanningWizardClient({
                   {/* Groups List */}
                   <div className="flex flex-col gap-2 flex-1 min-h-0">
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold border-b border-white/[0.04] pb-1">
-                      Project Groups ({(selectedDeconstructProject.tasks || []).filter((t: SprintTask) => !t.parentId).length})
+                      Project Groups (
+                      {
+                        (selectedDeconstructProject.tasks || []).filter(
+                          (t: SprintTask) => !t.parentId,
+                        ).length
+                      }
+                      )
                     </span>
-                    {(!(selectedDeconstructProject.tasks || []).some((t: SprintTask) => !t.parentId)) ? (
+                    {!(selectedDeconstructProject.tasks || []).some(
+                      (t: SprintTask) => !t.parentId,
+                    ) ? (
                       <div className="text-zinc-500 text-xs italic py-6 text-center">
                         No groups added yet. Use the form above to add a group or atom.
                       </div>
                     ) : (
                       <div className="flex flex-col gap-1.5 flex-1 min-h-0 overflow-y-auto pr-1">
-                        {selectedDeconstructProject.tasks.filter((t: SprintTask) => !t.parentId).map((task: SprintTask) => {
-                          const isGroup = task.resistance === null;
-                          const isExpanded = expandedGroupId === task.id;
-                          const children = task.children || [];
-                          const childCount = children.length;
-                          const doneCount = children.filter((c: SprintTask) => c.status === "DONE").length;
+                        {selectedDeconstructProject.tasks
+                          .filter((t: SprintTask) => !t.parentId)
+                          .map((task: SprintTask) => {
+                            const isGroup = task.resistance === null;
+                            const isExpanded = expandedGroupId === task.id;
+                            const children = task.children || [];
+                            const childCount = children.length;
+                            const doneCount = children.filter(
+                              (c: SprintTask) => c.status === "DONE",
+                            ).length;
 
-                          if (!isGroup) {
-                            const resistanceLabel = task.resistance != null
-                              ? ` [${task.resistance}/5]`
-                              : "";
+                            if (!isGroup) {
+                              const resistanceLabel =
+                                task.resistance != null ? ` [${task.resistance}/5]` : "";
+                              return (
+                                <div
+                                  key={task.id}
+                                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150 group"
+                                >
+                                  <span
+                                    className={`flex-1 truncate ${task.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}
+                                  >
+                                    {task.status === "DONE" ? "✔️" : "○"} {task.title}
+                                    {resistanceLabel && (
+                                      <span className="text-[10px] text-orange-400/70 ml-1 font-mono">
+                                        {resistanceLabel}
+                                      </span>
+                                    )}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleOpenEditTask(task, "atom")}
+                                    className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                    title="Edit atom"
+                                    disabled={isActionPending}
+                                  >
+                                    <Pencil size={11} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setDeleteTaskId(task.id)}
+                                    className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                    title="Delete atom"
+                                    disabled={isActionPending}
+                                  >
+                                    <Trash2 size={11} />
+                                  </button>
+                                </div>
+                              );
+                            }
+
                             return (
-                              <div key={task.id} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs hover:bg-white/[0.02] transition-colors duration-150 group">
-                                <span className={`flex-1 truncate ${task.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}>
-                                  {task.status === "DONE" ? "✔️" : "○"} {task.title}{resistanceLabel && <span className="text-[10px] text-orange-400/70 ml-1 font-mono">{resistanceLabel}</span>}
-                                </span>
-                                <button
-                                  type="button"
-                                  onClick={() => handleOpenEditTask(task, "atom")}
-                                  className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
-                                  title="Edit atom"
-                                  disabled={isActionPending}
-                                >
-                                  <Pencil size={11} />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setDeleteTaskId(task.id)}
-                                  className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
-                                  title="Delete atom"
-                                  disabled={isActionPending}
-                                >
-                                  <Trash2 size={11} />
-                                </button>
+                              <div
+                                key={task.id}
+                                className="border border-white/[0.04] rounded-lg overflow-hidden bg-white/[0.01]"
+                              >
+                                {/* Group header */}
+                                <div className="flex items-center gap-2 p-3 text-xs group hover:bg-white/[0.02] transition-colors duration-150">
+                                  <button
+                                    type="button"
+                                    onClick={() => setExpandedGroupId(isExpanded ? null : task.id)}
+                                    className="p-0.5 rounded text-zinc-500 hover:text-zinc-200 transition-colors shrink-0"
+                                  >
+                                    <ChevronDown
+                                      size={14}
+                                      className={`transition-transform duration-150 ${isExpanded ? "rotate-0" : "-rotate-90"}`}
+                                    />
+                                  </button>
+                                  <div className="flex-1 min-w-0 flex flex-col gap-0.5">
+                                    <span className="text-zinc-200 font-medium truncate">
+                                      📋 {task.title}
+                                    </span>
+                                    {task.description && (
+                                      <span className="text-[10px] text-zinc-505 line-clamp-1">
+                                        {task.description}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {childCount > 0 && (
+                                    <span className="text-[9px] font-mono text-zinc-500 shrink-0">
+                                      {doneCount}/{childCount}
+                                    </span>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleOpenEditTask(task, "group")}
+                                    className="p-1 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                    title="Edit group"
+                                    disabled={isActionPending}
+                                  >
+                                    <Pencil size={13} />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => setDeleteTaskId(task.id)}
+                                    className="p-1 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                    title="Delete group"
+                                    disabled={isActionPending}
+                                  >
+                                    <Trash2 size={13} />
+                                  </button>
+                                </div>
+
+                                {/* Expanded: sub-atoms + inline form */}
+                                {isExpanded && (
+                                  <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
+                                    {children.length > 0 ? (
+                                      children.map((atom: SprintTask) => (
+                                        <div
+                                          key={atom.id}
+                                          className="flex items-center gap-2 pl-5 pr-1 py-1.5 rounded text-xs group/atom hover:bg-white/[0.02] transition-colors duration-150"
+                                        >
+                                          <span
+                                            className={`flex-1 truncate ${atom.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}
+                                          >
+                                            {atom.status === "DONE" ? "✔️" : "○"} {atom.title}
+                                          </span>
+                                          <button
+                                            type="button"
+                                            onClick={() => handleOpenEditTask(atom, "atom")}
+                                            className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
+                                            title="Edit atom"
+                                            disabled={isActionPending}
+                                          >
+                                            <Pencil size={11} />
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={() => setDeleteTaskId(atom.id)}
+                                            className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
+                                            title="Delete atom"
+                                            disabled={isActionPending}
+                                          >
+                                            <Trash2 size={11} />
+                                          </button>
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <div className="pl-5 py-1 text-[10px] text-zinc-500 italic">
+                                        No atoms yet.
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
                               </div>
                             );
-                          }
-
-                          return (
-                            <div key={task.id} className="border border-white/[0.04] rounded-lg overflow-hidden bg-white/[0.01]">
-                              {/* Group header */}
-                              <div className="flex items-center gap-2 p-3 text-xs group hover:bg-white/[0.02] transition-colors duration-150">
-                                <button
-                                  type="button"
-                                  onClick={() => setExpandedGroupId(isExpanded ? null : task.id)}
-                                  className="p-0.5 rounded text-zinc-500 hover:text-zinc-200 transition-colors shrink-0"
-                                >
-                                  <ChevronDown
-                                    size={14}
-                                    className={`transition-transform duration-150 ${isExpanded ? "rotate-0" : "-rotate-90"}`}
-                                  />
-                                </button>
-                                <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                                  <span className="text-zinc-200 font-medium truncate">📋 {task.title}</span>
-                                  {task.description && (
-                                    <span className="text-[10px] text-zinc-505 line-clamp-1">{task.description}</span>
-                                  )}
-                                </div>
-                                {childCount > 0 && (
-                                  <span className="text-[9px] font-mono text-zinc-500 shrink-0">
-                                    {doneCount}/{childCount}
-                                  </span>
-                                )}
-                                <button
-                                  type="button"
-                                  onClick={() => handleOpenEditTask(task, "group")}
-                                  className="p-1 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
-                                  title="Edit group"
-                                  disabled={isActionPending}
-                                >
-                                  <Pencil size={13} />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => setDeleteTaskId(task.id)}
-                                  className="p-1 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
-                                  title="Delete group"
-                                  disabled={isActionPending}
-                                >
-                                  <Trash2 size={13} />
-                                </button>
-                              </div>
-
-                              {/* Expanded: sub-atoms + inline form */}
-                              {isExpanded && (
-                                <div className="border-t border-white/[0.04] bg-black/10 px-3 py-2 flex flex-col gap-1.5">
-                                  {children.length > 0 ? (
-                                    children.map((atom: SprintTask) => (
-                                      <div key={atom.id} className="flex items-center gap-2 pl-5 pr-1 py-1.5 rounded text-xs group/atom hover:bg-white/[0.02] transition-colors duration-150">
-                                        <span className={`flex-1 truncate ${atom.status === "DONE" ? "text-zinc-500 line-through" : "text-zinc-300"}`}>
-                                          {atom.status === "DONE" ? "✔️" : "○"} {atom.title}
-                                        </span>
-                                        <button
-                                          type="button"
-                                          onClick={() => handleOpenEditTask(atom, "atom")}
-                                          className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
-                                          title="Edit atom"
-                                          disabled={isActionPending}
-                                        >
-                                          <Pencil size={11} />
-                                        </button>
-                                        <button
-                                          type="button"
-                                          onClick={() => setDeleteTaskId(atom.id)}
-                                          className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
-                                          title="Delete atom"
-                                          disabled={isActionPending}
-                                        >
-                                          <Trash2 size={11} />
-                                        </button>
-                                      </div>
-                                    ))
-                                  ) : (
-                                    <div className="pl-5 py-1 text-[10px] text-zinc-500 italic">
-                                      No atoms yet.
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
+                          })}
                       </div>
                     )}
                   </div>
@@ -2985,7 +3068,9 @@ export function PlanningWizardClient({
                 </span>
               </div>
               <span className="text-xs font-semibold text-zinc-300 font-mono">
-                {weekStart ? `${format(weekStart, "MMMM d")} — ${format(endOfWeek(weekStart, { weekStartsOn: 1 }), "MMMM d, yyyy")}` : ""}
+                {weekStart
+                  ? `${format(weekStart, "MMMM d")} — ${format(endOfWeek(weekStart, { weekStartsOn: 1 }), "MMMM d, yyyy")}`
+                  : ""}
               </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
@@ -3014,17 +3099,23 @@ export function PlanningWizardClient({
             <div className="flex items-center gap-3 mb-4">
               <FolderKanban size={14} className="text-accent" />
               <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
-                Weekly Board — {weekStart ? `${format(weekStart, "dd.MM")} - ${format(endOfWeek(weekStart, { weekStartsOn: 1 }), "dd.MM")}` : ""}
+                Weekly Board —{" "}
+                {weekStart
+                  ? `${format(weekStart, "dd.MM")} - ${format(endOfWeek(weekStart, { weekStartsOn: 1 }), "dd.MM")}`
+                  : ""}
               </span>
             </div>
             <WeeklyStatusBoard
-              tasks={allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[]}
+              tasks={
+                allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[]
+              }
               weekStart={weekStart}
               locked={false}
               onTaskEdit={(task) => handleOpenEditTaskFromAnywhere(task as unknown as SprintTask)}
               onTaskDelete={(id) => setDeleteTaskId(id)}
               onTasksChange={(updater) => {
-                const currentTasks = allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[];
+                const currentTasks =
+                  allAtomsForDistribution as unknown as import("@/features/life/types").TaskData[];
                 const updatedTasks = updater(currentTasks);
                 setSprint((prev: SprintData) => {
                   if (!prev || !prev.objectives) return prev;
@@ -3037,13 +3128,25 @@ export function PlanningWizardClient({
                         tasks: (p.tasks || []).map((t: SprintTask) => {
                           const updated = updatedTasks.find((u: SprintTask) => u.id === t.id);
                           if (updated) {
-                            return { ...t, plannedDate: updated.plannedDate, status: updated.status };
+                            return {
+                              ...t,
+                              plannedDate: updated.plannedDate,
+                              status: updated.status,
+                            };
                           }
                           return {
                             ...t,
                             children: (t.children || []).map((c: SprintTask) => {
-                              const childUpdated = updatedTasks.find((u: SprintTask) => u.id === c.id);
-                              return childUpdated ? { ...c, plannedDate: childUpdated.plannedDate, status: childUpdated.status } : c;
+                              const childUpdated = updatedTasks.find(
+                                (u: SprintTask) => u.id === c.id,
+                              );
+                              return childUpdated
+                                ? {
+                                    ...c,
+                                    plannedDate: childUpdated.plannedDate,
+                                    status: childUpdated.status,
+                                  }
+                                : c;
                             }),
                           };
                         }),
@@ -3054,7 +3157,13 @@ export function PlanningWizardClient({
                 setStandaloneAtoms((prev) =>
                   prev.map((atom) => {
                     const updatedAtom = updatedTasks.find((u: SprintTask) => u.id === atom.id);
-                    return updatedAtom ? { ...atom, plannedDate: updatedAtom.plannedDate, status: updatedAtom.status } : atom;
+                    return updatedAtom
+                      ? {
+                          ...atom,
+                          plannedDate: updatedAtom.plannedDate,
+                          status: updatedAtom.status,
+                        }
+                      : atom;
                   }),
                 );
               }}
@@ -3096,24 +3205,27 @@ export function PlanningWizardClient({
                 Unscheduled Atoms
               </span>
               <span className="text-[9px] font-mono text-zinc-600 bg-white/[0.04] px-2 py-0.5 rounded">
-                {allAtomsForDistribution.filter((a) => !a.plannedDate).length} unscheduled
+                {allAtomsForDistribution.filter(isPendingAtom).length} unscheduled
               </span>
             </div>
 
             {activeSprintProjects.map((project: SprintProject) => {
-              const topLevelTasks = (project.tasks || []).filter((task: SprintTask) => !task.parentId);
-              const projectAtoms: (SprintTask & { projectName?: string; groupName?: string })[] = topLevelTasks.flatMap((task: SprintTask) => {
-                const items: (SprintTask & { projectName?: string; groupName?: string })[] = [];
-                if (task.resistance !== null && !task.plannedDate) {
-                  items.push({ ...task, projectName: project.title });
-                }
-                for (const c of task.children || []) {
-                  if (!c.plannedDate) {
-                    items.push({ ...c, projectName: project.title, groupName: task.title });
+              const topLevelTasks = (project.tasks || []).filter(
+                (task: SprintTask) => !task.parentId,
+              );
+              const projectAtoms: (SprintTask & { projectName?: string; groupName?: string })[] =
+                topLevelTasks.flatMap((task: SprintTask) => {
+                  const items: (SprintTask & { projectName?: string; groupName?: string })[] = [];
+                  if (task.resistance !== null && isPendingAtom(task)) {
+                    items.push({ ...task, projectName: project.title });
                   }
-                }
-                return items;
-              });
+                  for (const c of task.children || []) {
+                    if (isPendingAtom(c)) {
+                      items.push({ ...c, projectName: project.title, groupName: task.title });
+                    }
+                  }
+                  return items;
+                });
 
               if (projectAtoms.length === 0) return null;
 
@@ -3122,14 +3234,18 @@ export function PlanningWizardClient({
                 .map((t: SprintTask) => ({
                   group: t,
                   atoms: projectAtoms.filter((a) => a.groupName === t.title),
-                }));
+                }))
+                .filter(({ atoms }) => atoms.length > 0);
 
               const projectDirectAtoms = projectAtoms.filter((a) => !a.groupName);
               const isProjectCollapsed = !expandedProjects.has(project.id);
               const unscheduledCount = projectAtoms.length;
 
               return (
-                <div key={project.id} className="glass-card bg-black/10 border border-white/[0.04] rounded-xl overflow-hidden">
+                <div
+                  key={project.id}
+                  className="glass-card bg-black/10 border border-white/[0.04] rounded-xl overflow-hidden"
+                >
                   <button
                     type="button"
                     onClick={() => toggleProjectCollapse(project.id)}
@@ -3140,7 +3256,9 @@ export function PlanningWizardClient({
                       className={`text-zinc-500 transition-transform duration-150 ${isProjectCollapsed ? "-rotate-90" : ""}`}
                     />
                     <Folder size={12} className="text-amber-500/70 shrink-0" />
-                    <span className="text-xs font-semibold text-zinc-200 truncate">{project.title}</span>
+                    <span className="text-xs font-semibold text-zinc-200 truncate">
+                      {project.title}
+                    </span>
                     <span className="text-[9px] font-mono text-zinc-600 bg-white/[0.04] px-1.5 py-0.5 rounded ml-auto shrink-0">
                       {unscheduledCount}
                     </span>
@@ -3161,7 +3279,9 @@ export function PlanningWizardClient({
                                 size={10}
                                 className={`text-zinc-600 transition-transform duration-150 ${isGroupCollapsed ? "-rotate-90" : ""}`}
                               />
-                              <span className="text-[10px] font-mono text-zinc-400 font-semibold truncate">{group.title}</span>
+                              <span className="text-[10px] font-mono text-zinc-400 font-semibold truncate">
+                                {group.title}
+                              </span>
                               <span className="text-[8px] font-mono text-zinc-600 bg-white/[0.04] px-1 py-0.5 rounded ml-auto shrink-0">
                                 {atoms.length}
                               </span>
@@ -3169,7 +3289,13 @@ export function PlanningWizardClient({
                             {!isGroupCollapsed && (
                               <div className="flex flex-col gap-1 pl-4">
                                 {atoms.map((atom) => (
-                                  <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} onEdit={handleOpenEditTaskFromAnywhere} onDelete={(id) => setDeleteTaskId(id)} />
+                                  <AtomCard
+                                    key={atom.id}
+                                    atom={atom}
+                                    onSchedule={setSchedulingTaskId}
+                                    onEdit={handleOpenEditTaskFromAnywhere}
+                                    onDelete={(id) => setDeleteTaskId(id)}
+                                  />
                                 ))}
                               </div>
                             )}
@@ -3177,7 +3303,13 @@ export function PlanningWizardClient({
                         );
                       })}
                       {projectDirectAtoms.map((atom) => (
-                        <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} onEdit={handleOpenEditTaskFromAnywhere} onDelete={(id) => setDeleteTaskId(id)} />
+                        <AtomCard
+                          key={atom.id}
+                          atom={atom}
+                          onSchedule={setSchedulingTaskId}
+                          onEdit={handleOpenEditTaskFromAnywhere}
+                          onDelete={(id) => setDeleteTaskId(id)}
+                        />
                       ))}
                     </div>
                   )}
@@ -3185,7 +3317,7 @@ export function PlanningWizardClient({
               );
             })}
 
-            {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).length > 0 && (
+            {standaloneAtoms.filter(isPendingAtom).length > 0 && (
               <div className="glass-card bg-black/10 border border-white/[0.04] rounded-xl overflow-hidden">
                 <button
                   type="button"
@@ -3199,14 +3331,22 @@ export function PlanningWizardClient({
                   <CheckSquare size={12} className="text-zinc-500 shrink-0" />
                   <span className="text-xs font-semibold text-zinc-200 truncate">Standalone</span>
                   <span className="text-[9px] font-mono text-zinc-600 bg-white/[0.04] px-1.5 py-0.5 rounded ml-auto shrink-0">
-                    {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).length}
+                    {standaloneAtoms.filter(isPendingAtom).length}
                   </span>
                 </button>
                 {expandedProjects.has("__standalone__") && (
                   <div className="px-3 pb-3 flex flex-col gap-1">
-                    {standaloneAtoms.filter((a: SprintTask) => !a.plannedDate).map((atom: SprintTask) => (
-                      <AtomCard key={atom.id} atom={atom} onSchedule={setSchedulingTaskId} onEdit={handleOpenEditTaskFromAnywhere} onDelete={(id) => setDeleteTaskId(id)} />
-                    ))}
+                    {standaloneAtoms
+                      .filter((a: SprintTask) => !a.plannedDate)
+                      .map((atom: SprintTask) => (
+                        <AtomCard
+                          key={atom.id}
+                          atom={atom}
+                          onSchedule={setSchedulingTaskId}
+                          onEdit={handleOpenEditTaskFromAnywhere}
+                          onDelete={(id) => setDeleteTaskId(id)}
+                        />
+                      ))}
                   </div>
                 )}
               </div>
@@ -3218,9 +3358,7 @@ export function PlanningWizardClient({
             <div className="flex items-center gap-3">
               <span className="text-xl">🎉</span>
               <div>
-                <h4 className="text-sm font-bold text-zinc-100 font-mono">
-                  Planning complete!
-                </h4>
+                <h4 className="text-sm font-bold text-zinc-100 font-mono">Planning complete!</h4>
                 <p className="text-xs text-zinc-400">
                   Atoms are distributed across the week. Review on the Kanban board.
                 </p>
@@ -3309,11 +3447,7 @@ export function PlanningWizardClient({
               />
             </div>
             <div className="flex gap-2 justify-end mt-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setEditingProjectId(null)}
-              >
+              <Button variant="ghost" size="sm" onClick={() => setEditingProjectId(null)}>
                 Cancel
               </Button>
               <Button
@@ -3394,16 +3528,16 @@ export function PlanningWizardClient({
                 onClick={handleConvertTask}
                 disabled={editTaskMode === "group" && editTaskHasChildren}
                 className="text-[10px]"
-                title={editTaskMode === "group" && editTaskHasChildren ? "Remove all atoms first" : undefined}
+                title={
+                  editTaskMode === "group" && editTaskHasChildren
+                    ? "Remove all atoms first"
+                    : undefined
+                }
               >
                 {editTaskMode === "group" ? "Convert to Atom" : "Convert to Group"}
               </Button>
               <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setEditingTaskId(null)}
-                >
+                <Button variant="ghost" size="sm" onClick={() => setEditingTaskId(null)}>
                   Cancel
                 </Button>
                 <Button
@@ -3450,32 +3584,44 @@ export function PlanningWizardClient({
         >
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <label className="text-[10px] font-mono text-zinc-400 uppercase">Pick a day (Week 1)</label>
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">
+                Pick a day (Week {selectedWeekIndex + 1})
+              </label>
               <div className="grid grid-cols-7 gap-1.5">
-                {sprintStart && Array.from({ length: 7 }, (_, i) => addDays(sprintStart, i)).map((day) => {
-                  const dateStr = format(day, "yyyy-MM-dd");
-                  const isSelected = scheduleDate === dateStr;
-                  return (
-                    <button
-                      key={dateStr}
-                      type="button"
-                      onClick={() => setScheduleDate(dateStr)}
-                      className={`flex flex-col items-center gap-0.5 py-2 px-1 rounded-lg border text-xs transition-all duration-150 ${
-                        isSelected
-                          ? "border-accent bg-accent/10 text-accent font-semibold"
-                          : "border-white/[0.06] bg-white/[0.02] text-zinc-400 hover:bg-white/[0.05] hover:text-zinc-200"
-                      }`}
-                    >
-                      <span className="text-[9px] font-mono uppercase">{format(day, "EEE")}</span>
-                      <span className="text-sm">{format(day, "d")}</span>
-                    </button>
-                  );
-                })}
+                {weekStart &&
+                  Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)).map((day) => {
+                    const dateStr = format(day, "yyyy-MM-dd");
+                    const isSelected = scheduleDate === dateStr;
+                    const isTodayDate = isToday(day);
+                    return (
+                      <button
+                        key={dateStr}
+                        type="button"
+                        onClick={() => setScheduleDate(dateStr)}
+                        className={`flex flex-col items-center gap-0.5 py-2 px-1 rounded-lg border text-xs transition-all duration-150 ${
+                          isSelected
+                            ? "border-accent bg-accent/10 text-accent font-semibold"
+                            : isTodayDate
+                              ? "border-accent/40 bg-accent/5 text-zinc-200"
+                              : "border-white/[0.06] bg-white/[0.02] text-zinc-400 hover:bg-white/[0.05] hover:text-zinc-200"
+                        }`}
+                      >
+                        <span className="text-[9px] font-mono uppercase">{format(day, "EEE")}</span>
+                        <span className="text-sm">
+                          {format(day, "d")}
+                          {isTodayDate && (
+                            <span className="ml-0.5 inline-block w-1 h-1 rounded-full bg-accent align-middle" />
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
               </div>
             </div>
             {scheduleDate && (
               <div className="text-[10px] text-zinc-500 font-mono">
-                Scheduled for: {format(new Date(scheduleDate), "dd.MM.yyyy (EEE)", { weekStartsOn: 1 })}
+                Scheduled for:{" "}
+                {format(new Date(scheduleDate), "dd.MM.yyyy (EEE)", { weekStartsOn: 1 })}
               </div>
             )}
             <div className="flex gap-2 justify-end mt-1">
@@ -3511,9 +3657,7 @@ export function PlanningWizardClient({
                               projects: obj.projects.map((p: SprintProject) => ({
                                 ...p,
                                 tasks: p.tasks.map((t: SprintTask) =>
-                                  t.id === schedulingTaskId
-                                    ? { ...t, plannedDate: null }
-                                    : t,
+                                  t.id === schedulingTaskId ? { ...t, plannedDate: null } : t,
                                 ),
                               })),
                             })),
