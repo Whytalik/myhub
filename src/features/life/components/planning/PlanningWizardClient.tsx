@@ -46,7 +46,16 @@ import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
-import { format, addWeeks, startOfWeek, addDays, endOfWeek, isSameWeek, isToday } from "date-fns";
+import {
+  format,
+  addWeeks,
+  startOfWeek,
+  addDays,
+  endOfWeek,
+  isSameWeek,
+  isToday,
+  isSameDay,
+} from "date-fns";
 import { TaskCreateForm, type TaskCreateFormData } from "./TaskCreateForm";
 import { WeeklyStatusBoard } from "@/features/life/components/sprints/WeeklyStatusBoard";
 
@@ -356,6 +365,19 @@ export function PlanningWizardClient({
 
   const isPendingAtom = (atom: SprintTask) =>
     !atom.plannedDate && atom.status !== "DONE" && atom.status !== "CANCELLED";
+
+  // Soft daily capacity guide: atoms run ~15min each, and context-switching
+  // overhead between small unrelated tasks eats a large share of a day's
+  // realistic focus budget, so this is a nudge, not an enforced limit.
+  const DAILY_ATOM_SOFT_CAP = 10;
+  const atomCountForDate = (dateStr: string): number => {
+    const date = new Date(dateStr);
+    return allAtomsForDistribution.filter((atom) => {
+      if (atom.status === "CANCELLED") return false;
+      if (atom.id === schedulingTaskId) return false;
+      return atom.plannedDate ? isSameDay(new Date(atom.plannedDate), date) : false;
+    }).length;
+  };
 
   // Step 6 week navigation
   const sprintStart = useMemo(() => {
@@ -3640,6 +3662,13 @@ export function PlanningWizardClient({
               <div className="text-[10px] text-zinc-500 font-mono">
                 Scheduled for:{" "}
                 {format(new Date(scheduleDate), "dd.MM.yyyy (EEE)", { weekStartsOn: 1 })}
+              </div>
+            )}
+            {scheduleDate && atomCountForDate(scheduleDate) >= DAILY_ATOM_SOFT_CAP && (
+              <div className="text-[10px] text-amber-400 font-mono flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                <AlertTriangle size={11} className="shrink-0" />
+                This day already has {atomCountForDate(scheduleDate)} atoms — past the ~
+                {DAILY_ATOM_SOFT_CAP}/day focus budget.
               </div>
             )}
             <div className="flex gap-2 justify-end mt-1">

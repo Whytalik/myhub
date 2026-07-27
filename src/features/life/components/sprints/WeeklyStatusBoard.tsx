@@ -23,6 +23,11 @@ const STATUS_COLUMNS: { id: TaskStatus; label: string }[] = [
   { id: "DONE", label: "Done" },
 ];
 
+// Soft daily capacity guide: atoms run ~15min each, and context-switching
+// overhead between small unrelated tasks eats a large share of a day's
+// realistic focus budget, so this is a nudge, not an enforced limit.
+const DAILY_ATOM_SOFT_CAP = 10;
+
 interface WeeklyStatusBoardProps {
   tasks: TaskData[];
   weekStart: Date;
@@ -126,6 +131,12 @@ export function WeeklyStatusBoard({
       return t.plannedDate ? isSameDay(new Date(t.plannedDate), day) : false;
     });
 
+  const dayAtomCount = (day: Date): number =>
+    (tasks || []).filter((t) => {
+      if (t.status === "CANCELLED") return false;
+      return t.plannedDate ? isSameDay(new Date(t.plannedDate), day) : false;
+    }).length;
+
   const handleUnschedule = (taskId: string) => {
     onTasksChange((prev) =>
       prev.map((t) =>
@@ -210,14 +221,32 @@ export function WeeklyStatusBoard({
           {days.map((day) => {
             const dayKey = format(day, "yyyy-MM-dd");
             const isTodayRow = isToday(day);
+            const atomCount = dayAtomCount(day);
+            const isOverSoftCap = atomCount >= DAILY_ATOM_SOFT_CAP;
             return (
               <Fragment key={dayKey}>
                 <div
-                  className={`text-[11px] font-mono px-2 py-2 ${
+                  className={`flex items-center gap-1.5 text-[11px] font-mono px-2 py-2 ${
                     isTodayRow ? "text-accent font-semibold" : "text-zinc-400"
                   }`}
                 >
-                  {format(day, "EEE dd.MM")}
+                  <span>{format(day, "EEE dd.MM")}</span>
+                  {atomCount > 0 && (
+                    <span
+                      title={
+                        isOverSoftCap
+                          ? `${atomCount} atoms — past the ~${DAILY_ATOM_SOFT_CAP}/day focus budget`
+                          : `${atomCount} atoms planned`
+                      }
+                      className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full ${
+                        isOverSoftCap
+                          ? "bg-amber-500/10 text-amber-400"
+                          : "bg-white/[0.04] text-zinc-500"
+                      }`}
+                    >
+                      {atomCount}/{DAILY_ATOM_SOFT_CAP}
+                    </span>
+                  )}
                 </div>
                 {STATUS_COLUMNS.map((c) => (
                   <BoardCell
