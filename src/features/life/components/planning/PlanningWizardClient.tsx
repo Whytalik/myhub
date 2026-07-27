@@ -378,13 +378,13 @@ export function PlanningWizardClient({
       };
     });
   }, [sprintStart]);
-  const futureScheduledAtoms = useMemo(() => {
+  const overdueScheduledAtoms = useMemo(() => {
     if (!weekStart) return [];
     return allAtomsForDistribution.filter((atom) => {
       if (!atom.plannedDate) return false;
       if (atom.status === "DONE" || atom.status === "CANCELLED") return false;
       const planned = new Date(atom.plannedDate);
-      return !isSameWeek(planned, weekStart, { weekStartsOn: 1 });
+      return planned < weekStart && !isSameWeek(planned, weekStart, { weekStartsOn: 1 });
     });
   }, [allAtomsForDistribution, weekStart]);
 
@@ -1193,6 +1193,11 @@ export function PlanningWizardClient({
             })),
           };
         });
+        setStandaloneAtoms((prev) =>
+          prev.map((atom) =>
+            atom.id === schedulingTaskId ? { ...atom, plannedDate: scheduleDate } : atom,
+          ),
+        );
       } else {
         toast.error(result.error || "Failed to schedule task");
       }
@@ -3170,21 +3175,21 @@ export function PlanningWizardClient({
             />
           </div>
 
-          {futureScheduledAtoms.length > 0 && (
+          {overdueScheduledAtoms.length > 0 && (
             <div className="glass-card p-4 bg-black/10 border border-white/[0.04] rounded-2xl">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Calendar size={14} className="text-zinc-400" />
                   <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">
-                    Scheduled outside selected week
+                    Overdue from past weeks
                   </span>
                 </div>
                 <span className="text-[9px] font-mono text-zinc-600 bg-white/[0.04] px-2 py-0.5 rounded">
-                  {futureScheduledAtoms.length} atom{futureScheduledAtoms.length > 1 ? "s" : ""}
+                  {overdueScheduledAtoms.length} atom{overdueScheduledAtoms.length > 1 ? "s" : ""}
                 </span>
               </div>
               <div className="grid gap-2">
-                {futureScheduledAtoms.map((atom) => (
+                {overdueScheduledAtoms.map((atom) => (
                   <AtomCard
                     key={atom.id}
                     atom={atom}
@@ -3656,12 +3661,25 @@ export function PlanningWizardClient({
                               ...obj,
                               projects: obj.projects.map((p: SprintProject) => ({
                                 ...p,
-                                tasks: p.tasks.map((t: SprintTask) =>
-                                  t.id === schedulingTaskId ? { ...t, plannedDate: null } : t,
-                                ),
+                                tasks: p.tasks.map((t: SprintTask) => {
+                                  if (t.id === schedulingTaskId) {
+                                    return { ...t, plannedDate: null };
+                                  }
+                                  return {
+                                    ...t,
+                                    children: (t.children || []).map((c: SprintTask) =>
+                                      c.id === schedulingTaskId ? { ...c, plannedDate: null } : c,
+                                    ),
+                                  };
+                                }),
                               })),
                             })),
                           }));
+                          setStandaloneAtoms((prev) =>
+                            prev.map((atom) =>
+                              atom.id === schedulingTaskId ? { ...atom, plannedDate: null } : atom,
+                            ),
+                          );
                         }
                       });
                     }
