@@ -2,13 +2,14 @@
 
 import * as sprintService from "../services/sprint-service";
 import { invalidateTaskCache } from "@/lib/cache/revalidate";
-import { withAction, ActionResult } from "@/lib/actions/action-utils";
+import { withAction } from "@/lib/actions/action-utils";
+import type { TaskStatus } from "@/features/life/types";
 
 export async function createProjectAction(
   title: string,
   description?: string,
-  objectiveId?: string | null
-): Promise<ActionResult<any>> {
+  objectiveId?: string | null,
+) {
   return withAction(async (userId) => {
     const project = await sprintService.createProject(userId, title, description, objectiveId);
     invalidateTaskCache(userId);
@@ -16,17 +17,14 @@ export async function createProjectAction(
   });
 }
 
-export async function deleteProjectAction(projectId: string): Promise<ActionResult<void>> {
+export async function deleteProjectAction(projectId: string) {
   return withAction(async (userId) => {
     await sprintService.deleteProject(userId, projectId);
     invalidateTaskCache(userId);
   });
 }
 
-export async function updateProjectStatusAction(
-  projectId: string,
-  status: any
-): Promise<ActionResult<any>> {
+export async function updateProjectStatusAction(projectId: string, status: TaskStatus) {
   return withAction(async (userId) => {
     const project = await sprintService.updateProjectStatus(userId, projectId, status);
     invalidateTaskCache(userId);
@@ -36,8 +34,8 @@ export async function updateProjectStatusAction(
 
 export async function assignProjectToObjectiveAction(
   projectId: string,
-  objectiveId: string | null
-): Promise<ActionResult<any>> {
+  objectiveId: string | null,
+) {
   return withAction(async (userId) => {
     const project = await sprintService.assignProjectToObjective(userId, projectId, objectiveId);
     invalidateTaskCache(userId);
@@ -49,10 +47,16 @@ export async function createSprintObjectiveAction(
   sprintId: string,
   title: string,
   sphereId: string,
-  description?: string
-): Promise<ActionResult<any>> {
+  description?: string,
+) {
   return withAction(async (userId) => {
-    const objective = await sprintService.createSprintObjective(userId, sprintId, title, sphereId, description);
+    const objective = await sprintService.createSprintObjective(
+      userId,
+      sprintId,
+      title,
+      sphereId,
+      description,
+    );
     invalidateTaskCache(userId);
     return objective;
   });
@@ -67,9 +71,9 @@ export async function saveSprintReviewAction(
     wins?: string;
     challenges?: string;
     adjustments?: string;
-    kaizenVector?: any;
-  }
-): Promise<ActionResult<any>> {
+    kaizenVector?: Parameters<typeof sprintService.saveSprintReview>[4]["kaizenVector"];
+  },
+) {
   return withAction(async (userId) => {
     const date = new Date(dateString);
     const review = await sprintService.saveSprintReview(userId, sprintId, weekNumber, date, data);
@@ -77,13 +81,14 @@ export async function saveSprintReviewAction(
   });
 }
 
-export async function updateProjectAction(
-  projectId: string,
-  title: string,
-  description?: string
-): Promise<ActionResult<any>> {
+export async function updateProjectAction(projectId: string, title: string, description?: string) {
   return withAction(async (userId) => {
-    const project = await sprintService.updateProject(userId, projectId, title, description || null);
+    const project = await sprintService.updateProject(
+      userId,
+      projectId,
+      title,
+      description || null,
+    );
     invalidateTaskCache(userId);
     return project;
   });
@@ -93,16 +98,22 @@ export async function updateSprintObjectiveAction(
   objectiveId: string,
   title: string,
   sphereId: string,
-  description?: string
-): Promise<ActionResult<any>> {
+  description?: string,
+) {
   return withAction(async (userId) => {
-     const objective = await sprintService.updateSprintObjective(userId, objectiveId, title, sphereId, description || null);
-     invalidateTaskCache(userId);
-     return objective;
+    const objective = await sprintService.updateSprintObjective(
+      userId,
+      objectiveId,
+      title,
+      sphereId,
+      description || null,
+    );
+    invalidateTaskCache(userId);
+    return objective;
   });
 }
 
-export async function getCurrentSprintProjectsAction(): Promise<ActionResult<any>> {
+export async function getCurrentSprintProjectsAction() {
   return withAction(async (userId) => {
     return await sprintService.getCurrentSprintProjects(userId);
   });
@@ -112,7 +123,7 @@ export async function updateSprintDatesAction(
   sprintId: string,
   startDate: string,
   endDate: string,
-): Promise<ActionResult<any>> {
+) {
   return withAction(async (userId) => {
     const result = await sprintService.updateSprintDates(
       userId,

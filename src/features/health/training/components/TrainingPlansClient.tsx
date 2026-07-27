@@ -312,9 +312,11 @@ export function TrainingPlansClient({
                   <Activity size={16} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-panel-title">Аналіз тижневого об'єму навантаження</span>
+                  <span className="text-panel-title">
+                    Аналіз тижневого об&apos;єму навантаження
+                  </span>
                   <span className="text-[11px] text-zinc-400 font-normal">
-                    Розрахунок робочих підходів на тиждень за групами м'язів
+                    Розрахунок робочих підходів на тиждень за групами м&apos;язів
                   </span>
                 </div>
               </div>
@@ -329,7 +331,7 @@ export function TrainingPlansClient({
                 <div className="md:col-span-2 flex flex-col gap-4">
                   {calculateWeeklyVolume(plan.days).length === 0 ? (
                     <p className="text-caption text-zinc-500 italic py-2">
-                      Додайте вправи до тренувальних днів, щоб побачити аналіз об'єму.
+                      Додайте вправи до тренувальних днів, щоб побачити аналіз об&apos;єму.
                     </p>
                   ) : (
                     <div className="flex flex-col gap-3">
@@ -382,8 +384,8 @@ export function TrainingPlansClient({
                         Низький (Підтримка) (&lt; 6 підходів):
                       </span>
                       <p className="text-xs text-zinc-400 mt-0.5">
-                        Об'єм підтримки (Maintenance Volume - MV). Достатній для збереження форми
-                        при обмеженому часі.
+                        Об&apos;єм підтримки (Maintenance Volume - MV). Достатній для збереження
+                        форми при обмеженому часі.
                       </p>
                     </div>
                     <div>
@@ -392,7 +394,7 @@ export function TrainingPlansClient({
                       </span>
                       <p className="text-xs text-zinc-400 mt-0.5">
                         Зона активного росту (MEV/MAV). Золотий стандарт для збільшення сили та
-                        гіпертрофії м'язів.
+                        гіпертрофії м&apos;язів.
                       </p>
                     </div>
                     <div>
@@ -532,7 +534,7 @@ export function TrainingPlansClient({
                                 </div>
                                 <p className="text-[11px] text-zinc-400 leading-relaxed">
                                   3–5 хвилин легкого кардіо (еліпс, велотренажер або швидка ходьба).
-                                  Підвищує температуру тіла, еластичність м'язів та ЧСС.
+                                  Підвищує температуру тіла, еластичність м&apos;язів та ЧСС.
                                 </p>
                               </div>
 

@@ -140,7 +140,6 @@ export function SprintKanbanClient({ sprint, allTasks, sprintReviews }: SprintKa
                 (r) => r.weekNumber === week.index + 1 && r.score !== null,
               );
               const weekReview = sprintReviews.find((r) => r.weekNumber === week.index + 1);
-              const isCurrent = week.index === initialWeekIndex;
               const isDisabled = week.index > initialWeekIndex;
 
               let weekBadgeColor = "border-white/[0.06] text-zinc-400 hover:bg-white/5";
@@ -352,7 +351,6 @@ export function SprintKanbanClient({ sprint, allTasks, sprintReviews }: SprintKa
                 const review = sprintReviews.find((r) => r.weekNumber === week.index + 1);
                 const hasReview = review !== undefined && review.score !== null;
                 const isSelected = week.index === selectedWeekIndex;
-                const isCurrent = week.index === initialWeekIndex;
                 const isDisabled = week.index > initialWeekIndex;
 
                 let scoreStyles =

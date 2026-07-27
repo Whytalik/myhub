@@ -7,12 +7,11 @@ import { SettingsModal } from "@/components/layout/settings-modal";
 import { LogOut, Settings2, Sparkles, Pin, X, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { getActiveDomain } from "@/lib/spaces/domains";
 
 const SIDEBAR_SPRING = { type: "spring", stiffness: 320, damping: 32, restDelta: 0.001 } as const;
 const LABEL_TRANSITION = { duration: 0.14, ease: "easeOut" } as const;
-const SUBMENU_TRANSITION = { duration: 0.22, ease: [0.16, 1, 0.3, 1] } as const;
 
 function getSpaceStyles(label: string) {
   const cleanLabel = label.toLowerCase();
@@ -120,34 +119,35 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
   const isPageActive = (page: { href: string }) => activePage?.href === page.href;
 
   useEffect(() => {
+    // Client-only hydration gate: must run post-mount, no effect-free equivalent exists.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!mounted) return;
+  const [lastActivePathname, setLastActivePathname] = useState<string | null>(null);
+  let spaceOpenedByNavigation: string | null = null;
+
+  if (mounted && pathname !== lastActivePathname) {
+    setLastActivePathname(pathname);
     const targetSpace = domain.spaces.find((s) => s.pages.some((p) => p.href === activePage?.href));
-    if (targetSpace) {
-      setOpenSpaces((prev) => {
-        if (prev.has(targetSpace.label)) return prev;
-        const next = new Set(prev).add(targetSpace.label);
-
-        // Update cookie
-        if (typeof document !== "undefined") {
-          let existing: Record<string, boolean> = {};
-          const match = document.cookie.match(/(^| )sidebar-open-sections=([^;]+)/);
-          if (match) {
-            try {
-              existing = JSON.parse(decodeURIComponent(match[2]));
-            } catch {}
-          }
-          const updated = { ...existing, [targetSpace.label]: true };
-          document.cookie = `sidebar-open-sections=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000`;
-        }
-
-        return next;
-      });
+    if (targetSpace && !openSpaces.has(targetSpace.label)) {
+      setOpenSpaces(new Set(openSpaces).add(targetSpace.label));
+      spaceOpenedByNavigation = targetSpace.label;
     }
-  }, [pathname, mounted]);
+  }
+
+  useEffect(() => {
+    if (!spaceOpenedByNavigation || typeof document === "undefined") return;
+    let existing: Record<string, boolean> = {};
+    const match = document.cookie.match(/(^| )sidebar-open-sections=([^;]+)/);
+    if (match) {
+      try {
+        existing = JSON.parse(decodeURIComponent(match[2]));
+      } catch {}
+    }
+    const updated = { ...existing, [spaceOpenedByNavigation]: true };
+    document.cookie = `sidebar-open-sections=${encodeURIComponent(JSON.stringify(updated))}; path=/; max-age=31536000`;
+  }, [spaceOpenedByNavigation]);
 
   const isExpanded = isMobileOpen || !isCollapsed || isHovered;
   const collapsedWidth = isCollapsed ? 72 : 280;

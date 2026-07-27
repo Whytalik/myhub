@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { PageHeader } from "@/components/ui/display/page-header";
@@ -91,13 +90,10 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
       } else {
         toast.error(result.error || "Не вдалося зберегти зміни");
       }
-    } catch (e) {
+    } catch {
       toast.error("Виникла помилка при збереженні");
     }
   };
-
-  const badgeClass =
-    "text-[10px] font-mono font-semibold uppercase tracking-wide px-2 py-0.5 rounded bg-white/5 border border-white/[0.06] text-zinc-300";
 
   return (
     <div className="flex flex-col gap-6 pb-12">
@@ -150,7 +146,7 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
-                    Група м'язів
+                    Група м&apos;язів
                   </label>
                   <Input
                     value={muscleGroup}
@@ -365,7 +361,7 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
               ) : exercise.trackingType === "weight_reps" ? (
                 <div className="flex flex-col gap-4 text-body text-zinc-300">
                   <p className="leading-relaxed">
-                    Для ефективного росту сили та м'язової маси використовуйте метод{" "}
+                    Для ефективного росту сили та м&apos;язової маси використовуйте метод{" "}
                     <strong>подвійної прогресії</strong>:
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -454,7 +450,7 @@ export function ExerciseDetailClient({ exercise, staticDetails }: ExerciseDetail
               </h2>
               <div className="flex flex-col gap-3 text-[13px]">
                 <div className="flex justify-between items-center py-1.5 border-b border-white/[0.04]">
-                  <span className="text-zinc-400 font-normal">Група м'язів</span>
+                  <span className="text-zinc-400 font-normal">Група м&apos;язів</span>
                   <span className="font-semibold text-zinc-200">{muscleGroup || "Не вказано"}</span>
                 </div>
                 <div className="flex justify-between items-center py-1.5 border-b border-white/[0.04]">

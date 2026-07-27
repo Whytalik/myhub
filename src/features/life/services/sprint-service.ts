@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/db/prisma";
 import { startOfWeek, endOfWeek, startOfDay, endOfDay } from "date-fns";
+import type { TaskStatus } from "@/features/life/types";
+import { Prisma } from "@/app/generated/prisma";
 
 export async function getSprintDashboard(userId: string) {
   // 1. Get or create active sprint
@@ -256,7 +258,7 @@ export async function deleteProject(userId: string, projectId: string) {
   });
 }
 
-export async function updateProjectStatus(userId: string, projectId: string, status: any) {
+export async function updateProjectStatus(userId: string, projectId: string, status: TaskStatus) {
   return prisma.project.update({
     where: { id: projectId, userId },
     data: { status },
@@ -342,7 +344,7 @@ export async function saveSprintReview(
     wins?: string;
     challenges?: string;
     adjustments?: string;
-    kaizenVector?: any;
+    kaizenVector?: Prisma.InputJsonValue;
   },
 ) {
   const sprint = await prisma.sprint.findFirst({
@@ -362,7 +364,10 @@ export async function saveSprintReview(
         wins: data.wins !== undefined ? data.wins : existingReview.wins,
         challenges: data.challenges !== undefined ? data.challenges : existingReview.challenges,
         adjustments: data.adjustments !== undefined ? data.adjustments : existingReview.adjustments,
-        kaizenVector: data.kaizenVector !== undefined ? data.kaizenVector : existingReview.kaizenVector,
+        kaizenVector:
+          data.kaizenVector !== undefined
+            ? data.kaizenVector
+            : (existingReview.kaizenVector ?? Prisma.JsonNull),
       },
     });
   } else {
@@ -375,7 +380,7 @@ export async function saveSprintReview(
         wins: data.wins || null,
         challenges: data.challenges || null,
         adjustments: data.adjustments || null,
-        kaizenVector: data.kaizenVector || null,
+        kaizenVector: data.kaizenVector ?? Prisma.JsonNull,
       },
     });
   }

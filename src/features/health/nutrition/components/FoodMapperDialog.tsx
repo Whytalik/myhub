@@ -83,8 +83,8 @@ export function FoodMapperDialog({
   const [manualProtein, setManualProtein] = useState("");
   const [manualFat, setManualFat] = useState("");
   const [manualCarbs, setManualCarbs] = useState("");
-  const [manualServingGrams, setManualServingGrams] = useState("100");
-  const [manualServingDescription, setManualServingDescription] = useState("100 г");
+  const [manualServingGrams, _setManualServingGrams] = useState("100");
+  const [manualServingDescription, _setManualServingDescription] = useState("100 г");
 
   // Macro override state (Option B: keep real US food_id for push, override macros for display)
   const [macroOverrides, setMacroOverrides] = useState<
@@ -184,7 +184,7 @@ export function FoodMapperDialog({
     onSaved();
   };
 
-  const handleSaveManualInput = async () => {
+  const _handleSaveManualInput = async () => {
     if (!manualCalories || !manualProtein || !manualFat || !manualCarbs || !manualServingGrams) {
       toast.error("Будь ласка, заповніть всі поля");
       return;

@@ -122,7 +122,6 @@ export function GiftedItemDialog({
     onSaved();
   };
 
-  const unitLabel = unit === "piece" ? "шт" : unit === "ml" ? "мл" : "г";
   const qtyInputLabel = `Кількість (у ${unit === "piece" ? "штуках" : unit === "ml" ? "мілілітрах" : "грамах"})`;
 
   return (

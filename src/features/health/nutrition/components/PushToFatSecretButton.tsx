@@ -55,10 +55,12 @@ export function PushToFatSecretButton({
   const macroItemsKey = JSON.stringify(macroItems);
 
   useEffect(() => {
+    // localStorage is only available post-hydration, so this must stay an effect.
     if (pushedKey) {
       try {
         const raw = localStorage.getItem("nutrition-fatsecret-pushed-v1");
         const map = raw ? JSON.parse(raw) : {};
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsPushed(!!map[pushedKey]);
       } catch (e) {
         console.error(e);

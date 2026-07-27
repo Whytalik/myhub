@@ -61,6 +61,8 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
 
   useEffect(() => {
     if (isCompleted) {
+      // No ticking interval follows on this path, just seeding the final duration once.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setElapsedSeconds(session.durationSeconds || 0);
       return;
     }
@@ -284,7 +286,7 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                   </div>
                   <p className="text-[11px] text-zinc-400 leading-relaxed">
                     3–5 хвилин легкого кардіо (еліпс, велотренажер або швидка ходьба). Підвищує
-                    температуру тіла, еластичність м'язів та ЧСС.
+                    температуру тіла, еластичність м&apos;язів та ЧСС.
                   </p>
                 </div>
 

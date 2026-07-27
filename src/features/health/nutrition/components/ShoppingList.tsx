@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore, useState, useEffect } from "react";
+import { useSyncExternalStore, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Gift, Home, RotateCcw } from "lucide-react";
 import { Tabs } from "@/components/ui/navigation/tabs";
@@ -10,7 +10,13 @@ import { sumMacroGramsMulti, formatGrams } from "../quantities";
 import { currentWeekStart, weekStartKey } from "../week";
 import { GiftedItemDialog } from "./GiftedItemDialog";
 import { getSeasonalPrice } from "../utils/seasonal-pricing";
-import type { ShoppingCategory, ShoppingDay, ShoppingItem } from "../types";
+import type {
+  ComputedQuantity,
+  ShoppingCategory,
+  ShoppingDay,
+  ShoppingItem,
+  Weekday,
+} from "../types";
 
 export interface GiftedRecord {
   itemId: string;
@@ -61,9 +67,9 @@ function computedTotal(
   );
 }
 
-function isNeededForDay(item: ShoppingItem, day: string): boolean {
+function isNeededForDay(item: ShoppingItem, day: Weekday): boolean {
   if (item.computedQty) {
-    return item.computedQty.weekdays.includes(day as any);
+    return item.computedQty.weekdays.includes(day);
   }
   if (item.note) {
     const lowerNote = item.note.toLowerCase();
@@ -293,9 +299,7 @@ function CategoryList({
                       className="flex items-start gap-2.5 text-left flex-1 min-w-0"
                     >
                       <span className={checkboxClass}>
-                        {hasCheckmark && (
-                          <Check size={11} strokeWidth={3} />
-                        )}
+                        {hasCheckmark && <Check size={11} strokeWidth={3} />}
                       </span>
                       <span className="flex flex-col min-w-0">
                         <span className={nameClass}>
@@ -413,7 +417,7 @@ function getConsolidatedCategories(
     }
 
     const items: ShoppingItem[] = [];
-    for (const [name, list] of grouped.entries()) {
+    for (const [_name, list] of grouped.entries()) {
       if (list.length === 1) {
         items.push(list[0]);
         continue;
@@ -433,13 +437,13 @@ function getConsolidatedCategories(
 
       // Combine quantities
       let combinedQty: string | undefined = undefined;
-      let mergedComputedQty: any = undefined;
+      let mergedComputedQty: ComputedQuantity | undefined = undefined;
       const allComputed = list.every((item) => !!item.computedQty);
       if (allComputed) {
         const weekdays = Array.from(new Set(list.flatMap((item) => item.computedQty!.weekdays)));
         const grams = list.reduce((sum, item) => sum + (item.computedQty!.grams ?? 0), 0);
         mergedComputedQty = {
-          ...base.computedQty,
+          ...base.computedQty!,
           weekdays,
           grams,
         };
@@ -519,12 +523,14 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
     homeStockStore.getServerSnapshot,
   );
   const [activeView, setActiveView] = useState<ViewId>("all");
-  const [selectedDay, setSelectedDay] = useState<string>("all");
+  const [selectedDay, setSelectedDay] = useState<"all" | Weekday>("all");
   const [giftDialogItem, setGiftDialogItem] = useState<ShoppingItem | null>(null);
 
-  useEffect(() => {
+  const [lastActiveView, setLastActiveView] = useState(activeView);
+  if (activeView !== lastActiveView) {
+    setLastActiveView(activeView);
     setSelectedDay("all");
-  }, [activeView]);
+  }
 
   const giftedByItemId = new Map(gifted.map((g) => [g.itemId, g]));
 
@@ -697,16 +703,18 @@ export function ShoppingList({ weekStart, seasonOverride, gifted }: ShoppingList
           Фільтр за днем вживання:
         </span>
         <div className="flex flex-wrap items-center gap-1">
-          {[
-            { id: "all", label: "Усі дні" },
-            { id: "mon", label: "Пн" },
-            { id: "tue", label: "Вт" },
-            { id: "wed", label: "Ср" },
-            { id: "thu", label: "Чт" },
-            { id: "fri", label: "Пт" },
-            { id: "sat", label: "Сб" },
-            { id: "sun", label: "Нд" },
-          ].map((dayOption) => {
+          {(
+            [
+              { id: "all", label: "Усі дні" },
+              { id: "mon", label: "Пн" },
+              { id: "tue", label: "Вт" },
+              { id: "wed", label: "Ср" },
+              { id: "thu", label: "Чт" },
+              { id: "fri", label: "Пт" },
+              { id: "sat", label: "Сб" },
+              { id: "sun", label: "Нд" },
+            ] as { id: "all" | Weekday; label: string }[]
+          ).map((dayOption) => {
             const isDayActive = selectedDay === dayOption.id;
             return (
               <button
