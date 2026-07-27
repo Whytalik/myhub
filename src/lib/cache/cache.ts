@@ -8,7 +8,6 @@ import { exerciseRepository } from "@/features/health/training/repositories/exer
 import { trainingPlanRepository } from "@/features/health/training/repositories/training-plan.repository";
 import { trainingSessionRepository } from "@/features/health/training/repositories/training-session.repository";
 import { productMappingRepository } from "@/features/health/nutrition/repositories/product-mapping.repository";
-import { giftedGroceryRepository } from "@/features/health/nutrition/repositories/gifted-grocery.repository";
 import { thoughtStatusRepository } from "@/features/life/repositories/thought-status.repository";
 import { missionRepository } from "@/features/life/repositories/mission.repository";
 
@@ -120,12 +119,6 @@ export const getCachedProductMappings = unstable_cache(
   () => productMappingRepository.findAll(),
   [],
   { tags: ["product-mapping"] },
-);
-
-export const getCachedGiftedGroceries = unstable_cache(
-  () => giftedGroceryRepository.findAll(),
-  [],
-  { tags: ["gifted-grocery"] },
 );
 
 export const getCachedThoughtBoard = unstable_cache(

@@ -100,13 +100,32 @@ export function getProductSeasonMultiplier(
 }
 
 /**
+ * Повертає сезонну ціну за одиницю (кг/штуку) з урахуванням override.
+ */
+export function getUnitPrice(
+  item: ShoppingItem,
+  weekStartKey: string,
+  seasonOverride?: string,
+  priceOverride?: number,
+): number | null {
+  if (!item.food) return null;
+  const product = PRODUCTS[item.food];
+  if (!product || product.basePrice === undefined) return null;
+  if (priceOverride !== undefined) return priceOverride;
+  const multiplier = getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
+  return product.basePrice * multiplier;
+}
+
+/**
  * Розраховує динамічну сезонну ціну для позиції списку покупок.
  * Якщо розрахувати неможливо (немає basePrice), повертає оригінальну статичну ціну.
+ * `priceOverride` — ручна ціна за одиницю (кг/штуку), що замінює сезонну.
  */
 export function getSeasonalPrice(
   item: ShoppingItem,
   weekStartKey: string,
   seasonOverride?: string,
+  priceOverride?: number,
 ): number {
   if (!item.food) return item.price ?? 0;
 
@@ -115,8 +134,9 @@ export function getSeasonalPrice(
     return item.price ?? 0;
   }
 
-  const multiplier = getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
-  const seasonalUnitPrice = product.basePrice * multiplier;
+  const seasonalUnitPrice =
+    priceOverride ??
+    product.basePrice * getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
 
   // 1. Якщо кількість розраховується автоматично через computedQty
   if (item.computedQty) {
@@ -150,5 +170,7 @@ export function getSeasonalPrice(
   }
 
   // 3. Фолбек: множимо статичну ціну на сезонний коефіцієнт
-  return Math.round((item.price ?? 0) * multiplier);
+  return Math.round(
+    (item.price ?? 0) * getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride),
+  );
 }
