@@ -615,10 +615,12 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                   ✓
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-sm font-semibold">Розморожування не потрібне</span>
+                  <span className="text-sm font-semibold">
+                    {tomorrowWeekday === "wed" ? "Розморожування" : "Розморожування не потрібне"}
+                  </span>
                   <p className="text-sm text-zinc-300">
                     Для завтрашніх страв не потрібно нічого діставати з морозилки.
-                    {tomorrowWeekday === "wed" && " Скумбрія запікається прямо з морозилки."}
+                    {tomorrowWeekday === "wed" && " Скумбрію потрібно дістати з морозилки та розморозити."}
                     {tomorrowWeekday === "sat" && " Сирники смажаться замороженими."}
                   </p>
                 </div>
