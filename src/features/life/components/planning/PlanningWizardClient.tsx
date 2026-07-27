@@ -24,6 +24,7 @@ import {
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
+import { DatePicker } from "@/components/ui/inputs/date-picker";
 import {
   quickCaptureAction,
   routeThoughtAction,
@@ -3623,6 +3624,18 @@ export function PlanningWizardClient({
                   })}
               </div>
             </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">
+                Or pick any date
+              </label>
+              <DatePicker
+                value={scheduleDate}
+                onChange={setScheduleDate}
+                placeholder="Select date"
+              />
+            </div>
+
             {scheduleDate && (
               <div className="text-[10px] text-zinc-500 font-mono">
                 Scheduled for:{" "}
