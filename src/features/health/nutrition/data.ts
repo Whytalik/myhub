@@ -448,7 +448,10 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "fruits-0",
         food: "berries",
-        computedQty: { food: "berries", weekdays: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] },
+        computedQty: {
+          food: "berries",
+          weekdays: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+        },
         note: "Щодня",
         options: ["полуниця", "малина", "чорниця", "змішані заморожені"],
         price: 243,
@@ -537,7 +540,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "oils-1",
         food: "oil",
         qualifier: "рослинна",
-        qty: "100 (для смаження + морква)",
+        qty: "100 мл",
         note: "Пн + Вт + Чт + Пт + Сб + Нд",
         price: 10,
         buyDay: "sun",

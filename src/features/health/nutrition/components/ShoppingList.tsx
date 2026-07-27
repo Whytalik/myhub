@@ -1,13 +1,14 @@
 "use client";
 
 import { useSyncExternalStore, useState } from "react";
-import { Check, Home, RotateCcw } from "lucide-react";
+import { Check, Home, Pencil, RotateCcw } from "lucide-react";
 import { Tabs } from "@/components/ui/navigation/tabs";
+import { Input } from "@/components/ui/inputs/input";
 import { SHOPPING_LIST } from "../data";
 import { getProductName, PRODUCTS } from "../products";
 import { sumMacroGramsMulti, formatGrams } from "../quantities";
 import { currentWeekStart, weekStartKey } from "../week";
-import { getSeasonalPrice } from "../utils/seasonal-pricing";
+import { getSeasonalPrice, getUnitPrice } from "../utils/seasonal-pricing";
 import type { ShoppingCategory, ShoppingDay, ShoppingItem, Weekday } from "../types";
 
 /** Base name always comes from products.ts when `food` is set — `qualifier` layers
@@ -76,6 +77,7 @@ function isNeededForDay(item: ShoppingItem, day: Weekday): boolean {
 
 const STORAGE_KEY = "nutrition-shopping-v1";
 const HOME_STOCK_STORAGE_PREFIX = "nutrition-home-stock-v1";
+const PRICE_OVERRIDE_STORAGE_KEY = "nutrition-price-override-v1";
 
 const VIEWS = [
   { id: "sun" as const, label: "Неділя" },
@@ -96,6 +98,8 @@ type FlagMap = Record<string, boolean>;
 /** Fraction 0–1 per item — how much of the needed amount is already at home
  *  (0/absent = none, 1 = all of it, e.g. 0.3 = "маю 30%"). */
 type FractionMap = Record<string, number>;
+/** ₴/кг per product key — a manual correction of products.ts's hardcoded `basePrice`. */
+type PriceOverrideMap = Record<string, number>;
 
 function readFromStorage<T>(key: string, empty: T): T {
   if (typeof window === "undefined") return empty;
@@ -148,6 +152,7 @@ function makeRecordStore<T extends Record<string, unknown>>(getStorageKey: () =>
 
 const EMPTY_FLAGS: FlagMap = {};
 const EMPTY_FRACTIONS: FractionMap = {};
+const EMPTY_PRICE_OVERRIDES: PriceOverrideMap = {};
 
 const checkedStore = makeRecordStore<FlagMap>(() => STORAGE_KEY, EMPTY_FLAGS);
 // Namespaced by the current shopping week so "вже вдома" naturally clears itself
@@ -156,17 +161,34 @@ const homeStockStore = makeRecordStore<FractionMap>(
   () => `${HOME_STOCK_STORAGE_PREFIX}:${weekStartKey(currentWeekStart())}`,
   EMPTY_FRACTIONS,
 );
+// Not week-scoped — a price correction should stick until manually changed again.
+const priceOverrideStore = makeRecordStore<PriceOverrideMap>(
+  () => PRICE_OVERRIDE_STORAGE_KEY,
+  EMPTY_PRICE_OVERRIDES,
+);
+
+/** getSeasonalPrice, but pulling the manual ₴/кг override for the item's product (if any). */
+function priceOf(
+  item: ShoppingItem,
+  weekStart: string,
+  seasonOverride: string | undefined,
+  priceOverrides: PriceOverrideMap,
+): number {
+  const override = item.food ? priceOverrides[item.food] : undefined;
+  return getSeasonalPrice(item, weekStart, seasonOverride, override);
+}
 
 function categoryCost(
   categories: ShoppingCategory[],
   weekStart: string,
-  seasonOverride?: string,
+  seasonOverride: string | undefined,
+  priceOverrides: PriceOverrideMap,
 ): number {
   return categories.reduce(
     (sum, category) =>
       sum +
       category.items.reduce(
-        (itemSum, item) => itemSum + getSeasonalPrice(item, weekStart, seasonOverride),
+        (itemSum, item) => itemSum + priceOf(item, weekStart, seasonOverride, priceOverrides),
         0,
       ),
     0,
@@ -203,21 +225,28 @@ function CategoryList({
   categories,
   checked,
   homeStock,
+  priceOverrides,
   weekStart,
   seasonOverride,
   onToggle,
   onToggleHomeStock,
   onSetHomeStockFraction,
+  onSetPriceOverride,
 }: {
   categories: ShoppingCategory[];
   checked: FlagMap;
   homeStock: FractionMap;
+  priceOverrides: PriceOverrideMap;
   weekStart: string;
   seasonOverride?: string;
   onToggle: (id: string) => void;
   onToggleHomeStock: (id: string) => void;
   onSetHomeStockFraction: (id: string, fraction: number) => void;
+  onSetPriceOverride: (foodKey: string, value: number | null) => void;
 }) {
+  // Only one price editor open at a time, across the whole list.
+  const [editingPriceFood, setEditingPriceFood] = useState<string | null>(null);
+
   return (
     <div className="flex flex-col gap-4">
       {categories.map((category) => (
@@ -237,7 +266,14 @@ function CategoryList({
               const readout = isHomeStock
                 ? homeStockReadout(item, fraction, weekStart, seasonOverride)
                 : null;
-              const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
+              const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
+              const canEditPrice = !!item.food && PRODUCTS[item.food].basePrice !== undefined;
+              const priceOverride = item.food ? priceOverrides[item.food] : undefined;
+              const isPriceOverridden = priceOverride !== undefined;
+              const unitPrice = canEditPrice
+                ? (priceOverride ?? getUnitPrice(item, weekStart, seasonOverride))
+                : null;
+              const isEditingPrice = canEditPrice && editingPriceFood === item.food;
               const hasCheckmark = isChecked || fraction >= 1;
               const checkboxClass = `flex items-center justify-center w-4 h-4 rounded border shrink-0 transition-colors duration-150 ${
                 hasCheckmark
@@ -254,6 +290,11 @@ function CategoryList({
               const homeButtonClass = `flex items-center justify-center w-6 h-6 rounded-md shrink-0 transition-colors duration-150 ${
                 isHomeStock
                   ? "bg-amber-400/15 text-amber-400"
+                  : "text-zinc-600 hover:text-zinc-300 hover:bg-white/5"
+              }`;
+              const priceButtonClass = `flex items-center justify-center w-6 h-6 rounded-md shrink-0 transition-colors duration-150 ${
+                isPriceOverridden
+                  ? "bg-cyan-400/15 text-cyan-400"
                   : "text-zinc-600 hover:text-zinc-300 hover:bg-white/5"
               }`;
               return (
@@ -285,7 +326,54 @@ function CategoryList({
                     >
                       <Home size={13} />
                     </button>
+                    {canEditPrice && (
+                      <button
+                        onClick={() =>
+                          setEditingPriceFood(isEditingPrice ? null : (item.food ?? null))
+                        }
+                        className={priceButtonClass}
+                        title="Редагувати ціну за кг"
+                      >
+                        <Pencil size={12} />
+                      </button>
+                    )}
                   </div>
+
+                  {isEditingPrice && item.food && (
+                    <div className="flex items-center gap-2 pl-6 -mt-1">
+                      <Input
+                        type="number"
+                        min={0}
+                        autoFocus
+                        defaultValue={unitPrice !== null ? Math.round(unitPrice) : undefined}
+                        onBlur={(e) => {
+                          const value = Number(e.target.value);
+                          if (Number.isFinite(value) && value >= 0 && item.food) {
+                            onSetPriceOverride(item.food, value);
+                          }
+                          setEditingPriceFood(null);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") e.currentTarget.blur();
+                          if (e.key === "Escape") setEditingPriceFood(null);
+                        }}
+                        className="w-20 font-mono text-right text-xs text-cyan-400"
+                      />
+                      <span className="text-label text-cyan-400/70">₴/кг</span>
+                      {isPriceOverridden && (
+                        <button
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => {
+                            if (item.food) onSetPriceOverride(item.food, null);
+                            setEditingPriceFood(null);
+                          }}
+                          className="text-label text-zinc-500 hover:text-zinc-300"
+                        >
+                          Скинути
+                        </button>
+                      )}
+                    </div>
+                  )}
 
                   {isHomeStock && itemTotal !== null && (
                     <div className="flex items-center gap-2 pl-6 -mt-1">
@@ -366,6 +454,11 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
     homeStockStore.getSnapshot,
     homeStockStore.getServerSnapshot,
   );
+  const priceOverrides = useSyncExternalStore(
+    priceOverrideStore.subscribe,
+    priceOverrideStore.getSnapshot,
+    priceOverrideStore.getServerSnapshot,
+  );
   const [activeView, setActiveView] = useState<ViewId>("sun");
   const [selectedDay, setSelectedDay] = useState<"all" | Weekday>("all");
 
@@ -411,20 +504,19 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
   const progress =
     totalItemsInView > 0 ? Math.round((checkedCountInView / totalItemsInView) * 100) : 0;
 
-  const totalCost = categoryCost(filteredCategories, weekStart, seasonOverride);
+  const totalCost = categoryCost(filteredCategories, weekStart, seasonOverride, priceOverrides);
 
   const homeStockCost = filteredCategories.reduce((sum, category) => {
     return (
       sum +
       category.items.reduce((itemSum, item) => {
+        const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
         if (item.id.includes("+")) {
           const ids = item.id.split("+");
-          const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
           const fraction = homeStock[ids[0]] ?? 0;
           return itemSum + itemPrice * fraction;
         }
         const fraction = homeStock[item.id] ?? 0;
-        const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
         return itemSum + itemPrice * fraction;
       }, 0)
     );
@@ -439,15 +531,14 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
           : !!checked[item.id];
         if (!isChecked) return itemSum;
 
+        const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
         if (item.id.includes("+")) {
           const ids = item.id.split("+");
           const fraction = homeStock[ids[0]] ?? 0;
-          const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
           return itemSum + itemPrice * (1 - fraction);
         }
 
         const fraction = homeStock[item.id] ?? 0;
-        const itemPrice = getSeasonalPrice(item, weekStart, seasonOverride);
         return itemSum + itemPrice * (1 - fraction);
       }, 0)
     );
@@ -495,6 +586,16 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
       homeStockStore.write(nextHomeStock);
     } else {
       homeStockStore.write({ ...homeStock, [id]: fraction });
+    }
+  };
+
+  const setPriceOverride = (foodKey: string, value: number | null) => {
+    if (value === null) {
+      const next = { ...priceOverrides };
+      delete next[foodKey];
+      priceOverrideStore.write(next);
+    } else {
+      priceOverrideStore.write({ ...priceOverrides, [foodKey]: value });
     }
   };
 
@@ -594,11 +695,13 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
         categories={filteredCategories}
         checked={checked}
         homeStock={homeStock}
+        priceOverrides={priceOverrides}
         weekStart={weekStart}
         seasonOverride={seasonOverride}
         onToggle={toggle}
         onToggleHomeStock={toggleHomeStock}
         onSetHomeStockFraction={setHomeStockFraction}
+        onSetPriceOverride={setPriceOverride}
       />
     </div>
   );

@@ -36,10 +36,12 @@ export const CATEGORY_SEASONALITY: Record<string, number[]> = {
 
 /**
  * Парсить кількість та одиницю виміру з текстового рядка кількості (наприклад, "~1.66 кг" -> { amount: 1.66, unit: "kg" })
+ * Для "шт" також витягує вагову підказку з дужок ("2 шт (~590 г)" -> gramsHint: 590), якщо є —
+ * basePrice завжди ₴/кг, тож ціну штучних позицій треба рахувати через вагу, не через кількість штук.
  */
 function parseQtyString(
   qtyStr: string,
-): { amount: number; unit: "kg" | "g" | "piece" | "ml" } | null {
+): { amount: number; unit: "kg" | "g" | "piece" | "ml"; gramsHint?: number } | null {
   const clean = qtyStr.toLowerCase().replace(/~/g, "").trim();
 
   // 1. Кілограми (кг)
@@ -60,7 +62,9 @@ function parseQtyString(
   const pcsMatch = clean.match(/^([\d.,]+)\s*шт/);
   if (pcsMatch) {
     const amount = parseFloat(pcsMatch[1].replace(",", "."));
-    return { amount, unit: "piece" };
+    const gramsHintMatch = clean.match(/\(([\d.,]+)\s*г\)/);
+    const gramsHint = gramsHintMatch ? parseFloat(gramsHintMatch[1].replace(",", ".")) : undefined;
+    return { amount, unit: "piece", gramsHint };
   }
 
   // 4. Мілілітри (мл)
@@ -139,18 +143,14 @@ export function getSeasonalPrice(
     product.basePrice * getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
 
   // 1. Якщо кількість розраховується автоматично через computedQty
+  // sumMacroGramsMulti завжди повертає грами (незалежно від display-одиниці "unit"),
+  // а basePrice завжди ₴/кг — тож рахуємо ціну за вагою в обох випадках.
   if (item.computedQty) {
-    const { food, extraFood, weekdays, grams = 0, unit = "g", wastePercent = 0 } = item.computedQty;
+    const { food, extraFood, weekdays, grams = 0, wastePercent = 0 } = item.computedQty;
     const baseTotal =
       sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStartKey) + grams;
     const totalQty = baseTotal * (1 + wastePercent / 100);
-
-    if (unit === "piece") {
-      return Math.round(totalQty * seasonalUnitPrice);
-    } else {
-      // г або мл -> ціна вказана за кг або літр
-      return Math.round((totalQty / 1000) * seasonalUnitPrice);
-    }
+    return Math.round((totalQty / 1000) * seasonalUnitPrice);
   }
 
   // 2. Якщо є статична кількість у вигляді текстового рядка qty
@@ -164,7 +164,14 @@ export function getSeasonalPrice(
         return Math.round((parsed.amount / 1000) * seasonalUnitPrice);
       }
       if (parsed.unit === "piece") {
-        return Math.round(parsed.amount * seasonalUnitPrice);
+        // basePrice ₴/кг -> кількість штук треба спершу перевести у вагу.
+        const gramsPerPiece = PRODUCTS[item.food]?.gramsPerPiece;
+        const totalGrams =
+          parsed.gramsHint ?? (gramsPerPiece ? parsed.amount * gramsPerPiece : undefined);
+        if (totalGrams !== undefined) {
+          return Math.round((totalGrams / 1000) * seasonalUnitPrice);
+        }
+        return item.price ?? 0;
       }
     }
   }
