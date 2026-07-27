@@ -120,9 +120,10 @@ export function getSeasonalPrice(
 
   // 1. Якщо кількість розраховується автоматично через computedQty
   if (item.computedQty) {
-    const { food, extraFood, weekdays, grams = 0, unit = "g" } = item.computedQty;
-    const totalQty =
+    const { food, extraFood, weekdays, grams = 0, unit = "g", wastePercent = 0 } = item.computedQty;
+    const baseTotal =
       sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStartKey) + grams;
+    const totalQty = baseTotal * (1 + wastePercent / 100);
 
     if (unit === "piece") {
       return Math.round(totalQty * seasonalUnitPrice);

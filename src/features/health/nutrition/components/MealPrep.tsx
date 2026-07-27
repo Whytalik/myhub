@@ -21,13 +21,14 @@ function productLabel(food: string, qualifier?: string): string {
 /** Same computed/manual duality as ShoppingList's `displayNameOf` — a computed
  *  qty is `sumMacroGramsMulti(...) + grams` formatted, never a hand-typed string. */
 function quantityLabel(computed: ComputedQuantity, seasonOverride?: string): string {
-  const total =
+  const baseTotal =
     sumMacroGramsMulti(
       [computed.food, ...(computed.extraFood ?? [])],
       computed.weekdays,
       undefined,
       seasonOverride,
     ) + (computed.grams ?? 0);
+  const total = baseTotal * (1 + (computed.wastePercent ?? 0) / 100);
   return formatGrams(total, computed.unit, PRODUCTS[computed.food]?.gramsPerPiece);
 }
 
@@ -43,10 +44,11 @@ const proteinIngredients: RecipeIngredient[] = [
     computedQty: {
       food: "chickenMarinated",
       weekdays: ["mon", "thu", "fri", "sat"],
+      wastePercent: 5,
     },
   },
-  { food: "chickenHearts", computedQty: { food: "chickenHearts", weekdays: ["tue"] } },
-  { food: "porkChop", computedQty: { food: "porkChop", weekdays: ["sun"] } },
+  { food: "chickenHearts", computedQty: { food: "chickenHearts", weekdays: ["tue"], wastePercent: 15 } },
+  { food: "porkChop", computedQty: { food: "porkChop", weekdays: ["sun"], wastePercent: 10 } },
   { food: "mackerel", computedQty: { food: "mackerel", weekdays: ["wed"] } },
   { food: "cottageCheese", qualifier: "5–9%", qty: "500 г, для сирників" },
   {

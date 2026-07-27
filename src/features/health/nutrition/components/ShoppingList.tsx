@@ -44,9 +44,10 @@ function displayQtyOf(
   seasonOverride?: string,
 ): string | undefined {
   if (!item.computedQty) return item.qty;
-  const { food, extraFood, weekdays, grams = 0, unit } = item.computedQty;
-  const total =
+  const { food, extraFood, weekdays, grams = 0, unit, wastePercent = 0 } = item.computedQty;
+  const baseTotal =
     sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
+  const total = baseTotal * (1 + wastePercent / 100);
   return formatGrams(total, unit, PRODUCTS[food]?.gramsPerPiece);
 }
 
@@ -61,10 +62,10 @@ function computedTotal(
   seasonOverride?: string,
 ): number | null {
   if (!item.computedQty) return null;
-  const { food, extraFood, weekdays, grams = 0 } = item.computedQty;
-  return (
-    sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams
-  );
+  const { food, extraFood, weekdays, grams = 0, wastePercent = 0 } = item.computedQty;
+  const baseTotal =
+    sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
+  return baseTotal * (1 + wastePercent / 100);
 }
 
 function isNeededForDay(item: ShoppingItem, day: Weekday): boolean {

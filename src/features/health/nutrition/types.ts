@@ -50,6 +50,8 @@ export interface ComputedQuantity {
   weekdays: Weekday[];
   grams?: number;
   unit?: "g" | "piece" | "ml";
+  /** Відсоток відходів (напр. 15 = +15% до загальної ваги). */
+  wastePercent?: number;
 }
 
 export interface ShoppingItem {

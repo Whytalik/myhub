@@ -214,6 +214,27 @@ export const PRODUCTS: Record<string, Product> = {
     "vegetables",
     { searchTerm: "кабачок кабачк", basePrice: 60 },
   ),
+  broccoli: tracked(
+    "broccoli",
+    "Броколі",
+    { kcal: 34, protein: 2.8, fat: 0.4, carbs: 7 },
+    "vegetables",
+    { searchTerm: "брокол", basePrice: 55 },
+  ),
+  cauliflower: tracked(
+    "cauliflower",
+    "Цвітна капуста",
+    { kcal: 25, protein: 1.9, fat: 0.3, carbs: 5 },
+    "vegetables",
+    { searchTerm: "цвітн", basePrice: 45 },
+  ),
+  spinachFrozen: tracked(
+    "spinachFrozen",
+    "Шпинат заморожений",
+    { kcal: 31, protein: 2.9, fat: 0.4, carbs: 3.6 },
+    "vegetables",
+    { searchTerm: "шпинат", basePrice: 65 },
+  ),
   cabbage: tracked(
     "cabbage",
     "Капуста",

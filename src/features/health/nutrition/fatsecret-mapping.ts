@@ -50,4 +50,9 @@ export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
   // was food_id 6312 = "Cooked String Beans (from Frozen)" — completely wrong food, caused ~1g protein logs
   cottageCheese: { foodId: "33692", servingId: "56423", servingGrams: 1 },
   cream: { foodId: "1080", servingId: "49760", servingGrams: 1 },
+
+  // seasonal vegetables:
+  broccoli: { foodId: "36434", servingId: "59022", servingGrams: 1 },
+  cauliflower: { foodId: "36440", servingId: "59058", servingGrams: 1 },
+  spinachFrozen: { foodId: "35851", servingId: "59312", servingGrams: 1 },
 };
