@@ -275,6 +275,8 @@ export function PlanningWizardClient({
   const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+  const [batchScheduleAtomIds, setBatchScheduleAtomIds] = useState<string[] | null>(null);
+  const [batchScheduleDate, setBatchScheduleDate] = useState("");
 
   const toggleProjectCollapse = (projectId: string) => {
     setExpandedProjects((prev) => {
@@ -375,6 +377,7 @@ export function PlanningWizardClient({
     return allAtomsForDistribution.filter((atom) => {
       if (atom.status === "CANCELLED") return false;
       if (atom.id === schedulingTaskId) return false;
+      if (batchScheduleAtomIds?.includes(atom.id)) return false;
       return atom.plannedDate ? isSameDay(new Date(atom.plannedDate), date) : false;
     }).length;
   };
@@ -1223,6 +1226,60 @@ export function PlanningWizardClient({
         );
       } else {
         toast.error(result.error || "Failed to schedule task");
+      }
+    });
+  };
+
+  const handleBatchScheduleTasks = () => {
+    if (!batchScheduleAtomIds || batchScheduleAtomIds.length === 0 || !batchScheduleDate) return;
+    const date = batchScheduleDate;
+    const ids = batchScheduleAtomIds;
+
+    startActionTransition(async () => {
+      let successCount = 0;
+      for (const atomId of ids) {
+        const result = await upsertTaskAction({
+          id: atomId,
+          plannedDate: date,
+        });
+        if (result.success) successCount++;
+      }
+
+      if (successCount > 0) {
+        toast.success(`Scheduled ${successCount} atom${successCount > 1 ? "s" : ""} for ${format(new Date(date), "dd.MM")}!`);
+        setBatchScheduleAtomIds(null);
+        setBatchScheduleDate("");
+
+        setSprint((prev: SprintData) => {
+          if (!prev || !prev.objectives) return prev;
+          return {
+            ...prev,
+            objectives: prev.objectives.map((obj: SprintObjective) => ({
+              ...obj,
+              projects: (obj.projects || []).map((p: SprintProject) => ({
+                ...p,
+                tasks: (p.tasks || []).map((t: SprintTask) => {
+                  if (ids.includes(t.id)) {
+                    return { ...t, plannedDate: date };
+                  }
+                  return {
+                    ...t,
+                    children: (t.children || []).map((c: SprintTask) =>
+                      ids.includes(c.id) ? { ...c, plannedDate: date } : c,
+                    ),
+                  };
+                }),
+              })),
+            })),
+          };
+        });
+        setStandaloneAtoms((prev) =>
+          prev.map((atom) =>
+            ids.includes(atom.id) ? { ...atom, plannedDate: date } : atom,
+          ),
+        );
+      } else {
+        toast.error("Failed to schedule atoms");
       }
     });
   };
@@ -3294,26 +3351,40 @@ export function PlanningWizardClient({
 
                   {!isProjectCollapsed && (
                     <div className="px-3 pb-3 flex flex-col gap-2">
-                      {projectGroups.map(({ group, atoms }) => {
-                        const isGroupCollapsed = !expandedGroups.has(group.id);
-                        return (
-                          <div key={group.id} className="flex flex-col gap-1">
-                            <button
-                              type="button"
-                              onClick={() => toggleGroupCollapse(group.id)}
-                              className="w-full flex items-center gap-2 px-2 py-1.5 hover:bg-white/[0.02] rounded-lg transition-colors duration-150"
-                            >
-                              <ChevronDown
-                                size={10}
-                                className={`text-zinc-600 transition-transform duration-150 ${isGroupCollapsed ? "-rotate-90" : ""}`}
-                              />
-                              <span className="text-[10px] font-mono text-zinc-400 font-semibold truncate">
-                                {group.title}
-                              </span>
-                              <span className="text-[8px] font-mono text-zinc-600 bg-white/[0.04] px-1 py-0.5 rounded ml-auto shrink-0">
-                                {atoms.length}
-                              </span>
-                            </button>
+                        {projectGroups.map(({ group, atoms }) => {
+                          const isGroupCollapsed = !expandedGroups.has(group.id);
+                          return (
+                            <div key={group.id} className="flex flex-col gap-1">
+                              <div className="w-full flex items-center gap-2 px-2 py-1 hover:bg-white/[0.02] rounded-lg transition-colors duration-150 group/grp">
+                                <button
+                                  type="button"
+                                  onClick={() => toggleGroupCollapse(group.id)}
+                                  className="flex items-center gap-2 flex-1 min-w-0"
+                                >
+                                  <ChevronDown
+                                    size={10}
+                                    className={`text-zinc-600 transition-transform duration-150 shrink-0 ${isGroupCollapsed ? "-rotate-90" : ""}`}
+                                  />
+                                  <span className="text-[10px] font-mono text-zinc-400 font-semibold truncate">
+                                    {group.title}
+                                  </span>
+                                </button>
+                                <span className="text-[8px] font-mono text-zinc-600 bg-white/[0.04] px-1 py-0.5 rounded shrink-0">
+                                  {atoms.length}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    const ids = atoms.map((a) => a.id);
+                                    setBatchScheduleAtomIds(ids);
+                                    setBatchScheduleDate("");
+                                  }}
+                                  className="p-1 rounded text-zinc-600 hover:text-accent hover:bg-accent/10 opacity-0 group-hover/grp:opacity-100 transition-all duration-150 shrink-0"
+                                  title={`Schedule all ${atoms.length} atoms`}
+                                >
+                                  <Calendar size={11} />
+                                </button>
+                              </div>
                             {!isGroupCollapsed && (
                               <div className="flex flex-col gap-1 pl-4">
                                 {atoms.map((atom) => (
@@ -3737,6 +3808,102 @@ export function PlanningWizardClient({
                 disabled={!scheduleDate || isActionPending}
               >
                 Schedule
+              </Button>
+            </div>
+          </div>
+        </Dialog>
+      )}
+
+      {batchScheduleAtomIds && (
+        <Dialog
+          isOpen={true}
+          onClose={() => {
+            setBatchScheduleAtomIds(null);
+            setBatchScheduleDate("");
+          }}
+          title={`Schedule ${batchScheduleAtomIds.length} atoms`}
+          maxWidth="420px"
+        >
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">
+                Pick a day (Week {selectedWeekIndex + 1})
+              </label>
+              <div className="grid grid-cols-7 gap-1.5">
+                {weekStart &&
+                  Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)).map((day) => {
+                    const dateStr = format(day, "yyyy-MM-dd");
+                    const isSelected = batchScheduleDate === dateStr;
+                    const isTodayDate = isToday(day);
+                    return (
+                      <button
+                        key={dateStr}
+                        type="button"
+                        onClick={() => setBatchScheduleDate(dateStr)}
+                        className={`flex flex-col items-center gap-0.5 py-2 px-1 rounded-lg border text-xs transition-all duration-150 ${
+                          isSelected
+                            ? "border-accent bg-accent/10 text-accent font-semibold"
+                            : isTodayDate
+                              ? "border-accent/40 bg-accent/5 text-zinc-200"
+                              : "border-white/[0.06] bg-white/[0.02] text-zinc-400 hover:bg-white/[0.05] hover:text-zinc-200"
+                        }`}
+                      >
+                        <span className="text-[9px] font-mono uppercase">{format(day, "EEE")}</span>
+                        <span className="text-sm">
+                          {format(day, "d")}
+                          {isTodayDate && (
+                            <span className="ml-0.5 inline-block w-1 h-1 rounded-full bg-accent align-middle" />
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase">
+                Or pick any date
+              </label>
+              <DatePicker
+                value={batchScheduleDate}
+                onChange={setBatchScheduleDate}
+                placeholder="Select date"
+              />
+            </div>
+
+            {batchScheduleDate && (
+              <div className="text-[10px] text-zinc-500 font-mono">
+                {batchScheduleAtomIds.length} atoms will be scheduled for{" "}
+                {format(new Date(batchScheduleDate), "dd.MM.yyyy (EEE)", { weekStartsOn: 1 })}
+              </div>
+            )}
+            {batchScheduleDate && atomCountForDate(batchScheduleDate) + batchScheduleAtomIds.length - 1 >= DAILY_ATOM_SOFT_CAP && (
+              <div className="text-[10px] text-amber-400 font-mono flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                <AlertTriangle size={11} className="shrink-0" />
+                This day will have{" "}
+                {atomCountForDate(batchScheduleDate) + batchScheduleAtomIds.length} atoms — past the
+                ~{DAILY_ATOM_SOFT_CAP}/day focus budget.
+              </div>
+            )}
+            <div className="flex gap-2 justify-end mt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setBatchScheduleAtomIds(null);
+                  setBatchScheduleDate("");
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleBatchScheduleTasks}
+                disabled={!batchScheduleDate || isActionPending}
+              >
+                Schedule All
               </Button>
             </div>
           </div>
