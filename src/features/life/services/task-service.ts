@@ -17,7 +17,11 @@ import type {
   UpsertSphereInput,
 } from "../types";
 import { getScheduleByDate } from "./schedule-service";
-import { getDefaultBlocks, validateTaskTime } from "../logic/context-blocks";
+import {
+  getDayOfWeekInAppTimeZone,
+  getDefaultBlocks,
+  validateTaskTime,
+} from "../logic/context-blocks";
 
 function mapSphere(
   sphere: {
@@ -187,12 +191,13 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     const sphere = await prisma.lifeSphere.findUnique({ where: { id: sphereIdToCheck } });
     if (sphere) {
       const schedule = await getScheduleByDate(userId, plannedDateToCheck);
-      const blocks = schedule?.contextBlocks || getDefaultBlocks((plannedDateToCheck.getDay() + 6) % 7);
+      const blocks =
+        schedule?.contextBlocks || getDefaultBlocks(getDayOfWeekInAppTimeZone(plannedDateToCheck));
       const validation = validateTaskTime(
         sphere.name,
         plannedDateToCheck,
         plannedEndDateToCheck ?? null,
-        blocks
+        blocks,
       );
       if (!validation.isValid) {
         throw new Error(validation.message);

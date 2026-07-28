@@ -1,5 +1,41 @@
 import type { ContextBlock } from "../types";
 
+// Time-block schedules are defined in wall-clock time for this timezone,
+// so comparisons must use it rather than the server process's local timezone
+// (which is UTC in production and would otherwise shift every check by hours).
+const APP_TIME_ZONE = "Europe/Kyiv";
+
+function getMinutesInAppTimeZone(date: Date): number {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: APP_TIME_ZONE,
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(date);
+  const hours = Number(parts.find((part) => part.type === "hour")?.value ?? 0);
+  const minutes = Number(parts.find((part) => part.type === "minute")?.value ?? 0);
+  return hours * 60 + minutes;
+}
+
+const WEEKDAY_INDEX: Record<string, number> = {
+  Mon: 0,
+  Tue: 1,
+  Wed: 2,
+  Thu: 3,
+  Fri: 4,
+  Sat: 5,
+  Sun: 6,
+};
+
+// Monday = 0 ... Sunday = 6, matching getDefaultBlocks' dayOfWeek convention.
+export function getDayOfWeekInAppTimeZone(date: Date): number {
+  const weekday = new Intl.DateTimeFormat("en-US", {
+    timeZone: APP_TIME_ZONE,
+    weekday: "short",
+  }).format(date);
+  return WEEKDAY_INDEX[weekday];
+}
+
 export function getDefaultBlocks(dayOfWeek: number): ContextBlock[] {
   // Monday = 0, Tuesday = 1, Wednesday = 2, Thursday = 3, Friday = 4, Saturday = 5, Sunday = 6
   if (dayOfWeek === 5) {
@@ -176,23 +212,21 @@ export function validateTaskTime(
   sphereName: string,
   plannedDate: Date,
   plannedEndDate: Date | null,
-  contextBlocks: ContextBlock[]
+  contextBlocks: ContextBlock[],
 ): TimeBlockValidationResult {
   // Find blocks that allow this sphere and are enabled
   const matchingBlocks = contextBlocks.filter(
-    (block) => block.sphereNames.includes(sphereName) && block.enabled !== false
+    (block) => block.sphereNames.includes(sphereName) && block.enabled !== false,
   );
 
   if (matchingBlocks.length === 0) {
     return { isValid: true }; // No restrictions for this sphere
   }
 
-  const taskStart = plannedDate.getHours() * 60 + plannedDate.getMinutes();
-  
+  const taskStart = getMinutesInAppTimeZone(plannedDate);
+
   // If no end date, assume 60 mins duration
-  const taskEnd = plannedEndDate
-    ? plannedEndDate.getHours() * 60 + plannedEndDate.getMinutes()
-    : taskStart + 60;
+  const taskEnd = plannedEndDate ? getMinutesInAppTimeZone(plannedEndDate) : taskStart + 60;
 
   const parseTimeToMinutes = (timeStr: string): number => {
     const [hours, minutes] = timeStr.split(":").map(Number);
