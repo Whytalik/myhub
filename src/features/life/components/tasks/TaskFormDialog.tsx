@@ -186,6 +186,7 @@ function UnifiedTaskForm({
 
   const handleTogglePlannedEndTime = (checked: boolean) => {
     setHasPlannedEndTime(checked);
+    if (checked && !plannedEndDate && plannedDate) setPlannedEndDate(plannedDate);
     if (checked && !plannedEndTime) {
       if (plannedTime) {
         const [h, m] = plannedTime.split(":").map(Number);
@@ -654,6 +655,7 @@ function TaskDetail({
   };
   const handleTogglePlannedEndTime = (checked: boolean) => {
     setHasPlannedEndTime(checked);
+    if (checked && !plannedEndDate && plannedDate) setPlannedEndDate(plannedDate);
     if (checked && !plannedEndTime) {
       if (plannedTime) {
         const [h, m] = plannedTime.split(":").map(Number);
