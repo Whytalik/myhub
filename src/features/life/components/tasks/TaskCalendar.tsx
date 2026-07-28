@@ -22,13 +22,7 @@ import {
   differenceInMinutes,
   isBefore,
 } from "date-fns";
-import {
-  Calendar as CalendarIcon,
-  Plus,
-  ChevronLeft,
-  ChevronRight,
-  Flag,
-} from "lucide-react";
+import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, Flag } from "lucide-react";
 import {
   DndContext,
   PointerSensor,
@@ -40,7 +34,12 @@ import {
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { motion } from "framer-motion";
-import type { TaskData, LifeSphereData, DayScheduleData, ContextBlock } from "@/features/life/types";
+import type {
+  TaskData,
+  LifeSphereData,
+  DayScheduleData,
+  ContextBlock,
+} from "@/features/life/types";
 import {
   updateTaskRangeAction,
   updateTaskTimeRangeAction,
@@ -406,7 +405,11 @@ export function TaskCalendar({
   const [isDraggingAny, setIsDraggingAny] = useState(false);
   const [resizingTaskId, setResizingTaskId] = useState<string | null>(null);
   const [taskHeights, setTaskHeights] = useState<Record<string, number>>({});
-  const HOUR_HEIGHT = 120;
+  const HOUR_HEIGHT = 150;
+  const TIMELINE_START_HOUR = 4;
+  const TIMELINE_HOURS = 24 - TIMELINE_START_HOUR;
+  const getTimelineTop = (minutesSinceMidnight: number) =>
+    Math.max(0, ((minutesSinceMidnight - TIMELINE_START_HOUR * 60) * HOUR_HEIGHT) / 60);
 
   const [localTasks, setLocalTasks] = useState<TaskData[]>(initialTasks);
   const [now, setNow] = useState(() => new Date());
@@ -438,7 +441,10 @@ export function TaskCalendar({
   useEffect(() => {
     if (mode === "day" && verticalScrollContainerRef.current) {
       const currentHour = new Date().getHours();
-      const scrollAmount = Math.max(0, currentHour * HOUR_HEIGHT - 120);
+      const scrollAmount = Math.max(
+        0,
+        (currentHour - TIMELINE_START_HOUR) * HOUR_HEIGHT - HOUR_HEIGHT,
+      );
       verticalScrollContainerRef.current.scrollTop = scrollAmount;
     }
   }, [mode]);
@@ -528,7 +534,6 @@ export function TaskCalendar({
 
   const HOUR_WIDTH = 120;
   const DAY_START = 0;
-
 
   const timelineContainerRef = useRef<HTMLDivElement>(null);
 
@@ -1253,19 +1258,22 @@ export function TaskCalendar({
                     onDragStart={handleTimelineDragStart}
                     onDragEnd={handleTimelineDragEnd}
                   >
-                    <div className="relative flex" style={{ height: `${24 * HOUR_HEIGHT}px` }}>
-                      {/* Sleep block shading: 00:00 to 06:30 */}
+                    <div
+                      className="relative flex"
+                      style={{ height: `${TIMELINE_HOURS * HOUR_HEIGHT}px` }}
+                    >
+                      {/* Sleep block shading: TIMELINE_START_HOUR to 06:30 */}
                       <div
                         className="absolute left-16 sm:left-20 right-0 z-0 bg-indigo-950/[0.12] border-b border-indigo-950/20 flex items-center justify-center pointer-events-none"
                         style={{
                           top: 0,
-                          height: `${6.5 * HOUR_HEIGHT}px`,
+                          height: `${getTimelineTop(6.5 * 60)}px`,
                           backgroundImage:
                             "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)",
                         }}
                       >
                         <span className="text-[10px] font-mono tracking-wider uppercase text-indigo-500/40 select-none">
-                          💤 Час для сну (00:00 — 06:30)
+                          💤 Час для сну ({String(TIMELINE_START_HOUR).padStart(2, "0")}:00 — 06:30)
                         </span>
                       </div>
 
@@ -1273,7 +1281,7 @@ export function TaskCalendar({
                       <div
                         className="absolute left-16 sm:left-20 right-0 z-0 bg-indigo-950/[0.12] border-t border-indigo-950/20 flex items-center justify-center pointer-events-none"
                         style={{
-                          top: `${22 * HOUR_HEIGHT}px`,
+                          top: `${getTimelineTop(22 * 60)}px`,
                           height: `${2 * HOUR_HEIGHT}px`,
                           backgroundImage:
                             "repeating-linear-gradient(45deg, rgba(99,102,241,0.015) 0px, rgba(99,102,241,0.015) 2px, transparent 2px, transparent 8px)",
@@ -1332,7 +1340,7 @@ export function TaskCalendar({
                         return currentBlocks.map((block, index) => {
                           const startMin = parseTimeToMinutes(block.startTime);
                           const endMin = parseTimeToMinutes(block.endTime);
-                          const topPos = (startMin * HOUR_HEIGHT) / 60;
+                          const topPos = getTimelineTop(startMin);
                           const heightVal = ((endMin - startMin) * HOUR_HEIGHT) / 60;
                           const styles = getBlockStyles(block.id);
 
@@ -1347,7 +1355,9 @@ export function TaskCalendar({
                                 }}
                               >
                                 <div className="flex items-center gap-1.5 opacity-80">
-                                  <span className={`text-[9px] font-semibold uppercase tracking-wider ${styles.text}`}>
+                                  <span
+                                    className={`text-[9px] font-semibold uppercase tracking-wider ${styles.text}`}
+                                  >
                                     {block.name}
                                   </span>
                                   <span className="text-[8px] font-mono text-zinc-500">
@@ -1357,7 +1367,10 @@ export function TaskCalendar({
                                 {block.sphereNames.length > 0 && (
                                   <div className="flex flex-wrap gap-1 mt-0.5">
                                     {block.sphereNames.map((sphereName) => (
-                                      <span key={sphereName} className="px-1 py-0.2 rounded bg-white/[0.04] text-zinc-500 text-[8px] font-mono border border-white/[0.04]">
+                                      <span
+                                        key={sphereName}
+                                        className="px-1 py-0.2 rounded bg-white/[0.04] text-zinc-500 text-[8px] font-mono border border-white/[0.04]"
+                                      >
                                         {sphereName}
                                       </span>
                                     ))}
@@ -1366,26 +1379,27 @@ export function TaskCalendar({
                               </div>
 
                               {/* Buffer Zone */}
-                              {block.bufferMinutes > 0 && (() => {
-                                const bufferStartMin = endMin;
-                                const bufferTop = (bufferStartMin * HOUR_HEIGHT) / 60;
-                                const bufferHeight = (block.bufferMinutes * HOUR_HEIGHT) / 60;
-                                return (
-                                  <div
-                                    className="absolute left-16 sm:left-20 right-0 z-0 bg-white/[0.01] border-b border-white/[0.02] flex items-center px-3 pointer-events-none select-none"
-                                    style={{
-                                      top: `${bufferTop}px`,
-                                      height: `${bufferHeight}px`,
-                                      backgroundImage:
-                                        "repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 6px)",
-                                    }}
-                                  >
-                                    <span className="text-[8px] font-mono tracking-wider text-zinc-600 uppercase">
-                                      ⚡ Буфер ({block.bufferMinutes} хв)
-                                    </span>
-                                  </div>
-                                );
-                              })()}
+                              {block.bufferMinutes > 0 &&
+                                (() => {
+                                  const bufferStartMin = endMin;
+                                  const bufferTop = getTimelineTop(bufferStartMin);
+                                  const bufferHeight = (block.bufferMinutes * HOUR_HEIGHT) / 60;
+                                  return (
+                                    <div
+                                      className="absolute left-16 sm:left-20 right-0 z-0 bg-white/[0.01] border-b border-white/[0.02] flex items-center px-3 pointer-events-none select-none"
+                                      style={{
+                                        top: `${bufferTop}px`,
+                                        height: `${bufferHeight}px`,
+                                        backgroundImage:
+                                          "repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 6px)",
+                                      }}
+                                    >
+                                      <span className="text-[8px] font-mono tracking-wider text-zinc-600 uppercase">
+                                        ⚡ Буфер ({block.bufferMinutes} хв)
+                                      </span>
+                                    </div>
+                                  );
+                                })()}
                             </React.Fragment>
                           );
                         });
@@ -1393,27 +1407,34 @@ export function TaskCalendar({
 
                       {/* Hours Column & Horizontal Guidelines */}
                       <div className="w-16 sm:w-20 shrink-0 border-r border-white/[0.04] bg-white/[0.01] relative select-none">
-                        {Array.from({ length: 24 }).map((_, hourIdx) => (
+                        {Array.from({ length: TIMELINE_HOURS }).map((_, idx) => (
                           <div
-                            key={hourIdx}
+                            key={idx}
                             className="absolute right-2 font-mono text-[10px] font-bold text-zinc-500 text-right"
                             style={{
-                              top: `${hourIdx * HOUR_HEIGHT}px`,
+                              top: `${idx * HOUR_HEIGHT}px`,
                               transform: "translateY(-50%)",
                             }}
                           >
-                            {String(hourIdx).padStart(2, "0")}:00
+                            {String(idx + TIMELINE_START_HOUR).padStart(2, "0")}:00
                           </div>
                         ))}
                       </div>
 
                       {/* Grid lines running across the canvas */}
                       <div className="flex-1 relative z-0">
-                        {Array.from({ length: 24 }).map((_, hourIdx) => (
+                        {Array.from({ length: TIMELINE_HOURS }).map((_, idx) => (
                           <div
-                            key={hourIdx}
+                            key={idx}
                             className="absolute left-0 right-0 border-b border-white/[0.03]"
-                            style={{ top: `${hourIdx * HOUR_HEIGHT}px` }}
+                            style={{ top: `${idx * HOUR_HEIGHT}px` }}
+                          />
+                        ))}
+                        {Array.from({ length: TIMELINE_HOURS }).map((_, idx) => (
+                          <div
+                            key={`half-${idx}`}
+                            className="absolute left-0 right-0 border-b border-dashed border-white/[0.015]"
+                            style={{ top: `${idx * HOUR_HEIGHT + HOUR_HEIGHT / 2}px` }}
                           />
                         ))}
 
@@ -1424,7 +1445,7 @@ export function TaskCalendar({
                             return (
                               <div
                                 className="absolute left-0 right-0 h-0.5 bg-rose-500/80 z-20 pointer-events-none"
-                                style={{ top: `${(nowMin * HOUR_HEIGHT) / 60}px` }}
+                                style={{ top: `${getTimelineTop(nowMin)}px` }}
                               >
                                 <div className="absolute -left-1 -top-[3px] w-2 h-2 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
                               </div>
@@ -1439,7 +1460,7 @@ export function TaskCalendar({
                                 key={p.task.id}
                                 task={p.task}
                                 style={{
-                                  top: `${(p.startMin * HOUR_HEIGHT) / 60}px`,
+                                  top: `${getTimelineTop(p.startMin)}px`,
                                   height: `${((p.endMin - p.startMin) * HOUR_HEIGHT) / 60}px`,
                                   left: `calc(${(p.colIdx * 100) / p.totalCols}% + 2px)`,
                                   width: `calc(${100 / p.totalCols}% - 4px)`,

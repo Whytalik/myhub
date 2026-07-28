@@ -1,7 +1,18 @@
 "use client";
 
 import { useRef, useState, useTransition, useCallback, lazy, Suspense } from "react";
-import { CheckCircle2, Clock, Loader2, AlertCircle, Weight, Zap, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import {
+  CheckCircle2,
+  Clock,
+  Loader2,
+  AlertCircle,
+  Weight,
+  Zap,
+  Plus,
+  Shuffle,
+} from "lucide-react";
 import { Input } from "@/components/ui/inputs/input";
 import { SleepSection } from "./sections/SleepSection";
 import { EnergySection } from "./sections/EnergySection";
@@ -15,6 +26,7 @@ import {
   setDayStartedAction,
   setDayCompletedAction,
 } from "../actions/journal-actions";
+import { distributeTasksAction } from "../actions/task-actions";
 import { TaskGrid } from "./tasks/TaskGrid";
 import { TaskFormDialog } from "./tasks/TaskFormDialog";
 import { HabitCard } from "./habits/HabitCard";
@@ -91,6 +103,8 @@ export function DailyEntryForm({
   const [parentTask, setParentTask] = useState<TaskData | null>(null);
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isCompletePending, startCompletePending] = useTransition();
+  const [isDistributing, startDistributeTransition] = useTransition();
+  const router = useRouter();
 
   const initDayView = (): "greeting" | "form" | "complete" => {
     if (isPast) return "form";
@@ -181,6 +195,29 @@ export function DailyEntryForm({
     setParentTask(null);
     setIsDuplicate(false);
     setTaskDialogOpen(true);
+  };
+
+  const handleDistributeTasks = () => {
+    startDistributeTransition(async () => {
+      const result = await distributeTasksAction(todayStr);
+      if (!result.success) {
+        toast.error(result.error || "Не вдалося розподілити завдання");
+        return;
+      }
+      const { scheduled, skipped } = result.data;
+      if (scheduled === 0 && skipped === 0) {
+        toast.info("Немає гнучких завдань для розподілу");
+      } else if (scheduled === 0) {
+        toast.info(`Жодна з ${skipped} гнучких завдань не влізла у вільні блоки`);
+      } else {
+        toast.success(
+          skipped > 0
+            ? `Розподілено ${scheduled} завдань, ${skipped} не влізло в блоки`
+            : `Розподілено ${scheduled} завдань по блоках`,
+        );
+      }
+      router.refresh();
+    });
   };
 
   const handleAddChild = (parent: TaskData) => {
@@ -422,7 +459,18 @@ export function DailyEntryForm({
             label: `Tasks (${tasks.filter((t) => t.status === "DONE").length}/${tasks.length})`,
             content: (
               <div className="flex flex-col gap-3">
-                <div className="flex justify-end">
+                <div className="flex justify-end gap-2">
+                  {taskView === "timeline" && (
+                    <button
+                      type="button"
+                      onClick={handleDistributeTasks}
+                      disabled={isDistributing}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 text-zinc-300 text-xs font-semibold hover:bg-white/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Shuffle size={13} />
+                      {isDistributing ? "Розподіляю..." : "Розподілити"}
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={handleAddTask}

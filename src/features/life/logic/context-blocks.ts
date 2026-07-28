@@ -17,6 +17,39 @@ function getMinutesInAppTimeZone(date: Date): number {
   return hours * 60 + minutes;
 }
 
+// Builds the UTC instant for a given wall-clock date/time in APP_TIME_ZONE, so
+// server code can construct plannedDate values that mean the same thing they
+// would if typed into a browser running in that timezone.
+export function createAppLocalDate(
+  year: number,
+  month: number, // 1-12
+  day: number,
+  hours: number,
+  minutes: number,
+): Date {
+  const utcGuess = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: APP_TIME_ZONE,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).formatToParts(utcGuess);
+  const get = (type: string) => Number(parts.find((part) => part.type === type)?.value ?? 0);
+  const asUtc = Date.UTC(
+    get("year"),
+    get("month") - 1,
+    get("day"),
+    get("hour"),
+    get("minute"),
+    get("second"),
+  );
+  return new Date(utcGuess.getTime() - (asUtc - utcGuess.getTime()));
+}
+
 const WEEKDAY_INDEX: Record<string, number> = {
   Mon: 0,
   Tue: 1,
@@ -208,6 +241,11 @@ export interface TimeBlockValidationResult {
   message?: string;
 }
 
+export function parseTimeToMinutes(timeStr: string): number {
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
 export function validateTaskTime(
   sphereName: string,
   plannedDate: Date,
@@ -227,11 +265,6 @@ export function validateTaskTime(
 
   // If no end date, assume 60 mins duration
   const taskEnd = plannedEndDate ? getMinutesInAppTimeZone(plannedEndDate) : taskStart + 60;
-
-  const parseTimeToMinutes = (timeStr: string): number => {
-    const [hours, minutes] = timeStr.split(":").map(Number);
-    return hours * 60 + minutes;
-  };
 
   const fitsAny = matchingBlocks.some((block) => {
     const blockStart = parseTimeToMinutes(block.startTime);

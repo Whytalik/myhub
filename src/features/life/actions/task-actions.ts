@@ -163,6 +163,16 @@ export async function updateTaskTimeRangeAction(
   });
 }
 
+export async function distributeTasksAction(
+  dateStr: string,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.distributeUnscheduledTasks>>>> {
+  return withAction(async (userId) => {
+    const result = await taskService.distributeUnscheduledTasks(userId, dateStr);
+    invalidateTaskCache(userId);
+    return result;
+  });
+}
+
 export async function setTaskAsFrogAction(id: string): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
     await taskService.setTaskAsFrog(userId, id);

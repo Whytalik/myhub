@@ -18,8 +18,10 @@ import type {
 } from "../types";
 import { getScheduleByDate } from "./schedule-service";
 import {
+  createAppLocalDate,
   getDayOfWeekInAppTimeZone,
   getDefaultBlocks,
+  parseTimeToMinutes,
   validateTaskTime,
 } from "../logic/context-blocks";
 
@@ -125,6 +127,79 @@ export async function getTasksByDate(userId: string, date: Date): Promise<TaskDa
       : false;
     return allSubtasksDone || isDueToday;
   });
+}
+
+const DEFAULT_DISTRIBUTE_DURATION_MIN = 60;
+
+export interface DistributeTasksResult {
+  scheduled: number;
+  skipped: number;
+}
+
+// Slots each unscheduled task for the day into the first context block whose
+// sphere it matches, packing tasks back-to-back from the block's start time.
+// Ordering within a block: frog task first, then priority, then manual order —
+// tasks that no longer fit in their block are left unscheduled for manual placement.
+export async function distributeUnscheduledTasks(
+  userId: string,
+  dateStr: string,
+): Promise<DistributeTasksResult> {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const date = createAppLocalDate(year, month, day, 12, 0);
+
+  const dayTasks = await getTasksByDate(userId, date);
+  const unscheduled = dayTasks.filter(
+    (task) =>
+      task.children.length === 0 &&
+      task.plannedDate &&
+      !task.hasPlannedTime &&
+      task.sphereId &&
+      task.sphere,
+  );
+
+  if (unscheduled.length === 0) return { scheduled: 0, skipped: 0 };
+
+  const schedule = await getScheduleByDate(userId, date);
+  const blocks = schedule?.contextBlocks || getDefaultBlocks(getDayOfWeekInAppTimeZone(date));
+
+  const placed = new Set<string>();
+
+  for (const block of blocks) {
+    if (block.enabled === false || block.sphereNames.length === 0) continue;
+
+    const candidates = unscheduled
+      .filter((task) => !placed.has(task.id) && block.sphereNames.includes(task.sphere!.name))
+      .sort((a, b) => {
+        if (a.isFrog !== b.isFrog) return a.isFrog ? -1 : 1;
+        const priorityDiff = (PRIORITY_ORDER[b.priority] ?? 0) - (PRIORITY_ORDER[a.priority] ?? 0);
+        if (priorityDiff !== 0) return priorityDiff;
+        return a.order - b.order;
+      });
+
+    let cursor = parseTimeToMinutes(block.startTime);
+    const blockEnd = parseTimeToMinutes(block.endTime);
+
+    const MIN_DISTRIBUTE_DURATION_MIN = 15;
+
+    for (const task of candidates) {
+      const start = cursor;
+      const duration = Math.min(DEFAULT_DISTRIBUTE_DURATION_MIN, blockEnd - start);
+      if (duration < MIN_DISTRIBUTE_DURATION_MIN) continue;
+      const end = start + duration;
+
+      await taskRepository.updateById(task.id, {
+        plannedDate: createAppLocalDate(year, month, day, Math.floor(start / 60), start % 60),
+        hasPlannedTime: true,
+        plannedEndDate: createAppLocalDate(year, month, day, Math.floor(end / 60), end % 60),
+        hasPlannedEndTime: true,
+      });
+
+      placed.add(task.id);
+      cursor = end;
+    }
+  }
+
+  return { scheduled: placed.size, skipped: unscheduled.length - placed.size };
 }
 
 async function resolveDepth(parentId: string | null | undefined): Promise<number> {
