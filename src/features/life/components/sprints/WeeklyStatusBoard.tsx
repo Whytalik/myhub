@@ -177,7 +177,16 @@ export function WeeklyStatusBoard({
       : null;
     if (task.status === status && currentDayKey === dayKey) return;
 
+    // Moving to a different day drops any fixed time — the old time-of-day
+    // was scoped to the old day and isn't meaningful on the new one, so the
+    // atom becomes a plain date-only entry again. A same-day status move
+    // (just changing columns) leaves any existing time untouched.
+    const dayChanged = currentDayKey !== dayKey;
     const newPlannedDate = new Date(dayKey);
+    if (dayChanged) newPlannedDate.setHours(12, 0, 0, 0);
+    const clearedTimeFields = dayChanged
+      ? { plannedEndDate: null, hasPlannedTime: false, hasPlannedEndTime: false }
+      : {};
 
     onTasksChange((prev) =>
       prev.map((t) =>
@@ -186,6 +195,7 @@ export function WeeklyStatusBoard({
               ...t,
               status,
               plannedDate: newPlannedDate,
+              ...clearedTimeFields,
               completedAt: status === "DONE" ? new Date() : t.completedAt,
             }
           : t,
@@ -195,7 +205,8 @@ export function WeeklyStatusBoard({
     upsertTaskAction({
       id: taskId,
       status,
-      plannedDate: newPlannedDate ? newPlannedDate.toISOString() : null,
+      plannedDate: newPlannedDate.toISOString(),
+      ...clearedTimeFields,
     }).then((result) => {
       if (!result.success) toast.error(result.error || "Failed to move atom");
     });

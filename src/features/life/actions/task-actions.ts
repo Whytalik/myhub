@@ -145,6 +145,23 @@ export async function updateTaskRangeAction(
   });
 }
 
+export async function moveTaskToDayAction(
+  id: string,
+  plannedDate: string,
+): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertTask>>>> {
+  return withAction(async (userId) => {
+    const task = await taskService.upsertTask(userId, {
+      id,
+      plannedDate,
+      plannedEndDate: null,
+      hasPlannedTime: false,
+      hasPlannedEndTime: false,
+    });
+    invalidateTaskCache(userId);
+    return task;
+  });
+}
+
 export async function updateTaskTimeRangeAction(
   id: string,
   plannedDate: string | null,

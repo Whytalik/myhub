@@ -41,6 +41,7 @@ import type {
   ContextBlock,
 } from "@/features/life/types";
 import {
+  moveTaskToDayAction,
   updateTaskRangeAction,
   updateTaskTimeRangeAction,
 } from "@/features/life/actions/task-actions";
@@ -792,34 +793,29 @@ export function TaskCalendar({
       if (task.plannedDate && format(new Date(task.plannedDate), "yyyy-MM-dd") === newDateStr)
         return;
 
+      // Moving to a different day drops any fixed time — the old time-of-day
+      // was scoped to the old day's schedule and may not even be valid on the
+      // new one, so the task becomes a plain date-only entry again.
       const newStartDate = new Date(newDateStr);
-      if (task.plannedDate) {
-        const oldDate = new Date(task.plannedDate);
-        newStartDate.setHours(oldDate.getHours(), oldDate.getMinutes(), oldDate.getSeconds());
-      }
-
-      let newEndDate = null;
-      if (task.plannedDate && task.plannedEndDate) {
-        const durationMs =
-          new Date(task.plannedEndDate).getTime() - new Date(task.plannedDate).getTime();
-        newEndDate = new Date(newStartDate.getTime() + durationMs);
-      }
+      newStartDate.setHours(12, 0, 0, 0);
 
       const originalTasks = [...localTasks];
       setLocalTasks((prev) =>
         prev.map((t) => {
           if (t.id === taskId) {
-            return { ...t, plannedDate: newStartDate, plannedEndDate: newEndDate };
+            return {
+              ...t,
+              plannedDate: newStartDate,
+              plannedEndDate: null,
+              hasPlannedTime: false,
+              hasPlannedEndTime: false,
+            };
           }
           return t;
         }),
       );
 
-      const result = await updateTaskRangeAction(
-        taskId,
-        newStartDate.toISOString(),
-        newEndDate?.toISOString() ?? null,
-      );
+      const result = await moveTaskToDayAction(taskId, newStartDate.toISOString());
       if (result.success) {
         toast.success(`Moved to ${format(parseISO(newDateStr), "MMM d")}`);
       } else {
