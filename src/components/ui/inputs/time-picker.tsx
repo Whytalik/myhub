@@ -76,7 +76,9 @@ export function TimePicker({
     <div ref={triggerRef}>
       <div onClick={() => !disabled && open()} className={triggerClass}>
         <Clock size={14} className="text-zinc-500 shrink-0" />
-        <span className="font-mono text-zinc-200">{value || "12:00"}</span>
+        <span className={`font-mono ${value ? "text-zinc-200" : "text-zinc-600"}`}>
+          {value || "--:--"}
+        </span>
       </div>
 
       {isOpen &&

@@ -198,6 +198,17 @@ function UnifiedTaskForm({
     }
   };
 
+  const handlePlannedRangeChange = (start: string, end: string | null) => {
+    setPlannedDate(start);
+    setPlannedEndDate(end);
+    if (!start) {
+      setHasPlannedTime(false);
+      setPlannedTime("");
+      setHasPlannedEndTime(false);
+      setPlannedEndTime("");
+    }
+  };
+
   const handleToggleDueTime = (checked: boolean) => {
     setHasDueTime(checked);
     if (checked && !dueTime) setDueTime("12:00");
@@ -366,10 +377,7 @@ function UnifiedTaskForm({
                   <DateRangePicker
                     startDate={plannedDate}
                     endDate={plannedEndDate}
-                    onChange={(start, end) => {
-                      setPlannedDate(start);
-                      setPlannedEndDate(end);
-                    }}
+                    onChange={handlePlannedRangeChange}
                     placeholder="Select range"
                   />
                   <div className="flex items-center gap-4 flex-wrap">
@@ -412,10 +420,7 @@ function UnifiedTaskForm({
                     <DateRangePicker
                       startDate={plannedDate}
                       endDate={plannedEndDate}
-                      onChange={(start, end) => {
-                        setPlannedDate(start);
-                        setPlannedEndDate(end);
-                      }}
+                      onChange={handlePlannedRangeChange}
                       placeholder="Select range"
                     />
                     <div className="flex items-center gap-4 flex-wrap">
@@ -666,6 +671,16 @@ function TaskDetail({
       }
     }
   };
+  const handlePlannedRangeChange = (start: string, end: string | null) => {
+    setPlannedDate(start);
+    setPlannedEndDate(end);
+    if (!start) {
+      setHasPlannedTime(false);
+      setPlannedTime("");
+      setHasPlannedEndTime(false);
+      setPlannedEndTime("");
+    }
+  };
   const handleToggleDueTime = (checked: boolean) => {
     setHasDueTime(checked);
     if (checked && !dueTime) setDueTime("12:00");
@@ -889,10 +904,7 @@ function TaskDetail({
                     <DateRangePicker
                       startDate={plannedDate}
                       endDate={plannedEndDate}
-                      onChange={(start, end) => {
-                        setPlannedDate(start);
-                        setPlannedEndDate(end);
-                      }}
+                      onChange={handlePlannedRangeChange}
                     />
                     {plannedDate && (
                       <button
@@ -1152,9 +1164,11 @@ export function TaskFormDialog({
           `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00`,
         ).toISOString()
       : null;
-    const finalPlannedEndDate = plannedEndDate
+    const plannedEndDateBase =
+      plannedEndDate || (hasPlannedEndTime && plannedEndTime ? plannedDate : null);
+    const finalPlannedEndDate = plannedEndDateBase
       ? new Date(
-          `${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`,
+          `${plannedEndDateBase}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`,
         ).toISOString()
       : null;
     const finalDueDate =
@@ -1209,9 +1223,11 @@ export function TaskFormDialog({
           `${plannedDate}T${hasPlannedTime && plannedTime ? plannedTime : "12:00"}:00`,
         ).toISOString()
       : null;
-    const finalPlannedEndDate = plannedEndDate
+    const plannedEndDateBase =
+      plannedEndDate || (hasPlannedEndTime && plannedEndTime ? plannedDate : null);
+    const finalPlannedEndDate = plannedEndDateBase
       ? new Date(
-          `${plannedEndDate}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`,
+          `${plannedEndDateBase}T${hasPlannedEndTime && plannedEndTime ? plannedEndTime : "12:00"}:00`,
         ).toISOString()
       : null;
     const finalDueDate =
