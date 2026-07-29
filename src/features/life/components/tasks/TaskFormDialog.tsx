@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/inputs/checkbox";
 
 import { useState, useTransition } from "react";
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { Dialog, ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
@@ -34,6 +35,7 @@ import { STATUS_CONFIG } from "./StatusToggle";
 import { PRIORITY_CONFIG } from "./PriorityBadge";
 import { IconPickerDialog } from "./IconPickerDialog";
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
+import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
 
 interface TaskFormDialogProps {
   isOpen: boolean;
@@ -579,6 +581,7 @@ interface TaskDetailProps {
   priority: TaskPriority;
   setPriority: (v: TaskPriority) => void;
   sphereId: string;
+  setSphereId: (v: string) => void;
   parentId: string | null;
   setParentId: (v: string | null) => void;
   isPrivate: boolean;
@@ -624,6 +627,7 @@ function TaskDetail({
   priority,
   setPriority,
   sphereId,
+  setSphereId,
   parentId,
   setParentId,
   isPrivate: _isPrivate,
@@ -705,6 +709,9 @@ function TaskDetail({
     });
   };
 
+  const sphereDropdown = useDynamicPositioning<HTMLButtonElement>({ contentWidth: 200, offset: 6 });
+  const priorityDropdown = useDynamicPositioning<HTMLButtonElement>({ contentWidth: 160, offset: 6 });
+
   const sphere = spheres.find((s) => s.id === sphereId);
   const statusCfg = STATUS_CONFIG[status];
   const priorityCfg = PRIORITY_CONFIG[priority];
@@ -750,7 +757,11 @@ function TaskDetail({
             className="text-panel-title w-full"
           />
           <div className="flex items-center gap-2 flex-wrap mt-1.5">
-            <button onClick={() => {}} className={spherePillClass}>
+            <button
+              ref={sphereDropdown.triggerRef}
+              onClick={sphereDropdown.toggle}
+              className={spherePillClass}
+            >
               {sphere &&
                 ALL_ICONS[sphere.icon] &&
                 (() => {
@@ -770,7 +781,8 @@ function TaskDetail({
               {statusCfg.label}
             </button>
             <button
-              onClick={() => setPriority(priority === "URGENT" ? "LOW" : "URGENT")}
+              ref={priorityDropdown.triggerRef}
+              onClick={priorityDropdown.toggle}
               className={priorityPillClass}
             >
               <priorityCfg.icon size={9} />
@@ -1034,6 +1046,107 @@ function TaskDetail({
         confirmLabel="Delete"
         variant="danger"
       />
+
+      {sphereDropdown.isOpen &&
+        sphereDropdown.coords &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={sphereDropdown.contentRef as React.RefObject<HTMLDivElement>}
+            style={{
+              position: "fixed",
+              left: sphereDropdown.coords.left,
+              top: sphereDropdown.coords.align === "bottom" ? sphereDropdown.coords.top : undefined,
+              bottom:
+                sphereDropdown.coords.align === "top"
+                  ? window.innerHeight - sphereDropdown.coords.top
+                  : undefined,
+              width: 200,
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="glass-elevated p-1.5 flex flex-col gap-0.5 z-[9000] max-h-[320px] overflow-y-auto"
+          >
+            {spheres.map((s) => {
+              const active = s.id === sphereId;
+              const SIcons = s.icon && ALL_ICONS[s.icon] ? ALL_ICONS[s.icon] : FileText;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => {
+                    setSphereId(s.id);
+                    sphereDropdown.close();
+                  }}
+                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors duration-150 ${
+                    active
+                      ? "bg-accent/15 text-accent font-medium"
+                      : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  <div
+                    className="flex items-center justify-center w-5 h-5 rounded"
+                    style={{ backgroundColor: `${s.color}20`, border: `1px solid ${s.color}30` }}
+                  >
+                    <SIcons size={9} strokeWidth={3} style={{ color: s.color }} />
+                  </div>
+                  {s.name}
+                </button>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
+
+      {priorityDropdown.isOpen &&
+        priorityDropdown.coords &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={priorityDropdown.contentRef as React.RefObject<HTMLDivElement>}
+            style={{
+              position: "fixed",
+              left: priorityDropdown.coords.left,
+              top:
+                priorityDropdown.coords.align === "bottom"
+                  ? priorityDropdown.coords.top
+                  : undefined,
+              bottom:
+                priorityDropdown.coords.align === "top"
+                  ? window.innerHeight - priorityDropdown.coords.top
+                  : undefined,
+              width: 160,
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="glass-elevated p-1.5 flex flex-col gap-0.5 z-[9000]"
+          >
+            {(Object.keys(PRIORITY_CONFIG) as TaskPriority[]).map((p) => {
+              const cfg = PRIORITY_CONFIG[p];
+              const PIcon = cfg.icon;
+              const active = p === priority;
+              return (
+                <button
+                  key={p}
+                  onClick={() => {
+                    setPriority(p);
+                    priorityDropdown.close();
+                  }}
+                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors duration-150 ${
+                    active
+                      ? "bg-accent/15 text-accent font-medium"
+                      : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  <div
+                    className={`flex items-center justify-center w-5 h-5 rounded ${cfg.style}`}
+                  >
+                    <PIcon size={10} strokeWidth={3} />
+                  </div>
+                  {cfg.label}
+                </button>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
@@ -1296,6 +1409,7 @@ export function TaskFormDialog({
           priority={priority}
           setPriority={setPriority}
           sphereId={sphereId}
+          setSphereId={setSphereId}
           parentId={parentId}
           setParentId={setParentId}
           isPrivate={isPrivate}
