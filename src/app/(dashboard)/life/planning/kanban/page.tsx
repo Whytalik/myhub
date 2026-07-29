@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { getSprintDashboard } from "@/features/life/services/sprint-service";
+import { getAllSpheres } from "@/features/life/services/task-service";
 import { SprintKanbanClient } from "@/features/life/components/sprints/SprintKanbanClient";
 
 type SprintKanbanClientProps = React.ComponentProps<typeof SprintKanbanClient>;
@@ -17,6 +18,7 @@ export default async function SprintKanbanPage() {
   if (!userId) redirect("/login");
 
   const dashboard = await getSprintDashboard(userId);
+  const spheres = await getAllSpheres(userId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -32,6 +34,7 @@ export default async function SprintKanbanPage() {
       <SprintKanbanClient
         sprint={dashboard.sprint as unknown as SprintKanbanClientProps['sprint']}
         allTasks={dashboard.allTasks as unknown as SprintKanbanClientProps['allTasks']}
+        spheres={spheres}
         sprintReviews={dashboard.sprintReviews as unknown as SprintKanbanClientProps['sprintReviews']}
       />
     </div>

@@ -197,6 +197,16 @@ export async function setTaskAsFrogAction(id: string): Promise<ActionResult<void
   });
 }
 
+export async function updateTaskSphereAction(
+  id: string,
+  sphereId: string | null,
+): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
+    await taskService.updateTaskSphere(userId, id, sphereId);
+    invalidateTaskCache(userId);
+  });
+}
+
 export async function carryOverTaskAction(
   taskId: string,
   reason: string | null,

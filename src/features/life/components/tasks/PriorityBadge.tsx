@@ -12,10 +12,10 @@ export const PRIORITY_CONFIG: Record<
     color: "#60a5fa",
   },
   MEDIUM: {
-    style: "text-zinc-400 bg-zinc-400/10 border-zinc-400/20",
+    style: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
     icon: Minus,
-    label: "Med",
-    color: "#a1a1aa",
+    label: "Medium",
+    color: "#34d399",
   },
   HIGH: {
     style: "text-amber-400 bg-amber-400/10 border-amber-400/20",

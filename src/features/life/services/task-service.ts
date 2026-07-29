@@ -396,6 +396,14 @@ export async function updateTaskPriority(
   await taskRepository.updateById(id, { priority });
 }
 
+export async function updateTaskSphere(
+  userId: string,
+  id: string,
+  sphereId: string | null,
+): Promise<void> {
+  await taskRepository.updateById(id, { sphereId });
+}
+
 export async function setTaskAsFrog(userId: string, id: string): Promise<void> {
   const task = await taskRepository.findById(id);
   if (!task) throw new Error("Task not found");

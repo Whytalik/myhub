@@ -15,7 +15,7 @@ import { format, addDays, isSameDay, isToday } from "date-fns";
 import { toast } from "sonner";
 import { upsertTaskAction } from "@/features/life/actions/task-actions";
 import { TaskCardBase } from "@/features/life/components/tasks/TaskCardBase";
-import type { TaskData, TaskStatus } from "@/features/life/types";
+import type { TaskData, TaskStatus, LifeSphereData } from "@/features/life/types";
 
 const STATUS_COLUMNS: { id: TaskStatus; label: string }[] = [
   { id: "TODO", label: "To Do" },
@@ -32,6 +32,7 @@ interface WeeklyStatusBoardProps {
   tasks: TaskData[];
   weekStart: Date;
   locked: boolean;
+  spheres?: LifeSphereData[];
   onTasksChange: (updater: (prev: TaskData[]) => TaskData[]) => void;
   onTaskEdit?: (task: TaskData) => void;
   onTaskDelete?: (taskId: string) => void;
@@ -40,12 +41,14 @@ interface WeeklyStatusBoardProps {
 function BoardCard({
   task,
   locked,
+  spheres,
   onTaskEdit,
   onTaskDelete,
   onTaskUnschedule,
 }: {
   task: TaskData;
   locked: boolean;
+  spheres?: LifeSphereData[];
   onTaskEdit?: (task: TaskData) => void;
   onTaskDelete?: (taskId: string) => void;
   onTaskUnschedule?: (taskId: string) => void;
@@ -66,6 +69,7 @@ function BoardCard({
       <TaskCardBase
         task={task}
         variant="atom"
+        spheres={spheres}
         isDragging={isDragging}
         onEdit={() => onTaskEdit?.(task)}
         onDelete={onTaskDelete ? () => onTaskDelete(task.id) : undefined}
@@ -79,6 +83,7 @@ function BoardCell({
   id,
   cellTasks,
   locked,
+  spheres,
   onTaskEdit,
   onTaskDelete,
   onTaskUnschedule,
@@ -86,6 +91,7 @@ function BoardCell({
   id: string;
   cellTasks: TaskData[];
   locked: boolean;
+  spheres?: LifeSphereData[];
   onTaskEdit?: (task: TaskData) => void;
   onTaskDelete?: (taskId: string) => void;
   onTaskUnschedule?: (taskId: string) => void;
@@ -104,6 +110,7 @@ function BoardCell({
           key={t.id}
           task={t}
           locked={locked}
+          spheres={spheres}
           onTaskEdit={onTaskEdit}
           onTaskDelete={onTaskDelete}
           onTaskUnschedule={onTaskUnschedule}
@@ -118,6 +125,7 @@ export function WeeklyStatusBoard({
   tasks,
   weekStart,
   locked,
+  spheres,
   onTasksChange,
   onTaskEdit,
   onTaskDelete,
@@ -265,6 +273,7 @@ export function WeeklyStatusBoard({
                     id={`${c.id}|${dayKey}`}
                     cellTasks={cellTasks(c.id, day)}
                     locked={locked}
+                    spheres={spheres}
                     onTaskEdit={onTaskEdit}
                     onTaskDelete={onTaskDelete}
                     onTaskUnschedule={handleUnschedule}

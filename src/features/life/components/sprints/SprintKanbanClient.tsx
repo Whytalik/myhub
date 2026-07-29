@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { addDays, format, endOfWeek } from "date-fns";
 import { Button } from "@/components/ui/actions/button";
 import { WeeklyStatusBoard } from "./WeeklyStatusBoard";
-import type { TaskData } from "@/features/life/types";
+import type { TaskData, LifeSphereData } from "@/features/life/types";
 import { Trophy, Target, Calendar, Sparkles, ArrowRight, Lock } from "lucide-react";
 import Link from "next/link";
 
@@ -39,6 +39,7 @@ interface SprintKanbanClientProps {
     }[];
   };
   allTasks: TaskData[];
+  spheres: LifeSphereData[];
   sprintReviews: {
     id: string;
     weekNumber: number;
@@ -49,7 +50,7 @@ interface SprintKanbanClientProps {
   }[];
 }
 
-export function SprintKanbanClient({ sprint, allTasks, sprintReviews }: SprintKanbanClientProps) {
+export function SprintKanbanClient({ sprint, allTasks, spheres, sprintReviews }: SprintKanbanClientProps) {
   const sprintStart = useMemo(() => new Date(sprint.startDate), [sprint.startDate]);
   const now = useMemo(() => new Date(), []);
 
@@ -242,6 +243,7 @@ export function SprintKanbanClient({ sprint, allTasks, sprintReviews }: SprintKa
               tasks={tasks}
               weekStart={weekStart}
               locked={false}
+              spheres={spheres}
               onTasksChange={(updater) => setTasks((prev) => updater(prev))}
             />
           </div>

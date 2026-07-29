@@ -14,11 +14,12 @@ import {
   CalendarOff,
 } from "lucide-react";
 import { deleteTaskAction, setTaskAsFrogAction } from "@/features/life/actions/task-actions";
-import type { TaskData } from "@/features/life/types";
+import type { TaskData, LifeSphereData } from "@/features/life/types";
 import { toast } from "sonner";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { StatusToggle } from "./StatusToggle";
 import { PriorityToggle } from "./PriorityToggle";
+import { SphereToggle } from "./SphereToggle";
 import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
 import type { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
 
@@ -30,6 +31,7 @@ export interface TaskCardBaseProps {
   onDelete?: () => void;
   onUnschedule?: () => void;
   allTasks?: TaskData[];
+  spheres?: LifeSphereData[];
   variant?: "default" | "compact" | "atom";
   isDragging?: boolean;
   className?: string;
@@ -47,6 +49,7 @@ export function TaskCardBase({
   onDelete,
   onUnschedule,
   allTasks = [],
+  spheres = [],
   variant = "default",
   isDragging = false,
   className = "",
@@ -362,14 +365,31 @@ export function TaskCardBase({
             />
           )}
 
-          {task.sphere && (
-            <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide">
-              {(() => {
-                const SphereIcon = SPHERE_ICONS[task.sphere.icon] || FileText;
-                return <SphereIcon size={sphereIconSize} strokeWidth={3} />;
-              })()}
-              {task.sphere.name}
-            </div>
+          {isAtom && (
+            <PriorityToggle
+              taskId={task.id}
+              priority={task.priority}
+              size={isCompact ? "sm" : "default"}
+            />
+          )}
+
+          {isAtom && spheres.length > 0 ? (
+            <SphereToggle
+              taskId={task.id}
+              sphere={task.sphere}
+              spheres={spheres}
+              size={isCompact ? "sm" : "default"}
+            />
+          ) : (
+            task.sphere && (
+              <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide">
+                {(() => {
+                  const SphereIcon = SPHERE_ICONS[task.sphere.icon] || FileText;
+                  return <SphereIcon size={sphereIconSize} strokeWidth={3} />;
+                })()}
+                {task.sphere.name}
+              </div>
+            )
           )}
 
           {task.resistance != null && (

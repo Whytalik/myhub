@@ -3196,6 +3196,7 @@ export function PlanningWizardClient({
               }
               weekStart={weekStart}
               locked={false}
+              spheres={spheres}
               onTaskEdit={(task) => handleOpenEditTaskFromAnywhere(task as unknown as SprintTask)}
               onTaskDelete={(id) => setDeleteTaskId(id)}
               onTasksChange={(updater) => {
