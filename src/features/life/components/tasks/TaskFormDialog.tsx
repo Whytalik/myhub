@@ -719,7 +719,18 @@ function TaskDetail({
   const symbolButtonClass =
     "flex items-center justify-center w-11 h-11 rounded-xl glass-input cursor-pointer text-zinc-400 hover:text-accent transition-colors shrink-0 mt-0.5";
   const spherePillClass =
-    "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide";
+    "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide transition-colors";
+  const spherePillStyle: React.CSSProperties = sphere
+    ? {
+        color: sphere.color,
+        borderColor: `${sphere.color}30`,
+        backgroundColor: `${sphere.color}15`,
+      }
+    : {
+        color: "#a1a1aa",
+        borderColor: "rgba(255,255,255,0.06)",
+        backgroundColor: "rgba(255,255,255,0.05)",
+      };
   const statusPillClass = `inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide ${statusCfg.style}`;
   const priorityPillClass = `inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide ${priorityCfg.style}`;
   const iconActionButtonClass =
@@ -761,6 +772,7 @@ function TaskDetail({
               ref={sphereDropdown.triggerRef}
               onClick={sphereDropdown.toggle}
               className={spherePillClass}
+              style={spherePillStyle}
             >
               {sphere &&
                 ALL_ICONS[sphere.icon] &&
