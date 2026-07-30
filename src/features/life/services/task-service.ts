@@ -251,6 +251,7 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
   let plannedDateToCheck = parsedPlannedDate;
   let plannedEndDateToCheck = parsedPlannedEndDate;
   let hasPlannedTimeToCheck = hasPlannedTime;
+  let statusToCheck = status;
 
   if (id) {
     const existing = await taskRepository.findById(id);
@@ -259,10 +260,14 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
       if (plannedDateToCheck === undefined) plannedDateToCheck = existing.plannedDate;
       if (plannedEndDateToCheck === undefined) plannedEndDateToCheck = existing.plannedEndDate;
       if (hasPlannedTimeToCheck === undefined) hasPlannedTimeToCheck = existing.hasPlannedTime;
+      if (statusToCheck === undefined) statusToCheck = existing.status;
     }
   }
 
-  if (plannedDateToCheck && hasPlannedTimeToCheck && sphereIdToCheck) {
+  const shouldValidateTime =
+    statusToCheck !== "IN_PROGRESS" && statusToCheck !== "DONE" && statusToCheck !== "CANCELLED";
+
+  if (shouldValidateTime && plannedDateToCheck && hasPlannedTimeToCheck && sphereIdToCheck) {
     const sphere = await prisma.lifeSphere.findUnique({ where: { id: sphereIdToCheck } });
     if (sphere) {
       const schedule = await getScheduleByDate(userId, plannedDateToCheck);
