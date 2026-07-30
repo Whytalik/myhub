@@ -3,7 +3,6 @@
 import * as taskService from "../services/task-service";
 import { invalidateTaskCache } from "@/lib/cache/revalidate";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
-import { taskRepository } from "../repositories/task.repository";
 import type {
   UpsertTaskInput,
   UpsertSphereInput,
@@ -216,43 +215,12 @@ export async function carryOverTaskAction(
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const existing = await taskRepository.findByIdSelect(taskId, {
-      plannedDate: true,
-      hasPlannedTime: true,
-      plannedEndDate: true,
-    });
-
-    const [ny, nm, nd] = newDateISO.split("-").map(Number);
-    const targetUTCMidnight = Date.UTC(ny, nm - 1, nd);
-
-    let newPlannedDate: string = newDateISO;
-    let newPlannedEndDate: string | null = null;
-
-    if (existing?.hasPlannedTime && existing.plannedDate) {
-      const orig = existing.plannedDate;
-      const origUTCMidnight = Date.UTC(
-        orig.getUTCFullYear(),
-        orig.getUTCMonth(),
-        orig.getUTCDate(),
-      );
-      newPlannedDate = new Date(
-        orig.getTime() + (targetUTCMidnight - origUTCMidnight),
-      ).toISOString();
-    }
-
-    if (existing?.plannedEndDate) {
-      const origEnd = existing.plannedEndDate;
-      const ref = existing.plannedDate ?? origEnd;
-      const refUTCMidnight = Date.UTC(ref.getUTCFullYear(), ref.getUTCMonth(), ref.getUTCDate());
-      newPlannedEndDate = new Date(
-        origEnd.getTime() + (targetUTCMidnight - refUTCMidnight),
-      ).toISOString();
-    }
-
     const task = await taskService.upsertTask(userId, {
       id: taskId,
-      plannedDate: newPlannedDate,
-      plannedEndDate: newPlannedEndDate,
+      plannedDate: newDateISO,
+      plannedEndDate: null,
+      hasPlannedTime: false,
+      hasPlannedEndTime: false,
       carriedFromDate: today.toISOString(),
       carryOverReason: reason,
     });
