@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 import { cacheTags } from "@/lib/cache/cache";
 
 const INVALIDATE_PROFILE = { expire: 0 };
@@ -10,6 +10,7 @@ export function invalidateTaskCache(userId: string) {
   revalidateTag("tasks-calendar", INVALIDATE_PROFILE);
   revalidateTag("tasks-by-date", INVALIDATE_PROFILE);
   revalidateTag("spheres", INVALIDATE_PROFILE);
+  revalidatePath("/life", "layout");
 }
 
 export function invalidateJournalCache(userId: string, date?: Date) {
@@ -22,12 +23,14 @@ export function invalidateJournalCache(userId: string, date?: Date) {
       INVALIDATE_PROFILE,
     );
   }
+  revalidatePath("/life", "layout");
 }
 
 export function invalidateHabitCache(userId: string) {
   revalidateTag(cacheTags.habits(userId), INVALIDATE_PROFILE);
   revalidateTag("habits", INVALIDATE_PROFILE);
   revalidateTag("habits-review", INVALIDATE_PROFILE);
+  revalidatePath("/life", "layout");
 }
 
 export function invalidateHabitChainCache(userId: string) {
@@ -35,37 +38,46 @@ export function invalidateHabitChainCache(userId: string) {
   revalidateTag("habit-chains", INVALIDATE_PROFILE);
   revalidateTag("habits", INVALIDATE_PROFILE);
   revalidateTag("habits-review", INVALIDATE_PROFILE);
+  revalidatePath("/life", "layout");
 }
 
 export function invalidateScheduleCache(_userId: string) {
   revalidateTag("week-templates", INVALIDATE_PROFILE);
+  revalidatePath("/life", "layout");
 }
 
 export function invalidateExerciseCache(userId: string) {
   revalidateTag(cacheTags.exercises(userId), INVALIDATE_PROFILE);
   revalidateTag("exercises", INVALIDATE_PROFILE);
+  revalidatePath("/health", "layout");
 }
 
 export function invalidateTrainingPlanCache(userId: string) {
   revalidateTag(cacheTags.trainingPlans(userId), INVALIDATE_PROFILE);
   revalidateTag("training-plans", INVALIDATE_PROFILE);
+  revalidatePath("/health", "layout");
 }
 
 export function invalidateTrainingSessionCache(userId: string) {
   revalidateTag(cacheTags.trainingSessions(userId), INVALIDATE_PROFILE);
   revalidateTag("training-sessions", INVALIDATE_PROFILE);
+  revalidatePath("/health", "layout");
 }
 
 export function invalidateProductMappingCache() {
   revalidateTag("product-mapping", INVALIDATE_PROFILE);
+  revalidatePath("/health", "layout");
 }
 
 export function invalidateThoughtCache(userId: string) {
   revalidateTag(cacheTags.thoughtStatuses(userId), INVALIDATE_PROFILE);
   revalidateTag("thought-board", INVALIDATE_PROFILE);
+  revalidatePath("/life", "layout");
 }
 
 export function invalidateMissionCache(userId: string) {
   revalidateTag(cacheTags.missionVersions(userId), INVALIDATE_PROFILE);
   revalidateTag("mission-versions", INVALIDATE_PROFILE);
+  revalidatePath("/life", "layout");
 }
+
