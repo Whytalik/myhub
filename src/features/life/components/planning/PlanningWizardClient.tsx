@@ -272,7 +272,17 @@ export function PlanningWizardClient({
   );
   const [schedulingTaskId, setSchedulingTaskId] = useState<string | null>(null);
   const [scheduleDate, setScheduleDate] = useState("");
-  const [selectedWeekIndex, setSelectedWeekIndex] = useState(0);
+  const [selectedWeekIndex, setSelectedWeekIndex] = useState(() => {
+    if (!activeSprint?.startDate) return 0;
+    const start = new Date(activeSprint.startDate);
+    if (isNaN(start.getTime())) return 0;
+    const startOfWeekDate = startOfWeek(start, { weekStartsOn: 1 });
+    const today = new Date();
+    const todayStartOfWeek = startOfWeek(today, { weekStartsOn: 1 });
+    const differenceMilliseconds = todayStartOfWeek.getTime() - startOfWeekDate.getTime();
+    const differenceWeeks = Math.round(differenceMilliseconds / (7 * 24 * 60 * 60 * 1000));
+    return Math.max(0, Math.min(11, differenceWeeks));
+  });
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [batchScheduleAtomIds, setBatchScheduleAtomIds] = useState<string[] | null>(null);
