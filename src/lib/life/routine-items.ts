@@ -1,4 +1,54 @@
-export const MORNING_ROUTINE = [
+export interface RoutineSubItem {
+  id: string;
+  labelUk: string;
+  days?: number[]; // native Date.getDay() convention (Sun=0..Sat=6); omitted = every day
+}
+
+export interface RoutineItem {
+  id: string;
+  time?: string;
+  label: string;
+  labelUk: string;
+  icon: string;
+  subItems?: RoutineSubItem[];
+}
+
+const MORNING_HYGIENE_SUBITEMS: RoutineSubItem[] = [
+  {
+    id: "m_hygiene_cleanse",
+    labelUk:
+      "Вмивання м'яким гелем та нанесення легкого зволожувального крем-гелю або SPF-флюїду (1 хв)",
+  },
+];
+
+const EVENING_HYGIENE_SUBITEMS: RoutineSubItem[] = [
+  {
+    id: "e_hygiene_cleanse",
+    labelUk:
+      "Вмивання гелем із саліциловою кислотою (BHA) — глибоко розчиняє жир у порах, прибирає чорні цятки та свіжі висипання (2 хв)",
+  },
+  {
+    id: "e_hygiene_moisturize",
+    labelUk: "Нанесення зволожувального засобу після вмивання",
+  },
+  {
+    id: "e_hygiene_hair_wash",
+    labelUk: "Миття голови сульсеновим шампунем",
+    days: [2, 0], // Tue, Sun
+  },
+  {
+    id: "e_hygiene_conditioner",
+    labelUk: "Нанесення кондиціонера на 1 хв для пом'якшення довжини волосся",
+    days: [2, 4, 0], // Tue, Thu, Sun
+  },
+  {
+    id: "e_hygiene_shave",
+    labelUk: "Гоління",
+    days: [2, 4, 0], // Tue, Thu, Sun
+  },
+];
+
+export const MORNING_ROUTINE: RoutineItem[] = [
   {
     id: "m_wake",
     time: "06:30",
@@ -19,6 +69,7 @@ export const MORNING_ROUTINE = [
     label: "Water procedures",
     labelUk: "Водні процедури",
     icon: "ShowerHead",
+    subItems: MORNING_HYGIENE_SUBITEMS,
   },
   {
     id: "m_outside",
@@ -41,18 +92,10 @@ export const MORNING_ROUTINE = [
     labelUk: "Приготування їжі",
     icon: "Utensils",
   },
-] as const;
-
-export interface RoutineItem {
-  id: string;
-  time?: string;
-  label: string;
-  labelUk: string;
-  icon: string;
-}
+];
 
 export const getMorningRoutine = (isTrainingDay: boolean): RoutineItem[] => {
-  const base = [
+  const base: RoutineItem[] = [
     {
       id: "m_wake",
       time: "06:30",
@@ -73,6 +116,7 @@ export const getMorningRoutine = (isTrainingDay: boolean): RoutineItem[] => {
       label: "Water procedures",
       labelUk: "Водні процедури",
       icon: "ShowerHead",
+      subItems: MORNING_HYGIENE_SUBITEMS,
     },
   ];
 
@@ -112,7 +156,7 @@ export const getMorningRoutine = (isTrainingDay: boolean): RoutineItem[] => {
   }
 };
 
-export const EVENING_ROUTINE = [
+export const EVENING_ROUTINE: RoutineItem[] = [
   {
     id: "e_kaizen",
     time: "20:30 - 21:00",
@@ -147,6 +191,7 @@ export const EVENING_ROUTINE = [
     label: "Water procedures",
     labelUk: "Водні процедури",
     icon: "ShowerHead",
+    subItems: EVENING_HYGIENE_SUBITEMS,
   },
   {
     id: "e_sleep",
@@ -155,7 +200,7 @@ export const EVENING_ROUTINE = [
     labelUk: "Спати",
     icon: "Moon",
   },
-] as const;
+];
 
 export const ROUTINE_ITEMS = [...MORNING_ROUTINE, ...EVENING_ROUTINE];
 

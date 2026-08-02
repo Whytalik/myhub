@@ -41,6 +41,7 @@ const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; classNa
 interface Props {
   type: "morning" | "evening";
   routine: RoutineMap | null;
+  dayOfWeek: number;
   scheduledTrainingDayName?: string;
   gymSkipped?: boolean;
   gymSkipReason?: string | null;
@@ -56,6 +57,7 @@ interface Props {
 export function RoutineSection({
   type,
   routine,
+  dayOfWeek,
   scheduledTrainingDayName,
   gymSkipped = false,
   gymSkipReason,
@@ -70,9 +72,14 @@ export function RoutineSection({
   const isScheduled = !!scheduledTrainingDayName;
   const isTrainingScheduled = isScheduled && !gymSkipped;
   const items = type === "morning" ? getMorningRoutine(isTrainingScheduled) : EVENING_ROUTINE;
+  const itemsForDay = items.map((item) => ({
+    ...item,
+    subItems: item.subItems?.filter((sub) => !sub.days || sub.days.includes(dayOfWeek)),
+  }));
+  const flatItems = itemsForDay.flatMap((item) => [item, ...(item.subItems ?? [])]);
 
-  const done = items.filter((item) => map[item.id]).length;
-  const total = items.length;
+  const done = flatItems.filter((item) => map[item.id]).length;
+  const total = flatItems.length;
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
   const isComplete = total > 0 && done === total;
   const hasValue = done > 0;
@@ -212,7 +219,7 @@ export function RoutineSection({
       )}
 
       <div className="flex flex-col gap-1">
-        {items.map((item) => {
+        {itemsForDay.map((item) => {
           const checked = !!map[item.id];
           const iconName = item.icon as string;
           const IconComponent = ROUTINE_ICONS[iconName] || Circle;
@@ -246,6 +253,30 @@ export function RoutineSection({
                   <Circle size={14} className="text-zinc-600" />
                 )}
               </button>
+
+              {item.subItems && item.subItems.length > 0 && (
+                <div className="flex flex-col gap-1 pl-8">
+                  {item.subItems.map((sub) => {
+                    const subChecked = !!map[sub.id];
+                    const subItemClass = `flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg text-left transition-colors duration-150 ${
+                      subChecked
+                        ? "bg-emerald-500/5 text-emerald-400"
+                        : "hover:bg-white/[0.03] text-zinc-400"
+                    }`;
+
+                    return (
+                      <button key={sub.id} onClick={() => toggle(sub.id)} className={subItemClass}>
+                        <span className="text-[11px] leading-snug">{sub.labelUk}</span>
+                        {subChecked ? (
+                          <CheckCircle2 size={12} className="shrink-0" />
+                        ) : (
+                          <Circle size={12} className="shrink-0 text-zinc-600" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
 
               {item.id === "e_kaizen" && inboxCount !== undefined && (
                 <Link

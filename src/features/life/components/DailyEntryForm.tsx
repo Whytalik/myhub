@@ -411,6 +411,7 @@ export function DailyEntryForm({
                   <RoutineSection
                     type="morning"
                     routine={data.morningRoutine ?? null}
+                    dayOfWeek={dayOfWeek}
                     scheduledTrainingDayName={scheduledTrainingDayName}
                     gymSkipped={data.gymSkipped}
                     gymSkipReason={data.gymSkipReason}
@@ -586,6 +587,7 @@ export function DailyEntryForm({
                   <RoutineSection
                     type="evening"
                     routine={data.eveningRoutine ?? null}
+                    dayOfWeek={dayOfWeek}
                     scheduledTrainingDayName={scheduledTrainingDayName}
                     gymSkipped={data.gymSkipped}
                     gymSkipReason={data.gymSkipReason}
