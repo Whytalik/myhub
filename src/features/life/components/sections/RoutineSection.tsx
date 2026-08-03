@@ -20,8 +20,13 @@ import Link from "next/link";
 import { getMorningRoutine, EVENING_ROUTINE, type RoutineMap } from "@/lib/life/routine-items";
 import { Input } from "@/components/ui/inputs/input";
 
-const SKIP_REASONS = ["Недосипання", "Хвороба / симптоми", "Брак часу", "Інше"] as const;
-const CUSTOM_SKIP_REASON = "Інше";
+const SKIP_REASONS = [
+  "Not enough sleep",
+  "Illness / symptoms",
+  "Not enough time",
+  "Other",
+] as const;
+const CUSTOM_SKIP_REASON = "Other";
 
 const ROUTINE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   AlarmClock,
@@ -154,14 +159,14 @@ export function RoutineSection({
                 onClick={openSkipPanel}
                 className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
               >
-                Пропустити зал
+                Skip gym
               </button>
             )}
           </div>
 
           {isSkipPanelOpen && (
             <div className="flex flex-col gap-2 p-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06]">
-              <span className="text-caption">Чому пропускаєш зал?</span>
+              <span className="text-caption">Why are you skipping the gym?</span>
               <div className="flex flex-wrap gap-1.5">
                 {SKIP_REASONS.map((reason) => (
                   <button
@@ -177,7 +182,7 @@ export function RoutineSection({
               <Input
                 value={skipNote}
                 onChange={(e) => setSkipNote(e.target.value)}
-                placeholder={isCustomReason ? "Опиши причину..." : "Деталі (необов'язково)..."}
+                placeholder={isCustomReason ? "Describe the reason..." : "Details (optional)..."}
                 className="text-xs"
               />
               <div className="flex justify-end gap-2">
@@ -186,7 +191,7 @@ export function RoutineSection({
                   onClick={() => setIsSkipPanelOpen(false)}
                   className="px-2.5 py-1 rounded-lg text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors"
                 >
-                  Скасувати
+                  Cancel
                 </button>
                 <button
                   type="button"
@@ -194,7 +199,7 @@ export function RoutineSection({
                   disabled={!canConfirmSkip}
                   className="px-2.5 py-1 rounded-lg text-xs font-medium bg-accent text-white hover:opacity-90 transition-opacity disabled:opacity-50"
                 >
-                  Підтвердити
+                  Confirm
                 </button>
               </div>
             </div>
@@ -206,14 +211,14 @@ export function RoutineSection({
         <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg bg-white/[0.04] text-zinc-400 text-xs">
           <div className="flex items-center gap-1.5 min-w-0">
             <XCircle size={12} className="shrink-0" />
-            <span className="truncate">Зал пропущено: {gymSkipReason}</span>
+            <span className="truncate">Gym skipped: {gymSkipReason}</span>
           </div>
           <button
             type="button"
             onClick={undoSkip}
             className="shrink-0 text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
           >
-            Повернути зал
+            Undo skip
           </button>
         </div>
       )}
@@ -237,14 +242,11 @@ export function RoutineSection({
                   <div className={itemIconClass}>
                     <IconComponent size={12} />
                   </div>
-                  <div className="flex flex-col items-start min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      {item.time && (
-                        <span className="text-[10px] font-mono text-zinc-500">{item.time}</span>
-                      )}
-                      <span className="text-sm truncate">{item.label}</span>
-                    </div>
-                    <span className="text-[10px] text-zinc-500 truncate">{item.labelUk}</span>
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    {item.time && (
+                      <span className="text-[10px] font-mono text-zinc-500">{item.time}</span>
+                    )}
+                    <span className="text-sm truncate">{item.label}</span>
                   </div>
                 </div>
                 {checked ? (
@@ -266,7 +268,7 @@ export function RoutineSection({
 
                     return (
                       <button key={sub.id} onClick={() => toggle(sub.id)} className={subItemClass}>
-                        <span className="text-[11px] leading-snug">{sub.labelUk}</span>
+                        <span className="text-[11px] leading-snug">{sub.label}</span>
                         {subChecked ? (
                           <CheckCircle2 size={12} className="shrink-0" />
                         ) : (
