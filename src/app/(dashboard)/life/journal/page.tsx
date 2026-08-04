@@ -53,18 +53,16 @@ export default async function JournalPage({
   const [y, m, d] = dateStr.split("-").map(Number);
   const yesterday = new Date(y, m - 1, d - 1);
 
-  const [raw, yesterdayRaw, tasks, yesterdayTasks, allTasks, spheres, habits, schedule, board] =
-    await Promise.all([
-      getEntryByDate(userId, date),
-      getEntryByDate(userId, yesterday),
-      taskService.getTasksByDate(userId, date),
-      taskService.getTasksByDate(userId, yesterday),
-      taskService.getAllTasks(userId),
-      taskService.getAllSpheres(userId),
-      habitService.getActiveHabits(userId),
-      getScheduleByDate(userId, date),
-      thoughtService.getBoard(userId),
-    ]);
+  const [raw, yesterdayRaw, tasks, allTasks, spheres, habits, schedule, board] = await Promise.all([
+    getEntryByDate(userId, date),
+    getEntryByDate(userId, yesterday),
+    taskService.getTasksByDate(userId, date),
+    taskService.getAllTasks(userId),
+    taskService.getAllSpheres(userId),
+    habitService.getActiveHabits(userId),
+    getScheduleByDate(userId, date),
+    thoughtService.getBoard(userId),
+  ]);
 
   const inboxThoughtCount = board
     .filter((status) => {
@@ -78,10 +76,6 @@ export default async function JournalPage({
       );
     })
     .reduce((sum, status) => sum + status.thoughts.length, 0);
-
-  const yesterdayCompletedTasks = yesterdayTasks
-    .filter((t) => t.status === "DONE")
-    .map((t) => t.title);
 
   const entry: DailyEntryData | null = raw
     ? {
@@ -161,8 +155,6 @@ export default async function JournalPage({
         todayStr={dateStr}
         isPast={isPast}
         yesterdayBrainDump={yesterdayRaw?.brainDump ?? null}
-        yesterdayStandupPlan={yesterdayRaw?.standupPlan ?? null}
-        yesterdayCompletedTasks={yesterdayCompletedTasks}
         tasks={tasks}
         allTasks={allTasks}
         spheres={spheres}

@@ -123,9 +123,7 @@ export interface DailyEntryData {
   brainDump: string | null;
   frictionToday: string | null;
   confidenceLog: JsonValue | null;
-  standupDone: string | null;
   standupPlan: string | null;
-  standupBlockers: string | null;
   dailyVector: JsonValue | null;
   pdcaLog: JsonValue | null;
 
@@ -168,9 +166,7 @@ export interface UpsertDailyEntryInput {
   gratitude?: string | null;
   brainDump?: string | null;
   frictionToday?: string | null;
-  standupDone?: string | null;
   standupPlan?: string | null;
-  standupBlockers?: string | null;
   confidenceLog?: ConfidenceLog | null;
   dailyVector?: DailyVector | null;
   pdcaLog?: PdcaLog | null;

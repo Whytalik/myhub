@@ -20,7 +20,7 @@ import { EmotionsSection } from "./sections/EmotionsSection";
 import { NutritionSection } from "./sections/NutritionSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
 import { TaskReviewSection } from "./sections/TaskReviewSection";
-import { StandupSection } from "./sections/StandupSection";
+import { FocusSection } from "./sections/FocusSection";
 import {
   upsertEntryAction,
   setDayStartedAction,
@@ -58,8 +58,6 @@ interface Props {
   todayStr: string;
   isPast: boolean;
   yesterdayBrainDump: string | null;
-  yesterdayStandupPlan: string | null;
-  yesterdayCompletedTasks: string[];
   tasks: TaskData[];
   allTasks: TaskData[];
   spheres: LifeSphereData[];
@@ -87,8 +85,6 @@ export function DailyEntryForm({
   todayStr,
   isPast,
   yesterdayBrainDump,
-  yesterdayStandupPlan,
-  yesterdayCompletedTasks,
   tasks,
   allTasks: _allTasks,
   spheres,
@@ -158,9 +154,7 @@ export function DailyEntryForm({
       gratitude: initialEntry?.gratitude ?? null,
       brainDump: initialEntry?.brainDump ?? null,
       frictionToday: initialEntry?.frictionToday ?? null,
-      standupDone: initialEntry?.standupDone ?? null,
       standupPlan: initialEntry?.standupPlan ?? null,
-      standupBlockers: initialEntry?.standupBlockers ?? null,
       confidenceLog: (initialEntry?.confidenceLog as ConfidenceLog | null) ?? null,
       dailyVector: (initialEntry?.dailyVector as DailyVector | null) ?? null,
       pdcaLog: (initialEntry?.pdcaLog as PdcaLog | null) ?? null,
@@ -391,21 +385,7 @@ export function DailyEntryForm({
 
                 <EmotionsSection emotions={data.emotions ?? null} onChange={patch} />
 
-                <div className="glass-card p-4 flex flex-col gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 h-px bg-white/[0.06]" />
-                    <span className="text-label">Daily Scrum Standup</span>
-                    <div className="flex-1 h-px bg-white/[0.06]" />
-                  </div>
-                  <StandupSection
-                    done={data.standupDone ?? null}
-                    plan={data.standupPlan ?? null}
-                    blockers={data.standupBlockers ?? null}
-                    yesterdayPlan={yesterdayStandupPlan}
-                    yesterdayCompletedTasks={yesterdayCompletedTasks}
-                    onChange={patch}
-                  />
-                </div>
+                <FocusSection plan={data.standupPlan ?? null} onChange={patch} />
 
                 <Suspense fallback={suspenseFallback}>
                   <RoutineSection

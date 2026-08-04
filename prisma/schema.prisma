@@ -267,8 +267,6 @@ model DailyEntry {
   confidenceLog   Json?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  standupBlockers String?
-  standupDone     String?
   standupPlan     String?
   dailyVector     Json?
   recoveryRoutine Json?

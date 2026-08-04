@@ -18101,8 +18101,6 @@ export namespace Prisma {
     frictionToday: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    standupBlockers: string | null
-    standupDone: string | null
     standupPlan: string | null
     recoveryScore: number | null
     startedAt: Date | null
@@ -18136,8 +18134,6 @@ export namespace Prisma {
     frictionToday: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    standupBlockers: string | null
-    standupDone: string | null
     standupPlan: string | null
     recoveryScore: number | null
     startedAt: Date | null
@@ -18175,8 +18171,6 @@ export namespace Prisma {
     confidenceLog: number
     createdAt: number
     updatedAt: number
-    standupBlockers: number
-    standupDone: number
     standupPlan: number
     dailyVector: number
     recoveryRoutine: number
@@ -18237,8 +18231,6 @@ export namespace Prisma {
     frictionToday?: true
     createdAt?: true
     updatedAt?: true
-    standupBlockers?: true
-    standupDone?: true
     standupPlan?: true
     recoveryScore?: true
     startedAt?: true
@@ -18272,8 +18264,6 @@ export namespace Prisma {
     frictionToday?: true
     createdAt?: true
     updatedAt?: true
-    standupBlockers?: true
-    standupDone?: true
     standupPlan?: true
     recoveryScore?: true
     startedAt?: true
@@ -18311,8 +18301,6 @@ export namespace Prisma {
     confidenceLog?: true
     createdAt?: true
     updatedAt?: true
-    standupBlockers?: true
-    standupDone?: true
     standupPlan?: true
     dailyVector?: true
     recoveryRoutine?: true
@@ -18440,8 +18428,6 @@ export namespace Prisma {
     confidenceLog: JsonValue | null
     createdAt: Date
     updatedAt: Date
-    standupBlockers: string | null
-    standupDone: string | null
     standupPlan: string | null
     dailyVector: JsonValue | null
     recoveryRoutine: JsonValue | null
@@ -18501,8 +18487,6 @@ export namespace Prisma {
     confidenceLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    standupBlockers?: boolean
-    standupDone?: boolean
     standupPlan?: boolean
     dailyVector?: boolean
     recoveryRoutine?: boolean
@@ -18544,8 +18528,6 @@ export namespace Prisma {
     confidenceLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    standupBlockers?: boolean
-    standupDone?: boolean
     standupPlan?: boolean
     dailyVector?: boolean
     recoveryRoutine?: boolean
@@ -18587,8 +18569,6 @@ export namespace Prisma {
     confidenceLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    standupBlockers?: boolean
-    standupDone?: boolean
     standupPlan?: boolean
     dailyVector?: boolean
     recoveryRoutine?: boolean
@@ -18630,8 +18610,6 @@ export namespace Prisma {
     confidenceLog?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    standupBlockers?: boolean
-    standupDone?: boolean
     standupPlan?: boolean
     dailyVector?: boolean
     recoveryRoutine?: boolean
@@ -18641,7 +18619,7 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "gymSkipped" | "gymSkipReason" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "frictionToday" | "confidenceLog" | "createdAt" | "updatedAt" | "standupBlockers" | "standupDone" | "standupPlan" | "dailyVector" | "recoveryRoutine" | "recoveryScore" | "pdcaLog" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "gymSkipped" | "gymSkipReason" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "frictionToday" | "confidenceLog" | "createdAt" | "updatedAt" | "standupPlan" | "dailyVector" | "recoveryRoutine" | "recoveryScore" | "pdcaLog" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -18688,8 +18666,6 @@ export namespace Prisma {
       confidenceLog: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
-      standupBlockers: string | null
-      standupDone: string | null
       standupPlan: string | null
       dailyVector: Prisma.JsonValue | null
       recoveryRoutine: Prisma.JsonValue | null
@@ -19151,8 +19127,6 @@ export namespace Prisma {
     readonly confidenceLog: FieldRef<"DailyEntry", 'Json'>
     readonly createdAt: FieldRef<"DailyEntry", 'DateTime'>
     readonly updatedAt: FieldRef<"DailyEntry", 'DateTime'>
-    readonly standupBlockers: FieldRef<"DailyEntry", 'String'>
-    readonly standupDone: FieldRef<"DailyEntry", 'String'>
     readonly standupPlan: FieldRef<"DailyEntry", 'String'>
     readonly dailyVector: FieldRef<"DailyEntry", 'Json'>
     readonly recoveryRoutine: FieldRef<"DailyEntry", 'Json'>
@@ -45722,8 +45696,6 @@ export namespace Prisma {
     confidenceLog: 'confidenceLog',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    standupBlockers: 'standupBlockers',
-    standupDone: 'standupDone',
     standupPlan: 'standupPlan',
     dailyVector: 'dailyVector',
     recoveryRoutine: 'recoveryRoutine',
@@ -47340,8 +47312,6 @@ export namespace Prisma {
     confidenceLog?: JsonNullableFilter<"DailyEntry">
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
-    standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
-    standupDone?: StringNullableFilter<"DailyEntry"> | string | null
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
     dailyVector?: JsonNullableFilter<"DailyEntry">
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
@@ -47383,8 +47353,6 @@ export namespace Prisma {
     confidenceLog?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    standupBlockers?: SortOrderInput | SortOrder
-    standupDone?: SortOrderInput | SortOrder
     standupPlan?: SortOrderInput | SortOrder
     dailyVector?: SortOrderInput | SortOrder
     recoveryRoutine?: SortOrderInput | SortOrder
@@ -47430,8 +47398,6 @@ export namespace Prisma {
     confidenceLog?: JsonNullableFilter<"DailyEntry">
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
-    standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
-    standupDone?: StringNullableFilter<"DailyEntry"> | string | null
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
     dailyVector?: JsonNullableFilter<"DailyEntry">
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
@@ -47473,8 +47439,6 @@ export namespace Prisma {
     confidenceLog?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    standupBlockers?: SortOrderInput | SortOrder
-    standupDone?: SortOrderInput | SortOrder
     standupPlan?: SortOrderInput | SortOrder
     dailyVector?: SortOrderInput | SortOrder
     recoveryRoutine?: SortOrderInput | SortOrder
@@ -47523,8 +47487,6 @@ export namespace Prisma {
     confidenceLog?: JsonNullableWithAggregatesFilter<"DailyEntry">
     createdAt?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
-    standupBlockers?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
-    standupDone?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     standupPlan?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     dailyVector?: JsonNullableWithAggregatesFilter<"DailyEntry">
     recoveryRoutine?: JsonNullableWithAggregatesFilter<"DailyEntry">
@@ -50484,8 +50446,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    standupBlockers?: string | null
-    standupDone?: string | null
     standupPlan?: string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -50527,8 +50487,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    standupBlockers?: string | null
-    standupDone?: string | null
     standupPlan?: string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -50568,8 +50526,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
-    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -50611,8 +50567,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
-    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -50653,8 +50607,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    standupBlockers?: string | null
-    standupDone?: string | null
     standupPlan?: string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -50694,8 +50646,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
-    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -50736,8 +50686,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
-    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -53839,8 +53787,6 @@ export namespace Prisma {
     confidenceLog?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    standupBlockers?: SortOrder
-    standupDone?: SortOrder
     standupPlan?: SortOrder
     dailyVector?: SortOrder
     recoveryRoutine?: SortOrder
@@ -53888,8 +53834,6 @@ export namespace Prisma {
     frictionToday?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    standupBlockers?: SortOrder
-    standupDone?: SortOrder
     standupPlan?: SortOrder
     recoveryScore?: SortOrder
     startedAt?: SortOrder
@@ -53923,8 +53867,6 @@ export namespace Prisma {
     frictionToday?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    standupBlockers?: SortOrder
-    standupDone?: SortOrder
     standupPlan?: SortOrder
     recoveryScore?: SortOrder
     startedAt?: SortOrder
@@ -58347,8 +58289,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    standupBlockers?: string | null
-    standupDone?: string | null
     standupPlan?: string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -58388,8 +58328,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    standupBlockers?: string | null
-    standupDone?: string | null
     standupPlan?: string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -59259,8 +59197,6 @@ export namespace Prisma {
     confidenceLog?: JsonNullableFilter<"DailyEntry">
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
-    standupBlockers?: StringNullableFilter<"DailyEntry"> | string | null
-    standupDone?: StringNullableFilter<"DailyEntry"> | string | null
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
     dailyVector?: JsonNullableFilter<"DailyEntry">
     recoveryRoutine?: JsonNullableFilter<"DailyEntry">
@@ -66694,8 +66630,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    standupBlockers?: string | null
-    standupDone?: string | null
     standupPlan?: string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -67056,8 +66990,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
-    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -67097,8 +67029,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
-    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue
@@ -67138,8 +67068,6 @@ export namespace Prisma {
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    standupBlockers?: NullableStringFieldUpdateOperationsInput | string | null
-    standupDone?: NullableStringFieldUpdateOperationsInput | string | null
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
     dailyVector?: NullableJsonNullValueInput | InputJsonValue
     recoveryRoutine?: NullableJsonNullValueInput | InputJsonValue

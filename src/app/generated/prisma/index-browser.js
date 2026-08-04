@@ -294,8 +294,6 @@ exports.Prisma.DailyEntryScalarFieldEnum = {
   confidenceLog: 'confidenceLog',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  standupBlockers: 'standupBlockers',
-  standupDone: 'standupDone',
   standupPlan: 'standupPlan',
   dailyVector: 'dailyVector',
   recoveryRoutine: 'recoveryRoutine',
