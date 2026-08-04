@@ -137,7 +137,8 @@ export interface DistributeTasksResult {
 }
 
 // Slots each unscheduled task for the day into the first context block whose
-// sphere it matches, packing tasks back-to-back from the block's start time.
+// sphere it matches, packing tasks two at a time (same start/end) from the
+// block's start time, then advancing to the next slot.
 // Ordering within a block: frog task first, then priority, then manual order —
 // tasks that no longer fit in their block are left unscheduled for manual placement.
 export async function distributeUnscheduledTasks(
@@ -180,21 +181,27 @@ export async function distributeUnscheduledTasks(
     const blockEnd = parseTimeToMinutes(block.endTime);
 
     const MIN_DISTRIBUTE_DURATION_MIN = 15;
+    const MAX_PARALLEL_TASKS = 2;
 
-    for (const task of candidates) {
+    for (let i = 0; i < candidates.length; i += MAX_PARALLEL_TASKS) {
       const start = cursor;
       const duration = Math.min(DEFAULT_DISTRIBUTE_DURATION_MIN, blockEnd - start);
-      if (duration < MIN_DISTRIBUTE_DURATION_MIN) continue;
+      if (duration < MIN_DISTRIBUTE_DURATION_MIN) break;
       const end = start + duration;
 
-      await taskRepository.updateById(task.id, {
-        plannedDate: createAppLocalDate(year, month, day, Math.floor(start / 60), start % 60),
-        hasPlannedTime: true,
-        plannedEndDate: createAppLocalDate(year, month, day, Math.floor(end / 60), end % 60),
-        hasPlannedEndTime: true,
-      });
+      const slot = candidates.slice(i, i + MAX_PARALLEL_TASKS);
+      await Promise.all(
+        slot.map((task) => {
+          placed.add(task.id);
+          return taskRepository.updateById(task.id, {
+            plannedDate: createAppLocalDate(year, month, day, Math.floor(start / 60), start % 60),
+            hasPlannedTime: true,
+            plannedEndDate: createAppLocalDate(year, month, day, Math.floor(end / 60), end % 60),
+            hasPlannedEndTime: true,
+          });
+        }),
+      );
 
-      placed.add(task.id);
       cursor = end;
     }
   }
