@@ -100,7 +100,7 @@ export const getCachedExercises = unstable_cache(
 export const getCachedTrainingPlans = unstable_cache(
   (userId: string) => trainingPlanRepository.findAll(userId),
   [],
-  { tags: ["training-plans"] },
+  { tags: ["training-plans"], revalidate: 60 },
 );
 
 export const getCachedRecentSessions = unstable_cache(
