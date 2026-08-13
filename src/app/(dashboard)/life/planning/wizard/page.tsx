@@ -6,6 +6,7 @@ import * as thoughtService from "@/features/life/services/thought-service";
 import * as taskService from "@/features/life/services/task-service";
 import { getSprintDashboard } from "@/features/life/services/sprint-service";
 import { PlanningWizardClient } from "@/features/life/components/planning/PlanningWizardClient";
+import { getDailyResistanceBudget } from "@/lib/actions/user-settings-actions";
 
 type PlanningWizardClientProps = React.ComponentProps<typeof PlanningWizardClient>;
 
@@ -21,10 +22,11 @@ export default async function PlanningWizardPage() {
     redirect("/login");
   }
 
-  const [thoughts, spheres, dashboard] = await Promise.all([
+  const [thoughts, spheres, dashboard, dailyResistanceBudget] = await Promise.all([
     thoughtService.getThoughtsForWizard(userId),
     taskService.getAllSpheres(userId),
     getSprintDashboard(userId),
+    getDailyResistanceBudget(),
   ]);
 
   return (
@@ -39,12 +41,17 @@ export default async function PlanningWizardPage() {
         description="Guided Flow: Brain Dump → Prime Filter → Decomposition → Kanban."
       />
       <PlanningWizardClient
-        initialThoughts={thoughts as unknown as PlanningWizardClientProps['initialThoughts']}
+        initialThoughts={thoughts as unknown as PlanningWizardClientProps["initialThoughts"]}
         spheres={spheres}
-        activeSprint={dashboard.sprint as unknown as PlanningWizardClientProps['activeSprint']}
-        initialBacklogProjects={dashboard.backlogProjects as unknown as PlanningWizardClientProps['initialBacklogProjects']}
-        initialColumns={dashboard.columns as unknown as PlanningWizardClientProps['initialColumns']}
-        initialStandaloneAtoms={dashboard.standaloneAtoms as unknown as PlanningWizardClientProps['initialStandaloneAtoms']}
+        activeSprint={dashboard.sprint as unknown as PlanningWizardClientProps["activeSprint"]}
+        initialBacklogProjects={
+          dashboard.backlogProjects as unknown as PlanningWizardClientProps["initialBacklogProjects"]
+        }
+        initialColumns={dashboard.columns as unknown as PlanningWizardClientProps["initialColumns"]}
+        initialStandaloneAtoms={
+          dashboard.standaloneAtoms as unknown as PlanningWizardClientProps["initialStandaloneAtoms"]
+        }
+        dailyResistanceBudget={dailyResistanceBudget}
       />
     </div>
   );
