@@ -18146,6 +18146,9 @@ export namespace Prisma {
     gratitude: string | null
     brainDump: string | null
     frictionToday: string | null
+    postAnalysisTrigger: string | null
+    postAnalysisMyReaction: string | null
+    postAnalysisBetterResponse: string | null
     createdAt: Date | null
     updatedAt: Date | null
     standupPlan: string | null
@@ -18179,6 +18182,9 @@ export namespace Prisma {
     gratitude: string | null
     brainDump: string | null
     frictionToday: string | null
+    postAnalysisTrigger: string | null
+    postAnalysisMyReaction: string | null
+    postAnalysisBetterResponse: string | null
     createdAt: Date | null
     updatedAt: Date | null
     standupPlan: string | null
@@ -18216,6 +18222,9 @@ export namespace Prisma {
     brainDump: number
     frictionToday: number
     confidenceLog: number
+    postAnalysisTrigger: number
+    postAnalysisMyReaction: number
+    postAnalysisBetterResponse: number
     createdAt: number
     updatedAt: number
     standupPlan: number
@@ -18276,6 +18285,9 @@ export namespace Prisma {
     gratitude?: true
     brainDump?: true
     frictionToday?: true
+    postAnalysisTrigger?: true
+    postAnalysisMyReaction?: true
+    postAnalysisBetterResponse?: true
     createdAt?: true
     updatedAt?: true
     standupPlan?: true
@@ -18309,6 +18321,9 @@ export namespace Prisma {
     gratitude?: true
     brainDump?: true
     frictionToday?: true
+    postAnalysisTrigger?: true
+    postAnalysisMyReaction?: true
+    postAnalysisBetterResponse?: true
     createdAt?: true
     updatedAt?: true
     standupPlan?: true
@@ -18346,6 +18361,9 @@ export namespace Prisma {
     brainDump?: true
     frictionToday?: true
     confidenceLog?: true
+    postAnalysisTrigger?: true
+    postAnalysisMyReaction?: true
+    postAnalysisBetterResponse?: true
     createdAt?: true
     updatedAt?: true
     standupPlan?: true
@@ -18473,6 +18491,9 @@ export namespace Prisma {
     brainDump: string | null
     frictionToday: string | null
     confidenceLog: JsonValue | null
+    postAnalysisTrigger: string | null
+    postAnalysisMyReaction: string | null
+    postAnalysisBetterResponse: string | null
     createdAt: Date
     updatedAt: Date
     standupPlan: string | null
@@ -18532,6 +18553,9 @@ export namespace Prisma {
     brainDump?: boolean
     frictionToday?: boolean
     confidenceLog?: boolean
+    postAnalysisTrigger?: boolean
+    postAnalysisMyReaction?: boolean
+    postAnalysisBetterResponse?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     standupPlan?: boolean
@@ -18573,6 +18597,9 @@ export namespace Prisma {
     brainDump?: boolean
     frictionToday?: boolean
     confidenceLog?: boolean
+    postAnalysisTrigger?: boolean
+    postAnalysisMyReaction?: boolean
+    postAnalysisBetterResponse?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     standupPlan?: boolean
@@ -18614,6 +18641,9 @@ export namespace Prisma {
     brainDump?: boolean
     frictionToday?: boolean
     confidenceLog?: boolean
+    postAnalysisTrigger?: boolean
+    postAnalysisMyReaction?: boolean
+    postAnalysisBetterResponse?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     standupPlan?: boolean
@@ -18655,6 +18685,9 @@ export namespace Prisma {
     brainDump?: boolean
     frictionToday?: boolean
     confidenceLog?: boolean
+    postAnalysisTrigger?: boolean
+    postAnalysisMyReaction?: boolean
+    postAnalysisBetterResponse?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     standupPlan?: boolean
@@ -18666,7 +18699,7 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "gymSkipped" | "gymSkipReason" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "frictionToday" | "confidenceLog" | "createdAt" | "updatedAt" | "standupPlan" | "dailyVector" | "recoveryRoutine" | "recoveryScore" | "pdcaLog" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
+  export type DailyEntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "sleepBedtime" | "sleepWakeup" | "sleepHours" | "sleepQuality" | "sleepNote" | "energy" | "mood" | "emotions" | "weight" | "energyNote" | "eveningEnergy" | "nutrition" | "nutritionNote" | "morningRoutine" | "eveningRoutine" | "routineNote" | "trainingDayName" | "gymSkipped" | "gymSkipReason" | "winToday" | "improveTomorrow" | "gratitude" | "brainDump" | "frictionToday" | "confidenceLog" | "postAnalysisTrigger" | "postAnalysisMyReaction" | "postAnalysisBetterResponse" | "createdAt" | "updatedAt" | "standupPlan" | "dailyVector" | "recoveryRoutine" | "recoveryScore" | "pdcaLog" | "startedAt" | "completedAt", ExtArgs["result"]["dailyEntry"]>
   export type DailyEntryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -18711,6 +18744,9 @@ export namespace Prisma {
       brainDump: string | null
       frictionToday: string | null
       confidenceLog: Prisma.JsonValue | null
+      postAnalysisTrigger: string | null
+      postAnalysisMyReaction: string | null
+      postAnalysisBetterResponse: string | null
       createdAt: Date
       updatedAt: Date
       standupPlan: string | null
@@ -19172,6 +19208,9 @@ export namespace Prisma {
     readonly brainDump: FieldRef<"DailyEntry", 'String'>
     readonly frictionToday: FieldRef<"DailyEntry", 'String'>
     readonly confidenceLog: FieldRef<"DailyEntry", 'Json'>
+    readonly postAnalysisTrigger: FieldRef<"DailyEntry", 'String'>
+    readonly postAnalysisMyReaction: FieldRef<"DailyEntry", 'String'>
+    readonly postAnalysisBetterResponse: FieldRef<"DailyEntry", 'String'>
     readonly createdAt: FieldRef<"DailyEntry", 'DateTime'>
     readonly updatedAt: FieldRef<"DailyEntry", 'DateTime'>
     readonly standupPlan: FieldRef<"DailyEntry", 'String'>
@@ -45742,6 +45781,9 @@ export namespace Prisma {
     brainDump: 'brainDump',
     frictionToday: 'frictionToday',
     confidenceLog: 'confidenceLog',
+    postAnalysisTrigger: 'postAnalysisTrigger',
+    postAnalysisMyReaction: 'postAnalysisMyReaction',
+    postAnalysisBetterResponse: 'postAnalysisBetterResponse',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     standupPlan: 'standupPlan',
@@ -47365,6 +47407,9 @@ export namespace Prisma {
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
     frictionToday?: StringNullableFilter<"DailyEntry"> | string | null
     confidenceLog?: JsonNullableFilter<"DailyEntry">
+    postAnalysisTrigger?: StringNullableFilter<"DailyEntry"> | string | null
+    postAnalysisMyReaction?: StringNullableFilter<"DailyEntry"> | string | null
+    postAnalysisBetterResponse?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
@@ -47406,6 +47451,9 @@ export namespace Prisma {
     brainDump?: SortOrderInput | SortOrder
     frictionToday?: SortOrderInput | SortOrder
     confidenceLog?: SortOrderInput | SortOrder
+    postAnalysisTrigger?: SortOrderInput | SortOrder
+    postAnalysisMyReaction?: SortOrderInput | SortOrder
+    postAnalysisBetterResponse?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     standupPlan?: SortOrderInput | SortOrder
@@ -47451,6 +47499,9 @@ export namespace Prisma {
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
     frictionToday?: StringNullableFilter<"DailyEntry"> | string | null
     confidenceLog?: JsonNullableFilter<"DailyEntry">
+    postAnalysisTrigger?: StringNullableFilter<"DailyEntry"> | string | null
+    postAnalysisMyReaction?: StringNullableFilter<"DailyEntry"> | string | null
+    postAnalysisBetterResponse?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
@@ -47492,6 +47543,9 @@ export namespace Prisma {
     brainDump?: SortOrderInput | SortOrder
     frictionToday?: SortOrderInput | SortOrder
     confidenceLog?: SortOrderInput | SortOrder
+    postAnalysisTrigger?: SortOrderInput | SortOrder
+    postAnalysisMyReaction?: SortOrderInput | SortOrder
+    postAnalysisBetterResponse?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     standupPlan?: SortOrderInput | SortOrder
@@ -47540,6 +47594,9 @@ export namespace Prisma {
     brainDump?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     frictionToday?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     confidenceLog?: JsonNullableWithAggregatesFilter<"DailyEntry">
+    postAnalysisTrigger?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
+    postAnalysisMyReaction?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
+    postAnalysisBetterResponse?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"DailyEntry"> | Date | string
     standupPlan?: StringNullableWithAggregatesFilter<"DailyEntry"> | string | null
@@ -50506,6 +50563,9 @@ export namespace Prisma {
     brainDump?: string | null
     frictionToday?: string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: string | null
+    postAnalysisMyReaction?: string | null
+    postAnalysisBetterResponse?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     standupPlan?: string | null
@@ -50547,6 +50607,9 @@ export namespace Prisma {
     brainDump?: string | null
     frictionToday?: string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: string | null
+    postAnalysisMyReaction?: string | null
+    postAnalysisBetterResponse?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     standupPlan?: string | null
@@ -50586,6 +50649,9 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     frictionToday?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisMyReaction?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisBetterResponse?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50627,6 +50693,9 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     frictionToday?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisMyReaction?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisBetterResponse?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50667,6 +50736,9 @@ export namespace Prisma {
     brainDump?: string | null
     frictionToday?: string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: string | null
+    postAnalysisMyReaction?: string | null
+    postAnalysisBetterResponse?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     standupPlan?: string | null
@@ -50706,6 +50778,9 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     frictionToday?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisMyReaction?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisBetterResponse?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50746,6 +50821,9 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     frictionToday?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisMyReaction?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisBetterResponse?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53858,6 +53936,9 @@ export namespace Prisma {
     brainDump?: SortOrder
     frictionToday?: SortOrder
     confidenceLog?: SortOrder
+    postAnalysisTrigger?: SortOrder
+    postAnalysisMyReaction?: SortOrder
+    postAnalysisBetterResponse?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     standupPlan?: SortOrder
@@ -53905,6 +53986,9 @@ export namespace Prisma {
     gratitude?: SortOrder
     brainDump?: SortOrder
     frictionToday?: SortOrder
+    postAnalysisTrigger?: SortOrder
+    postAnalysisMyReaction?: SortOrder
+    postAnalysisBetterResponse?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     standupPlan?: SortOrder
@@ -53938,6 +54022,9 @@ export namespace Prisma {
     gratitude?: SortOrder
     brainDump?: SortOrder
     frictionToday?: SortOrder
+    postAnalysisTrigger?: SortOrder
+    postAnalysisMyReaction?: SortOrder
+    postAnalysisBetterResponse?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     standupPlan?: SortOrder
@@ -58360,6 +58447,9 @@ export namespace Prisma {
     brainDump?: string | null
     frictionToday?: string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: string | null
+    postAnalysisMyReaction?: string | null
+    postAnalysisBetterResponse?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     standupPlan?: string | null
@@ -58399,6 +58489,9 @@ export namespace Prisma {
     brainDump?: string | null
     frictionToday?: string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: string | null
+    postAnalysisMyReaction?: string | null
+    postAnalysisBetterResponse?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     standupPlan?: string | null
@@ -59268,6 +59361,9 @@ export namespace Prisma {
     brainDump?: StringNullableFilter<"DailyEntry"> | string | null
     frictionToday?: StringNullableFilter<"DailyEntry"> | string | null
     confidenceLog?: JsonNullableFilter<"DailyEntry">
+    postAnalysisTrigger?: StringNullableFilter<"DailyEntry"> | string | null
+    postAnalysisMyReaction?: StringNullableFilter<"DailyEntry"> | string | null
+    postAnalysisBetterResponse?: StringNullableFilter<"DailyEntry"> | string | null
     createdAt?: DateTimeFilter<"DailyEntry"> | Date | string
     updatedAt?: DateTimeFilter<"DailyEntry"> | Date | string
     standupPlan?: StringNullableFilter<"DailyEntry"> | string | null
@@ -66793,6 +66889,9 @@ export namespace Prisma {
     brainDump?: string | null
     frictionToday?: string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: string | null
+    postAnalysisMyReaction?: string | null
+    postAnalysisBetterResponse?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     standupPlan?: string | null
@@ -67153,6 +67252,9 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     frictionToday?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisMyReaction?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisBetterResponse?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67192,6 +67294,9 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     frictionToday?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisMyReaction?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisBetterResponse?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null
@@ -67231,6 +67336,9 @@ export namespace Prisma {
     brainDump?: NullableStringFieldUpdateOperationsInput | string | null
     frictionToday?: NullableStringFieldUpdateOperationsInput | string | null
     confidenceLog?: NullableJsonNullValueInput | InputJsonValue
+    postAnalysisTrigger?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisMyReaction?: NullableStringFieldUpdateOperationsInput | string | null
+    postAnalysisBetterResponse?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     standupPlan?: NullableStringFieldUpdateOperationsInput | string | null

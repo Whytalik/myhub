@@ -123,6 +123,9 @@ export interface DailyEntryData {
   brainDump: string | null;
   frictionToday: string | null;
   confidenceLog: JsonValue | null;
+  postAnalysisTrigger: string | null;
+  postAnalysisMyReaction: string | null;
+  postAnalysisBetterResponse: string | null;
   standupPlan: string | null;
   dailyVector: JsonValue | null;
   pdcaLog: JsonValue | null;
@@ -170,6 +173,9 @@ export interface UpsertDailyEntryInput {
   confidenceLog?: ConfidenceLog | null;
   dailyVector?: DailyVector | null;
   pdcaLog?: PdcaLog | null;
+  postAnalysisTrigger?: string | null;
+  postAnalysisMyReaction?: string | null;
+  postAnalysisBetterResponse?: string | null;
 }
 
 export interface ConfidenceLog {

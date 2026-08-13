@@ -266,6 +266,9 @@ model DailyEntry {
   brainDump       String?
   frictionToday   String?
   confidenceLog   Json?
+  postAnalysisTrigger       String?
+  postAnalysisMyReaction    String?
+  postAnalysisBetterResponse String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   standupPlan     String?

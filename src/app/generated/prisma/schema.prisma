@@ -244,44 +244,47 @@ model Task {
 }
 
 model DailyEntry {
-  id              String    @id @default(cuid())
-  userId          String
-  date            DateTime  @db.Date
-  sleepBedtime    DateTime?
-  sleepWakeup     DateTime?
-  sleepHours      Float?
-  sleepQuality    Int?
-  sleepNote       String?
-  energy          Int?
-  mood            Int?
-  emotions        Json?
-  weight          Float?
-  energyNote      String?
-  eveningEnergy   Int?
-  nutrition       Int?
-  nutritionNote   String?
-  morningRoutine  Json?
-  eveningRoutine  Json?
-  routineNote     String?
-  trainingDayName String?
-  gymSkipped      Boolean   @default(false)
-  gymSkipReason   String?
-  winToday        String?
-  improveTomorrow String?
-  gratitude       String?
-  brainDump       String?
-  frictionToday   String?
-  confidenceLog   Json?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  standupPlan     String?
-  dailyVector     Json?
-  recoveryRoutine Json?
-  recoveryScore   Float?
-  pdcaLog         Json?
-  startedAt       DateTime?
-  completedAt     DateTime?
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                         String    @id @default(cuid())
+  userId                     String
+  date                       DateTime  @db.Date
+  sleepBedtime               DateTime?
+  sleepWakeup                DateTime?
+  sleepHours                 Float?
+  sleepQuality               Int?
+  sleepNote                  String?
+  energy                     Int?
+  mood                       Int?
+  emotions                   Json?
+  weight                     Float?
+  energyNote                 String?
+  eveningEnergy              Int?
+  nutrition                  Int?
+  nutritionNote              String?
+  morningRoutine             Json?
+  eveningRoutine             Json?
+  routineNote                String?
+  trainingDayName            String?
+  gymSkipped                 Boolean   @default(false)
+  gymSkipReason              String?
+  winToday                   String?
+  improveTomorrow            String?
+  gratitude                  String?
+  brainDump                  String?
+  frictionToday              String?
+  confidenceLog              Json?
+  postAnalysisTrigger        String?
+  postAnalysisMyReaction     String?
+  postAnalysisBetterResponse String?
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+  standupPlan                String?
+  dailyVector                Json?
+  recoveryRoutine            Json?
+  recoveryScore              Float?
+  pdcaLog                    Json?
+  startedAt                  DateTime?
+  completedAt                DateTime?
+  user                       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, date])
 }
