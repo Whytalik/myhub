@@ -15,6 +15,7 @@ model User {
   image                   String?
   passwordHash            String?
   privateTaskPasswordHash String?
+  dailyResistanceBudget   Int                @default(8)
   createdAt               DateTime           @default(now())
   updatedAt               DateTime           @updatedAt
   systemStatus            SystemStatus       @default(STABLE)

@@ -128,6 +128,7 @@ exports.Prisma.UserScalarFieldEnum = {
   image: 'image',
   passwordHash: 'passwordHash',
   privateTaskPasswordHash: 'privateTaskPasswordHash',
+  dailyResistanceBudget: 'dailyResistanceBudget',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   systemStatus: 'systemStatus'

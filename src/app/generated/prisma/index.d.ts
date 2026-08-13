@@ -4745,8 +4745,18 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserAvgAggregateOutputType = {
+    dailyResistanceBudget: number | null
+  }
+
+  export type UserSumAggregateOutputType = {
+    dailyResistanceBudget: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -4757,6 +4767,7 @@ export namespace Prisma {
     image: string | null
     passwordHash: string | null
     privateTaskPasswordHash: string | null
+    dailyResistanceBudget: number | null
     createdAt: Date | null
     updatedAt: Date | null
     systemStatus: $Enums.SystemStatus | null
@@ -4770,6 +4781,7 @@ export namespace Prisma {
     image: string | null
     passwordHash: string | null
     privateTaskPasswordHash: string | null
+    dailyResistanceBudget: number | null
     createdAt: Date | null
     updatedAt: Date | null
     systemStatus: $Enums.SystemStatus | null
@@ -4783,12 +4795,21 @@ export namespace Prisma {
     image: number
     passwordHash: number
     privateTaskPasswordHash: number
+    dailyResistanceBudget: number
     createdAt: number
     updatedAt: number
     systemStatus: number
     _all: number
   }
 
+
+  export type UserAvgAggregateInputType = {
+    dailyResistanceBudget?: true
+  }
+
+  export type UserSumAggregateInputType = {
+    dailyResistanceBudget?: true
+  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -4798,6 +4819,7 @@ export namespace Prisma {
     image?: true
     passwordHash?: true
     privateTaskPasswordHash?: true
+    dailyResistanceBudget?: true
     createdAt?: true
     updatedAt?: true
     systemStatus?: true
@@ -4811,6 +4833,7 @@ export namespace Prisma {
     image?: true
     passwordHash?: true
     privateTaskPasswordHash?: true
+    dailyResistanceBudget?: true
     createdAt?: true
     updatedAt?: true
     systemStatus?: true
@@ -4824,6 +4847,7 @@ export namespace Prisma {
     image?: true
     passwordHash?: true
     privateTaskPasswordHash?: true
+    dailyResistanceBudget?: true
     createdAt?: true
     updatedAt?: true
     systemStatus?: true
@@ -4868,6 +4892,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: UserAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -4898,6 +4934,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
+    _avg?: UserAvgAggregateInputType
+    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -4910,10 +4948,13 @@ export namespace Prisma {
     image: string | null
     passwordHash: string | null
     privateTaskPasswordHash: string | null
+    dailyResistanceBudget: number
     createdAt: Date
     updatedAt: Date
     systemStatus: $Enums.SystemStatus
     _count: UserCountAggregateOutputType | null
+    _avg: UserAvgAggregateOutputType | null
+    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -4940,6 +4981,7 @@ export namespace Prisma {
     image?: boolean
     passwordHash?: boolean
     privateTaskPasswordHash?: boolean
+    dailyResistanceBudget?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     systemStatus?: boolean
@@ -4977,6 +5019,7 @@ export namespace Prisma {
     image?: boolean
     passwordHash?: boolean
     privateTaskPasswordHash?: boolean
+    dailyResistanceBudget?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     systemStatus?: boolean
@@ -4990,6 +5033,7 @@ export namespace Prisma {
     image?: boolean
     passwordHash?: boolean
     privateTaskPasswordHash?: boolean
+    dailyResistanceBudget?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     systemStatus?: boolean
@@ -5003,12 +5047,13 @@ export namespace Prisma {
     image?: boolean
     passwordHash?: boolean
     privateTaskPasswordHash?: boolean
+    dailyResistanceBudget?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     systemStatus?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "passwordHash" | "privateTaskPasswordHash" | "createdAt" | "updatedAt" | "systemStatus", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "passwordHash" | "privateTaskPasswordHash" | "dailyResistanceBudget" | "createdAt" | "updatedAt" | "systemStatus", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     annualCompasses?: boolean | User$annualCompassesArgs<ExtArgs>
@@ -5073,6 +5118,7 @@ export namespace Prisma {
       image: string | null
       passwordHash: string | null
       privateTaskPasswordHash: string | null
+      dailyResistanceBudget: number
       createdAt: Date
       updatedAt: Date
       systemStatus: $Enums.SystemStatus
@@ -5529,6 +5575,7 @@ export namespace Prisma {
     readonly image: FieldRef<"User", 'String'>
     readonly passwordHash: FieldRef<"User", 'String'>
     readonly privateTaskPasswordHash: FieldRef<"User", 'String'>
+    readonly dailyResistanceBudget: FieldRef<"User", 'Int'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly systemStatus: FieldRef<"User", 'SystemStatus'>
@@ -45497,6 +45544,7 @@ export namespace Prisma {
     image: 'image',
     passwordHash: 'passwordHash',
     privateTaskPasswordHash: 'privateTaskPasswordHash',
+    dailyResistanceBudget: 'dailyResistanceBudget',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     systemStatus: 'systemStatus'
@@ -46121,20 +46169,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'SystemStatus'
-   */
-  export type EnumSystemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemStatus'>
-    
-
-
-  /**
-   * Reference to a field of type 'SystemStatus[]'
-   */
-  export type ListEnumSystemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemStatus[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -46145,6 +46179,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SystemStatus'
+   */
+  export type EnumSystemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SystemStatus[]'
+   */
+  export type ListEnumSystemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SystemStatus[]'>
     
 
 
@@ -46309,6 +46357,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     passwordHash?: StringNullableFilter<"User"> | string | null
     privateTaskPasswordHash?: StringNullableFilter<"User"> | string | null
+    dailyResistanceBudget?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     systemStatus?: EnumSystemStatusFilter<"User"> | $Enums.SystemStatus
@@ -46345,6 +46394,7 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
     privateTaskPasswordHash?: SortOrderInput | SortOrder
+    dailyResistanceBudget?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     systemStatus?: SortOrder
@@ -46384,6 +46434,7 @@ export namespace Prisma {
     image?: StringNullableFilter<"User"> | string | null
     passwordHash?: StringNullableFilter<"User"> | string | null
     privateTaskPasswordHash?: StringNullableFilter<"User"> | string | null
+    dailyResistanceBudget?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     systemStatus?: EnumSystemStatusFilter<"User"> | $Enums.SystemStatus
@@ -46420,12 +46471,15 @@ export namespace Prisma {
     image?: SortOrderInput | SortOrder
     passwordHash?: SortOrderInput | SortOrder
     privateTaskPasswordHash?: SortOrderInput | SortOrder
+    dailyResistanceBudget?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     systemStatus?: SortOrder
     _count?: UserCountOrderByAggregateInput
+    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
+    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -46439,6 +46493,7 @@ export namespace Prisma {
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     passwordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
     privateTaskPasswordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
+    dailyResistanceBudget?: IntWithAggregatesFilter<"User"> | number
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     systemStatus?: EnumSystemStatusWithAggregatesFilter<"User"> | $Enums.SystemStatus
@@ -49317,6 +49372,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -49353,6 +49409,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -49389,6 +49446,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -49425,6 +49483,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -49461,6 +49520,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -49474,6 +49534,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -49487,6 +49548,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -52673,6 +52735,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -52934,9 +53007,14 @@ export namespace Prisma {
     image?: SortOrder
     passwordHash?: SortOrder
     privateTaskPasswordHash?: SortOrder
+    dailyResistanceBudget?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     systemStatus?: SortOrder
+  }
+
+  export type UserAvgOrderByAggregateInput = {
+    dailyResistanceBudget?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -52947,6 +53025,7 @@ export namespace Prisma {
     image?: SortOrder
     passwordHash?: SortOrder
     privateTaskPasswordHash?: SortOrder
+    dailyResistanceBudget?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     systemStatus?: SortOrder
@@ -52960,9 +53039,14 @@ export namespace Prisma {
     image?: SortOrder
     passwordHash?: SortOrder
     privateTaskPasswordHash?: SortOrder
+    dailyResistanceBudget?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     systemStatus?: SortOrder
+  }
+
+  export type UserSumOrderByAggregateInput = {
+    dailyResistanceBudget?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -53015,6 +53099,22 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -53037,17 +53137,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSystemStatusFilter<$PrismaModel>
     _max?: NestedEnumSystemStatusFilter<$PrismaModel>
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -53122,22 +53211,6 @@ export namespace Prisma {
 
   export type WeekTemplateSumOrderByAggregateInput = {
     dayOfWeek?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -55423,6 +55496,14 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -56085,14 +56166,6 @@ export namespace Prisma {
     create?: XOR<TrainingDayCreateWithoutWeekTemplatesInput, TrainingDayUncheckedCreateWithoutWeekTemplatesInput>
     connectOrCreate?: TrainingDayCreateOrConnectWithoutWeekTemplatesInput
     connect?: TrainingDayWhereUniqueInput
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type UserUpdateOneRequiredWithoutWeekTemplatesNestedInput = {
@@ -57821,6 +57894,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -57854,17 +57938,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -57909,30 +57982,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedEnumSystemStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.SystemStatus | EnumSystemStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumSystemStatusWithAggregatesFilter<$PrismaModel> | $Enums.SystemStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumSystemStatusFilter<$PrismaModel>
-    _max?: NestedEnumSystemStatusFilter<$PrismaModel>
-  }
-
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -57958,6 +58007,30 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSystemStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SystemStatus | EnumSystemStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SystemStatus[] | ListEnumSystemStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSystemStatusWithAggregatesFilter<$PrismaModel> | $Enums.SystemStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSystemStatusFilter<$PrismaModel>
+    _max?: NestedEnumSystemStatusFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -59863,6 +59936,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -59898,6 +59972,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -59980,6 +60055,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60015,6 +60091,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60087,6 +60164,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -60122,6 +60200,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -60173,6 +60252,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60208,6 +60288,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60243,6 +60324,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -60278,6 +60360,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -60329,6 +60412,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60364,6 +60448,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60399,6 +60484,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -60434,6 +60520,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -60485,6 +60572,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60520,6 +60608,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60615,6 +60704,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -60650,6 +60740,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -60887,6 +60978,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -60922,6 +61014,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -61238,6 +61331,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -61273,6 +61367,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -61491,6 +61586,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -61526,6 +61622,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -61561,6 +61658,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -61596,6 +61694,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -61647,6 +61746,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -61682,6 +61782,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -61781,6 +61882,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -61816,6 +61918,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -61965,6 +62068,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62000,6 +62104,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62061,6 +62166,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -62096,6 +62202,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -62207,6 +62314,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62242,6 +62350,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62409,6 +62518,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -62444,6 +62554,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -62495,6 +62606,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62530,6 +62642,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62565,6 +62678,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -62600,6 +62714,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -62651,6 +62766,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62686,6 +62802,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62758,6 +62875,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -62793,6 +62911,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -62887,6 +63006,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62922,6 +63042,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -62991,6 +63112,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -63026,6 +63148,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -63129,6 +63252,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -63164,6 +63288,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -63617,6 +63742,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -63652,6 +63778,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -63802,6 +63929,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -63837,6 +63965,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -64158,6 +64287,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -64193,6 +64323,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -64328,6 +64459,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -64363,6 +64495,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -64430,6 +64563,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -64465,6 +64599,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -64552,6 +64687,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -64587,6 +64723,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -64638,6 +64775,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -64673,6 +64811,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -64855,6 +64994,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -64890,6 +65030,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -65006,6 +65147,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -65041,6 +65183,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -65168,6 +65311,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -65203,6 +65347,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -65326,6 +65471,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -65361,6 +65507,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -65487,6 +65634,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -65522,6 +65670,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -65610,6 +65759,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -65645,6 +65795,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -65772,6 +65923,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -65807,6 +65959,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -65930,6 +66083,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -65965,6 +66119,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -66050,6 +66205,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -66085,6 +66241,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -66136,6 +66293,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -66171,6 +66329,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -66284,6 +66443,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -66319,6 +66479,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -66428,6 +66589,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -66463,6 +66625,7 @@ export namespace Prisma {
     image?: string | null
     passwordHash?: string | null
     privateTaskPasswordHash?: string | null
+    dailyResistanceBudget?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     systemStatus?: $Enums.SystemStatus
@@ -66514,6 +66677,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
@@ -66549,6 +66713,7 @@ export namespace Prisma {
     image?: NullableStringFieldUpdateOperationsInput | string | null
     passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     privateTaskPasswordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    dailyResistanceBudget?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     systemStatus?: EnumSystemStatusFieldUpdateOperationsInput | $Enums.SystemStatus
