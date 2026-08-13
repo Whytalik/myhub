@@ -75,9 +75,10 @@ interface SidebarProps {
   user?: { name: string; email: string };
   initialOpenSections?: Record<string, boolean>;
   initialOrder?: string[];
+  dailyResistanceBudget?: number;
 }
 
-export function Sidebar({ user, initialOpenSections }: SidebarProps) {
+export function Sidebar({ user, initialOpenSections, dailyResistanceBudget = 8 }: SidebarProps) {
   const pathname = usePathname();
   const { isCollapsed, toggleSidebar, isMobileOpen, setIsMobileOpen } = useSidebar();
   const [isHovered, setIsHovered] = useState(false);
@@ -416,6 +417,7 @@ export function Sidebar({ user, initialOpenSections }: SidebarProps) {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         userName={user?.name}
+        initialResistanceBudget={dailyResistanceBudget}
       />
     </>
   );

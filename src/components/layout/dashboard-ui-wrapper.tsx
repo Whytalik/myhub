@@ -10,17 +10,24 @@ export function DashboardUIWrapper({
   initialOrder,
   initialOpenSections,
   user,
+  dailyResistanceBudget = 8,
 }: {
   children: React.ReactNode;
   initialOrder?: string[];
   initialCustomizations?: Record<string, { icon?: string; color?: string }>;
   initialOpenSections?: Record<string, boolean>;
   user?: { name: string; email: string; role?: string };
+  dailyResistanceBudget?: number;
 }) {
   return (
     <div className="min-h-screen flex bg-canvas text-white font-sans selection:bg-accent-muted selection:text-accent">
       {/* Left Sidebar */}
-      <Sidebar initialOrder={initialOrder} initialOpenSections={initialOpenSections} user={user} />
+      <Sidebar
+        initialOrder={initialOrder}
+        initialOpenSections={initialOpenSections}
+        user={user}
+        dailyResistanceBudget={dailyResistanceBudget}
+      />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 relative h-screen overflow-hidden">

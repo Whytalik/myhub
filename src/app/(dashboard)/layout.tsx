@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/display/skeleton";
+import { getDailyResistanceBudget } from "@/lib/actions/user-settings-actions";
 
 function DashboardSkeleton() {
   return (
@@ -59,6 +60,8 @@ async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session) redirect("/login");
 
+  const dailyResistanceBudget = await getDailyResistanceBudget();
+
   return (
     <SidebarProvider initialCollapsed={initialCollapsed}>
       <SpaceProvider>
@@ -66,6 +69,7 @@ async function DashboardDataLayer({ children }: { children: React.ReactNode }) {
           initialOrder={initialOrder}
           initialCustomizations={initialCustomizations}
           initialOpenSections={initialOpenSections}
+          dailyResistanceBudget={dailyResistanceBudget}
           user={
             session.user
               ? {

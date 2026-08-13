@@ -3,8 +3,21 @@
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { useSpace } from "@/components/providers/space-provider";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Moon, Palette, Sun, X, CloudSun, Leaf, Snowflake, Sprout, Utensils } from "lucide-react";
+import { useState, useTransition } from "react";
+import {
+  Moon,
+  Palette,
+  Sun,
+  X,
+  CloudSun,
+  Leaf,
+  Snowflake,
+  Sprout,
+  Utensils,
+  Zap,
+} from "lucide-react";
+import { updateDailyResistanceBudget } from "@/lib/actions/user-settings-actions";
+import { toast } from "sonner";
 
 function getSeasonFromCookie(): string {
   if (typeof document === "undefined") return "auto";
@@ -15,19 +28,37 @@ function getSeasonFromCookie(): string {
 export function SettingsModal({
   isOpen,
   onClose,
+  initialResistanceBudget = 8,
 }: {
   isOpen: boolean;
   onClose: () => void;
   userName?: string;
+  initialResistanceBudget?: number;
 }) {
   const router = useRouter();
   const { theme, setTheme } = useSpace();
   const [season, setSeasonState] = useState<string>(getSeasonFromCookie);
+  const [resistanceBudget, setResistanceBudget] = useState(initialResistanceBudget);
+  const [isPending, startTransition] = useTransition();
 
   const setSeason = (newSeason: string) => {
     setSeasonState(newSeason);
     document.cookie = `nutrition-menu-season=${encodeURIComponent(newSeason)}; path=/; max-age=31536000`;
     router.refresh();
+  };
+
+  const handleResistanceBudgetChange = (budget: number) => {
+    setResistanceBudget(budget);
+    startTransition(async () => {
+      const result = await updateDailyResistanceBudget(budget);
+      if (result.success) {
+        toast.success(`Daily resistance budget set to ${budget}`);
+        router.refresh();
+      } else {
+        toast.error(result.error || "Failed to update");
+        setResistanceBudget(initialResistanceBudget);
+      }
+    });
   };
 
   const themeOptionClass = (isActive: boolean) =>
@@ -88,6 +119,36 @@ export function SettingsModal({
               </div>
               {theme === "light" && <div className="w-1.5 h-1.5 rounded-full bg-accent" />}
             </button>
+          </div>
+        </div>
+
+        {/* Daily Resistance Budget */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-1.5 text-zinc-500">
+            <Zap size={14} />
+            <h4 className="text-label">Daily Resistance Budget</h4>
+          </div>
+          <p className="text-xs text-zinc-500">
+            Max sustainable cognitive load per day. Default: 8 (conservative).
+          </p>
+          <div className="flex items-center gap-3">
+            <input
+              type="range"
+              min="5"
+              max="15"
+              value={resistanceBudget}
+              onChange={(e) => handleResistanceBudgetChange(Number(e.target.value))}
+              disabled={isPending}
+              className="flex-1 h-1.5 bg-white/[0.08] rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-accent [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-3.5 [&::-moz-range-thumb]:h-3.5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-accent [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
+            />
+            <span className="text-sm font-mono font-semibold text-accent min-w-[2ch] text-right">
+              {resistanceBudget}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[10px] text-zinc-600 font-mono">
+            <span>5 (minimal)</span>
+            <span>8 (recommended)</span>
+            <span>15 (ambitious)</span>
           </div>
         </div>
 
