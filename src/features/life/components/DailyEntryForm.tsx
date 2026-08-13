@@ -19,6 +19,7 @@ import { EnergySection } from "./sections/EnergySection";
 import { EmotionsSection } from "./sections/EmotionsSection";
 import { NutritionSection } from "./sections/NutritionSection";
 import { ReflectionSection } from "./sections/ReflectionSection";
+import { PostAnalysisSection } from "./sections/PostAnalysisSection";
 import { TaskReviewSection } from "./sections/TaskReviewSection";
 import { FocusSection } from "./sections/FocusSection";
 import {
@@ -158,6 +159,9 @@ export function DailyEntryForm({
       confidenceLog: (initialEntry?.confidenceLog as ConfidenceLog | null) ?? null,
       dailyVector: (initialEntry?.dailyVector as DailyVector | null) ?? null,
       pdcaLog: (initialEntry?.pdcaLog as PdcaLog | null) ?? null,
+      postAnalysisTrigger: initialEntry?.postAnalysisTrigger ?? null,
+      postAnalysisMyReaction: initialEntry?.postAnalysisMyReaction ?? null,
+      postAnalysisBetterResponse: initialEntry?.postAnalysisBetterResponse ?? null,
     };
   }, [initialEntry, scheduledTrainingDayName]);
 
@@ -560,6 +564,15 @@ export function DailyEntryForm({
                   gratitude={data.gratitude ?? null}
                   brainDump={data.brainDump ?? null}
                   frictionToday={data.frictionToday ?? null}
+                  onChange={patch}
+                />
+
+                <PostAnalysisSection
+                  postAnalysisTrigger={data.postAnalysisTrigger ?? null}
+                  postAnalysisMyReaction={data.postAnalysisMyReaction ?? null}
+                  postAnalysisBetterResponse={data.postAnalysisBetterResponse ?? null}
+                  mood={data.mood ?? null}
+                  energy={data.energy ?? null}
                   onChange={patch}
                 />
 
