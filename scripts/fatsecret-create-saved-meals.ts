@@ -18,10 +18,10 @@
 import { prisma } from "../src/lib/db/prisma";
 import {
   PROFILES,
-  SUMMER_WEEK_PLAN,
-  WINTER_WEEK_PLAN,
-  AUTUMN_WEEK_PLAN,
-  SPRING_WEEK_PLAN,
+  SUMMER_SET_PLAN,
+  WINTER_SET_PLAN,
+  AUTUMN_SET_PLAN,
+  SPRING_SET_PLAN,
 } from "../src/features/health/nutrition/data";
 import { getProductName } from "../src/features/health/nutrition/products";
 import { productMappingRepository } from "../src/features/health/nutrition/repositories/product-mapping.repository";
@@ -48,10 +48,10 @@ async function getMergedMappingsStandalone(): Promise<Partial<Record<string, Fat
 }
 
 const SEASON_PLANS: Record<string, DayPlan[]> = {
-  summer: SUMMER_WEEK_PLAN,
-  winter: WINTER_WEEK_PLAN,
-  autumn: AUTUMN_WEEK_PLAN,
-  spring: SPRING_WEEK_PLAN,
+  summer: SUMMER_SET_PLAN,
+  winter: WINTER_SET_PLAN,
+  autumn: AUTUMN_SET_PLAN,
+  spring: SPRING_SET_PLAN,
 };
 
 type ProfileId = "vitalii" | "olesia";
@@ -128,7 +128,7 @@ async function main() {
           profileId_season_weekday_mealSlot: {
             profileId,
             season,
-            weekday: day.weekday,
+            weekday: day.setId,
             mealSlot,
           },
         };
@@ -170,7 +170,7 @@ async function main() {
             create: {
               profileId,
               season,
-              weekday: day.weekday,
+              weekday: day.setId,
               mealSlot,
               mealType: meal.type,
               title,

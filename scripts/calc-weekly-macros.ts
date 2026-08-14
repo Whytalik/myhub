@@ -1,4 +1,4 @@
-import { SUMMER_WEEK_PLAN, PROFILES } from "../src/features/health/nutrition/data";
+import { SUMMER_SET_PLAN, PROFILES } from "../src/features/health/nutrition/data";
 import { PRODUCTS } from "../src/features/health/nutrition/products";
 import type { Meal } from "../src/features/health/nutrition/types";
 
@@ -75,7 +75,7 @@ console.log();
 console.log("=== Daily macros for Vitalii (SUMMER) ===");
 const weekTotal = { kcal: 0, protein: 0, fat: 0, carbs: 0 };
 
-for (const day of SUMMER_WEEK_PLAN) {
+for (const day of SUMMER_SET_PLAN) {
   const macros = calculateDayMacrosRaw(day.meals, "vitalii");
   console.log(
     `  ${day.labelShort}: ${macros.kcal} kcal, ${macros.protein}g P, ${macros.fat}g F, ${macros.carbs}g C`,
@@ -101,7 +101,7 @@ console.log(`  Fat: ${weekTotal.fat}g (avg ${avg.fat}g)`);
 console.log(`  Carbs: ${weekTotal.carbs}g (avg ${avg.carbs}g)`);
 console.log();
 console.log("=== Protein gap per day ===");
-for (const day of SUMMER_WEEK_PLAN) {
+for (const day of SUMMER_SET_PLAN) {
   const macros = calculateDayMacrosRaw(day.meals, "vitalii");
   const gap = profile.macros.protein - macros.protein;
   console.log(

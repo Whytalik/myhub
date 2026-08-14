@@ -1,7 +1,7 @@
 import { ClipboardList, Flame, Apple } from "lucide-react";
 import { highlightProductMentions } from "../highlight-products";
 import { getProductName, PRODUCTS } from "../products";
-import { sumMacroGramsMulti, formatGrams } from "../quantities";
+import { sumMacroGramsForSetsMulti, formatGrams } from "../quantities";
 import type { ComputedQuantity } from "../types";
 
 interface RecipeIngredient {
@@ -19,12 +19,12 @@ function productLabel(food: string, qualifier?: string): string {
 }
 
 /** Same computed/manual duality as ShoppingList's `displayNameOf` — a computed
- *  qty is `sumMacroGramsMulti(...) + grams` formatted, never a hand-typed string. */
+ *  qty is `sumMacroGramsForSetsMulti(...) + grams` formatted, never a hand-typed string. */
 function quantityLabel(computed: ComputedQuantity, seasonOverride?: string): string {
   const baseTotal =
-    sumMacroGramsMulti(
+    sumMacroGramsForSetsMulti(
       [computed.food, ...(computed.extraFood ?? [])],
-      computed.weekdays,
+      computed.sets,
       undefined,
       seasonOverride,
     ) + (computed.grams ?? 0);
@@ -43,18 +43,24 @@ const proteinIngredients: RecipeIngredient[] = [
     food: "chickenMarinated",
     computedQty: {
       food: "chickenMarinated",
-      weekdays: ["mon", "thu", "fri", "sat"],
+      sets: [{ set: "set1" }, { set: "set4" }, { set: "set5" }, { set: "set6" }],
       wastePercent: 5,
     },
   },
-  { food: "chickenHearts", computedQty: { food: "chickenHearts", weekdays: ["tue"], wastePercent: 15 } },
-  { food: "porkChop", computedQty: { food: "porkChop", weekdays: ["sun"], wastePercent: 10 } },
-  { food: "mackerel", computedQty: { food: "mackerel", weekdays: ["wed"] } },
+  {
+    food: "chickenHearts",
+    computedQty: { food: "chickenHearts", sets: [{ set: "set2" }], wastePercent: 15 },
+  },
+  {
+    food: "porkChop",
+    computedQty: { food: "porkChop", sets: [{ set: "set7" }], wastePercent: 10 },
+  },
+  { food: "mackerel", computedQty: { food: "mackerel", sets: [{ set: "set3", day: 1 }] } },
   { food: "cottageCheese", qualifier: "5–9%", qty: "500 г, для сирників" },
   {
     food: "eggs",
     qualifier: "для сирників",
-    computedQty: { food: "eggs", weekdays: [], grams: 60, unit: "piece" },
+    computedQty: { food: "eggs", sets: [], grams: 60, unit: "piece" },
   },
 ];
 
@@ -87,47 +93,62 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
   const prepTable: (RecipeIngredient & { marinade: string })[] = [
     {
       food: "chickenMarinated",
-      qualifier: "шашлики — Пн",
-      computedQty: { food: "chickenMarinated", weekdays: ["mon"] },
+      qualifier: "шашлики — Сет1",
+      computedQty: { food: "chickenMarinated", sets: [{ set: "set1" }] },
       marinade: "Йогуртово-лимонний",
     },
     {
       food: "chickenHearts",
-      qualifier: "Вт",
-      computedQty: { food: "chickenHearts", weekdays: ["tue"] },
+      qualifier: "Сет2",
+      computedQty: { food: "chickenHearts", sets: [{ set: "set2" }] },
       marinade: "Соєво-томатний",
     },
     {
       food: "chickenMarinated",
-      qualifier: "смажена курка — Чт",
-      computedQty: { food: "chickenMarinated", weekdays: ["thu"] },
+      qualifier: "смажена курка — Сет4",
+      computedQty: { food: "chickenMarinated", sets: [{ set: "set4" }] },
       marinade: "Соєво-часниковий",
     },
     {
       food: "chickenMarinated",
-      qualifier: "запечене — Пт + Цезар Сб",
-      computedQty: { food: "chickenMarinated", weekdays: ["fri", "sat"] },
+      qualifier: "запечене — Сет5 + Цезар Сет6",
+      computedQty: { food: "chickenMarinated", sets: [{ set: "set5" }, { set: "set6" }] },
       marinade: "Медово-гірчичний",
     },
     {
       food: "porkChop",
-      qualifier: "Нд",
-      computedQty: { food: "porkChop", weekdays: ["sun"] },
+      qualifier: "Сет7",
+      computedQty: { food: "porkChop", sets: [{ set: "set7" }] },
       marinade: "Суха трав'яна база",
     },
     {
       food: "mackerel",
-      qualifier: "Ср",
-      computedQty: { food: "mackerel", weekdays: ["wed"] },
+      qualifier: "Сет3, день 1",
+      computedQty: { food: "mackerel", sets: [{ set: "set3", day: 1 }] },
       marinade: "Скумбрія з лимоном",
     },
   ];
 
-  const shashlikQty = formatGrams(sumMacroGramsMulti(["chickenMarinated"], ["mon"], undefined, seasonOverride));
-  const heartsQty = formatGrams(sumMacroGramsMulti(["chickenHearts"], ["tue"], undefined, seasonOverride));
-  const fryQty = formatGrams(sumMacroGramsMulti(["chickenMarinated"], ["thu"], undefined, seasonOverride));
-  const bakeQty = formatGrams(sumMacroGramsMulti(["chickenMarinated"], ["fri", "sat"], undefined, seasonOverride));
-  const porkQty = formatGrams(sumMacroGramsMulti(["porkChop"], ["sun"], undefined, seasonOverride));
+  const shashlikQty = formatGrams(
+    sumMacroGramsForSetsMulti(["chickenMarinated"], [{ set: "set1" }], undefined, seasonOverride),
+  );
+  const heartsQty = formatGrams(
+    sumMacroGramsForSetsMulti(["chickenHearts"], [{ set: "set2" }], undefined, seasonOverride),
+  );
+  const fryQty = formatGrams(
+    sumMacroGramsForSetsMulti(["chickenMarinated"], [{ set: "set4" }], undefined, seasonOverride),
+  );
+  const bakeQty = formatGrams(
+    sumMacroGramsForSetsMulti(
+      ["chickenMarinated"],
+      [{ set: "set5" }, { set: "set6" }],
+      undefined,
+      seasonOverride,
+    ),
+  );
+  const porkQty = formatGrams(
+    sumMacroGramsForSetsMulti(["porkChop"], [{ set: "set7" }], undefined, seasonOverride),
+  );
 
   const algorithm = [
     {
@@ -156,7 +177,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
     {
       title: "Фінал",
       steps: [
-        "Фасування: замариноване м'ясо розкласти по герметичних контейнерах або пакетах, загорнуту в фольгу скумбрію покласти окремо — підписати все днями тижня та відразу відправити в морозильну камеру.",
+        "Фасування: замариноване м'ясо розкласти по герметичних контейнерах або пакетах, загорнуту в фольгу скумбрію покласти окремо — підписати все номерами сетів та відразу відправити в морозильну камеру.",
       ],
     },
   ];
@@ -165,7 +186,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
     [
       {
         title: "Йогуртово-лимонний маринад",
-        for: "Для курячих шашликів (Пн). Подача: гірчиця.",
+        for: "Для курячих шашликів (Сет1). Подача: гірчиця.",
         ingredients: [
           { food: "yogurtGreek", qty: "150 г" },
           { food: "lemon", qty: "сік ½ шт + цедра" },
@@ -180,7 +201,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       },
       {
         title: "Соєво-томатний маринад",
-        for: "Для курячих сердець (Вт). Соус подачі: Соєва глазур",
+        for: "Для курячих сердець (Сет2). Соус подачі: Соєва глазур",
         ingredients: [
           { food: "soySauce", qty: "3 ст.л." },
           { food: "tomatoPaste", qty: "1 ст.л." },
@@ -192,7 +213,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       },
       {
         title: "Соєво-часниковий маринад",
-        for: "Для смаженої курки (Чт)",
+        for: "Для смаженої курки (Сет4)",
         ingredients: [
           { food: "soySauce", qty: "3 ст.л." },
           { food: "oil", qualifier: "оливкова", qty: "1 ст.л." },
@@ -204,7 +225,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       },
       {
         title: "Медово-гірчичний маринад",
-        for: "Для запеченого курячого філе (Пт). Утворює соус при запіканні.",
+        for: "Для запеченого курячого філе (Сет5 + Цезар Сет6). Утворює соус при запіканні.",
         ingredients: [
           { food: "mustardDijon", qty: "2 ст.л., французька зернова або діжонська" },
           { food: "honey", qty: "1 ст.л." },
@@ -217,7 +238,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       },
       {
         title: "Суха трав'яна база",
-        for: "Для свинячої відбивної (Нд). Соус подачі: Цибулево-вершковий",
+        for: "Для свинячої відбивної (Сет7). Соус подачі: Цибулево-вершковий",
         ingredients: [
           { food: "salt" },
           { food: "blackPepper" },
@@ -229,7 +250,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       },
       {
         title: "Скумбрія з лимоном",
-        for: "Для запеченої скумбрії (Ср). Одразу у фользі — готова з морозилки в духовку.",
+        for: "Для запеченої скумбрії (Сет3, день 1). Одразу у фользі — готова з морозилки в духовку.",
         ingredients: [
           { food: "lemon", qty: "½ шт, тонкими півкружальцями в надрізи" },
           { food: "fishSeasoning", qty: "1 ч.л." },
@@ -253,7 +274,8 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
           <div>
             <h3 className="text-panel-title">Підготовка їжі (Міл-преп)</h3>
             <p className="text-caption">
-              В неділю здійснюється закупка і підготовка білкових продуктів на весь тиждень
+              Раз на 14 днів (у неділю) здійснюється закупка і підготовка білкових продуктів на весь
+              цикл із 7 сетів — готуємо раз, їмо два дні поспіль
             </p>
           </div>
         </div>
@@ -324,7 +346,9 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       </div>
 
       <div className="glass-card p-4 flex flex-col gap-4">
-        <span className="text-panel-title">Алгоритм неділі (~40 хв активно)</span>
+        <span className="text-panel-title">
+          Алгоритм великого мілпрепу (~40 хв активно, раз на 14 днів)
+        </span>
         <div className="flex flex-col gap-4">
           {algorithm.map((block, idx) => (
             <div key={idx} className="flex flex-col gap-1.5">

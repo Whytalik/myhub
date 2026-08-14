@@ -1,9 +1,16 @@
 import { DayPlan } from "../types";
 
 export const friday: DayPlan = {
-  weekday: "fri",
-  labelUk: "П'ятниця",
-  labelShort: "Пт",
+  setId: "set5",
+  labelUk: "Куряче філе з картоплею",
+  labelShort: "Сет 5",
+  thawInstructions: [
+    {
+      title: "Куряче філе (Медово-гірчичне)",
+      action: "Дістати замариноване куряче філе з морозильної камери та перекласти в холодильник.",
+      note: "Знадобиться на обід та вечерю обидва дні цього сета.",
+    },
+  ],
   meals: [
     {
       type: "snack",

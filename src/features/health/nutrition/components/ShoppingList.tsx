@@ -6,8 +6,9 @@ import { Tabs } from "@/components/ui/navigation/tabs";
 import { Input } from "@/components/ui/inputs/input";
 import { SHOPPING_LIST } from "../data";
 import { getProductName, PRODUCTS } from "../products";
-import { sumMacroGramsMulti, formatGrams } from "../quantities";
-import { currentWeekStart, weekStartKey } from "../week";
+import { sumMacroGramsForSetsMulti, formatGrams } from "../quantities";
+import { currentWeekStart, weekStartKey, dateForWeekdayInWeek } from "../week";
+import { cyclePositionOf } from "../cycle";
 import { getSeasonalPrice, getUnitPrice } from "../utils/seasonal-pricing";
 import type { ShoppingCategory, ShoppingDay, ShoppingItem, Weekday } from "../types";
 
@@ -29,9 +30,10 @@ function displayQtyOf(
   seasonOverride?: string,
 ): string | undefined {
   if (!item.computedQty) return item.qty;
-  const { food, extraFood, weekdays, grams = 0, unit, wastePercent = 0 } = item.computedQty;
+  const { food, extraFood, sets, grams = 0, unit, wastePercent = 0 } = item.computedQty;
   const baseTotal =
-    sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
+    sumMacroGramsForSetsMulti([food, ...(extraFood ?? [])], sets, weekStart, seasonOverride) +
+    grams;
   const total = baseTotal * (1 + wastePercent / 100);
   return formatGrams(total, unit, PRODUCTS[food]?.gramsPerPiece);
 }
@@ -47,30 +49,31 @@ function computedTotal(
   seasonOverride?: string,
 ): number | null {
   if (!item.computedQty) return null;
-  const { food, extraFood, weekdays, grams = 0, wastePercent = 0 } = item.computedQty;
+  const { food, extraFood, sets, grams = 0, wastePercent = 0 } = item.computedQty;
   const baseTotal =
-    sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStart, seasonOverride) + grams;
+    sumMacroGramsForSetsMulti([food, ...(extraFood ?? [])], sets, weekStart, seasonOverride) +
+    grams;
   return baseTotal * (1 + wastePercent / 100);
 }
 
-function isNeededForDay(item: ShoppingItem, day: Weekday): boolean {
+/**
+ * `day` — реальний день тижня (з чіпа фільтра). Резолвиться в `weekStart`-тиждень →
+ * конкретна дата → позиція в 14-денному циклі → який сет активний цього дня. Notes без
+ * `computedQty` описують сети текстом ("Сет3", "щодня") — той самий текст, що показує
+ * `data.ts`, тому шукаємо збіг за назвою поточного сета, а не за днем тижня.
+ */
+function isNeededForDay(item: ShoppingItem, day: Weekday, weekStart: string): boolean {
+  const date = dateForWeekdayInWeek(new Date(`${weekStart}T00:00:00`), day);
+  const pos = cyclePositionOf(date);
   if (item.computedQty) {
-    return item.computedQty.weekdays.includes(day);
+    return item.computedQty.sets.some(
+      (occ) => occ.set === pos.setId && (occ.day === undefined || occ.day === pos.subDay),
+    );
   }
   if (item.note) {
     const lowerNote = item.note.toLowerCase();
-    if (lowerNote.includes("щодня") || lowerNote.includes("кожен день")) return true;
-    if (day === "mon" && (lowerNote.includes("пн") || lowerNote.includes("понеділок"))) return true;
-    if (day === "tue" && (lowerNote.includes("вт") || lowerNote.includes("вівторок"))) return true;
-    if (day === "wed" && (lowerNote.includes("ср") || lowerNote.includes("середа"))) return true;
-    if (day === "thu" && (lowerNote.includes("чт") || lowerNote.includes("четвер"))) return true;
-    if (
-      day === "fri" &&
-      (lowerNote.includes("пт") || lowerNote.includes("п’ятниця") || lowerNote.includes("п'ятниця"))
-    )
-      return true;
-    if (day === "sat" && (lowerNote.includes("сб") || lowerNote.includes("субота"))) return true;
-    if (day === "sun" && (lowerNote.includes("нд") || lowerNote.includes("неділя"))) return true;
+    if (lowerNote.includes("щодня") || lowerNote.includes("усі сети")) return true;
+    if (lowerNote.includes(`сет${pos.setIndex + 1}`)) return true;
   }
   return false;
 }
@@ -476,7 +479,7 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
       : visibleCategories
           .map((category) => ({
             ...category,
-            items: category.items.filter((item) => isNeededForDay(item, selectedDay)),
+            items: category.items.filter((item) => isNeededForDay(item, selectedDay, weekStart)),
           }))
           .filter((category) => category.items.length > 0);
 

@@ -1,9 +1,17 @@
 import { DayPlan } from "../types";
 
 export const sunday: DayPlan = {
-  weekday: "sun",
-  labelUk: "Неділя",
-  labelShort: "Нд",
+  setId: "set7",
+  labelUk: "Свиняча відбивна з рисом",
+  labelShort: "Сет 7",
+  thawInstructions: [
+    {
+      title: "Свиняча відбивна (Трав'яна)",
+      action:
+        "Дістати замариновану свинячу відбивну з морозильної камери та перекласти в холодильник.",
+      note: "Знадобиться на обід та вечерю обидва дні цього сета.",
+    },
+  ],
   meals: [
     {
       type: "breakfast",

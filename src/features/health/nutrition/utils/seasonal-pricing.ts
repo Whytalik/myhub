@@ -1,5 +1,5 @@
 import { PRODUCTS } from "../products";
-import { sumMacroGramsMulti } from "../quantities";
+import { sumMacroGramsForSetsMulti } from "../quantities";
 import type { ShoppingItem } from "../types";
 
 // Коефіцієнти сезонності для категорій продуктів по місяцях (0 = Січень, 11 = Грудень)
@@ -143,12 +143,12 @@ export function getSeasonalPrice(
     product.basePrice * getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
 
   // 1. Якщо кількість розраховується автоматично через computedQty
-  // sumMacroGramsMulti завжди повертає грами (незалежно від display-одиниці "unit"),
+  // sumMacroGramsForSetsMulti завжди повертає грами (незалежно від display-одиниці "unit"),
   // а basePrice завжди ₴/кг — тож рахуємо ціну за вагою в обох випадках.
   if (item.computedQty) {
-    const { food, extraFood, weekdays, grams = 0, wastePercent = 0 } = item.computedQty;
+    const { food, extraFood, sets, grams = 0, wastePercent = 0 } = item.computedQty;
     const baseTotal =
-      sumMacroGramsMulti([food, ...(extraFood ?? [])], weekdays, weekStartKey) + grams;
+      sumMacroGramsForSetsMulti([food, ...(extraFood ?? [])], sets, weekStartKey) + grams;
     const totalQty = baseTotal * (1 + wastePercent / 100);
     return Math.round((totalQty / 1000) * seasonalUnitPrice);
   }

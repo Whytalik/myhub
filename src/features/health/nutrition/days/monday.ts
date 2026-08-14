@@ -1,9 +1,17 @@
 import { DayPlan } from "../types";
 
 export const monday: DayPlan = {
-  weekday: "mon",
-  labelUk: "Понеділок",
-  labelShort: "Пн",
+  setId: "set1",
+  labelUk: "Курячі шашлички",
+  labelShort: "Сет 1",
+  thawInstructions: [
+    {
+      title: "Курячі шашлики (Йогуртово-лимонні)",
+      action:
+        "Дістати замариноване куряче філе для шашликів з морозильної камери та перекласти в холодильник для повільного розморожування.",
+      note: "Знадобиться на обід та вечерю обидва дні цього сета.",
+    },
+  ],
   meals: [
     {
       type: "snack",

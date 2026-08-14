@@ -7,9 +7,10 @@ import { PRODUCTS, getProductName } from "../products";
 import { highlightProductMentions, findMentionedPantryProductKeys } from "../highlight-products";
 import { MealCard } from "./MealCard";
 import { PushToFatSecretButton } from "./PushToFatSecretButton";
-import { currentWeekStart, weekStartKey } from "../week";
+import { weekStartKey } from "../week";
 import { formatGrams } from "../quantities";
-import type { DayPlan as DayPlanType, Meal, MacroItem, MealType, PrepSection } from "../types";
+import type { ResolvedDayView } from "../cycle";
+import type { Meal, MacroItem, MealType, PrepSection, ThawInstruction } from "../types";
 
 function isRepeatPortion(meal: Meal): boolean {
   return meal.ingredients.some((ing) => {
@@ -147,8 +148,8 @@ function buildDayProductTotals(meals: Meal[], prepSteps?: PrepSection[]): DayPro
   return [...totals.values()];
 }
 
-function splitRepeatMeals(day: DayPlanType): DayPlanType {
-  // Deep copy meals so we don't mutate the static WEEK_PLAN
+function splitRepeatMeals(day: ResolvedDayView): ResolvedDayView {
+  // Deep copy meals so we don't mutate the static SET_PLAN
   const meals: Meal[] = day.meals.map((meal) => ({
     ...meal,
     macroItems: meal.macroItems ? meal.macroItems.map((item) => ({ ...item })) : [],
@@ -241,7 +242,9 @@ function computeServingDisplay(group: ServingGroup): ServingDisplay {
       const rawLabel = product?.category === "grains" ? "сух." : "сир.";
       return (
         <span className="flex flex-col items-end sm:inline sm:space-x-1">
-          <span className="text-zinc-500">{rawWeight} г ({rawLabel})</span>
+          <span className="text-zinc-500">
+            {rawWeight} г ({rawLabel})
+          </span>
           <span className="hidden sm:inline text-zinc-600 mx-1.5">→</span>
           <span className="text-accent-nutrition font-bold">
             ~{Math.round(rawWeight * multiplier)} г (гот.){pctSuffix}
@@ -259,9 +262,15 @@ function computeServingDisplay(group: ServingGroup): ServingDisplay {
   };
 }
 
-export function DayPlan({ day }: { day: DayPlanType }) {
+export function DayPlan({
+  day,
+  tomorrowThaw,
+}: {
+  day: ResolvedDayView;
+  tomorrowThaw: ThawInstruction[];
+}) {
   const processedDay = splitRepeatMeals(day);
-  const weekStart = weekStartKey(currentWeekStart());
+  const viewedDayKey = weekStartKey(day.date);
   const actual = {
     vitalii: calculateDayMacros(processedDay, "vitalii"),
     olesia: calculateDayMacros(processedDay, "olesia"),
@@ -438,7 +447,7 @@ export function DayPlan({ day }: { day: DayPlanType }) {
                 <PushToFatSecretButton
                   mealType={entry.mealType}
                   macroItems={entry.rawMacroItems}
-                  pushedKey={`${weekStart}-${day.weekday}-${entry.mealType}-${entry.labels.join("+")}`}
+                  pushedKey={`${viewedDayKey}-${entry.mealType}-${entry.labels.join("+")}`}
                 />
               </div>
               {entry.labels.length > 1 && (
@@ -523,112 +532,53 @@ export function DayPlan({ day }: { day: DayPlanType }) {
       </div>
 
       {/* Підготовка на завтра */}
-      {(() => {
-        const tomorrowPrepMap: Record<string, { title: string; action: string; note?: string }[]> =
-          {
-            mon: [
-              {
-                title: "Курячі шашлики (Йогуртово-лимонні)",
-                action:
-                  "Дістати замариноване куряче філе для шашликів з морозильної камери та перекласти в холодильник для повільного розморожування.",
-                note: "Знадобиться на обід та вечерю в понеділок.",
-              },
-            ],
-            tue: [
-              {
-                title: "Курячі серця (Соєво-томатні)",
-                action:
-                  "Дістати замариновані курячі серця з морозильної камери та перекласти в холодильник для розморожування.",
-                note: "Знадобиться на обід та вечерю у вівторок.",
-              },
-            ],
-            wed: [], // Скумбрія запікається з морозилки без розморожування
-            thu: [
-              {
-                title: "Куряче філе для смаження (Соєво-часникове)",
-                action:
-                  "Дістати замариноване куряче філе для смаження з морозильної камери та перекласти в холодильник.",
-                note: "Знадобиться на обід та вечерю в четвер.",
-              },
-            ],
-            fri: [
-              {
-                title: "Куряче філе (Медово-гірчичне)",
-                action:
-                  "Дістати замариноване куряче філе з морозильної камери та перекласти в холодильник.",
-                note: "Знадобиться на обід та вечерю в п'ятницю та суботу.",
-              },
-            ],
-            sat: [], // Залишок курячого філе вже розморожено й приготовлено раніше
-            sun: [
-              {
-                title: "Свиняча відбивна (Трав'яна)",
-                action:
-                  "Дістати замариновану свинячу відбивну з морозильної камери та перекласти в холодильник.",
-                note: "Знадобиться на обід та вечерю в неділю.",
-              },
-            ],
-          };
+      <div className="glass-card p-4 flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 shrink-0">
+            <Snowflake size={16} />
+          </div>
+          <div>
+            <h3 className="text-panel-title">Підготовка на завтра</h3>
+            <p className="text-caption">
+              Що потрібно зробити сьогодні ввечері (дістати з морозилки тощо)
+            </p>
+          </div>
+        </div>
 
-        const weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
-        const currentIndex = weekdays.indexOf(day.weekday);
-        const tomorrowWeekday = weekdays[(currentIndex + 1) % 7];
-        const tomorrowPrep = tomorrowPrepMap[tomorrowWeekday] || [];
+        <div className="h-px bg-white/[0.06]" />
 
-        return (
-          <div className="glass-card p-4 flex flex-col gap-3">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 shrink-0">
-                <Snowflake size={16} />
-              </div>
-              <div>
-                <h3 className="text-panel-title">Підготовка на завтра</h3>
-                <p className="text-caption">
-                  Що потрібно зробити сьогодні ввечері (дістати з морозилки тощо)
-                </p>
-              </div>
-            </div>
-
-            <div className="h-px bg-white/[0.06]" />
-
-            {tomorrowPrep.length > 0 ? (
-              <ul className="flex flex-col gap-3">
-                {tomorrowPrep.map((prep, idx) => (
-                  <li
-                    key={idx}
-                    className="flex gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]"
-                  >
-                    <div className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-500/10 text-blue-400 shrink-0 text-xs mt-0.5 font-bold">
-                      !
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="text-sm font-semibold text-zinc-150">{prep.title}</span>
-                      <p className="text-sm text-zinc-300">{prep.action}</p>
-                      {prep.note && <span className="text-caption text-zinc-400">{prep.note}</span>}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="flex gap-3 p-3 rounded-xl bg-emerald-500/[0.03] border border-emerald-500/10 text-emerald-400">
-                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 shrink-0 text-xs mt-0.5 font-bold">
-                  ✓
+        {tomorrowThaw.length > 0 ? (
+          <ul className="flex flex-col gap-3">
+            {tomorrowThaw.map((prep, idx) => (
+              <li
+                key={idx}
+                className="flex gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]"
+              >
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-500/10 text-blue-400 shrink-0 text-xs mt-0.5 font-bold">
+                  !
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-sm font-semibold">
-                    {tomorrowWeekday === "wed" ? "Розморожування" : "Розморожування не потрібне"}
-                  </span>
-                  <p className="text-sm text-zinc-300">
-                    Для завтрашніх страв не потрібно нічого діставати з морозилки.
-                    {tomorrowWeekday === "wed" && " Скумбрію потрібно дістати з морозилки та розморозити."}
-                    {tomorrowWeekday === "sat" && " Сирники смажаться замороженими."}
-                  </p>
+                  <span className="text-sm font-semibold text-zinc-150">{prep.title}</span>
+                  <p className="text-sm text-zinc-300">{prep.action}</p>
+                  {prep.note && <span className="text-caption text-zinc-400">{prep.note}</span>}
                 </div>
-              </div>
-            )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="flex gap-3 p-3 rounded-xl bg-emerald-500/[0.03] border border-emerald-500/10 text-emerald-400">
+            <div className="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 shrink-0 text-xs mt-0.5 font-bold">
+              ✓
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-sm font-semibold">Розморожування не потрібне</span>
+              <p className="text-sm text-zinc-300">
+                Для завтрашніх страв не потрібно нічого діставати з морозилки.
+              </p>
+            </div>
           </div>
-        );
-      })()}
+        )}
+      </div>
     </div>
   );
 }

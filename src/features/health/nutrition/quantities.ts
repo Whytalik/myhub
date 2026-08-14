@@ -1,36 +1,49 @@
-import { getActiveWeekPlan } from "./week";
-import type { Weekday } from "./types";
+import { getActiveSetPlan } from "./week";
+import type { Meal, SetOccurrence } from "./types";
 
-/** Sum of macroItems grams (vitalii+olesia) for one product key, across the given weekdays for the seasonal plan. */
-export function sumMacroGrams(
+/**
+ * Sum of macroItems grams (vitalii+olesia) for one product key, across the given
+ * set-occurrences. Each occurrence contributes `meals` (day 1) and/or
+ * `day2Meals ?? meals` (day 2) depending on `occ.day` (absent = both days) — for
+ * the 6 sets without `day2Meals`, day1 and day2 resolve to the SAME meals array,
+ * so a matching macroItem is naturally counted twice (once per real day it's
+ * actually eaten), which is exactly "cook once, eat two days' worth" — no manual
+ * ×2 anywhere. See `cycle.ts` for the set↔real-weekday mapping this replaces.
+ */
+export function sumMacroGramsForSets(
   productKey: string,
-  weekdays: Weekday[],
+  occurrences: SetOccurrence[],
   weekStart?: string,
   seasonOverride?: string,
 ): number {
-  const plan = getActiveWeekPlan(weekStart, seasonOverride);
-  const days = new Set(weekdays);
+  const plan = getActiveSetPlan(weekStart, seasonOverride);
   let total = 0;
-  for (const day of plan) {
-    if (!days.has(day.weekday)) continue;
-    for (const meal of day.meals) {
-      for (const item of meal.macroItems ?? []) {
-        if (item.food === productKey) total += item.vitalii + item.olesia;
+  for (const occ of occurrences) {
+    const dayPlan = plan.find((d) => d.setId === occ.set);
+    if (!dayPlan) continue;
+    const passes: Meal[][] = [];
+    if (occ.day === undefined || occ.day === 1) passes.push(dayPlan.meals);
+    if (occ.day === undefined || occ.day === 2) passes.push(dayPlan.day2Meals ?? dayPlan.meals);
+    for (const meals of passes) {
+      for (const meal of meals) {
+        for (const item of meal.macroItems ?? []) {
+          if (item.food === productKey) total += item.vitalii + item.olesia;
+        }
       }
     }
   }
   return total;
 }
 
-/** Same as `sumMacroGrams`, but combines several product keys if needed. */
-export function sumMacroGramsMulti(
+/** Same as `sumMacroGramsForSets`, but combines several product keys if needed. */
+export function sumMacroGramsForSetsMulti(
   productKeys: string[],
-  weekdays: Weekday[],
+  occurrences: SetOccurrence[],
   weekStart?: string,
   seasonOverride?: string,
 ): number {
   return productKeys.reduce(
-    (sum, key) => sum + sumMacroGrams(key, weekdays, weekStart, seasonOverride),
+    (sum, key) => sum + sumMacroGramsForSets(key, occurrences, weekStart, seasonOverride),
     0,
   );
 }

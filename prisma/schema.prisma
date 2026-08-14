@@ -123,7 +123,7 @@ model FatSecretSavedMeal {
   id          String   @id @default(cuid())
   profileId   String
   season      String // "summer" | "winter" | "autumn" | "spring"
-  weekday     String // Weekday from types.ts, e.g. "fri"
+  weekday     String // SetId from types.ts, e.g. "set3" (was a Weekday like "fri" pre-sets redesign)
   // Index of the meal within DayPlan.meals — NOT mealType, because a single day
   // can have two meals sharing the same MealType (e.g. Friday has two "snack"
   // meals: "Передтрен" and "Перекус"); keying on mealType alone collapsed them

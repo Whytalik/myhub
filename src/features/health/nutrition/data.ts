@@ -24,7 +24,7 @@ export const PROFILES: Profile[] = [
   },
 ];
 
-export const SUMMER_WEEK_PLAN: DayPlan[] = [
+export const SUMMER_SET_PLAN: DayPlan[] = [
   monday,
   tuesday,
   wednesday,
@@ -44,26 +44,26 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "chickenMarinated",
         computedQty: {
           food: "chickenMarinated",
-          weekdays: ["mon", "thu", "fri", "sat"],
+          sets: [{ set: "set1" }, { set: "set4" }, { set: "set5" }, { set: "set6" }],
           wastePercent: 5,
         },
-        note: "Пн 428г + Чт 430г + Пт+Сб 886г (+5% відходи)",
+        note: "Сет1 428г + Сет4 430г + Сет5+Сет6 886г (+5% відходи)",
         price: 433,
         buyDay: "sun",
       },
       {
         id: "meat-1",
         food: "chickenHearts",
-        computedQty: { food: "chickenHearts", weekdays: ["tue"], wastePercent: 15 },
-        note: "Вт (збільшено замість протеїну, +15% відходи при очищенні)",
+        computedQty: { food: "chickenHearts", sets: [{ set: "set2" }], wastePercent: 15 },
+        note: "Сет2 (збільшено замість протеїну, +15% відходи при очищенні)",
         price: 86,
         buyDay: "sun",
       },
       {
         id: "meat-2",
         food: "porkChop",
-        computedQty: { food: "porkChop", weekdays: ["sun"], wastePercent: 10 },
-        note: "Нд, ~5 шт (+10% відходи)",
+        computedQty: { food: "porkChop", sets: [{ set: "set7" }], wastePercent: 10 },
+        note: "Сет7, ~5 шт (+10% відходи)",
         price: 161,
         buyDay: "sun",
       },
@@ -73,9 +73,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         // свіжа, не заморожена — готується й заморожується сама в мілпрепі Нд;
         // якщо купити вже заморожену, вийде другий цикл заморозки сирої риби.
         qualifier: "свіжа",
-        qty: "2 шт (~590 г)",
-        note: "Ср — готується в мілпрепі Нд",
-        price: 77,
+        qty: "~3 шт (~650 г)",
+        note: "Сет3, день 1 — готується в мілпрепі; сет тепер на 2 дні, риби більше, ніж коли це була лише половина дня",
+        price: 100,
         buyDay: "sun",
       },
     ],
@@ -88,24 +88,24 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "canned-0",
         food: "tunaCanned",
         qualifier: "у власному соку",
-        qty: "2 банки (по 180 г)",
-        note: "Ср",
-        price: 200,
+        qty: "3 банки (по 180 г)",
+        note: "Сет3, день 2 — сет тепер на 2 дні, тунця більше",
+        price: 300,
         buyDay: "sun",
       },
       {
         id: "canned-1",
         food: "cornCanned",
-        qty: "1 банка",
-        note: "Ср, ~150 г",
-        price: 35,
+        qty: "2 банки",
+        note: "Сет3, день 2, ~320 г",
+        price: 70,
         buyDay: "sun",
       },
       {
         id: "canned-2",
         food: "tomatoPaste",
         qty: "20 г",
-        note: "Вт",
+        note: "Сет2",
         price: 5,
         buyDay: "sun",
       },
@@ -120,33 +120,47 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "eggs",
         // +60г (1 яйце) — сирники в мілпрепі використовують яйце як інгредієнт рецепту,
         // яке ніколи не стає власним macroItem (сирники зважуються одним ключем "syrniki").
-        // Ср теж тут — з'їдається в середу, отже купується заздалегідь у неділю, а не в середу.
-        computedQty: { food: "eggs", weekdays: ["mon", "sun", "wed"], grams: 60, unit: "piece" },
-        note: "Нд 6шт + Пн 4шт + Ср 2шт (Нд і Ср збільшено замість протеїну)",
-        price: 55,
+        // Сет3 теж тут — з'їдається в сеті3 (день 2, тунець), отже купується заздалегідь у неділю.
+        computedQty: {
+          food: "eggs",
+          sets: [
+            { set: "set1" },
+            { set: "set7" },
+            { set: "set3" },
+            { set: "set2" },
+            { set: "set6" },
+          ],
+          grams: 60,
+          unit: "piece",
+        },
+        note: "Сет7 + Сет1 + Сет3 день2 (тунець) + Сет2 + Сет6 (нові яєчні-сніданки) — Сет7 і Сет3 збільшено замість протеїну",
+        price: 90,
         buyDay: "sun",
       },
       {
         id: "dairy-0-wed",
         food: "eggs",
-        computedQty: { food: "eggs", weekdays: ["thu", "fri"], unit: "piece" },
-        note: "Чт 4шт + Пт 4шт",
+        computedQty: { food: "eggs", sets: [{ set: "set4" }, { set: "set5" }], unit: "piece" },
+        note: "Сет4 + Сет5",
         price: 55,
         buyDay: "wed",
       },
       {
         id: "dairy-1-sun",
         food: "yogurtGreek",
-        computedQty: { food: "yogurtGreek", weekdays: ["sun", "mon", "tue", "wed"] },
-        note: "Нд + Пн + Вт + Ср (збільшено замість протеїну)",
-        price: 232,
+        computedQty: {
+          food: "yogurtGreek",
+          sets: [{ set: "set7" }, { set: "set1" }, { set: "set2" }, { set: "set3" }],
+        },
+        note: "Сет7 + Сет1 + Сет2 + Сет3 (збільшено замість протеїну; Сет3 тепер на 2 дні)",
+        price: 300,
         buyDay: "sun",
       },
       {
         id: "dairy-1-wed",
         food: "yogurtGreek",
-        computedQty: { food: "yogurtGreek", weekdays: ["thu", "fri"] },
-        note: "Чт 322г + Пт 385г (збільшено замість протеїну)",
+        computedQty: { food: "yogurtGreek", sets: [{ set: "set4" }, { set: "set5" }] },
+        note: "Сет4 322г + Сет5 385г (збільшено замість протеїну)",
         price: 92,
         buyDay: "wed",
       },
@@ -154,7 +168,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "dairy-2-sun",
         food: "cottageCheese",
         qualifier: "5–9%",
-        computedQty: { food: "cottageCheese", weekdays: [], grams: 500 },
+        computedQty: { food: "cottageCheese", sets: [], grams: 500 },
         note: "Нд (для сирників)",
         price: 90,
         buyDay: "sun",
@@ -163,16 +177,16 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "dairy-2-wed",
         food: "cottageCheese",
         qualifier: "5–9%",
-        computedQty: { food: "cottageCheese", weekdays: ["wed"] },
-        note: "Ср",
-        price: 90,
+        computedQty: { food: "cottageCheese", sets: [{ set: "set3" }] },
+        note: "Сет3 — тепер на 2 дні, творогу вдвічі більше",
+        price: 160,
         buyDay: "wed",
       },
       {
         id: "dairy-3",
         food: "milk",
         qty: "1 л",
-        note: "Пн 120мл + Вт 210мл + Нд 60мл + Сб 300мл",
+        note: "Сет1 120мл + Сет2 210мл + Сет7 60мл + Сет6 300мл",
         price: 46,
         buyDay: "sun",
       },
@@ -180,40 +194,43 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "dairy-4",
         food: "cream",
         qualifier: "10–15%",
-        computedQty: { food: "cream", weekdays: ["sun"], unit: "ml" },
-        note: "Нд",
+        computedQty: { food: "cream", sets: [{ set: "set7" }], unit: "ml" },
+        note: "Сет7",
         price: 44,
         buyDay: "sun",
       },
       {
         id: "dairy-5",
         food: "butter",
-        computedQty: { food: "butter", weekdays: ["mon", "wed", "thu", "fri"] },
-        note: "Пн 35г + Ср 27г + Чт 10г + Пт 15г (Пн збільшено, щоб довести день до цілі; Пт зменшено під більшу картоплю)",
+        computedQty: {
+          food: "butter",
+          sets: [{ set: "set1" }, { set: "set3" }, { set: "set4" }, { set: "set5" }],
+        },
+        note: "Сет1 35г + Сет3 27г + Сет4 10г + Сет5 15г (Сет1 збільшено, щоб довести день до цілі; Сет5 зменшено під більшу картоплю)",
         price: 43,
         buyDay: "sun",
       },
       {
         id: "dairy-6",
         food: "mozzarella",
-        computedQty: { food: "mozzarella", weekdays: ["mon", "sun"] },
-        note: "Пн 135г + Нд 50г",
+        computedQty: { food: "mozzarella", sets: [{ set: "set1" }, { set: "set7" }] },
+        note: "Сет1 135г + Сет7 50г",
         price: 46,
         buyDay: "sun",
       },
       {
         id: "dairy-7",
         food: "suluguni",
-        computedQty: { food: "suluguni", weekdays: ["thu", "fri"] },
-        note: "Чт + Пт",
+        computedQty: { food: "suluguni", sets: [{ set: "set4" }, { set: "set5" }] },
+        note: "Сет4 + Сет5",
         price: 80,
         buyDay: "sun",
       },
       {
         id: "dairy-8",
         food: "hardCheese",
-        computedQty: { food: "hardCheese", weekdays: ["tue", "sat"] },
-        note: "Вт 105г + Сб 152г (Сб збільшено замість протеїну)",
+        computedQty: { food: "hardCheese", sets: [{ set: "set2" }, { set: "set6" }] },
+        note: "Сет2 105г + Сет6 152г (Сет6 збільшено замість протеїну)",
         price: 154,
         buyDay: "sun",
       },
@@ -224,26 +241,18 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
     title: "Крупи, борошно та хліб",
     items: [
       {
-        id: "grains-0",
-        food: "oats",
-        computedQty: { food: "oats", weekdays: ["tue"] },
-        note: "Вт",
-        price: 17,
-        buyDay: "sun",
-      },
-      {
         id: "grains-1",
         food: "buckwheat",
-        computedQty: { food: "buckwheat", weekdays: ["tue"] },
-        note: "Вт",
+        computedQty: { food: "buckwheat", sets: [{ set: "set2" }] },
+        note: "Сет2",
         price: 17,
         buyDay: "sun",
       },
       {
         id: "grains-2",
         food: "rice",
-        computedQty: { food: "rice", weekdays: ["thu", "sun", "sat"] },
-        note: "Чт 160г + Нд 80г + Сб 80г",
+        computedQty: { food: "rice", sets: [{ set: "set4" }, { set: "set7" }, { set: "set6" }] },
+        note: "Сет4 160г + Сет7 80г + Сет6 80г",
         price: 19,
         buyDay: "sun",
       },
@@ -258,16 +267,19 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-4-sun",
         food: "bread",
-        computedQty: { food: "bread", weekdays: ["sun", "mon", "wed"] },
-        note: "Нд + Пн + Ср",
-        price: 33,
+        computedQty: {
+          food: "bread",
+          sets: [{ set: "set7" }, { set: "set1" }, { set: "set3" }, { set: "set2" }],
+        },
+        note: "Сет7 + Сет1 + Сет3 (тепер на 2 дні, хліба більше) + Сет2 (новий сніданок)",
+        price: 90,
         buyDay: "sun",
       },
       {
         id: "grains-4-wed",
         food: "bread",
-        computedQty: { food: "bread", weekdays: ["thu", "fri", "sat"] },
-        note: "Чт + Пт + Сб",
+        computedQty: { food: "bread", sets: [{ set: "set4" }, { set: "set5" }, { set: "set6" }] },
+        note: "Сет4 + Сет5 + Сет6",
         price: 27,
         buyDay: "wed",
       },
@@ -296,48 +308,54 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-potato",
         food: "potato",
-        computedQty: { food: "potato", weekdays: ["mon", "wed", "fri"] },
-        note: "Пн + Ср + Пт (Пт збільшено до нормальної порції гарніру на 2 прийоми)",
-        price: 47,
+        computedQty: { food: "potato", sets: [{ set: "set1" }, { set: "set3" }, { set: "set5" }] },
+        note: "Сет1 + Сет3 + Сет5 (Сет5 збільшено до нормальної порції гарніру на 2 прийоми; Сет3 тепер на 2 дні, картоплі значно більше)",
+        price: 120,
         buyDay: "sun",
       },
       {
         id: "vegetables-0-sun",
         food: "tomato",
-        computedQty: { food: "tomato", weekdays: ["mon", "tue", "wed", "sun"] },
-        note: "Пн + Вт + Ср + Нд",
+        computedQty: {
+          food: "tomato",
+          sets: [{ set: "set1" }, { set: "set2" }, { set: "set3" }, { set: "set7" }],
+        },
+        note: "Сет1 + Сет2 + Сет3 + Сет7",
         price: 209,
         buyDay: "sun",
       },
       {
         id: "vegetables-0-wed",
         food: "tomato",
-        computedQty: { food: "tomato", weekdays: ["thu", "fri"] },
-        note: "Чт + Пт",
+        computedQty: { food: "tomato", sets: [{ set: "set4" }, { set: "set5" }] },
+        note: "Сет4 + Сет5",
         price: 86,
         buyDay: "wed",
       },
       {
         id: "vegetables-1-sun",
         food: "cucumber",
-        computedQty: { food: "cucumber", weekdays: ["mon", "wed", "sun"] },
-        note: "Пн + Ср + Нд",
+        computedQty: {
+          food: "cucumber",
+          sets: [{ set: "set1" }, { set: "set3" }, { set: "set7" }, { set: "set2" }],
+        },
+        note: "Сет1 + Сет3 + Сет7 + Сет2 (новий сніданок)",
         price: 46,
         buyDay: "sun",
       },
       {
         id: "vegetables-1-wed",
         food: "cucumber",
-        computedQty: { food: "cucumber", weekdays: ["thu", "fri"], grams: 50 },
-        note: "Чт + Пт",
+        computedQty: { food: "cucumber", sets: [{ set: "set4" }, { set: "set5" }], grams: 50 },
+        note: "Сет4 + Сет5",
         price: 6,
         buyDay: "wed",
       },
       {
         id: "vegetables-2-sun",
         food: "pepper",
-        computedQty: { food: "pepper", weekdays: ["mon", "sun"] },
-        note: "Пн + Нд",
+        computedQty: { food: "pepper", sets: [{ set: "set1" }, { set: "set7" }] },
+        note: "Сет1 + Сет7",
         price: 12,
         buyDay: "sun",
       },
@@ -346,7 +364,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "onion",
         qualifier: "червона",
         qty: "~150 г",
-        note: "Пн + Нд",
+        note: "Сет1 + Сет7",
         price: 4,
         buyDay: "sun",
       },
@@ -355,15 +373,15 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "onion",
         qualifier: "звичайна",
         qty: "~400 г",
-        note: "Нд",
+        note: "Сет7",
         price: 10,
         buyDay: "sun",
       },
       {
         id: "vegetables-5",
         food: "carrot",
-        computedQty: { food: "carrot", weekdays: ["fri"] },
-        note: "Пт",
+        computedQty: { food: "carrot", sets: [{ set: "set5" }] },
+        note: "Сет5",
         price: 8,
         buyDay: "sun",
       },
@@ -371,15 +389,15 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "vegetables-6",
         food: "garlic",
         qty: "~80 г",
-        note: "Нд + Пт + Сб",
+        note: "Сет7 + Сет5 + Сет6",
         price: 16,
         buyDay: "sun",
       },
       {
         id: "vegetables-7",
         food: "arugula",
-        computedQty: { food: "arugula", weekdays: ["tue"] },
-        note: "Вт",
+        computedQty: { food: "arugula", sets: [{ set: "set2" }] },
+        note: "Сет2",
         price: 45,
         buyDay: "sun",
       },
@@ -387,7 +405,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "vegetables-8",
         food: "icebergLettuce",
         qty: "250 г",
-        note: "Сб",
+        note: "Сет6",
         price: 50,
         buyDay: "wed",
       },
@@ -395,47 +413,50 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "vegetables-9",
         food: "lemon",
         qty: "3 шт (~360 г)",
-        note: "Нд + Ср + Сб",
+        note: "Сет7 + Сет3 + Сет6",
         price: 54,
         buyDay: "sun",
       },
       {
         id: "vegetables-broccoli-sun",
         food: "broccoli",
-        computedQty: { food: "broccoli", weekdays: ["mon", "wed"] },
-        note: "Пн 150г + Ср 150г",
+        computedQty: { food: "broccoli", sets: [{ set: "set1" }, { set: "set3" }] },
+        note: "Сет1 150г + Сет3 150г",
         price: 28,
         buyDay: "sun",
       },
       {
         id: "vegetables-broccoli-wed",
         food: "broccoli",
-        computedQty: { food: "broccoli", weekdays: ["fri", "sat"] },
-        note: "Пт 150г + Сб 150г",
+        computedQty: { food: "broccoli", sets: [{ set: "set5" }, { set: "set6" }] },
+        note: "Сет5 150г + Сет6 150г",
         price: 28,
         buyDay: "wed",
       },
       {
         id: "vegetables-cauliflower",
         food: "cauliflower",
-        computedQty: { food: "cauliflower", weekdays: ["wed"] },
-        note: "Ср 150г",
+        computedQty: { food: "cauliflower", sets: [{ set: "set3" }] },
+        note: "Сет3 150г",
         price: 45,
         buyDay: "sun",
       },
       {
         id: "vegetables-spinach",
         food: "spinachFrozen",
-        computedQty: { food: "spinachFrozen", weekdays: ["mon", "thu", "fri", "sun"] },
-        note: "Пн 100г + Чт 100г + Пт 100г + Нд 100г",
+        computedQty: {
+          food: "spinachFrozen",
+          sets: [{ set: "set1" }, { set: "set4" }, { set: "set5" }, { set: "set7" }],
+        },
+        note: "Сет1 100г + Сет4 100г + Сет5 100г + Сет7 100г",
         price: 65,
         buyDay: "sun",
       },
       {
         id: "vegetables-zucchini",
         food: "zucchini",
-        computedQty: { food: "zucchini", weekdays: ["thu"] },
-        note: "Чт 200г",
+        computedQty: { food: "zucchini", sets: [{ set: "set4" }] },
+        note: "Сет4 200г",
         price: 60,
         buyDay: "wed",
       },
@@ -448,11 +469,20 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "fruits-0",
         food: "berries",
+        // Сет3 тут немає — новий сніданок сету3 (творог з огірком) без ягід, а перекус сету3
+        // на fruitMix, не на berries.
         computedQty: {
           food: "berries",
-          weekdays: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+          sets: [
+            { set: "set1" },
+            { set: "set2" },
+            { set: "set4" },
+            { set: "set5" },
+            { set: "set6" },
+            { set: "set7" },
+          ],
         },
-        note: "Щодня",
+        note: "Усі сети, крім Сету 3",
         options: ["полуниця", "малина", "чорниця", "змішані заморожені"],
         price: 243,
         buyDay: "sun",
@@ -460,25 +490,32 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "fruits-1",
         food: "fruitMix",
-        computedQty: { food: "fruitMix", weekdays: ["wed"] },
-        note: "Ср",
-        options: ["банани", "яблука", "груші", "апельсини"],
-        price: 15,
+        computedQty: { food: "fruitMix", sets: [{ set: "set3" }] },
+        note: "Сет3 — тепер на 2 дні, фруктів вдвічі більше",
+        price: 30,
         buyDay: "sun",
       },
       {
         id: "fruits-2-sun",
         food: "banana",
-        computedQty: { food: "banana", weekdays: ["sun", "mon", "tue", "wed"], unit: "piece" },
-        note: "Нд–Ср",
-        price: 57,
+        computedQty: {
+          food: "banana",
+          sets: [{ set: "set7" }, { set: "set1" }, { set: "set2" }, { set: "set3" }],
+          unit: "piece",
+        },
+        note: "Сет7–Сет1–Сет2–Сет3 (Сет3 тепер на 2 дні)",
+        price: 70,
         buyDay: "sun",
       },
       {
         id: "fruits-2-wed",
         food: "banana",
-        computedQty: { food: "banana", weekdays: ["thu", "fri", "sat"], unit: "piece" },
-        note: "Чт–Сб",
+        computedQty: {
+          food: "banana",
+          sets: [{ set: "set4" }, { set: "set5" }, { set: "set6" }],
+          unit: "piece",
+        },
+        note: "Сет4–Сет5–Сет6",
         price: 47,
         buyDay: "wed",
       },
@@ -492,7 +529,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "greens-0-sun",
         food: "dillParsley",
         qty: "1 пучок",
-        note: "Пн",
+        note: "Сет1",
         price: 22,
         buyDay: "sun",
       },
@@ -500,7 +537,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "greens-0-wed",
         food: "dillParsley",
         qty: "1 пучок",
-        note: "Ср",
+        note: "Сет3",
         price: 23,
         buyDay: "wed",
       },
@@ -508,7 +545,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "greens-1",
         food: "greenOnion",
         qty: "1 пучок",
-        note: "Ср",
+        note: "Сет3",
         price: 22,
         buyDay: "wed",
       },
@@ -517,7 +554,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "basil",
         qualifier: "свіжий",
         qty: "1 пучок",
-        note: "Чт",
+        note: "Сет4",
         price: 30,
         buyDay: "wed",
       },
@@ -532,7 +569,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "oil",
         qualifier: "оливкова",
         qty: "185 мл",
-        note: "Пн + Вт + Чт + Пт + Сб + Нд",
+        note: "Сет1 + Сет2 + Сет4 + Сет5 + Сет6 + Сет7",
         price: 65,
         buyDay: "sun",
       },
@@ -541,7 +578,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "oil",
         qualifier: "рослинна",
         qty: "100 мл",
-        note: "Пн + Вт + Чт + Пт + Сб + Нд",
+        note: "Сет1 + Сет2 + Сет4 + Сет5 + Сет6 + Сет7",
         price: 10,
         buyDay: "sun",
       },
@@ -550,7 +587,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "appleVinegar",
         qualifier: "9%",
         qty: "50 мл",
-        note: "Пн + Вт + Чт + Пт + Нд",
+        note: "Сет1 + Сет2 + Сет4 + Сет5 + Сет7",
         price: 4,
         buyDay: "sun",
       },
@@ -564,15 +601,26 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "sauces-0",
         food: "soySauce",
         qty: "200 мл",
-        note: "Нд (для маринування на Вт і Чт)",
+        note: "Нд (для маринування на Сет2 і Сет4)",
         price: 32,
         buyDay: "sun",
       },
       {
         id: "sauces-1",
         food: "honey",
-        computedQty: { food: "honey", weekdays: ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] },
-        note: "Щодня",
+        computedQty: {
+          food: "honey",
+          sets: [
+            { set: "set1" },
+            { set: "set2" },
+            { set: "set3" },
+            { set: "set4" },
+            { set: "set5" },
+            { set: "set6" },
+            { set: "set7" },
+          ],
+        },
+        note: "Щодня (усі сети)",
         price: 42,
         buyDay: "sun",
       },
@@ -580,16 +628,16 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "sauces-2",
         food: "mustardDijon",
         qty: "80 г",
-        note: "Нд (для маринування) + Пн + Сб",
+        note: "Нд (для маринування) + Сет1 + Сет6",
         price: 24,
         buyDay: "sun",
       },
       {
         id: "sauces-3",
         food: "mayo",
-        qty: "110 г",
-        note: "Сб",
-        price: 17,
+        qty: "190 г",
+        note: "Сет6 + Сет3 день2 (тунець, заправка замість самого лише лимонного соку)",
+        price: 30,
         buyDay: "sun",
       },
     ],
@@ -620,7 +668,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "spices-2",
         food: "paprika",
         qty: "1 упаковка",
-        note: "Нд + Пт",
+        note: "Нд + Сет5",
         price: 22,
         buyDay: "sun",
       },
@@ -636,7 +684,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "spices-4",
         food: "oregano",
         qty: "1 упаковка",
-        note: "Пн + Нд",
+        note: "Сет1 + Нд",
         price: 24,
         buyDay: "sun",
       },
@@ -685,10 +733,10 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
   },
 ];
 
-// 1. Зимовий план (WINTER_WEEK_PLAN): Заміна свіжих томатів/огірків на капусту/солоні огірки
-export const WINTER_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK_PLAN));
+// 1. Зимовий план (WINTER_SET_PLAN): Заміна свіжих томатів/огірків на капусту/солоні огірки
+export const WINTER_SET_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_SET_PLAN));
 
-const monLunchW = WINTER_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
+const monLunchW = WINTER_SET_PLAN[0].meals.find((m) => m.type === "lunch");
 if (monLunchW && monLunchW.macroItems) {
   monLunchW.ingredients[6] =
     "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), яблучний оцет, зелень";
@@ -705,7 +753,7 @@ if (monLunchW && monLunchW.macroItems) {
   );
 }
 
-const tueLunchW = WINTER_WEEK_PLAN[1].meals.find((m) => m.type === "lunch");
+const tueLunchW = WINTER_SET_PLAN[1].meals.find((m) => m.type === "lunch");
 if (tueLunchW && tueLunchW.macroItems) {
   tueLunchW.ingredients[2] =
     "Для салату: капуста 300 г, олія (Віталій 2 г, Олеся 16 г), яблучний оцет";
@@ -720,7 +768,7 @@ if (tueLunchW && tueLunchW.macroItems) {
   });
 }
 
-const wedLunchW = WINTER_WEEK_PLAN[2].meals.find((m) => m.type === "lunch");
+const wedLunchW = WINTER_SET_PLAN[2].meals.find((m) => m.type === "lunch");
 if (wedLunchW && wedLunchW.macroItems) {
   wedLunchW.ingredients[4] =
     "Для салату: капуста 300 г, солоні огірки 150 г, зелена цибуля, лимонний сік";
@@ -733,7 +781,7 @@ if (wedLunchW && wedLunchW.macroItems) {
   );
 }
 
-const friLunchW = WINTER_WEEK_PLAN[4].meals.find((m) => m.type === "lunch");
+const friLunchW = WINTER_SET_PLAN[4].meals.find((m) => m.type === "lunch");
 if (friLunchW && friLunchW.macroItems) {
   friLunchW.ingredients[3] = "Для салату: капуста 300 г, олія 6 г (Олеся)";
   friLunchW.macroItems = friLunchW.macroItems.filter(
@@ -747,7 +795,7 @@ if (friLunchW && friLunchW.macroItems) {
   });
 }
 
-const sunLunchW = WINTER_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
+const sunLunchW = WINTER_SET_PLAN[6].meals.find((m) => m.type === "lunch");
 if (sunLunchW && sunLunchW.macroItems) {
   sunLunchW.ingredients[6] = "Для салату: капуста 500 г, морква 100 г, олія 6 г (Олеся), зелень";
   sunLunchW.macroItems = sunLunchW.macroItems.filter(
@@ -763,10 +811,10 @@ if (sunLunchW && sunLunchW.macroItems) {
   );
 }
 
-// 2. Осінній план (AUTUMN_WEEK_PLAN): Переважають буряк, морква, капуста, яблука
-export const AUTUMN_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK_PLAN));
+// 2. Осінній план (AUTUMN_SET_PLAN): Переважають буряк, морква, капуста, яблука
+export const AUTUMN_SET_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_SET_PLAN));
 
-const monLunchA = AUTUMN_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
+const monLunchA = AUTUMN_SET_PLAN[0].meals.find((m) => m.type === "lunch");
 if (monLunchA && monLunchA.macroItems) {
   monLunchA.ingredients[6] = "Для салату: варений буряк 500 г, чорнослив, олія 6 г (Олеся), часник";
   monLunchA.macroItems = monLunchA.macroItems.filter(
@@ -784,7 +832,7 @@ if (monLunchA && monLunchA.macroItems) {
   });
 }
 
-const wedLunchA = AUTUMN_WEEK_PLAN[2].meals.find((m) => m.type === "lunch");
+const wedLunchA = AUTUMN_SET_PLAN[2].meals.find((m) => m.type === "lunch");
 if (wedLunchA && wedLunchA.macroItems) {
   wedLunchA.ingredients[4] = "Для салату: капуста 300 г, яблуко 150 г, зелень, лимонний сік";
   wedLunchA.macroItems = wedLunchA.macroItems.filter(
@@ -796,7 +844,7 @@ if (wedLunchA && wedLunchA.macroItems) {
   );
 }
 
-const sunLunchA = AUTUMN_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
+const sunLunchA = AUTUMN_SET_PLAN[6].meals.find((m) => m.type === "lunch");
 if (sunLunchA && sunLunchA.macroItems) {
   sunLunchA.ingredients[6] =
     "Для салату: варений буряк 500 г, олія 6 г (Олеся), солоний огірок 100 г";
@@ -813,10 +861,10 @@ if (sunLunchA && sunLunchA.macroItems) {
   );
 }
 
-// 3. Весняний план (SPRING_WEEK_PLAN): Переважають редиска, зелена цибуля, огірки
-export const SPRING_WEEK_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_WEEK_PLAN));
+// 3. Весняний план (SPRING_SET_PLAN): Переважають редиска, зелена цибуля, огірки
+export const SPRING_SET_PLAN: DayPlan[] = JSON.parse(JSON.stringify(SUMMER_SET_PLAN));
 
-const monBreakfastS = SPRING_WEEK_PLAN[0].meals.find((m) => m.type === "breakfast");
+const monBreakfastS = SPRING_SET_PLAN[0].meals.find((m) => m.type === "breakfast");
 if (monBreakfastS && monBreakfastS.macroItems) {
   monBreakfastS.ingredients[2] = "Редиска та огірки — 150 г (по 75 г кожному)";
   monBreakfastS.macroItems = monBreakfastS.macroItems.map((item) => {
@@ -825,7 +873,7 @@ if (monBreakfastS && monBreakfastS.macroItems) {
   });
 }
 
-const monLunchS = SPRING_WEEK_PLAN[0].meals.find((m) => m.type === "lunch");
+const monLunchS = SPRING_SET_PLAN[0].meals.find((m) => m.type === "lunch");
 if (monLunchS && monLunchS.macroItems) {
   monLunchS.ingredients[6] =
     "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
@@ -838,7 +886,7 @@ if (monLunchS && monLunchS.macroItems) {
   );
 }
 
-const sunLunchS = SPRING_WEEK_PLAN[6].meals.find((m) => m.type === "lunch");
+const sunLunchS = SPRING_SET_PLAN[6].meals.find((m) => m.type === "lunch");
 if (sunLunchS && sunLunchS.macroItems) {
   sunLunchS.ingredients[6] =
     "Для салату: капуста молода 350 г, редиска 150 г, огірок 100 г, олія 6 г (Олеся)";
@@ -851,5 +899,5 @@ if (sunLunchS && sunLunchS.macroItems) {
   );
 }
 
-export const DEFAULT_WEEK_PLAN = WINTER_WEEK_PLAN;
-export const WEEK_PLAN = DEFAULT_WEEK_PLAN;
+export const DEFAULT_SET_PLAN = WINTER_SET_PLAN;
+export const SET_PLAN = DEFAULT_SET_PLAN;
