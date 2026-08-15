@@ -44,11 +44,18 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "chickenMarinated",
         computedQty: {
           food: "chickenMarinated",
-          sets: [{ set: "set1" }, { set: "set4" }, { set: "set5" }, { set: "set6" }],
+          sets: [
+            { set: "set1" },
+            { set: "set4" },
+            { set: "set5" },
+            { set: "set6" },
+            { set: "set2" },
+            { set: "set7" },
+          ],
           wastePercent: 5,
         },
-        note: "Сет1 428г + Сет4 430г + Сет5+Сет6 886г (+5% відходи)",
-        price: 433,
+        note: "Сет1 428г + Сет4 430г + Сет5+Сет6 886г + Сет2/Сет6 начинка для булочок + Сет7 кальцоне (+5% відходи)",
+        price: 600,
         buyDay: "sun",
       },
       {
@@ -65,6 +72,14 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         computedQty: { food: "porkChop", sets: [{ set: "set7" }], wastePercent: 10 },
         note: "Сет7, ~5 шт (+10% відходи)",
         price: 161,
+        buyDay: "sun",
+      },
+      {
+        id: "meat-ham",
+        food: "ham",
+        computedQty: { food: "ham", sets: [{ set: "set7" }] },
+        note: "Сет7 кальцоне (лише Олесі)",
+        price: 30,
         buyDay: "sun",
       },
       {
@@ -118,23 +133,19 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-0-sun",
         food: "eggs",
-        // +60г (1 яйце) — сирники в мілпрепі використовують яйце як інгредієнт рецепту,
-        // яке ніколи не стає власним macroItem (сирники зважуються одним ключем "syrniki").
+        // +120г (2 яйця) — сирники (1 яйце) і тісто для булочок (1 яйце) у мілпрепі
+        // використовують яйце як інгредієнт рецепту, яке ніколи не стає власним
+        // macroItem (обидва зважуються одним ключем — "syrniki"/"kipBroodje").
         // Сет3 теж тут — з'їдається в сеті3 (день 2, тунець), отже купується заздалегідь у неділю.
+        // Сет7 більше не тут — сніданок замінено на курячий кальцоне (без яєць).
         computedQty: {
           food: "eggs",
-          sets: [
-            { set: "set1" },
-            { set: "set7" },
-            { set: "set3" },
-            { set: "set2" },
-            { set: "set6" },
-          ],
-          grams: 60,
+          sets: [{ set: "set1" }, { set: "set3" }],
+          grams: 120,
           unit: "piece",
         },
-        note: "Сет7 + Сет1 + Сет3 день2 (тунець) + Сет2 + Сет6 (нові яєчні-сніданки) — Сет7 і Сет3 збільшено замість протеїну",
-        price: 90,
+        note: "Сет1 + Сет3 день2 (тунець, збільшено замість протеїну) + 2 яйця для сирників і тіста булочок",
+        price: 55,
         buyDay: "sun",
       },
       {
@@ -177,16 +188,16 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "dairy-2-wed",
         food: "cottageCheese",
         qualifier: "5–9%",
-        computedQty: { food: "cottageCheese", sets: [{ set: "set3" }] },
-        note: "Сет3 — тепер на 2 дні, творогу вдвічі більше",
-        price: 160,
+        computedQty: { food: "cottageCheese", sets: [{ set: "set3" }, { set: "set7" }] },
+        note: "Сет3 (на 2 дні, творогу вдвічі більше) + Сет7 кальцоне",
+        price: 175,
         buyDay: "wed",
       },
       {
         id: "dairy-3",
         food: "milk",
         qty: "1 л",
-        note: "Сет1 120мл + Сет2 210мл + Сет7 60мл + Сет6 300мл",
+        note: "Сет1 120мл + 270мл тісто для булочок (Сет2+Сет6)",
         price: 46,
         buyDay: "sun",
       },
@@ -229,9 +240,15 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-8",
         food: "hardCheese",
-        computedQty: { food: "hardCheese", sets: [{ set: "set2" }, { set: "set6" }] },
-        note: "Сет2 105г + Сет6 152г (Сет6 збільшено замість протеїну)",
-        price: 154,
+        // +40г — скоринка булочок (Сет2+Сет6) використовує сир як інгредієнт рецепту,
+        // який не стає власним macroItem (булочка зважується одним ключем "kipBroodje").
+        computedQty: {
+          food: "hardCheese",
+          sets: [{ set: "set2" }, { set: "set6" }, { set: "set7" }],
+          grams: 40,
+        },
+        note: "Сет2 105г + Сет6 152г (Сет6 збільшено замість протеїну) + Сет7 кальцоне + 40г скоринка булочок",
+        price: 215,
         buyDay: "sun",
       },
     ],
@@ -259,9 +276,17 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-3",
         food: "flour",
-        qty: "150 г",
-        note: "Нд",
-        price: 5,
+        qty: "650 г",
+        note: "Нд (150г сирники + 500г тісто для булочок)",
+        price: 20,
+        buyDay: "sun",
+      },
+      {
+        id: "grains-yeast",
+        food: "yeast",
+        qty: "7 г (1 пакетик)",
+        note: "Тісто для булочок (Сет2+Сет6)",
+        price: 15,
         buyDay: "sun",
       },
       {
@@ -269,10 +294,10 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "bread",
         computedQty: {
           food: "bread",
-          sets: [{ set: "set7" }, { set: "set1" }, { set: "set3" }, { set: "set2" }],
+          sets: [{ set: "set7" }, { set: "set1" }, { set: "set3" }],
         },
-        note: "Сет7 + Сет1 + Сет3 (тепер на 2 дні, хліба більше) + Сет2 (новий сніданок)",
-        price: 90,
+        note: "Сет7 + Сет1 + Сет3 (тепер на 2 дні, хліба більше)",
+        price: 60,
         buyDay: "sun",
       },
       {
@@ -337,9 +362,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "cucumber",
         computedQty: {
           food: "cucumber",
-          sets: [{ set: "set1" }, { set: "set3" }, { set: "set7" }, { set: "set2" }],
+          sets: [{ set: "set1" }, { set: "set3" }, { set: "set7" }],
         },
-        note: "Сет1 + Сет3 + Сет7 + Сет2 (новий сніданок)",
+        note: "Сет1 + Сет3 + Сет7",
         price: 46,
         buyDay: "sun",
       },
@@ -363,9 +388,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "vegetables-3",
         food: "onion",
         qualifier: "червона",
-        qty: "~150 г",
-        note: "Сет1 + Сет7",
-        price: 4,
+        qty: "~225 г",
+        note: "Сет1 + Сет7 + начинка булочок (Сет2+Сет6, свіжа, не заморожується)",
+        price: 6,
         buyDay: "sun",
       },
       {
@@ -404,9 +429,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "vegetables-8",
         food: "icebergLettuce",
-        qty: "250 г",
-        note: "Сет6",
-        price: 50,
+        computedQty: { food: "icebergLettuce", sets: [{ set: "set6" }, { set: "set2" }] },
+        note: "Сет6 (Цезар 240г + булочки 40г) + Сет2 (булочки 40г)",
+        price: 60,
         buyDay: "wed",
       },
       {
@@ -446,9 +471,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "spinachFrozen",
         computedQty: {
           food: "spinachFrozen",
-          sets: [{ set: "set1" }, { set: "set4" }, { set: "set5" }, { set: "set7" }],
+          sets: [{ set: "set1" }, { set: "set4" }, { set: "set5" }],
         },
-        note: "Сет1 100г + Сет4 100г + Сет5 100г + Сет7 100г",
+        note: "Сет1 100г + Сет4 100г + Сет5 100г — Сет7 більше не тут (кальцоне без шпинату)",
         price: 65,
         buyDay: "sun",
       },
@@ -459,6 +484,14 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         note: "Сет4 200г",
         price: 60,
         buyDay: "wed",
+      },
+      {
+        id: "vegetables-pickled-cucumber",
+        food: "pickledCucumber",
+        computedQty: { food: "pickledCucumber", sets: [{ set: "set2" }, { set: "set6" }] },
+        note: "Начинка булочок (Сет2+Сет6, свіжий, не заморожується)",
+        price: 20,
+        buyDay: "sun",
       },
     ],
   },
@@ -577,9 +610,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "oils-1",
         food: "oil",
         qualifier: "рослинна",
-        qty: "100 мл",
-        note: "Сет1 + Сет2 + Сет4 + Сет5 + Сет6 + Сет7",
-        price: 10,
+        qty: "150 мл",
+        note: "Сет1 + Сет2 + Сет4 + Сет5 + Сет6 + Сет7 + 50мл тісто/начинка для булочок",
+        price: 15,
         buyDay: "sun",
       },
       {
@@ -608,6 +641,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "sauces-1",
         food: "honey",
+        // +15г — тісто для булочок (Сет2+Сет6) використовує мед як інгредієнт рецепту,
+        // який не стає власним macroItem (булочка зважується одним ключем "kipBroodje").
         computedQty: {
           food: "honey",
           sets: [
@@ -619,8 +654,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
             { set: "set6" },
             { set: "set7" },
           ],
+          grams: 15,
         },
-        note: "Щодня (усі сети)",
+        note: "Щодня (усі сети) + 15г тісто для булочок",
         price: 42,
         buyDay: "sun",
       },
@@ -638,6 +674,14 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qty: "190 г",
         note: "Сет6 + Сет3 день2 (тунець, заправка замість самого лише лимонного соку)",
         price: 30,
+        buyDay: "sun",
+      },
+      {
+        id: "sauces-4",
+        food: "adjika",
+        computedQty: { food: "adjika", sets: [{ set: "set2" }, { set: "set6" }] },
+        note: "Начинка булочок (Сет2+Сет6) — заміна самбалу з оригінального рецепту",
+        price: 45,
         buyDay: "sun",
       },
     ],

@@ -301,7 +301,7 @@ export const PRODUCTS: Record<string, Product> = {
     "Скумбрія",
     { kcal: 193, protein: 18.7, fat: 13.2, carbs: 0 },
     "meat",
-    { cookedMultiplier: 0.80 },
+    { cookedMultiplier: 0.8 },
   ),
   tunaCanned: tracked(
     "tunaCanned",
@@ -337,14 +337,16 @@ export const PRODUCTS: Record<string, Product> = {
     // чергування ц→ч — тому окремий корінь.
     { searchTerm: "гірчиця гірчичн" },
   ),
+  adjika: tracked("adjika", "Аджика", { kcal: 70, protein: 2, fat: 1, carbs: 12 }, "other"),
   porkChop: tracked(
     "porkChop",
     "Свиняча відбивна",
     { kcal: 250, protein: 26, fat: 16, carbs: 0 },
     "meat",
-    { cookedMultiplier: 0.70 },
+    { cookedMultiplier: 0.7 },
   ),
   cream: tracked("cream", "Вершки", { kcal: 145, protein: 2.8, fat: 12.5, carbs: 4 }, "dairy"),
+  ham: tracked("ham", "Шинка", { kcal: 145, protein: 22, fat: 6, carbs: 1 }, "meat"),
 
   // Готується під час міл-препу з уже врахованих tracked-продуктів — не купується окремо.
   syrniki: {
@@ -355,6 +357,19 @@ export const PRODUCTS: Record<string, Product> = {
       "dairy",
     ),
     gramsPerPiece: 67,
+  },
+  // Здобна булочка (тісто на молоці/дріжджах + сирна скоринка), випікається й заморожується
+  // партією на весь 14-денний цикл — курячу начинку до неї рахуємо окремо tracked-продуктами
+  // (chickenMarinated/onion/pickledCucumber/adjika), бо вона додається свіжою при зборці,
+  // не запікається в тісто.
+  kipBroodje: {
+    ...prepared(
+      "kipBroodje",
+      "Булочка (заготовка)",
+      { kcal: 322, protein: 10, fat: 8, carbs: 51 },
+      "grains",
+    ),
+    gramsPerPiece: 50,
   },
 
   // Спеції, приправи та інші pantry-продукти — купуються, але без обліку макросів.
@@ -381,6 +396,7 @@ export const PRODUCTS: Record<string, Product> = {
   // корінь "паста" замінено на "томат" — так ловиться і "томатна", і "томатний" (маринади).
   tomatoPaste: pantry("tomatoPaste", "Томатна паста", { searchTerm: "томат" }),
   flour: pantry("flour", "Борошно"),
+  yeast: pantry("yeast", "Дріжджі", { searchTerm: "дріждж" }),
   // Дефолтний корінь "цукор" збігається зі звичайним sugar — беремо прикметник,
   // інакше цей запис глушить sugar у спільній мапі коренів (highlight-products.tsx).
   vanillaSugar: pantry("vanillaSugar", "Ванільний цукор", { searchTerm: "ванільн" }),

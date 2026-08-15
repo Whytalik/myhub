@@ -64,6 +64,17 @@ const proteinIngredients: RecipeIngredient[] = [
   },
 ];
 
+const doughIngredients: RecipeIngredient[] = [
+  { food: "flour", qty: "500 г" },
+  { food: "milk", qty: "270 мл (250 мл в тісто + 20 мл змазати)" },
+  { food: "yeast", qty: "7 г" },
+  { food: "honey", qty: "15 г" },
+  { food: "oil", qualifier: "рослинна", qty: "40 мл" },
+  { food: "eggs", qualifier: "для тіста", qty: "1 шт" },
+  { food: "salt" },
+  { food: "hardCheese", qualifier: "для скоринки булочок", qty: "40 г" },
+];
+
 const marinadeIngredients: RecipeIngredient[] = [
   { food: "yogurtGreek", qty: "150 г" },
   { food: "lemon", qty: "1 шт" },
@@ -127,6 +138,21 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       computedQty: { food: "mackerel", sets: [{ set: "set3", day: 1 }] },
       marinade: "Скумбрія з лимоном",
     },
+    {
+      food: "chickenMarinated",
+      qualifier: "начинка для булочок — Сет2 + Сет6",
+      computedQty: {
+        food: "chickenMarinated",
+        sets: [{ set: "set2" }, { set: "set6" }],
+      },
+      marinade: "Спеції, без маринаду",
+    },
+    {
+      food: "chickenMarinated",
+      qualifier: "кальцоне (подрібнене) — Сет7",
+      computedQty: { food: "chickenMarinated", sets: [{ set: "set7" }] },
+      marinade: "Спеції, без маринаду",
+    },
   ];
 
   const shashlikQty = formatGrams(
@@ -148,6 +174,26 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
   );
   const porkQty = formatGrams(
     sumMacroGramsForSetsMulti(["porkChop"], [{ set: "set7" }], undefined, seasonOverride),
+  );
+  const bunFillingQty = formatGrams(
+    sumMacroGramsForSetsMulti(
+      ["chickenMarinated"],
+      [{ set: "set2" }, { set: "set6" }],
+      undefined,
+      seasonOverride,
+    ),
+  );
+  const calzoneChickenQty = formatGrams(
+    sumMacroGramsForSetsMulti(["chickenMarinated"], [{ set: "set7" }], undefined, seasonOverride),
+  );
+  const calzoneCottageCheeseQty = formatGrams(
+    sumMacroGramsForSetsMulti(["cottageCheese"], [{ set: "set7" }], undefined, seasonOverride),
+  );
+  const calzoneHamQty = formatGrams(
+    sumMacroGramsForSetsMulti(["ham"], [{ set: "set7" }], undefined, seasonOverride),
+  );
+  const calzoneHardCheeseQty = formatGrams(
+    sumMacroGramsForSetsMulti(["hardCheese"], [{ set: "set7" }], undefined, seasonOverride),
   );
 
   const algorithm = [
@@ -172,6 +218,26 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
         "Сирники (тісто): добре розім'яти 500 г творогу виделкою. Додати 1 яйце, 2–3 ст.л. цукру, 1 пакетик ванільного цукру, дрібку солі та ретельно перемішати. Поступово ввести 5–6 ст.л. борошна до отримання м'якого тіста.",
         "Сирники (формування): мокрими руками сформувати 10 кульок, обваляти їх у борошні та сформувати гарні заготовки сирників.",
         "Заморозка: викласти сформовані заготовки сирників на дошку, присипану борошном, та поставити в морозильну камеру (смажити свіжими перед прийомом).",
+      ],
+    },
+    {
+      title: "Блок 3 — Булочки для Сету2/Сету6 (~25 хв активно + ~1.5 год розстоювання)",
+      steps: [
+        "Тісто: змішати тепле молоко (250 мл), дріжджі (7 г) і мед (15 г), дати постояти 5–10 хв до пінки. Додати олію (40 мл), яйце (1 шт), борошно (500 г) і сіль (8 г). Замісити 10–12 хв до однорідного тіста, накрити й дати підійти ~1 год.",
+        "Поділити тісто на 16 частин, сформувати кульки, викласти на деко з відстанню. Змазати молоком (20 мл), присипати твердим сиром (40 г), зробити декоративні надрізи. Дати підійти ще 30 хв.",
+        "Випікати при 200°C 8–12 хв до золотистої скоринки. Повністю охолодити на решітці (гаряче в морозилку не класти — псує текстуру), потім flash-freeze: розкласти нещільно на дошці, заморозити, скласти в пакет.",
+        `Начинка: обсмажити куряче філе (${bunFillingQty}) на пательні з мінімумом олії (~1 ст.л. на всю партію) зі спеціями (паприка, часник і цибуля порошком, кайєнський перець, куркума). Цибулю, маринований огірок, аджику й салат НЕ додавати зараз — вони заморозку не переживають, докидаються свіжими під час збирання щоразу.`,
+        "Охолодити начинку, розкласти по контейнерах порційно і заморозити окремо від булочок.",
+      ],
+    },
+    {
+      title: "Блок 4 — Курячий кальцоне для Сету7 (~35 хв, переважно пасивно)",
+      steps: [
+        `Подрібнити куряче філе (${calzoneChickenQty}) блендером або м'ясорубкою до фаршу, посолити й поперчити.`,
+        "Викласти фарш пластом на деко, застелене пергаментом (форма прямокутника, ~1 см завтовшки).",
+        `На одну половину викласти начинку: творог (${calzoneCottageCheeseQty}, попередньо розім'ятий виделкою), нарізаний помідор, шинку (${calzoneHamQty}) і твердий сир (${calzoneHardCheeseQty}) — Віталію без шинки й сиру, лише творог і помідор (менше жиру).`,
+        "Накрити другою половиною пласта, защипнути краї як кальцоне. Запікати при 200°C ~25 хв до готовності курки всередині.",
+        "Повністю охолодити (гарячим у морозилку не класти), щільно загорнути у фольгу порційно і відправити в морозильну камеру.",
       ],
     },
     {
@@ -319,11 +385,22 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
 
         <div className="h-px bg-white/[0.06]" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <div>
             <span className="text-label block mb-2">М&apos;ясо та білки</span>
             <ul className="flex flex-col gap-1.5">
               {proteinIngredients.map((ing, idx) => (
+                <li key={idx} className={ingredientItemClass}>
+                  <span className="text-zinc-600">·</span>
+                  <span>{ingredientLabel(ing, seasonOverride)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <span className="text-label block mb-2">Тісто для булочок</span>
+            <ul className="flex flex-col gap-1.5">
+              {doughIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
                   <span>{ingredientLabel(ing, seasonOverride)}</span>
