@@ -372,8 +372,10 @@ function CategoryList({
                   ? "bg-accent-nutrition border-accent-nutrition text-white"
                   : "border-white/[0.15]"
               }`;
+              // Закреслюємо лише коли "вдома" покриває ВСЮ потрібну кількість —
+              // часткова відмітка (кілька грам) не має ховати товар зі списку.
               const nameClass = `text-sm ${
-                isHomeStock
+                fraction >= 1
                   ? "text-amber-400/80 line-through decoration-amber-400/40"
                   : isChecked
                     ? "text-zinc-500 line-through"
@@ -470,9 +472,10 @@ function CategoryList({
 
                   {isHomeStock && itemTotal !== null && (
                     <div className="flex items-center gap-2 pl-6 -mt-1">
-                      <input
+                      <Input
                         type="number"
                         min={0}
+                        variant="inline"
                         value={Math.round(fraction * itemTotal)}
                         onChange={(e) => {
                           const amount = Number(e.target.value);
