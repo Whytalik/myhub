@@ -293,6 +293,30 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
   }
 
   const completedAt = status === "DONE" ? new Date() : status ? null : undefined;
+  // Cancelling a task must release its time slot — otherwise the stale
+  // plannedDate/plannedEndDate lingers forever (never auto-cleared or
+  // carried over) and resurfaces later as a phantom block-validation
+  // conflict the moment the task is reactivated without picking a new time.
+  const clearPlannedTimeOnCancel = status === "CANCELLED";
+  const plannedDateValue = clearPlannedTimeOnCancel
+    ? null
+    : parsedPlannedDate !== undefined
+      ? parsedPlannedDate
+      : undefined;
+  const plannedEndDateValue = clearPlannedTimeOnCancel
+    ? null
+    : parsedPlannedEndDate !== undefined
+      ? parsedPlannedEndDate
+      : undefined;
+  // A "has time" flag with no actual date is a meaningless, inconsistent
+  // state — force it false whenever the date is explicitly being cleared
+  // in this same call, regardless of what the caller passed for the flag.
+  const hasPlannedTimeValue =
+    clearPlannedTimeOnCancel || plannedDateValue === null ? false : (hasPlannedTime ?? undefined);
+  const hasPlannedEndTimeValue =
+    clearPlannedTimeOnCancel || plannedEndDateValue === null
+      ? false
+      : (hasPlannedEndTime ?? undefined);
 
   if (id) {
     const saved = await taskRepository.update(id, userId, {
@@ -304,10 +328,10 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
       isPrivate: isPrivate ?? undefined,
       isBlocked: isBlocked ?? undefined,
       resistance: resistance !== undefined ? (resistance ?? null) : undefined,
-      plannedDate: parsedPlannedDate !== undefined ? parsedPlannedDate : undefined,
-      hasPlannedTime: hasPlannedTime ?? undefined,
-      plannedEndDate: parsedPlannedEndDate !== undefined ? parsedPlannedEndDate : undefined,
-      hasPlannedEndTime: hasPlannedEndTime ?? undefined,
+      plannedDate: plannedDateValue,
+      hasPlannedTime: hasPlannedTimeValue,
+      plannedEndDate: plannedEndDateValue,
+      hasPlannedEndTime: hasPlannedEndTimeValue,
       dueDate: parsedDueDate !== undefined ? parsedDueDate : undefined,
       hasDueTime: hasDueTime ?? undefined,
       completedAt,
@@ -334,9 +358,9 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     isBlocked: isBlocked ?? false,
     resistance: resistance ?? null,
     plannedDate: (parsedPlannedDate as Date | null) ?? null,
-    hasPlannedTime: hasPlannedTime ?? false,
+    hasPlannedTime: parsedPlannedDate ? (hasPlannedTime ?? false) : false,
     plannedEndDate: (parsedPlannedEndDate as Date | null) ?? null,
-    hasPlannedEndTime: hasPlannedEndTime ?? false,
+    hasPlannedEndTime: parsedPlannedEndDate ? (hasPlannedEndTime ?? false) : false,
     dueDate: (parsedDueDate as Date | null) ?? null,
     hasDueTime: hasDueTime ?? false,
     depth,
@@ -383,7 +407,11 @@ export async function updateTaskStatus(
   status: TaskStatus,
 ): Promise<void> {
   const completedAt = status === "DONE" ? new Date() : null;
-  await taskRepository.updateById(id, { status, completedAt });
+  const clearPlannedTime =
+    status === "CANCELLED"
+      ? { plannedDate: null, hasPlannedTime: false, plannedEndDate: null, hasPlannedEndTime: false }
+      : {};
+  await taskRepository.updateById(id, { status, completedAt, ...clearPlannedTime });
   if (status === "DONE") await autoCompleteParentIfAllChildrenDone(id);
 }
 
