@@ -18,7 +18,9 @@ import {
   ChevronUp,
   Activity,
   Info,
+  Waves,
 } from "lucide-react";
+import { Tabs } from "@/components/ui/navigation/tabs";
 import type {
   TrainingPlanData,
   TrainingDayData,
@@ -110,22 +112,32 @@ function formatPrescription(de: TrainingDayExerciseData): string {
 }
 
 function calculateWeeklyVolume(days: TrainingDayData[]) {
-  const volumeMap: Record<string, number> = {};
+  const hypertrophyMap: Record<string, number> = {};
+  const otherMap: Record<string, number> = {};
   for (const day of days) {
     for (const de of day.exercises) {
       if (!de.exercise) continue;
+      // weight_reps/bodyweight = sets dosed near failure (MEV/MAV/MRV domain).
+      // duration/cardio = mobility, stability, and cardio work, dosed by
+      // frequency and time, not sets — mixing them under one "Оптимально/
+      // Підтримка" threshold misapplies the hypertrophy dose-response model.
+      const isHypertrophy =
+        de.exercise.trackingType === "weight_reps" || de.exercise.trackingType === "bodyweight";
+      const targetMap = isHypertrophy ? hypertrophyMap : otherMap;
       const muscle = de.exercise.muscleGroup || "Інше";
       const muscles = muscle.split(/[\/,]|\s+та\s+/).map((m) => m.trim());
       for (const m of muscles) {
         if (m) {
-          volumeMap[m] = (volumeMap[m] || 0) + de.sets;
+          targetMap[m] = (targetMap[m] || 0) + de.sets;
         }
       }
     }
   }
-  return Object.entries(volumeMap)
-    .map(([muscle, sets]) => ({ muscle, sets }))
-    .sort((a, b) => b.sets - a.sets);
+  const toSorted = (map: Record<string, number>) =>
+    Object.entries(map)
+      .map(([muscle, sets]) => ({ muscle, sets }))
+      .sort((a, b) => b.sets - a.sets);
+  return { hypertrophy: toSorted(hypertrophyMap), other: toSorted(otherMap) };
 }
 
 function getVolumeStatus(sets: number) {
@@ -325,89 +337,161 @@ export function TrainingPlansClient({
               </div>
             </button>
 
-            {showVolumeAnalysis && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-3 border-t border-white/[0.06] animate-fade-up">
-                {/* Стовпчик 1 і 2: М'язові групи */}
-                <div className="md:col-span-2 flex flex-col gap-4">
-                  {calculateWeeklyVolume(plan.days).length === 0 ? (
-                    <p className="text-caption text-zinc-500 italic py-2">
-                      Додайте вправи до тренувальних днів, щоб побачити аналіз об&apos;єму.
-                    </p>
-                  ) : (
-                    <div className="flex flex-col gap-3">
-                      {calculateWeeklyVolume(plan.days).map(({ muscle, sets }) => {
-                        const status = getVolumeStatus(sets);
-                        const percentage = Math.min((sets / 25) * 100, 100);
-                        return (
-                          <div key={muscle} className="flex flex-col gap-1">
-                            <div className="flex justify-between items-center text-[13px]">
-                              <span className="font-semibold text-zinc-200">{muscle}</span>
-                              <div className="flex items-center gap-2">
-                                <span className="font-mono text-zinc-400 text-xs">
-                                  {sets}{" "}
-                                  {sets === 1
-                                    ? "підхід"
-                                    : sets >= 2 && sets <= 4
-                                      ? "підходи"
-                                      : "підходів"}
-                                  /тиждень
-                                </span>
-                                <span
-                                  className={`text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md border ${status.colorClass}`}
-                                >
-                                  {status.label}
-                                </span>
+            {showVolumeAnalysis &&
+              (() => {
+                const weeklyVolume = calculateWeeklyVolume(plan.days);
+                const pluralizeSets = (sets: number) =>
+                  sets === 1 ? "підхід" : sets >= 2 && sets <= 4 ? "підходи" : "підходів";
+
+                return (
+                  <div className="pt-3 border-t border-white/[0.06] animate-fade-up">
+                    <Tabs
+                      tabs={[
+                        {
+                          id: "hypertrophy",
+                          label: "Гіпертрофія",
+                          icon: <Dumbbell size={14} />,
+                          content: (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                              <div className="md:col-span-2 flex flex-col gap-4">
+                                {weeklyVolume.hypertrophy.length === 0 ? (
+                                  <p className="text-caption text-zinc-500 italic py-2">
+                                    Додайте вправи до тренувальних днів, щоб побачити аналіз
+                                    об&apos;єму.
+                                  </p>
+                                ) : (
+                                  <div className="flex flex-col gap-3">
+                                    {weeklyVolume.hypertrophy.map(({ muscle, sets }) => {
+                                      const status = getVolumeStatus(sets);
+                                      const percentage = Math.min((sets / 25) * 100, 100);
+                                      return (
+                                        <div key={muscle} className="flex flex-col gap-1">
+                                          <div className="flex justify-between items-center text-[13px]">
+                                            <span className="font-semibold text-zinc-200">
+                                              {muscle}
+                                            </span>
+                                            <div className="flex items-center gap-2">
+                                              <span className="font-mono text-zinc-400 text-xs">
+                                                {sets} {pluralizeSets(sets)}/тиждень
+                                              </span>
+                                              <span
+                                                className={`text-[10px] font-mono uppercase tracking-wide px-1.5 py-0.5 rounded-md border ${status.colorClass}`}
+                                              >
+                                                {status.label}
+                                              </span>
+                                            </div>
+                                          </div>
+                                          <div className="w-full h-1.5 rounded-full bg-white/5 overflow-hidden">
+                                            <div
+                                              className={`h-full ${status.barColor} transition-all duration-500`}
+                                              style={{ width: `${percentage}%` }}
+                                            />
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+
+                              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col gap-3 text-[13px]">
+                                <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-accent-training flex items-center gap-1.5 border-b border-white/[0.04] pb-1.5">
+                                  <Info size={13} />
+                                  Наукові рекомендації
+                                </h3>
+                                <div className="flex flex-col gap-2.5 text-zinc-300 leading-relaxed font-normal">
+                                  <div>
+                                    <span className="font-semibold text-zinc-200">
+                                      Низький (Підтримка) (&lt; 6 підходів):
+                                    </span>
+                                    <p className="text-xs text-zinc-400 mt-0.5">
+                                      Об&apos;єм підтримки (Maintenance Volume - MV). Достатній для
+                                      збереження форми при обмеженому часі.
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <span className="font-semibold text-zinc-200">
+                                      Оптимальний (6 - 20 підходів):
+                                    </span>
+                                    <p className="text-xs text-zinc-400 mt-0.5">
+                                      Зона активного росту (MEV/MAV). Золотий стандарт для
+                                      збільшення сили та гіпертрофії м&apos;язів.
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <span className="font-semibold text-zinc-200">
+                                      Надмірний (20+ підходів):
+                                    </span>
+                                    <p className="text-xs text-zinc-400 mt-0.5">
+                                      Зона ризику (MRV). Може призвести до перевантаження ЦНС і
+                                      суглобів, потребує періодичного делоаду.
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <div className="w-full h-1.5 rounded-full bg-white/5 overflow-hidden">
-                              <div
-                                className={`h-full ${status.barColor} transition-all duration-500`}
-                                style={{ width: `${percentage}%` }}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
+                          ),
+                        },
+                        {
+                          id: "mobility-cardio",
+                          label: "Мобільність / Кардіо",
+                          icon: <Waves size={14} />,
+                          content: (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                              <div className="md:col-span-2 flex flex-col gap-4">
+                                {weeklyVolume.other.length === 0 ? (
+                                  <p className="text-caption text-zinc-500 italic py-2">
+                                    Немає вправ мобільності, стабільності чи кардіо в поточному
+                                    плані.
+                                  </p>
+                                ) : (
+                                  <div className="flex flex-col gap-3">
+                                    {weeklyVolume.other.map(({ muscle, sets }) => {
+                                      const percentage = Math.min((sets / 25) * 100, 100);
+                                      return (
+                                        <div key={muscle} className="flex flex-col gap-1">
+                                          <div className="flex justify-between items-center text-[13px]">
+                                            <span className="font-semibold text-zinc-200">
+                                              {muscle}
+                                            </span>
+                                            <span className="font-mono text-zinc-400 text-xs">
+                                              {sets} {pluralizeSets(sets)}/тиждень
+                                            </span>
+                                          </div>
+                                          <div className="w-full h-1.5 rounded-full bg-white/5 overflow-hidden">
+                                            <div
+                                              className="h-full bg-zinc-400 transition-all duration-500"
+                                              style={{ width: `${percentage}%` }}
+                                            />
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
 
-                {/* Стовпчик 3: Наукова довідка */}
-                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col gap-3 text-[13px]">
-                  <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-accent-training flex items-center gap-1.5 border-b border-white/[0.04] pb-1.5">
-                    <Info size={13} />
-                    Наукові рекомендації
-                  </h3>
-                  <div className="flex flex-col gap-2.5 text-zinc-300 leading-relaxed font-normal">
-                    <div>
-                      <span className="font-semibold text-zinc-200">
-                        Низький (Підтримка) (&lt; 6 підходів):
-                      </span>
-                      <p className="text-xs text-zinc-400 mt-0.5">
-                        Об&apos;єм підтримки (Maintenance Volume - MV). Достатній для збереження
-                        форми при обмеженому часі.
-                      </p>
-                    </div>
-                    <div>
-                      <span className="font-semibold text-zinc-200">
-                        Оптимальний (6 - 20 підходів):
-                      </span>
-                      <p className="text-xs text-zinc-400 mt-0.5">
-                        Зона активного росту (MEV/MAV). Золотий стандарт для збільшення сили та
-                        гіпертрофії м&apos;язів.
-                      </p>
-                    </div>
-                    <div>
-                      <span className="font-semibold text-zinc-200">Надмірний (20+ підходів):</span>
-                      <p className="text-xs text-zinc-400 mt-0.5">
-                        Зона ризику (MRV). Може призвести до перевантаження ЦНС і суглобів, потребує
-                        періодичного делоаду.
-                      </p>
-                    </div>
+                              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.04] flex flex-col gap-3 text-[13px]">
+                                <h3 className="text-xs font-semibold font-mono uppercase tracking-wider text-accent-training flex items-center gap-1.5 border-b border-white/[0.04] pb-1.5">
+                                  <Info size={13} />
+                                  Чому без оцінки
+                                </h3>
+                                <p className="text-xs text-zinc-400 leading-relaxed">
+                                  Мобільність, стабільність кора і кардіо дозуються за частотою й
+                                  тривалістю сесій (ACSM Position Stand), а не підходами близько до
+                                  відмови — тому модель MEV/MAV/MRV, валідована саме для
+                                  гіпертрофії, тут не застосовується. Це просто фактичний обсяг
+                                  активності за категорією, без вердикту.
+                                </p>
+                              </div>
+                            </div>
+                          ),
+                        },
+                      ]}
+                    />
                   </div>
-                </div>
-              </div>
-            )}
+                );
+              })()}
           </div>
 
           <div className="flex flex-col gap-3">
@@ -521,7 +605,7 @@ export function TrainingPlansClient({
                                 </span>
                               </div>
                               <span className="text-[10px] font-mono text-zinc-500">
-                                ~8-10 хв • Науково доведено
+                                ~8-10 хв • Науково обґрунтовано
                               </span>
                             </div>
 
@@ -592,6 +676,9 @@ export function TrainingPlansClient({
                                       <span className={badgeClass}>{formatPrescription(de)}</span>
                                       {de.targetRpe ? (
                                         <span className={badgeClass}>RPE {de.targetRpe}</span>
+                                      ) : null}
+                                      {de.targetRir ? (
+                                        <span className={badgeClass}>RIR {de.targetRir}</span>
                                       ) : null}
                                       {de.restSeconds ? (
                                         <span className={badgeClass}>rest {de.restSeconds}s</span>

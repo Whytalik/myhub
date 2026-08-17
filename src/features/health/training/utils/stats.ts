@@ -4,6 +4,7 @@ interface StatsSetLog {
   reps: number | null;
   weight: number | null;
   rpe: number | null;
+  rir: number | null;
   completed: boolean;
 }
 
@@ -103,6 +104,20 @@ export function computeRpeSeries(sessions: StatsSession[]): { date: Date; avgRpe
 
     const avg = rpes.reduce((a, b) => a + b, 0) / rpes.length;
     points.push({ date: session.date, avgRpe: Math.round(avg * 10) / 10 });
+  }
+
+  return points;
+}
+
+export function computeRirSeries(sessions: StatsSession[]): { date: Date; avgRir: number }[] {
+  const points: { date: Date; avgRir: number }[] = [];
+
+  for (const session of sessions) {
+    const rirs = session.setLogs.filter((l) => l.completed && l.rir != null).map((l) => l.rir!);
+    if (rirs.length === 0) continue;
+
+    const avg = rirs.reduce((a, b) => a + b, 0) / rirs.length;
+    points.push({ date: session.date, avgRir: Math.round(avg * 10) / 10 });
   }
 
   return points;

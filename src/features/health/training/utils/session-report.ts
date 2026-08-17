@@ -59,6 +59,7 @@ export function buildSessionReportMarkdown(input: SessionReportInput): string {
       if (set.durationSeconds != null) parts.push(`${set.durationSeconds} с`);
       if (set.distanceMeters != null) parts.push(`${set.distanceMeters} м`);
       if (set.rpe != null) parts.push(`RPE ${set.rpe}`);
+      if (set.rir != null) parts.push(`RIR ${set.rir}`);
       const status = set.completed ? "" : " (не виконано)";
       const notes = set.notes ? ` — ${set.notes}` : "";
       lines.push(`${index + 1}. ${parts.join(" × ") || "—"}${status}${notes}`);

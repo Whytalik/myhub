@@ -6,9 +6,10 @@ import { getTrainingStats } from "@/features/health/training/services/training-s
 import { AdherenceGrid } from "@/features/health/training/components/charts/AdherenceGrid";
 import { E1rmStatTile } from "@/features/health/training/components/charts/E1rmStatTile";
 import { RpeTrendChart } from "@/features/health/training/components/charts/RpeTrendChart";
+import { RirTrendChart } from "@/features/health/training/components/charts/RirTrendChart";
 import { TonnageBarList } from "@/features/health/training/components/charts/TonnageBarList";
 import { TRAINING_SEQUENTIAL_RAMP } from "@/features/health/training/components/charts/chart-tokens";
-import { CalendarCheck, TrendingUp, Gauge, Scale } from "lucide-react";
+import { CalendarCheck, TrendingUp, Gauge, BatteryMedium, Scale } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Training — Statistics",
@@ -115,6 +116,26 @@ export default async function TrainingStatsPage() {
             <div className="text-center text-caption py-6">Замало даних для тренду RPE.</div>
           ) : (
             <RpeTrendChart points={stats.rpeSeries} />
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-2.5 pl-1">
+          <div className="p-2 rounded-lg bg-violet-500/10 text-violet-400">
+            <BatteryMedium size={18} />
+          </div>
+          <div>
+            <h2 className="text-panel-title">Тренд RIR</h2>
+            <p className="text-caption">Середній RIR виконаних підходів за сесію</p>
+          </div>
+        </div>
+
+        <div className="glass-card p-5">
+          {stats.rirSeries.length < 2 ? (
+            <div className="text-center text-caption py-6">Замало даних для тренду RIR.</div>
+          ) : (
+            <RirTrendChart points={stats.rirSeries} />
           )}
         </div>
       </div>

@@ -38448,6 +38448,7 @@ export namespace Prisma {
     targetReps: number | null
     targetWeight: number | null
     targetRpe: number | null
+    targetRir: number | null
     restSeconds: number | null
     targetDurationSeconds: number | null
     targetDistanceMeters: number | null
@@ -38459,6 +38460,7 @@ export namespace Prisma {
     targetReps: number | null
     targetWeight: number | null
     targetRpe: number | null
+    targetRir: number | null
     restSeconds: number | null
     targetDurationSeconds: number | null
     targetDistanceMeters: number | null
@@ -38474,6 +38476,7 @@ export namespace Prisma {
     targetReps: number | null
     targetWeight: number | null
     targetRpe: number | null
+    targetRir: number | null
     restSeconds: number | null
     targetDurationSeconds: number | null
     targetDistanceMeters: number | null
@@ -38490,6 +38493,7 @@ export namespace Prisma {
     targetReps: number | null
     targetWeight: number | null
     targetRpe: number | null
+    targetRir: number | null
     restSeconds: number | null
     targetDurationSeconds: number | null
     targetDistanceMeters: number | null
@@ -38506,6 +38510,7 @@ export namespace Prisma {
     targetReps: number
     targetWeight: number
     targetRpe: number
+    targetRir: number
     restSeconds: number
     targetDurationSeconds: number
     targetDistanceMeters: number
@@ -38520,6 +38525,7 @@ export namespace Prisma {
     targetReps?: true
     targetWeight?: true
     targetRpe?: true
+    targetRir?: true
     restSeconds?: true
     targetDurationSeconds?: true
     targetDistanceMeters?: true
@@ -38531,6 +38537,7 @@ export namespace Prisma {
     targetReps?: true
     targetWeight?: true
     targetRpe?: true
+    targetRir?: true
     restSeconds?: true
     targetDurationSeconds?: true
     targetDistanceMeters?: true
@@ -38546,6 +38553,7 @@ export namespace Prisma {
     targetReps?: true
     targetWeight?: true
     targetRpe?: true
+    targetRir?: true
     restSeconds?: true
     targetDurationSeconds?: true
     targetDistanceMeters?: true
@@ -38562,6 +38570,7 @@ export namespace Prisma {
     targetReps?: true
     targetWeight?: true
     targetRpe?: true
+    targetRir?: true
     restSeconds?: true
     targetDurationSeconds?: true
     targetDistanceMeters?: true
@@ -38578,6 +38587,7 @@ export namespace Prisma {
     targetReps?: true
     targetWeight?: true
     targetRpe?: true
+    targetRir?: true
     restSeconds?: true
     targetDurationSeconds?: true
     targetDistanceMeters?: true
@@ -38681,6 +38691,7 @@ export namespace Prisma {
     targetReps: number | null
     targetWeight: number | null
     targetRpe: number | null
+    targetRir: number | null
     restSeconds: number | null
     targetDurationSeconds: number | null
     targetDistanceMeters: number | null
@@ -38716,6 +38727,7 @@ export namespace Prisma {
     targetReps?: boolean
     targetWeight?: boolean
     targetRpe?: boolean
+    targetRir?: boolean
     restSeconds?: boolean
     targetDurationSeconds?: boolean
     targetDistanceMeters?: boolean
@@ -38735,6 +38747,7 @@ export namespace Prisma {
     targetReps?: boolean
     targetWeight?: boolean
     targetRpe?: boolean
+    targetRir?: boolean
     restSeconds?: boolean
     targetDurationSeconds?: boolean
     targetDistanceMeters?: boolean
@@ -38754,6 +38767,7 @@ export namespace Prisma {
     targetReps?: boolean
     targetWeight?: boolean
     targetRpe?: boolean
+    targetRir?: boolean
     restSeconds?: boolean
     targetDurationSeconds?: boolean
     targetDistanceMeters?: boolean
@@ -38773,13 +38787,14 @@ export namespace Prisma {
     targetReps?: boolean
     targetWeight?: boolean
     targetRpe?: boolean
+    targetRir?: boolean
     restSeconds?: boolean
     targetDurationSeconds?: boolean
     targetDistanceMeters?: boolean
     notes?: boolean
   }
 
-  export type TrainingDayExerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayId" | "exerciseId" | "order" | "sets" | "targetReps" | "targetWeight" | "targetRpe" | "restSeconds" | "targetDurationSeconds" | "targetDistanceMeters" | "notes", ExtArgs["result"]["trainingDayExercise"]>
+  export type TrainingDayExerciseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "dayId" | "exerciseId" | "order" | "sets" | "targetReps" | "targetWeight" | "targetRpe" | "targetRir" | "restSeconds" | "targetDurationSeconds" | "targetDistanceMeters" | "notes", ExtArgs["result"]["trainingDayExercise"]>
   export type TrainingDayExerciseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     day?: boolean | TrainingDayDefaultArgs<ExtArgs>
@@ -38813,6 +38828,7 @@ export namespace Prisma {
       targetReps: number | null
       targetWeight: number | null
       targetRpe: number | null
+      targetRir: number | null
       restSeconds: number | null
       targetDurationSeconds: number | null
       targetDistanceMeters: number | null
@@ -39252,6 +39268,7 @@ export namespace Prisma {
     readonly targetReps: FieldRef<"TrainingDayExercise", 'Int'>
     readonly targetWeight: FieldRef<"TrainingDayExercise", 'Float'>
     readonly targetRpe: FieldRef<"TrainingDayExercise", 'Float'>
+    readonly targetRir: FieldRef<"TrainingDayExercise", 'Float'>
     readonly restSeconds: FieldRef<"TrainingDayExercise", 'Int'>
     readonly targetDurationSeconds: FieldRef<"TrainingDayExercise", 'Int'>
     readonly targetDistanceMeters: FieldRef<"TrainingDayExercise", 'Float'>
@@ -40911,6 +40928,7 @@ export namespace Prisma {
     reps: number | null
     weight: number | null
     rpe: number | null
+    rir: number | null
     restSeconds: number | null
     durationSeconds: number | null
     distanceMeters: number | null
@@ -40922,6 +40940,7 @@ export namespace Prisma {
     reps: number | null
     weight: number | null
     rpe: number | null
+    rir: number | null
     restSeconds: number | null
     durationSeconds: number | null
     distanceMeters: number | null
@@ -40938,6 +40957,7 @@ export namespace Prisma {
     reps: number | null
     weight: number | null
     rpe: number | null
+    rir: number | null
     restSeconds: number | null
     durationSeconds: number | null
     distanceMeters: number | null
@@ -40956,6 +40976,7 @@ export namespace Prisma {
     reps: number | null
     weight: number | null
     rpe: number | null
+    rir: number | null
     restSeconds: number | null
     durationSeconds: number | null
     distanceMeters: number | null
@@ -40974,6 +40995,7 @@ export namespace Prisma {
     reps: number
     weight: number
     rpe: number
+    rir: number
     restSeconds: number
     durationSeconds: number
     distanceMeters: number
@@ -40989,6 +41011,7 @@ export namespace Prisma {
     reps?: true
     weight?: true
     rpe?: true
+    rir?: true
     restSeconds?: true
     durationSeconds?: true
     distanceMeters?: true
@@ -41000,6 +41023,7 @@ export namespace Prisma {
     reps?: true
     weight?: true
     rpe?: true
+    rir?: true
     restSeconds?: true
     durationSeconds?: true
     distanceMeters?: true
@@ -41016,6 +41040,7 @@ export namespace Prisma {
     reps?: true
     weight?: true
     rpe?: true
+    rir?: true
     restSeconds?: true
     durationSeconds?: true
     distanceMeters?: true
@@ -41034,6 +41059,7 @@ export namespace Prisma {
     reps?: true
     weight?: true
     rpe?: true
+    rir?: true
     restSeconds?: true
     durationSeconds?: true
     distanceMeters?: true
@@ -41052,6 +41078,7 @@ export namespace Prisma {
     reps?: true
     weight?: true
     rpe?: true
+    rir?: true
     restSeconds?: true
     durationSeconds?: true
     distanceMeters?: true
@@ -41157,6 +41184,7 @@ export namespace Prisma {
     reps: number | null
     weight: number | null
     rpe: number | null
+    rir: number | null
     restSeconds: number | null
     durationSeconds: number | null
     distanceMeters: number | null
@@ -41194,6 +41222,7 @@ export namespace Prisma {
     reps?: boolean
     weight?: boolean
     rpe?: boolean
+    rir?: boolean
     restSeconds?: boolean
     durationSeconds?: boolean
     distanceMeters?: boolean
@@ -41215,6 +41244,7 @@ export namespace Prisma {
     reps?: boolean
     weight?: boolean
     rpe?: boolean
+    rir?: boolean
     restSeconds?: boolean
     durationSeconds?: boolean
     distanceMeters?: boolean
@@ -41236,6 +41266,7 @@ export namespace Prisma {
     reps?: boolean
     weight?: boolean
     rpe?: boolean
+    rir?: boolean
     restSeconds?: boolean
     durationSeconds?: boolean
     distanceMeters?: boolean
@@ -41257,6 +41288,7 @@ export namespace Prisma {
     reps?: boolean
     weight?: boolean
     rpe?: boolean
+    rir?: boolean
     restSeconds?: boolean
     durationSeconds?: boolean
     distanceMeters?: boolean
@@ -41265,7 +41297,7 @@ export namespace Prisma {
     order?: boolean
   }
 
-  export type SetLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "sessionId" | "exerciseId" | "exerciseName" | "setNumber" | "reps" | "weight" | "rpe" | "restSeconds" | "durationSeconds" | "distanceMeters" | "completed" | "notes" | "order", ExtArgs["result"]["setLog"]>
+  export type SetLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "sessionId" | "exerciseId" | "exerciseName" | "setNumber" | "reps" | "weight" | "rpe" | "rir" | "restSeconds" | "durationSeconds" | "distanceMeters" | "completed" | "notes" | "order", ExtArgs["result"]["setLog"]>
   export type SetLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     session?: boolean | TrainingSessionDefaultArgs<ExtArgs>
@@ -41299,6 +41331,7 @@ export namespace Prisma {
       reps: number | null
       weight: number | null
       rpe: number | null
+      rir: number | null
       restSeconds: number | null
       durationSeconds: number | null
       distanceMeters: number | null
@@ -41740,6 +41773,7 @@ export namespace Prisma {
     readonly reps: FieldRef<"SetLog", 'Int'>
     readonly weight: FieldRef<"SetLog", 'Float'>
     readonly rpe: FieldRef<"SetLog", 'Float'>
+    readonly rir: FieldRef<"SetLog", 'Float'>
     readonly restSeconds: FieldRef<"SetLog", 'Int'>
     readonly durationSeconds: FieldRef<"SetLog", 'Int'>
     readonly distanceMeters: FieldRef<"SetLog", 'Float'>
@@ -46051,6 +46085,7 @@ export namespace Prisma {
     targetReps: 'targetReps',
     targetWeight: 'targetWeight',
     targetRpe: 'targetRpe',
+    targetRir: 'targetRir',
     restSeconds: 'restSeconds',
     targetDurationSeconds: 'targetDurationSeconds',
     targetDistanceMeters: 'targetDistanceMeters',
@@ -46086,6 +46121,7 @@ export namespace Prisma {
     reps: 'reps',
     weight: 'weight',
     rpe: 'rpe',
+    rir: 'rir',
     restSeconds: 'restSeconds',
     durationSeconds: 'durationSeconds',
     distanceMeters: 'distanceMeters',
@@ -48922,6 +48958,7 @@ export namespace Prisma {
     targetReps?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetWeight?: FloatNullableFilter<"TrainingDayExercise"> | number | null
     targetRpe?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    targetRir?: FloatNullableFilter<"TrainingDayExercise"> | number | null
     restSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetDurationSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetDistanceMeters?: FloatNullableFilter<"TrainingDayExercise"> | number | null
@@ -48941,6 +48978,7 @@ export namespace Prisma {
     targetReps?: SortOrderInput | SortOrder
     targetWeight?: SortOrderInput | SortOrder
     targetRpe?: SortOrderInput | SortOrder
+    targetRir?: SortOrderInput | SortOrder
     restSeconds?: SortOrderInput | SortOrder
     targetDurationSeconds?: SortOrderInput | SortOrder
     targetDistanceMeters?: SortOrderInput | SortOrder
@@ -48963,6 +49001,7 @@ export namespace Prisma {
     targetReps?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetWeight?: FloatNullableFilter<"TrainingDayExercise"> | number | null
     targetRpe?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    targetRir?: FloatNullableFilter<"TrainingDayExercise"> | number | null
     restSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetDurationSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetDistanceMeters?: FloatNullableFilter<"TrainingDayExercise"> | number | null
@@ -48982,6 +49021,7 @@ export namespace Prisma {
     targetReps?: SortOrderInput | SortOrder
     targetWeight?: SortOrderInput | SortOrder
     targetRpe?: SortOrderInput | SortOrder
+    targetRir?: SortOrderInput | SortOrder
     restSeconds?: SortOrderInput | SortOrder
     targetDurationSeconds?: SortOrderInput | SortOrder
     targetDistanceMeters?: SortOrderInput | SortOrder
@@ -49006,6 +49046,7 @@ export namespace Prisma {
     targetReps?: IntNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
     targetWeight?: FloatNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
     targetRpe?: FloatNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
+    targetRir?: FloatNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
     restSeconds?: IntNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
     targetDurationSeconds?: IntNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
     targetDistanceMeters?: FloatNullableWithAggregatesFilter<"TrainingDayExercise"> | number | null
@@ -49113,6 +49154,7 @@ export namespace Prisma {
     reps?: IntNullableFilter<"SetLog"> | number | null
     weight?: FloatNullableFilter<"SetLog"> | number | null
     rpe?: FloatNullableFilter<"SetLog"> | number | null
+    rir?: FloatNullableFilter<"SetLog"> | number | null
     restSeconds?: IntNullableFilter<"SetLog"> | number | null
     durationSeconds?: IntNullableFilter<"SetLog"> | number | null
     distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
@@ -49134,6 +49176,7 @@ export namespace Prisma {
     reps?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
     rpe?: SortOrderInput | SortOrder
+    rir?: SortOrderInput | SortOrder
     restSeconds?: SortOrderInput | SortOrder
     durationSeconds?: SortOrderInput | SortOrder
     distanceMeters?: SortOrderInput | SortOrder
@@ -49158,6 +49201,7 @@ export namespace Prisma {
     reps?: IntNullableFilter<"SetLog"> | number | null
     weight?: FloatNullableFilter<"SetLog"> | number | null
     rpe?: FloatNullableFilter<"SetLog"> | number | null
+    rir?: FloatNullableFilter<"SetLog"> | number | null
     restSeconds?: IntNullableFilter<"SetLog"> | number | null
     durationSeconds?: IntNullableFilter<"SetLog"> | number | null
     distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
@@ -49179,6 +49223,7 @@ export namespace Prisma {
     reps?: SortOrderInput | SortOrder
     weight?: SortOrderInput | SortOrder
     rpe?: SortOrderInput | SortOrder
+    rir?: SortOrderInput | SortOrder
     restSeconds?: SortOrderInput | SortOrder
     durationSeconds?: SortOrderInput | SortOrder
     distanceMeters?: SortOrderInput | SortOrder
@@ -49205,6 +49250,7 @@ export namespace Prisma {
     reps?: IntNullableWithAggregatesFilter<"SetLog"> | number | null
     weight?: FloatNullableWithAggregatesFilter<"SetLog"> | number | null
     rpe?: FloatNullableWithAggregatesFilter<"SetLog"> | number | null
+    rir?: FloatNullableWithAggregatesFilter<"SetLog"> | number | null
     restSeconds?: IntNullableWithAggregatesFilter<"SetLog"> | number | null
     durationSeconds?: IntNullableWithAggregatesFilter<"SetLog"> | number | null
     distanceMeters?: FloatNullableWithAggregatesFilter<"SetLog"> | number | null
@@ -52245,6 +52291,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -52264,6 +52311,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -52277,6 +52325,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52296,6 +52345,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52312,6 +52362,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -52325,6 +52376,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52341,6 +52393,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52447,6 +52500,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -52468,6 +52522,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -52483,6 +52538,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52504,6 +52560,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52522,6 +52579,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -52537,6 +52595,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -52555,6 +52614,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -54935,6 +54995,7 @@ export namespace Prisma {
     targetReps?: SortOrder
     targetWeight?: SortOrder
     targetRpe?: SortOrder
+    targetRir?: SortOrder
     restSeconds?: SortOrder
     targetDurationSeconds?: SortOrder
     targetDistanceMeters?: SortOrder
@@ -54947,6 +55008,7 @@ export namespace Prisma {
     targetReps?: SortOrder
     targetWeight?: SortOrder
     targetRpe?: SortOrder
+    targetRir?: SortOrder
     restSeconds?: SortOrder
     targetDurationSeconds?: SortOrder
     targetDistanceMeters?: SortOrder
@@ -54962,6 +55024,7 @@ export namespace Prisma {
     targetReps?: SortOrder
     targetWeight?: SortOrder
     targetRpe?: SortOrder
+    targetRir?: SortOrder
     restSeconds?: SortOrder
     targetDurationSeconds?: SortOrder
     targetDistanceMeters?: SortOrder
@@ -54978,6 +55041,7 @@ export namespace Prisma {
     targetReps?: SortOrder
     targetWeight?: SortOrder
     targetRpe?: SortOrder
+    targetRir?: SortOrder
     restSeconds?: SortOrder
     targetDurationSeconds?: SortOrder
     targetDistanceMeters?: SortOrder
@@ -54990,6 +55054,7 @@ export namespace Prisma {
     targetReps?: SortOrder
     targetWeight?: SortOrder
     targetRpe?: SortOrder
+    targetRir?: SortOrder
     restSeconds?: SortOrder
     targetDurationSeconds?: SortOrder
     targetDistanceMeters?: SortOrder
@@ -55057,6 +55122,7 @@ export namespace Prisma {
     reps?: SortOrder
     weight?: SortOrder
     rpe?: SortOrder
+    rir?: SortOrder
     restSeconds?: SortOrder
     durationSeconds?: SortOrder
     distanceMeters?: SortOrder
@@ -55070,6 +55136,7 @@ export namespace Prisma {
     reps?: SortOrder
     weight?: SortOrder
     rpe?: SortOrder
+    rir?: SortOrder
     restSeconds?: SortOrder
     durationSeconds?: SortOrder
     distanceMeters?: SortOrder
@@ -55086,6 +55153,7 @@ export namespace Prisma {
     reps?: SortOrder
     weight?: SortOrder
     rpe?: SortOrder
+    rir?: SortOrder
     restSeconds?: SortOrder
     durationSeconds?: SortOrder
     distanceMeters?: SortOrder
@@ -55104,6 +55172,7 @@ export namespace Prisma {
     reps?: SortOrder
     weight?: SortOrder
     rpe?: SortOrder
+    rir?: SortOrder
     restSeconds?: SortOrder
     durationSeconds?: SortOrder
     distanceMeters?: SortOrder
@@ -55117,6 +55186,7 @@ export namespace Prisma {
     reps?: SortOrder
     weight?: SortOrder
     rpe?: SortOrder
+    rir?: SortOrder
     restSeconds?: SortOrder
     durationSeconds?: SortOrder
     distanceMeters?: SortOrder
@@ -59050,6 +59120,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -59067,6 +59138,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -59126,6 +59198,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -59145,6 +59218,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -59862,6 +59936,7 @@ export namespace Prisma {
     targetReps?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetWeight?: FloatNullableFilter<"TrainingDayExercise"> | number | null
     targetRpe?: FloatNullableFilter<"TrainingDayExercise"> | number | null
+    targetRir?: FloatNullableFilter<"TrainingDayExercise"> | number | null
     restSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetDurationSeconds?: IntNullableFilter<"TrainingDayExercise"> | number | null
     targetDistanceMeters?: FloatNullableFilter<"TrainingDayExercise"> | number | null
@@ -59929,6 +60004,7 @@ export namespace Prisma {
     reps?: IntNullableFilter<"SetLog"> | number | null
     weight?: FloatNullableFilter<"SetLog"> | number | null
     rpe?: FloatNullableFilter<"SetLog"> | number | null
+    rir?: FloatNullableFilter<"SetLog"> | number | null
     restSeconds?: IntNullableFilter<"SetLog"> | number | null
     durationSeconds?: IntNullableFilter<"SetLog"> | number | null
     distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
@@ -64459,6 +64535,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -64476,6 +64553,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -64499,6 +64577,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -64518,6 +64597,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -64974,6 +65054,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -64991,6 +65072,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -65674,6 +65756,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -65693,6 +65776,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -67090,6 +67174,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -67117,6 +67202,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -67925,6 +68011,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -67942,6 +68029,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -67957,6 +68045,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -68008,6 +68097,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -68027,6 +68117,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -68044,6 +68135,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69108,6 +69200,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -69123,6 +69216,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -69138,6 +69232,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69155,6 +69250,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69170,6 +69266,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69183,6 +69280,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69202,6 +69300,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69219,6 +69318,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69282,6 +69382,7 @@ export namespace Prisma {
     targetReps?: number | null
     targetWeight?: number | null
     targetRpe?: number | null
+    targetRir?: number | null
     restSeconds?: number | null
     targetDurationSeconds?: number | null
     targetDistanceMeters?: number | null
@@ -69316,6 +69417,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69333,6 +69435,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69348,6 +69451,7 @@ export namespace Prisma {
     targetReps?: NullableIntFieldUpdateOperationsInput | number | null
     targetWeight?: NullableFloatFieldUpdateOperationsInput | number | null
     targetRpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    targetRir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDurationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     targetDistanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69428,6 +69532,7 @@ export namespace Prisma {
     reps?: number | null
     weight?: number | null
     rpe?: number | null
+    rir?: number | null
     restSeconds?: number | null
     durationSeconds?: number | null
     distanceMeters?: number | null
@@ -69443,6 +69548,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69462,6 +69568,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -69479,6 +69586,7 @@ export namespace Prisma {
     reps?: NullableIntFieldUpdateOperationsInput | number | null
     weight?: NullableFloatFieldUpdateOperationsInput | number | null
     rpe?: NullableFloatFieldUpdateOperationsInput | number | null
+    rir?: NullableFloatFieldUpdateOperationsInput | number | null
     restSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null

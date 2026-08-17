@@ -4,6 +4,7 @@ import {
   computeWeeklyAdherence,
   computeE1rmSeries,
   computeRpeSeries,
+  computeRirSeries,
   computeMuscleGroupTonnage,
 } from "../utils/stats";
 
@@ -36,6 +37,7 @@ export async function getTrainingStats(userId: string) {
     weeks: computeWeeklyAdherence(completedSessions, WEEKS_OF_HISTORY, now),
     e1rmSeries: computeE1rmSeries(completedSessions, trackingTypeByExerciseId),
     rpeSeries: computeRpeSeries(completedSessions),
+    rirSeries: computeRirSeries(completedSessions),
     muscleGroupTonnage: computeMuscleGroupTonnage(
       completedSessions,
       muscleGroupByExerciseId,

@@ -45,6 +45,7 @@ export function DayExerciseFormDialog({
       targetReps: dayExercise?.targetReps ?? undefined,
       targetWeight: dayExercise?.targetWeight ?? undefined,
       targetRpe: dayExercise?.targetRpe ?? undefined,
+      targetRir: dayExercise?.targetRir ?? undefined,
       restSeconds: dayExercise?.restSeconds ?? undefined,
       targetDurationSeconds: dayExercise?.targetDurationSeconds ?? undefined,
       targetDistanceMeters: dayExercise?.targetDistanceMeters ?? undefined,
@@ -69,6 +70,7 @@ export function DayExerciseFormDialog({
         targetReps: showReps ? (data.targetReps ?? null) : null,
         targetWeight: data.targetWeight ?? null,
         targetRpe: data.targetRpe ?? null,
+        targetRir: data.targetRir ?? null,
         restSeconds: data.restSeconds ?? null,
         targetDurationSeconds: showDurationFields ? (data.targetDurationSeconds ?? null) : null,
         targetDistanceMeters: showDurationFields ? (data.targetDistanceMeters ?? null) : null,
@@ -160,7 +162,7 @@ export function DayExerciseFormDialog({
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <FormField label={showDurationFields ? "Target distance (m)" : "Target weight (kg)"}>
             <Input
               type="number"
@@ -180,6 +182,16 @@ export function DayExerciseFormDialog({
               max={10}
               {...register("targetRpe", { valueAsNumber: true })}
               placeholder="e.g. 8"
+            />
+          </FormField>
+          <FormField label="Target RIR (0-10)">
+            <Input
+              type="number"
+              step="0.5"
+              min={0}
+              max={10}
+              {...register("targetRir", { valueAsNumber: true })}
+              placeholder="e.g. 2"
             />
           </FormField>
         </div>

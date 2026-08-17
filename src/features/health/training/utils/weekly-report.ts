@@ -21,6 +21,7 @@ interface WeeklySetLog {
   reps: number | null;
   weight: number | null;
   rpe: number | null;
+  rir: number | null;
   durationSeconds: number | null;
   distanceMeters: number | null;
   completed: boolean;
@@ -92,6 +93,7 @@ export function buildWeeklyReportMarkdown(input: WeeklyReportInput): string {
             if (log.durationSeconds != null) parts.push(`${log.durationSeconds}с`);
             if (log.distanceMeters != null) parts.push(`${log.distanceMeters}м`);
             if (log.rpe != null) parts.push(`RPE${log.rpe}`);
+            if (log.rir != null) parts.push(`RIR${log.rir}`);
             return parts.join(" ");
           })
           .join(", ");

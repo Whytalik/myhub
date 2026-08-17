@@ -45,6 +45,7 @@ export interface TrainingDayExerciseData {
   targetReps: number | null;
   targetWeight: number | null;
   targetRpe: number | null;
+  targetRir: number | null;
   restSeconds: number | null;
   targetDurationSeconds: number | null;
   targetDistanceMeters: number | null;
@@ -61,6 +62,7 @@ export interface UpsertDayExerciseInput {
   targetReps?: number | null;
   targetWeight?: number | null;
   targetRpe?: number | null;
+  targetRir?: number | null;
   restSeconds?: number | null;
   targetDurationSeconds?: number | null;
   targetDistanceMeters?: number | null;
@@ -117,6 +119,7 @@ export interface SetLogData {
   reps: number | null;
   weight: number | null;
   rpe: number | null;
+  rir: number | null;
   restSeconds: number | null;
   durationSeconds: number | null;
   distanceMeters: number | null;
@@ -130,6 +133,7 @@ export interface UpdateSetLogInput {
   reps?: number | null;
   weight?: number | null;
   rpe?: number | null;
+  rir?: number | null;
   restSeconds?: number | null;
   durationSeconds?: number | null;
   distanceMeters?: number | null;

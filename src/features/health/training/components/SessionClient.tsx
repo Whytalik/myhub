@@ -35,6 +35,7 @@ interface SessionClientProps {
       reps: number | null;
       weight: number | null;
       rpe: number | null;
+      rir: number | null;
       durationSeconds: number | null;
       distanceMeters: number | null;
     }[]
@@ -42,7 +43,14 @@ interface SessionClientProps {
 }
 
 type EditableField =
-  "reps" | "weight" | "rpe" | "restSeconds" | "durationSeconds" | "distanceMeters" | "notes";
+  | "reps"
+  | "weight"
+  | "rpe"
+  | "rir"
+  | "restSeconds"
+  | "durationSeconds"
+  | "distanceMeters"
+  | "notes";
 
 export function SessionClient({ session, pastLogs }: SessionClientProps) {
   const router = useRouter();
@@ -67,17 +75,23 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
       return;
     }
 
-    const initialElapsed = Math.max(
-      0,
-      Math.round((Date.now() - new Date(session.createdAt).getTime()) / 1000),
-    );
-    setElapsedSeconds(initialElapsed);
+    const createdAtMs = new Date(session.createdAt).getTime();
+    const tick = () => {
+      setElapsedSeconds(Math.max(0, Math.round((Date.now() - createdAtMs) / 1000)));
+    };
 
-    const interval = setInterval(() => {
-      setElapsedSeconds((prev) => prev + 1);
-    }, 1000);
+    tick();
+    // Recomputed from wall-clock time on every tick (not incremented by 1)
+    // so it self-corrects after the interval is throttled or fully paused
+    // while the tab/app is backgrounded — a `+1 per tick` counter would
+    // permanently lag behind once minimized.
+    const interval = setInterval(tick, 1000);
+    document.addEventListener("visibilitychange", tick);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", tick);
+    };
   }, [isCompleted, session.createdAt, session.durationSeconds]);
 
   const formatDuration = (totalSeconds: number) => {
@@ -120,6 +134,7 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
       reps: log.reps,
       weight: log.weight,
       rpe: log.rpe,
+      rir: log.rir,
       restSeconds: log.restSeconds,
       durationSeconds: log.durationSeconds,
       distanceMeters: log.distanceMeters,
@@ -394,6 +409,7 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                         </>
                       )}
                       <div className="w-16 shrink-0 text-center">RPE</div>
+                      <div className="w-16 shrink-0 text-center">RIR</div>
                       <div className="w-16 shrink-0 text-center">Відпоч</div>
                       <div className="flex-1 min-w-[100px] pl-2 text-left">Нотатки</div>
                     </div>
@@ -522,6 +538,25 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                             <Input
                               type="number"
                               min={0}
+                              max={10}
+                              step="0.5"
+                              placeholder="—"
+                              className={numberInputClass}
+                              disabled={isCompleted}
+                              value={setLog.rir ?? ""}
+                              onChange={(event) =>
+                                updateField(
+                                  setLog.id,
+                                  "rir",
+                                  event.target.value === "" ? null : Number(event.target.value),
+                                )
+                              }
+                              onBlur={() => persist(setLog.id)}
+                            />
+
+                            <Input
+                              type="number"
+                              min={0}
                               placeholder="—"
                               className={numberInputClass}
                               disabled={isCompleted}
@@ -566,6 +601,9 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                               {pastSet.rpe && (
                                 <span className="text-zinc-500">@ RPE {pastSet.rpe}</span>
                               )}
+                              {pastSet.rir != null && (
+                                <span className="text-zinc-500">@ RIR {pastSet.rir}</span>
+                              )}
                             </div>
                           )}
 
@@ -608,12 +646,15 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   {pastSet.rpe && (
                                     <span className="text-zinc-500">@ {pastSet.rpe}</span>
                                   )}
+                                  {pastSet.rir != null && (
+                                    <span className="text-zinc-500">/ RIR {pastSet.rir}</span>
+                                  )}
                                 </div>
                               )}
                             </div>
 
                             {/* Inputs Grid */}
-                            <div className="grid grid-cols-4 gap-2">
+                            <div className="grid grid-cols-2 gap-2">
                               {/* Input 1: Reps / Time */}
                               <div className="flex flex-col gap-1">
                                 <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
@@ -668,7 +709,9 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                   onBlur={() => persist(setLog.id)}
                                 />
                               </div>
+                            </div>
 
+                            <div className="grid grid-cols-3 gap-2">
                               {/* Input 3: RPE */}
                               <div className="flex flex-col gap-1">
                                 <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
@@ -694,7 +737,32 @@ export function SessionClient({ session, pastLogs }: SessionClientProps) {
                                 />
                               </div>
 
-                              {/* Input 4: Rest */}
+                              {/* Input 4: RIR */}
+                              <div className="flex flex-col gap-1">
+                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
+                                  RIR
+                                </label>
+                                <Input
+                                  type="number"
+                                  min={0}
+                                  max={10}
+                                  step="0.5"
+                                  placeholder="—"
+                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
+                                  disabled={isCompleted}
+                                  value={setLog.rir ?? ""}
+                                  onChange={(event) =>
+                                    updateField(
+                                      setLog.id,
+                                      "rir",
+                                      event.target.value === "" ? null : Number(event.target.value),
+                                    )
+                                  }
+                                  onBlur={() => persist(setLog.id)}
+                                />
+                              </div>
+
+                              {/* Input 5: Rest */}
                               <div className="flex flex-col gap-1">
                                 <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
                                   Відпоч

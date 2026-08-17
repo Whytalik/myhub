@@ -45,7 +45,19 @@ export default async function TrainingSessionPage({ params }: { params: Promise<
       />
       <SessionClient
         session={trainingSession as unknown as TrainingSessionData}
-        pastLogs={pastLogs as Record<string, { reps: number | null; weight: number | null; rpe: number | null; durationSeconds: number | null; distanceMeters: number | null }[]>}
+        pastLogs={
+          pastLogs as Record<
+            string,
+            {
+              reps: number | null;
+              weight: number | null;
+              rpe: number | null;
+              rir: number | null;
+              durationSeconds: number | null;
+              distanceMeters: number | null;
+            }[]
+          >
+        }
       />
     </div>
   );

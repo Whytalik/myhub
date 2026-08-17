@@ -35,6 +35,7 @@ export async function startSession(userId: string, input: StartSessionInput) {
         reps: dayExercise.targetReps,
         weight: dayExercise.targetWeight,
         rpe: dayExercise.targetRpe,
+        rir: dayExercise.targetRir,
         restSeconds: dayExercise.restSeconds,
         durationSeconds: dayExercise.targetDurationSeconds,
         distanceMeters: dayExercise.targetDistanceMeters,
@@ -100,6 +101,7 @@ export async function getPastLogsForSession(userId: string, sessionId: string) {
       reps: number | null;
       weight: number | null;
       rpe: number | null;
+      rir: number | null;
       durationSeconds: number | null;
       distanceMeters: number | null;
     }[]
@@ -141,6 +143,7 @@ export async function getPastLogsForSession(userId: string, sessionId: string) {
         reps: l.reps,
         weight: l.weight,
         rpe: l.rpe,
+        rir: l.rir,
         durationSeconds: l.durationSeconds,
         distanceMeters: l.distanceMeters,
       }));

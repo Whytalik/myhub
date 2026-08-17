@@ -611,6 +611,7 @@ model TrainingDayExercise {
   targetReps            Int?
   targetWeight          Float?
   targetRpe             Float?
+  targetRir             Float?
   restSeconds           Int?
   targetDurationSeconds Int?
   targetDistanceMeters  Float?
@@ -653,6 +654,7 @@ model SetLog {
   reps            Int?
   weight          Float?
   rpe             Float?
+  rir             Float?
   restSeconds     Int?
   durationSeconds Int?
   distanceMeters  Float?
