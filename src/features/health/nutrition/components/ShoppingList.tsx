@@ -7,10 +7,10 @@ import { Input } from "@/components/ui/inputs/input";
 import { SHOPPING_LIST } from "../data";
 import { getProductName, PRODUCTS } from "../products";
 import { sumMacroGramsForSetsMulti, formatGrams } from "../quantities";
-import { currentWeekStart, weekStartKey, dateForWeekdayInWeek } from "../week";
-import { cyclePositionOf } from "../cycle";
+import { currentWeekStart, weekStartKey } from "../week";
+import { SET_IDS, tripIndexOfSetDay } from "../cycle";
 import { getSeasonalPrice, getUnitPrice } from "../utils/seasonal-pricing";
-import type { ShoppingCategory, ShoppingDay, ShoppingItem, Weekday } from "../types";
+import type { ShoppingCategory, ShoppingDay, ShoppingItem, SetOccurrence } from "../types";
 
 /** Base name always comes from products.ts when `food` is set — `qualifier` layers
  *  on buy-specific detail (fat %, fresh-frozen...) that products.ts has no reason to track. */
@@ -56,43 +56,119 @@ function computedTotal(
   return baseTotal * (1 + wastePercent / 100);
 }
 
-/**
- * `day` — реальний день тижня (з чіпа фільтра). Резолвиться в `weekStart`-тиждень →
- * конкретна дата → позиція в 14-денному циклі → який сет активний цього дня. Notes без
- * `computedQty` описують сети текстом ("Сет3", "щодня") — той самий текст, що показує
- * `data.ts`, тому шукаємо збіг за назвою поточного сета, а не за днем тижня.
- */
-function isNeededForDay(item: ShoppingItem, day: Weekday, weekStart: string): boolean {
-  const date = dateForWeekdayInWeek(new Date(`${weekStart}T00:00:00`), day);
-  const pos = cyclePositionOf(date);
-  if (item.computedQty) {
-    return item.computedQty.sets.some(
-      (occ) => occ.set === pos.setId && (occ.day === undefined || occ.day === pos.subDay),
-    );
-  }
-  if (item.note) {
-    const lowerNote = item.note.toLowerCase();
-    if (lowerNote.includes("щодня") || lowerNote.includes("усі сети")) return true;
-    if (lowerNote.includes(`сет${pos.setIndex + 1}`)) return true;
-  }
-  return false;
-}
-
 const STORAGE_KEY = "nutrition-shopping-v1";
 const HOME_STOCK_STORAGE_PREFIX = "nutrition-home-stock-v1";
 const PRICE_OVERRIDE_STORAGE_KEY = "nutrition-price-override-v1";
 
 const VIEWS = [
-  { id: "sun" as const, label: "Неділя" },
-  { id: "wed" as const, label: "Середа" },
+  { id: "all" as const, label: "Усі продукти" },
+  { id: "trip0" as const, label: "Закуп 1 · Нд" },
+  { id: "trip1" as const, label: "Закуп 2 · Ср" },
+  { id: "trip2" as const, label: "Закуп 3 · Нд" },
+  { id: "trip3" as const, label: "Закуп 4 · Ср" },
 ];
 
 type ViewId = (typeof VIEWS)[number]["id"];
 
-function categoriesForDay(day: ShoppingDay): ShoppingCategory[] {
+/** "trip2" -> 2, "all" -> null (немає трипа — повний 14-денний цикл одразу). */
+function tripIndexOfViewId(id: ViewId): number | null {
+  return id === "all" ? null : Number(id.slice(4));
+}
+
+function defaultTripForBuyDay(buyDay: ShoppingDay): number {
+  return buyDay === "sun" ? 0 : 1;
+}
+
+/** Which trip(s) an item's set-occurrences fall into, sorted ascending — empty
+ *  when `occurrences` is empty (flat-`grams`-only items have no date to derive
+ *  a trip from, e.g. cottage cheese bought "just because", not tied to a set). */
+function tripsForOccurrences(occurrences: SetOccurrence[]): number[] {
+  const trips = new Set<number>();
+  for (const occ of occurrences) {
+    const days: (1 | 2)[] = occ.day !== undefined ? [occ.day] : [1, 2];
+    for (const day of days) trips.add(tripIndexOfSetDay(occ.set, day));
+  }
+  return [...trips].sort((a, b) => a - b);
+}
+
+/** Slices `occurrences` down to just the ones needed for `tripIndex` — a set whose
+ *  day1/day2 fall in different trips (set4, set6 — see cycle.ts) gets split into a
+ *  single-day occurrence instead of being kept/dropped whole. */
+function sliceOccurrencesForTrip(occurrences: SetOccurrence[], tripIndex: number): SetOccurrence[] {
+  const sliced: SetOccurrence[] = [];
+  for (const occ of occurrences) {
+    if (occ.day !== undefined) {
+      if (tripIndexOfSetDay(occ.set, occ.day) === tripIndex) sliced.push(occ);
+      continue;
+    }
+    const day1Matches = tripIndexOfSetDay(occ.set, 1) === tripIndex;
+    const day2Matches = tripIndexOfSetDay(occ.set, 2) === tripIndex;
+    if (day1Matches && day2Matches) sliced.push(occ);
+    else if (day1Matches) sliced.push({ set: occ.set, day: 1 });
+    else if (day2Matches) sliced.push({ set: occ.set, day: 2 });
+  }
+  return sliced;
+}
+
+/** Notes on hand-typed (no-`computedQty`) items mention sets as free text
+ *  ("Сет3, день 1", "Сет1 + Сет7", "Щодня") — scan for those mentions to know which
+ *  trip(s) the item is relevant to. Returns [] when nothing is mentioned (e.g. "Нд"
+ *  alone), which falls back to `defaultTripForBuyDay`. */
+function parseNoteTrips(note: string | undefined): number[] {
+  if (!note) return [];
+  const lower = note.toLowerCase();
+  if (lower.includes("щодня") || lower.includes("усі сети")) return [0, 1, 2, 3];
+  const trips = new Set<number>();
+  const setRe = /сет\s*(\d)/g;
+  let match: RegExpExecArray | null;
+  while ((match = setRe.exec(lower))) {
+    const setId = SET_IDS[Number(match[1]) - 1];
+    if (!setId) continue;
+    const tail = lower.slice(match.index, match.index + 20);
+    const dayMatch = tail.match(/день\s*(\d)/);
+    const days: (1 | 2)[] = dayMatch ? [Number(dayMatch[1]) as 1 | 2] : [1, 2];
+    for (const day of days) trips.add(tripIndexOfSetDay(setId, day));
+  }
+  return [...trips];
+}
+
+/**
+ * Trip-scoped clone of `item`, or `null` if nothing of it is needed on this
+ * specific trip. `computedQty` items get their `sets` sliced to just this trip's
+ * occurrences (quantity-safe — `sumMacroGramsForSets` sums exactly what's sliced).
+ * Hand-typed `qty` strings can't be numerically split, so those show once, on
+ * their earliest matching trip only — showing the same unsplit qty on every
+ * matching trip would misread as "buy this amount again each time".
+ */
+function sliceItemForTrip(item: ShoppingItem, tripIndex: number): ShoppingItem | null {
+  if (item.computedQty) {
+    const firstTrip =
+      tripsForOccurrences(item.computedQty.sets)[0] ?? defaultTripForBuyDay(item.buyDay);
+    const sets = sliceOccurrencesForTrip(item.computedQty.sets, tripIndex);
+    const grams = tripIndex === firstTrip ? (item.computedQty.grams ?? 0) : 0;
+    if (sets.length === 0 && grams === 0) return null;
+    // `item.price` (top-level) is a FLAT fallback `getSeasonalPrice` returns as-is
+    // whenever the product has no `basePrice` to scale by qty — repeating that flat
+    // number on every trip an item spans would multiply the shown price by however
+    // many trips it appears in, so only the first trip keeps it.
+    return {
+      ...item,
+      price: tripIndex === firstTrip ? item.price : undefined,
+      computedQty: { ...item.computedQty, sets, grams },
+    };
+  }
+  const noteTrips = parseNoteTrips(item.note);
+  const firstTrip =
+    noteTrips.length > 0 ? Math.min(...noteTrips) : defaultTripForBuyDay(item.buyDay);
+  return tripIndex === firstTrip ? item : null;
+}
+
+function categoriesForTrip(tripIndex: number): ShoppingCategory[] {
   return SHOPPING_LIST.map((category) => ({
     ...category,
-    items: category.items.filter((item) => item.buyDay === day),
+    items: category.items
+      .map((item) => sliceItemForTrip(item, tripIndex))
+      .filter((item): item is ShoppingItem => item !== null),
   })).filter((category) => category.items.length > 0);
 }
 
@@ -462,26 +538,11 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
     priceOverrideStore.getSnapshot,
     priceOverrideStore.getServerSnapshot,
   );
-  const [activeView, setActiveView] = useState<ViewId>("sun");
-  const [selectedDay, setSelectedDay] = useState<"all" | Weekday>("all");
-
-  const [lastActiveView, setLastActiveView] = useState(activeView);
-  if (activeView !== lastActiveView) {
-    setLastActiveView(activeView);
-    setSelectedDay("all");
-  }
-
-  const visibleCategories = categoriesForDay(activeView);
+  const [activeView, setActiveView] = useState<ViewId>("all");
+  const activeTripIndex = tripIndexOfViewId(activeView);
 
   const filteredCategories =
-    selectedDay === "all"
-      ? visibleCategories
-      : visibleCategories
-          .map((category) => ({
-            ...category,
-            items: category.items.filter((item) => isNeededForDay(item, selectedDay, weekStart)),
-          }))
-          .filter((category) => category.items.length > 0);
+    activeTripIndex === null ? SHOPPING_LIST : categoriesForTrip(activeTripIndex);
 
   const visibleItemIds = new Set(
     filteredCategories.flatMap((category) => category.items.map((item) => item.id)),
@@ -612,41 +673,10 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
         onTabChange={(id) => setActiveView(id as ViewId)}
         contentClassName="hidden"
       />
-
-      <div className="flex flex-col gap-2">
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
-          Фільтр за днем вживання:
-        </span>
-        <div className="flex flex-wrap items-center gap-1">
-          {(
-            [
-              { id: "all", label: "Усі дні" },
-              { id: "mon", label: "Пн" },
-              { id: "tue", label: "Вт" },
-              { id: "wed", label: "Ср" },
-              { id: "thu", label: "Чт" },
-              { id: "fri", label: "Пт" },
-              { id: "sat", label: "Сб" },
-              { id: "sun", label: "Нд" },
-            ] as { id: "all" | Weekday; label: string }[]
-          ).map((dayOption) => {
-            const isDayActive = selectedDay === dayOption.id;
-            return (
-              <button
-                key={dayOption.id}
-                onClick={() => setSelectedDay(dayOption.id)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors duration-150 border ${
-                  isDayActive
-                    ? "bg-accent-nutrition/15 border-accent-nutrition/30 text-accent-nutrition"
-                    : "border-white/[0.08] text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
-                }`}
-              >
-                {dayOption.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+      <p className="text-caption text-zinc-500">
+        Повний цикл рецептів — 14 днів (2 тижні), 4 закупівлі. &quot;Усі продукти&quot; — підсумок
+        за весь цикл; &quot;Закуп 1-4&quot; — рівно те, що треба до наступної поїздки.
+      </p>
 
       <div className="glass-card p-4 flex flex-col gap-3">
         <div className="flex items-center justify-between">

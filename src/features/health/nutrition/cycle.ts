@@ -52,6 +52,26 @@ export function cyclePositionOf(date: Date, epoch: Date = SET_CYCLE_EPOCH): Cycl
   return { setIndex, setId: SET_IDS[setIndex], subDay };
 }
 
+/**
+ * Реальні "трипи" закупівлі всередині 14-денного циклу. Нд-трип і Ср-трип із
+ * коментаря вище повторюються двічі (тиждень 1, тиждень 2) — тож повний цикл = 4
+ * трипи, межі яких прив'язані до `cycleDay`: 0-3 (Нд-Ср тижня 1), 4-6 (Чт-Сб
+ * тижня 1), 7-10 (Нд-Ср тижня 2), 11-13 (Чт-Сб тижня 2).
+ */
+export function tripIndexOfCycleDay(cycleDay: number): number {
+  if (cycleDay < 4) return 0;
+  if (cycleDay < 7) return 1;
+  if (cycleDay < 11) return 2;
+  return 3;
+}
+
+/** Який трип відповідає конкретному (сет, день) — set4 і set6 єдині сети, чиї
+ *  day1/day2 потрапляють у РІЗНІ трипи (той самий straddle, що описаний вище). */
+export function tripIndexOfSetDay(setId: SetId, day: 1 | 2): number {
+  const setIndex = SET_IDS.indexOf(setId);
+  return tripIndexOfCycleDay(setIndex * 2 + (day - 1));
+}
+
 export function addDays(date: Date, days: number): Date {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
