@@ -113,9 +113,9 @@ export function getUnitPrice(
   priceOverride?: number,
 ): number | null {
   if (!item.food) return null;
+  if (priceOverride !== undefined) return priceOverride;
   const product = PRODUCTS[item.food];
   if (!product || product.basePrice === undefined) return null;
-  if (priceOverride !== undefined) return priceOverride;
   const multiplier = getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
   return product.basePrice * multiplier;
 }
@@ -134,13 +134,17 @@ export function getSeasonalPrice(
   if (!item.food) return item.price ?? 0;
 
   const product = PRODUCTS[item.food];
-  if (!product || product.basePrice === undefined) {
+  // Без override продукт МУСИТЬ мати basePrice, щоб рахувати від ваги — інакше
+  // фолбек на статичну `item.price`. З override рахуємо від ваги завжди, навіть
+  // якщо в products.ts для цього продукту basePrice ще не задано (напр. м'ясо/
+  // яйця/молоко) — саме так "олівець" у ShoppingList вперше проставляє ₴/кг.
+  if (priceOverride === undefined && product?.basePrice === undefined) {
     return item.price ?? 0;
   }
 
   const seasonalUnitPrice =
     priceOverride ??
-    product.basePrice * getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
+    (product?.basePrice ?? 0) * getProductSeasonMultiplier(item.food, weekStartKey, seasonOverride);
 
   // 1. Якщо кількість розраховується автоматично через computedQty
   // sumMacroGramsForSetsMulti завжди повертає грами (незалежно від display-одиниці "unit"),

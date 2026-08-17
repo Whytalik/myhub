@@ -163,13 +163,23 @@ function sliceItemForTrip(item: ShoppingItem, tripIndex: number): ShoppingItem |
   return tripIndex === firstTrip ? item : null;
 }
 
+/** М'ясо/риба готуються наперед у мілпрепі й заморожуються порціями на весь
+ *  14-денний цикл — тож на відміну від решти категорій це НЕ ділиться по трипах,
+ *  а купується одним разом на найпершому трипі (Закуп 1), як для мілпрепу і треба. */
+const BULK_ONCE_CATEGORY_IDS = new Set(["meat"]);
+
 function categoriesForTrip(tripIndex: number): ShoppingCategory[] {
-  return SHOPPING_LIST.map((category) => ({
-    ...category,
-    items: category.items
-      .map((item) => sliceItemForTrip(item, tripIndex))
-      .filter((item): item is ShoppingItem => item !== null),
-  })).filter((category) => category.items.length > 0);
+  return SHOPPING_LIST.map((category) => {
+    if (BULK_ONCE_CATEGORY_IDS.has(category.id)) {
+      return { ...category, items: tripIndex === 0 ? category.items : [] };
+    }
+    return {
+      ...category,
+      items: category.items
+        .map((item) => sliceItemForTrip(item, tripIndex))
+        .filter((item): item is ShoppingItem => item !== null),
+    };
+  }).filter((category) => category.items.length > 0);
 }
 
 /** Boolean per item — has it been bought this trip. */
@@ -346,7 +356,10 @@ function CategoryList({
                 ? homeStockReadout(item, fraction, weekStart, seasonOverride)
                 : null;
               const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
-              const canEditPrice = !!item.food && PRODUCTS[item.food].basePrice !== undefined;
+              // Не вимагає вже заданого `basePrice` — редагування дозволене для
+              // будь-якого продукту з products.ts, щоб можна було вперше проставити
+              // ₴/кг товарам, які досі мали лише статичну заглушку `item.price`.
+              const canEditPrice = !!item.food && !!PRODUCTS[item.food];
               const priceOverride = item.food ? priceOverrides[item.food] : undefined;
               const isPriceOverridden = priceOverride !== undefined;
               const unitPrice = canEditPrice
@@ -424,6 +437,7 @@ function CategoryList({
                         type="number"
                         min={0}
                         autoFocus
+                        placeholder={unitPrice === null ? "₴/кг" : undefined}
                         defaultValue={unitPrice !== null ? Math.round(unitPrice) : undefined}
                         onBlur={(e) => {
                           const value = Number(e.target.value);
@@ -675,7 +689,8 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
       />
       <p className="text-caption text-zinc-500">
         Повний цикл рецептів — 14 днів (2 тижні), 4 закупівлі. &quot;Усі продукти&quot; — підсумок
-        за весь цикл; &quot;Закуп 1-4&quot; — рівно те, що треба до наступної поїздки.
+        за весь цикл; &quot;Закуп 1-4&quot; — рівно те, що треба до наступної поїздки. М&apos;ясо і
+        риба — винятково на Закупі 1: береться одразу на весь цикл під мілпреп.
       </p>
 
       <div className="glass-card p-4 flex flex-col gap-3">
