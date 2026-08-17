@@ -189,9 +189,6 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
   const calzoneCottageCheeseQty = formatGrams(
     sumMacroGramsForSetsMulti(["cottageCheese"], [{ set: "set7" }], undefined, seasonOverride),
   );
-  const calzoneHamQty = formatGrams(
-    sumMacroGramsForSetsMulti(["ham"], [{ set: "set7" }], undefined, seasonOverride),
-  );
   const calzoneHardCheeseQty = formatGrams(
     sumMacroGramsForSetsMulti(["hardCheese"], [{ set: "set7" }], undefined, seasonOverride),
   );
@@ -235,7 +232,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       steps: [
         `Подрібнити куряче філе (${calzoneChickenQty}) блендером або м'ясорубкою до фаршу, посолити й поперчити.`,
         "Викласти фарш пластом на деко, застелене пергаментом (форма прямокутника, ~1 см завтовшки).",
-        `На одну половину викласти начинку: творог (${calzoneCottageCheeseQty}, попередньо розім'ятий виделкою), нарізаний помідор, шинку (${calzoneHamQty}) і твердий сир (${calzoneHardCheeseQty}) — Віталію без шинки й сиру, лише творог і помідор (менше жиру).`,
+        `На одну половину викласти начинку: творог (${calzoneCottageCheeseQty}, попередньо розім'ятий виделкою), нарізаний помідор і твердий сир (${calzoneHardCheeseQty}) — Віталію без сиру, лише творог і помідор (менше жиру).`,
         "Накрити другою половиною пласта, защипнути краї як кальцоне. Запікати при 200°C ~25 хв до готовності курки всередині.",
         "Повністю охолодити (гарячим у морозилку не класти), щільно загорнути у фольгу порційно і відправити в морозильну камеру.",
       ],

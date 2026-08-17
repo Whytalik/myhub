@@ -346,7 +346,6 @@ export const PRODUCTS: Record<string, Product> = {
     { cookedMultiplier: 0.7 },
   ),
   cream: tracked("cream", "Вершки", { kcal: 145, protein: 2.8, fat: 12.5, carbs: 4 }, "dairy"),
-  ham: tracked("ham", "Шинка", { kcal: 145, protein: 22, fat: 6, carbs: 1 }, "meat"),
 
   // Готується під час міл-препу з уже врахованих tracked-продуктів — не купується окремо.
   syrniki: {
