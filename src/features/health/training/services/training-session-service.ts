@@ -1,11 +1,18 @@
 import { getCachedRecentSessions, getCachedSession } from "@/lib/cache/cache";
 import { trainingSessionRepository } from "../repositories/training-session.repository";
 import { trainingDayRepository } from "../repositories/training-day.repository";
+import { trainingDayExerciseRepository } from "../repositories/training-day-exercise.repository";
 import type { Prisma } from "@/app/generated/prisma";
-import type { StartSessionInput, UpdateSetLogInput, CompleteSessionInput } from "../types";
+import type {
+  StartSessionInput,
+  UpdateSetLogInput,
+  CompleteSessionInput,
+  TrackingType,
+} from "../types";
 import { setLogRepository } from "../repositories/set-log.repository";
 import { prisma } from "@/lib/db/prisma";
 import { buildWeeklyReportMarkdown } from "../utils/weekly-report";
+import { computeProgressionSuggestion, type ProgressionSuggestion } from "../utils/progression";
 
 export async function getRecentSessions(userId: string) {
   return getCachedRecentSessions(userId);
@@ -54,6 +61,26 @@ export async function startSession(userId: string, input: StartSessionInput) {
 export async function updateSetLog(userId: string, input: UpdateSetLogInput) {
   const { id, ...data } = input;
   return setLogRepository.update(id, userId, data);
+}
+
+export async function skipExercise(
+  userId: string,
+  sessionId: string,
+  exerciseId: string,
+  reason: string,
+) {
+  return setLogRepository.updateManyForExercise(sessionId, exerciseId, userId, {
+    skipped: true,
+    skipReason: reason,
+    completed: false,
+  });
+}
+
+export async function unskipExercise(userId: string, sessionId: string, exerciseId: string) {
+  return setLogRepository.updateManyForExercise(sessionId, exerciseId, userId, {
+    skipped: false,
+    skipReason: null,
+  });
 }
 
 export async function completeSession(userId: string, input: CompleteSessionInput) {
@@ -151,4 +178,48 @@ export async function getPastLogsForSession(userId: string, sessionId: string) {
   }
 
   return pastLogs;
+}
+
+export async function getProgressionSuggestions(userId: string, sessionId: string) {
+  const session = await trainingSessionRepository.findById(sessionId);
+  if (!session || session.userId !== userId || !session.dayId) return {};
+
+  const dayExercises = await trainingDayExerciseRepository.findByDayId(session.dayId);
+  const suggestions: Record<string, ProgressionSuggestion> = {};
+
+  for (const dayExercise of dayExercises) {
+    const latestCompletedSessionWithExercise = await prisma.trainingSession.findFirst({
+      where: {
+        userId,
+        status: "completed",
+        date: { lt: session.date },
+        setLogs: { some: { exerciseId: dayExercise.exerciseId, completed: true } },
+      },
+      orderBy: { date: "desc" },
+      include: {
+        setLogs: {
+          where: { exerciseId: dayExercise.exerciseId },
+          orderBy: { order: "asc" },
+        },
+      },
+    });
+
+    if (!latestCompletedSessionWithExercise) continue;
+
+    const suggestion = computeProgressionSuggestion(
+      {
+        targetReps: dayExercise.targetReps,
+        targetRpe: dayExercise.targetRpe,
+        targetRir: dayExercise.targetRir,
+        trackingType: dayExercise.exercise.trackingType as TrackingType,
+      },
+      latestCompletedSessionWithExercise.date,
+      session.date,
+      latestCompletedSessionWithExercise.setLogs,
+    );
+
+    if (suggestion) suggestions[dayExercise.exerciseId] = suggestion;
+  }
+
+  return suggestions;
 }

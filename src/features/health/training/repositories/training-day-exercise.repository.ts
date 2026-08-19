@@ -6,6 +6,13 @@ export const trainingDayExerciseRepository = {
     return prisma.trainingDayExercise.findUnique({ where: { id } });
   },
 
+  findByDayId(dayId: string) {
+    return prisma.trainingDayExercise.findMany({
+      where: { dayId },
+      include: { exercise: true },
+    });
+  },
+
   create(data: Prisma.TrainingDayExerciseUncheckedCreateInput) {
     return prisma.trainingDayExercise.create({ data });
   },

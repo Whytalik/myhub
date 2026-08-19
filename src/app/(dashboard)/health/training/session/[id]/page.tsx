@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { SessionClient } from "@/features/health/training/components/SessionClient";
 import * as trainingSessionService from "@/features/health/training/services/training-session-service";
 import type { TrainingSessionData } from "@/features/health/training/types";
+import type { ProgressionSuggestion } from "@/features/health/training/utils/progression";
 
 export const metadata: Metadata = {
   title: "Training Session",
@@ -21,9 +22,11 @@ export default async function TrainingSessionPage({ params }: { params: Promise<
 
   let trainingSession;
   let pastLogs = {};
+  let progressionSuggestions: Record<string, ProgressionSuggestion> = {};
   try {
     trainingSession = await trainingSessionService.getSession(userId, id);
     pastLogs = await trainingSessionService.getPastLogsForSession(userId, id);
+    progressionSuggestions = await trainingSessionService.getProgressionSuggestions(userId, id);
   } catch {
     notFound();
   }
@@ -58,6 +61,7 @@ export default async function TrainingSessionPage({ params }: { params: Promise<
             }[]
           >
         }
+        progressionSuggestions={progressionSuggestions}
       />
     </div>
   );

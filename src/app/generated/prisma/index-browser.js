@@ -547,6 +547,9 @@ exports.Prisma.SetLogScalarFieldEnum = {
   durationSeconds: 'durationSeconds',
   distanceMeters: 'distanceMeters',
   completed: 'completed',
+  isWarmup: 'isWarmup',
+  skipped: 'skipped',
+  skipReason: 'skipReason',
   notes: 'notes',
   order: 'order'
 };

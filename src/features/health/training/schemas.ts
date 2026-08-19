@@ -44,7 +44,14 @@ export const setLogSchema = z.object({
   durationSeconds: z.number().int().min(0).optional().nullable(),
   distanceMeters: z.number().min(0).optional().nullable(),
   completed: z.boolean().optional(),
+  isWarmup: z.boolean().optional(),
   notes: z.string().optional(),
+});
+
+export const skipExerciseSchema = z.object({
+  sessionId: z.string().min(1),
+  exerciseId: z.string().min(1),
+  reason: z.string().min(1, "Reason is required"),
 });
 
 export type ExerciseFormData = z.infer<typeof exerciseSchema>;
@@ -52,3 +59,4 @@ export type TrainingPlanFormData = z.infer<typeof trainingPlanSchema>;
 export type TrainingDayFormData = z.infer<typeof trainingDaySchema>;
 export type DayExerciseFormData = z.infer<typeof dayExerciseSchema>;
 export type SetLogFormData = z.infer<typeof setLogSchema>;
+export type SkipExerciseFormData = z.infer<typeof skipExerciseSchema>;

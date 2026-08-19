@@ -659,6 +659,9 @@ model SetLog {
   durationSeconds Int?
   distanceMeters  Float?
   completed       Boolean         @default(false)
+  isWarmup        Boolean         @default(false)
+  skipped         Boolean         @default(false)
+  skipReason      String?
   notes           String?
   order           Int             @default(0)
   user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)

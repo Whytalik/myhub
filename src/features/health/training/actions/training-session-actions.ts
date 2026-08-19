@@ -25,6 +25,29 @@ export async function updateSetLogAction(
   });
 }
 
+export async function skipExerciseAction(
+  sessionId: string,
+  exerciseId: string,
+  reason: string,
+): Promise<ActionResult<Awaited<ReturnType<typeof trainingSessionService.skipExercise>>>> {
+  return withAction(async (userId) => {
+    const result = await trainingSessionService.skipExercise(userId, sessionId, exerciseId, reason);
+    invalidateTrainingSessionCache(userId);
+    return result;
+  });
+}
+
+export async function unskipExerciseAction(
+  sessionId: string,
+  exerciseId: string,
+): Promise<ActionResult<Awaited<ReturnType<typeof trainingSessionService.unskipExercise>>>> {
+  return withAction(async (userId) => {
+    const result = await trainingSessionService.unskipExercise(userId, sessionId, exerciseId);
+    invalidateTrainingSessionCache(userId);
+    return result;
+  });
+}
+
 export async function completeSessionAction(
   data: CompleteSessionInput,
 ): Promise<ActionResult<Awaited<ReturnType<typeof trainingSessionService.completeSession>>>> {

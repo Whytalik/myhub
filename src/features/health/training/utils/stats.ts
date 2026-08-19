@@ -6,6 +6,7 @@ interface StatsSetLog {
   rpe: number | null;
   rir: number | null;
   completed: boolean;
+  isWarmup: boolean;
 }
 
 interface StatsSession {
@@ -66,7 +67,7 @@ export function computeE1rmSeries(
     const nameByExercise = new Map<string, string>();
 
     for (const log of session.setLogs) {
-      if (!log.completed || log.reps == null || log.weight == null) continue;
+      if (!log.completed || log.isWarmup || log.reps == null || log.weight == null) continue;
       if (log.weight <= 0 || log.reps <= 0) continue;
       if (trackingTypeByExerciseId.get(log.exerciseId) !== "weight_reps") continue;
 
@@ -99,7 +100,9 @@ export function computeRpeSeries(sessions: StatsSession[]): { date: Date; avgRpe
   const points: { date: Date; avgRpe: number }[] = [];
 
   for (const session of sessions) {
-    const rpes = session.setLogs.filter((l) => l.completed && l.rpe != null).map((l) => l.rpe!);
+    const rpes = session.setLogs
+      .filter((l) => l.completed && !l.isWarmup && l.rpe != null)
+      .map((l) => l.rpe!);
     if (rpes.length === 0) continue;
 
     const avg = rpes.reduce((a, b) => a + b, 0) / rpes.length;
@@ -113,7 +116,9 @@ export function computeRirSeries(sessions: StatsSession[]): { date: Date; avgRir
   const points: { date: Date; avgRir: number }[] = [];
 
   for (const session of sessions) {
-    const rirs = session.setLogs.filter((l) => l.completed && l.rir != null).map((l) => l.rir!);
+    const rirs = session.setLogs
+      .filter((l) => l.completed && !l.isWarmup && l.rir != null)
+      .map((l) => l.rir!);
     if (rirs.length === 0) continue;
 
     const avg = rirs.reduce((a, b) => a + b, 0) / rirs.length;
@@ -138,7 +143,7 @@ export function computeMuscleGroupTonnage(
   for (const session of sessions) {
     if (session.date < since) continue;
     for (const log of session.setLogs) {
-      if (!log.completed || log.reps == null || log.weight == null) continue;
+      if (!log.completed || log.isWarmup || log.reps == null || log.weight == null) continue;
       const group = muscleGroupByExerciseId.get(log.exerciseId) || "Інше";
       tonnageByGroup.set(group, (tonnageByGroup.get(group) ?? 0) + log.reps * log.weight);
     }

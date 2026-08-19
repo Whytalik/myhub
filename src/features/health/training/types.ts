@@ -124,6 +124,9 @@ export interface SetLogData {
   durationSeconds: number | null;
   distanceMeters: number | null;
   completed: boolean;
+  isWarmup: boolean;
+  skipped: boolean;
+  skipReason: string | null;
   notes: string | null;
   order: number;
 }
@@ -138,6 +141,7 @@ export interface UpdateSetLogInput {
   durationSeconds?: number | null;
   distanceMeters?: number | null;
   completed?: boolean;
+  isWarmup?: boolean;
   notes?: string | null;
 }
 

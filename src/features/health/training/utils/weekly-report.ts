@@ -25,6 +25,7 @@ interface WeeklySetLog {
   durationSeconds: number | null;
   distanceMeters: number | null;
   completed: boolean;
+  isWarmup: boolean;
 }
 
 interface WeeklySession {
@@ -94,6 +95,7 @@ export function buildWeeklyReportMarkdown(input: WeeklyReportInput): string {
             if (log.distanceMeters != null) parts.push(`${log.distanceMeters}м`);
             if (log.rpe != null) parts.push(`RPE${log.rpe}`);
             if (log.rir != null) parts.push(`RIR${log.rir}`);
+            if (log.isWarmup) parts.push("розм.");
             return parts.join(" ");
           })
           .join(", ");
@@ -105,7 +107,7 @@ export function buildWeeklyReportMarkdown(input: WeeklyReportInput): string {
   const tonnageByGroup = new Map<string, number>();
   for (const session of input.sessions) {
     for (const log of session.setLogs) {
-      if (!log.completed || log.reps == null || log.weight == null) continue;
+      if (!log.completed || log.isWarmup || log.reps == null || log.weight == null) continue;
       const group = input.muscleGroupByExerciseId.get(log.exerciseId) || "Інше";
       tonnageByGroup.set(group, (tonnageByGroup.get(group) ?? 0) + log.reps * log.weight);
     }

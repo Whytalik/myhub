@@ -52,6 +52,12 @@ export function buildSessionReportMarkdown(input: SessionReportInput): string {
   for (const group of groupByExercise(input.setLogs)) {
     lines.push("");
     lines.push(`### ${group.exerciseName}`);
+
+    if (group.sets[0]?.skipped) {
+      lines.push(`_Пропущено: ${group.sets[0].skipReason}_`);
+      continue;
+    }
+
     group.sets.forEach((set, index) => {
       const parts: string[] = [];
       if (set.reps != null) parts.push(`${set.reps} повт`);
@@ -61,8 +67,9 @@ export function buildSessionReportMarkdown(input: SessionReportInput): string {
       if (set.rpe != null) parts.push(`RPE ${set.rpe}`);
       if (set.rir != null) parts.push(`RIR ${set.rir}`);
       const status = set.completed ? "" : " (не виконано)";
+      const warmup = set.isWarmup ? " (розминка)" : "";
       const notes = set.notes ? ` — ${set.notes}` : "";
-      lines.push(`${index + 1}. ${parts.join(" × ") || "—"}${status}${notes}`);
+      lines.push(`${index + 1}. ${parts.join(" × ") || "—"}${status}${warmup}${notes}`);
     });
   }
 

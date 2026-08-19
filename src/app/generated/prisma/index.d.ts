@@ -40962,6 +40962,9 @@ export namespace Prisma {
     durationSeconds: number | null
     distanceMeters: number | null
     completed: boolean | null
+    isWarmup: boolean | null
+    skipped: boolean | null
+    skipReason: string | null
     notes: string | null
     order: number | null
   }
@@ -40981,6 +40984,9 @@ export namespace Prisma {
     durationSeconds: number | null
     distanceMeters: number | null
     completed: boolean | null
+    isWarmup: boolean | null
+    skipped: boolean | null
+    skipReason: string | null
     notes: string | null
     order: number | null
   }
@@ -41000,6 +41006,9 @@ export namespace Prisma {
     durationSeconds: number
     distanceMeters: number
     completed: number
+    isWarmup: number
+    skipped: number
+    skipReason: number
     notes: number
     order: number
     _all: number
@@ -41045,6 +41054,9 @@ export namespace Prisma {
     durationSeconds?: true
     distanceMeters?: true
     completed?: true
+    isWarmup?: true
+    skipped?: true
+    skipReason?: true
     notes?: true
     order?: true
   }
@@ -41064,6 +41076,9 @@ export namespace Prisma {
     durationSeconds?: true
     distanceMeters?: true
     completed?: true
+    isWarmup?: true
+    skipped?: true
+    skipReason?: true
     notes?: true
     order?: true
   }
@@ -41083,6 +41098,9 @@ export namespace Prisma {
     durationSeconds?: true
     distanceMeters?: true
     completed?: true
+    isWarmup?: true
+    skipped?: true
+    skipReason?: true
     notes?: true
     order?: true
     _all?: true
@@ -41189,6 +41207,9 @@ export namespace Prisma {
     durationSeconds: number | null
     distanceMeters: number | null
     completed: boolean
+    isWarmup: boolean
+    skipped: boolean
+    skipReason: string | null
     notes: string | null
     order: number
     _count: SetLogCountAggregateOutputType | null
@@ -41227,6 +41248,9 @@ export namespace Prisma {
     durationSeconds?: boolean
     distanceMeters?: boolean
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: boolean
     notes?: boolean
     order?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -41249,6 +41273,9 @@ export namespace Prisma {
     durationSeconds?: boolean
     distanceMeters?: boolean
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: boolean
     notes?: boolean
     order?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -41271,6 +41298,9 @@ export namespace Prisma {
     durationSeconds?: boolean
     distanceMeters?: boolean
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: boolean
     notes?: boolean
     order?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -41293,11 +41323,14 @@ export namespace Prisma {
     durationSeconds?: boolean
     distanceMeters?: boolean
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: boolean
     notes?: boolean
     order?: boolean
   }
 
-  export type SetLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "sessionId" | "exerciseId" | "exerciseName" | "setNumber" | "reps" | "weight" | "rpe" | "rir" | "restSeconds" | "durationSeconds" | "distanceMeters" | "completed" | "notes" | "order", ExtArgs["result"]["setLog"]>
+  export type SetLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "sessionId" | "exerciseId" | "exerciseName" | "setNumber" | "reps" | "weight" | "rpe" | "rir" | "restSeconds" | "durationSeconds" | "distanceMeters" | "completed" | "isWarmup" | "skipped" | "skipReason" | "notes" | "order", ExtArgs["result"]["setLog"]>
   export type SetLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     session?: boolean | TrainingSessionDefaultArgs<ExtArgs>
@@ -41336,6 +41369,9 @@ export namespace Prisma {
       durationSeconds: number | null
       distanceMeters: number | null
       completed: boolean
+      isWarmup: boolean
+      skipped: boolean
+      skipReason: string | null
       notes: string | null
       order: number
     }, ExtArgs["result"]["setLog"]>
@@ -41778,6 +41814,9 @@ export namespace Prisma {
     readonly durationSeconds: FieldRef<"SetLog", 'Int'>
     readonly distanceMeters: FieldRef<"SetLog", 'Float'>
     readonly completed: FieldRef<"SetLog", 'Boolean'>
+    readonly isWarmup: FieldRef<"SetLog", 'Boolean'>
+    readonly skipped: FieldRef<"SetLog", 'Boolean'>
+    readonly skipReason: FieldRef<"SetLog", 'String'>
     readonly notes: FieldRef<"SetLog", 'String'>
     readonly order: FieldRef<"SetLog", 'Int'>
   }
@@ -46126,6 +46165,9 @@ export namespace Prisma {
     durationSeconds: 'durationSeconds',
     distanceMeters: 'distanceMeters',
     completed: 'completed',
+    isWarmup: 'isWarmup',
+    skipped: 'skipped',
+    skipReason: 'skipReason',
     notes: 'notes',
     order: 'order'
   };
@@ -49159,6 +49201,9 @@ export namespace Prisma {
     durationSeconds?: IntNullableFilter<"SetLog"> | number | null
     distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
     completed?: BoolFilter<"SetLog"> | boolean
+    isWarmup?: BoolFilter<"SetLog"> | boolean
+    skipped?: BoolFilter<"SetLog"> | boolean
+    skipReason?: StringNullableFilter<"SetLog"> | string | null
     notes?: StringNullableFilter<"SetLog"> | string | null
     order?: IntFilter<"SetLog"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -49181,6 +49226,9 @@ export namespace Prisma {
     durationSeconds?: SortOrderInput | SortOrder
     distanceMeters?: SortOrderInput | SortOrder
     completed?: SortOrder
+    isWarmup?: SortOrder
+    skipped?: SortOrder
+    skipReason?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     order?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -49206,6 +49254,9 @@ export namespace Prisma {
     durationSeconds?: IntNullableFilter<"SetLog"> | number | null
     distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
     completed?: BoolFilter<"SetLog"> | boolean
+    isWarmup?: BoolFilter<"SetLog"> | boolean
+    skipped?: BoolFilter<"SetLog"> | boolean
+    skipReason?: StringNullableFilter<"SetLog"> | string | null
     notes?: StringNullableFilter<"SetLog"> | string | null
     order?: IntFilter<"SetLog"> | number
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -49228,6 +49279,9 @@ export namespace Prisma {
     durationSeconds?: SortOrderInput | SortOrder
     distanceMeters?: SortOrderInput | SortOrder
     completed?: SortOrder
+    isWarmup?: SortOrder
+    skipped?: SortOrder
+    skipReason?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     order?: SortOrder
     _count?: SetLogCountOrderByAggregateInput
@@ -49255,6 +49309,9 @@ export namespace Prisma {
     durationSeconds?: IntNullableWithAggregatesFilter<"SetLog"> | number | null
     distanceMeters?: FloatNullableWithAggregatesFilter<"SetLog"> | number | null
     completed?: BoolWithAggregatesFilter<"SetLog"> | boolean
+    isWarmup?: BoolWithAggregatesFilter<"SetLog"> | boolean
+    skipped?: BoolWithAggregatesFilter<"SetLog"> | boolean
+    skipReason?: StringNullableWithAggregatesFilter<"SetLog"> | string | null
     notes?: StringNullableWithAggregatesFilter<"SetLog"> | string | null
     order?: IntWithAggregatesFilter<"SetLog"> | number
   }
@@ -52505,6 +52562,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
     user: UserCreateNestedOneWithoutSetLogsInput
@@ -52527,6 +52587,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
   }
@@ -52543,6 +52606,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutSetLogsNestedInput
@@ -52565,6 +52631,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
@@ -52584,6 +52653,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
   }
@@ -52600,6 +52672,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
@@ -52619,6 +52694,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
@@ -55127,6 +55205,9 @@ export namespace Prisma {
     durationSeconds?: SortOrder
     distanceMeters?: SortOrder
     completed?: SortOrder
+    isWarmup?: SortOrder
+    skipped?: SortOrder
+    skipReason?: SortOrder
     notes?: SortOrder
     order?: SortOrder
   }
@@ -55158,6 +55239,9 @@ export namespace Prisma {
     durationSeconds?: SortOrder
     distanceMeters?: SortOrder
     completed?: SortOrder
+    isWarmup?: SortOrder
+    skipped?: SortOrder
+    skipReason?: SortOrder
     notes?: SortOrder
     order?: SortOrder
   }
@@ -55177,6 +55261,9 @@ export namespace Prisma {
     durationSeconds?: SortOrder
     distanceMeters?: SortOrder
     completed?: SortOrder
+    isWarmup?: SortOrder
+    skipped?: SortOrder
+    skipReason?: SortOrder
     notes?: SortOrder
     order?: SortOrder
   }
@@ -59203,6 +59290,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
     session: TrainingSessionCreateNestedOneWithoutSetLogsInput
@@ -59223,6 +59313,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
   }
@@ -60009,6 +60102,9 @@ export namespace Prisma {
     durationSeconds?: IntNullableFilter<"SetLog"> | number | null
     distanceMeters?: FloatNullableFilter<"SetLog"> | number | null
     completed?: BoolFilter<"SetLog"> | boolean
+    isWarmup?: BoolFilter<"SetLog"> | boolean
+    skipped?: BoolFilter<"SetLog"> | boolean
+    skipReason?: StringNullableFilter<"SetLog"> | string | null
     notes?: StringNullableFilter<"SetLog"> | string | null
     order?: IntFilter<"SetLog"> | number
   }
@@ -64582,6 +64678,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
     user: UserCreateNestedOneWithoutSetLogsInput
@@ -64602,6 +64701,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
   }
@@ -65761,6 +65863,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
     user: UserCreateNestedOneWithoutSetLogsInput
@@ -65781,6 +65886,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
   }
@@ -67207,6 +67315,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
   }
@@ -68102,6 +68213,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     session?: TrainingSessionUpdateOneRequiredWithoutSetLogsNestedInput
@@ -68122,6 +68236,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
@@ -68140,6 +68257,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
@@ -69221,6 +69341,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
   }
@@ -69285,6 +69408,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutSetLogsNestedInput
@@ -69305,6 +69431,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
@@ -69323,6 +69452,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
@@ -69537,6 +69669,9 @@ export namespace Prisma {
     durationSeconds?: number | null
     distanceMeters?: number | null
     completed?: boolean
+    isWarmup?: boolean
+    skipped?: boolean
+    skipReason?: string | null
     notes?: string | null
     order?: number
   }
@@ -69553,6 +69688,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneRequiredWithoutSetLogsNestedInput
@@ -69573,6 +69711,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
@@ -69591,6 +69732,9 @@ export namespace Prisma {
     durationSeconds?: NullableIntFieldUpdateOperationsInput | number | null
     distanceMeters?: NullableFloatFieldUpdateOperationsInput | number | null
     completed?: BoolFieldUpdateOperationsInput | boolean
+    isWarmup?: BoolFieldUpdateOperationsInput | boolean
+    skipped?: BoolFieldUpdateOperationsInput | boolean
+    skipReason?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
   }
