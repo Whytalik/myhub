@@ -454,7 +454,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "vegetables-broccoli-sun",
         food: "broccoli",
         computedQty: { food: "broccoli", sets: [{ set: "set1" }, { set: "set3" }] },
-        note: "Сет1 150г + Сет3 150г",
+        note: "Сет1 300г + Сет3 150г",
         price: 28,
         buyDay: "sun",
       },
