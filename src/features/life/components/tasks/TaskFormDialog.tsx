@@ -709,8 +709,22 @@ function TaskDetail({
     });
   };
 
-  const sphereDropdown = useDynamicPositioning<HTMLButtonElement>({ contentWidth: 200, offset: 6 });
-  const priorityDropdown = useDynamicPositioning<HTMLButtonElement>({ contentWidth: 160, offset: 6 });
+  const {
+    isOpen: sphereIsOpen,
+    coords: sphereCoords,
+    triggerRef: sphereTriggerRef,
+    contentRef: sphereContentRef,
+    toggle: sphereToggle,
+    close: sphereClose,
+  } = useDynamicPositioning<HTMLButtonElement>({ contentWidth: 200, offset: 6 });
+  const {
+    isOpen: priorityIsOpen,
+    coords: priorityCoords,
+    triggerRef: priorityTriggerRef,
+    contentRef: priorityContentRef,
+    toggle: priorityToggle,
+    close: priorityClose,
+  } = useDynamicPositioning<HTMLButtonElement>({ contentWidth: 160, offset: 6 });
 
   const sphere = spheres.find((s) => s.id === sphereId);
   const statusCfg = STATUS_CONFIG[status];
@@ -769,8 +783,8 @@ function TaskDetail({
           />
           <div className="flex items-center gap-2 flex-wrap mt-1.5">
             <button
-              ref={sphereDropdown.triggerRef}
-              onClick={sphereDropdown.toggle}
+              ref={sphereTriggerRef}
+              onClick={sphereToggle}
               className={spherePillClass}
               style={spherePillStyle}
             >
@@ -792,11 +806,7 @@ function TaskDetail({
               <statusCfg.icon size={9} />
               {statusCfg.label}
             </button>
-            <button
-              ref={priorityDropdown.triggerRef}
-              onClick={priorityDropdown.toggle}
-              className={priorityPillClass}
-            >
+            <button ref={priorityTriggerRef} onClick={priorityToggle} className={priorityPillClass}>
               <priorityCfg.icon size={9} />
               {priorityCfg.label}
             </button>
@@ -1059,20 +1069,18 @@ function TaskDetail({
         variant="danger"
       />
 
-      {sphereDropdown.isOpen &&
-        sphereDropdown.coords &&
+      {sphereIsOpen &&
+        sphereCoords &&
         typeof document !== "undefined" &&
         createPortal(
           <div
-            ref={sphereDropdown.contentRef as React.RefObject<HTMLDivElement>}
+            ref={sphereContentRef as React.RefObject<HTMLDivElement>}
             style={{
               position: "fixed",
-              left: sphereDropdown.coords.left,
-              top: sphereDropdown.coords.align === "bottom" ? sphereDropdown.coords.top : undefined,
+              left: sphereCoords.left,
+              top: sphereCoords.align === "bottom" ? sphereCoords.top : undefined,
               bottom:
-                sphereDropdown.coords.align === "top"
-                  ? window.innerHeight - sphereDropdown.coords.top
-                  : undefined,
+                sphereCoords.align === "top" ? window.innerHeight - sphereCoords.top : undefined,
               width: 200,
             }}
             onClick={(e) => e.stopPropagation()}
@@ -1086,7 +1094,7 @@ function TaskDetail({
                   key={s.id}
                   onClick={() => {
                     setSphereId(s.id);
-                    sphereDropdown.close();
+                    sphereClose();
                   }}
                   className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors duration-150 ${
                     active
@@ -1108,22 +1116,19 @@ function TaskDetail({
           document.body,
         )}
 
-      {priorityDropdown.isOpen &&
-        priorityDropdown.coords &&
+      {priorityIsOpen &&
+        priorityCoords &&
         typeof document !== "undefined" &&
         createPortal(
           <div
-            ref={priorityDropdown.contentRef as React.RefObject<HTMLDivElement>}
+            ref={priorityContentRef as React.RefObject<HTMLDivElement>}
             style={{
               position: "fixed",
-              left: priorityDropdown.coords.left,
-              top:
-                priorityDropdown.coords.align === "bottom"
-                  ? priorityDropdown.coords.top
-                  : undefined,
+              left: priorityCoords.left,
+              top: priorityCoords.align === "bottom" ? priorityCoords.top : undefined,
               bottom:
-                priorityDropdown.coords.align === "top"
-                  ? window.innerHeight - priorityDropdown.coords.top
+                priorityCoords.align === "top"
+                  ? window.innerHeight - priorityCoords.top
                   : undefined,
               width: 160,
             }}
@@ -1139,7 +1144,7 @@ function TaskDetail({
                   key={p}
                   onClick={() => {
                     setPriority(p);
-                    priorityDropdown.close();
+                    priorityClose();
                   }}
                   className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors duration-150 ${
                     active
@@ -1147,9 +1152,7 @@ function TaskDetail({
                       : "text-zinc-300 hover:bg-white/5 hover:text-white"
                   }`}
                 >
-                  <div
-                    className={`flex items-center justify-center w-5 h-5 rounded ${cfg.style}`}
-                  >
+                  <div className={`flex items-center justify-center w-5 h-5 rounded ${cfg.style}`}>
                     <PIcon size={10} strokeWidth={3} />
                   </div>
                   {cfg.label}
