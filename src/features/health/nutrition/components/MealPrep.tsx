@@ -52,8 +52,8 @@ const proteinIngredients: RecipeIngredient[] = [
     computedQty: { food: "chickenHearts", sets: [{ set: "set2" }], wastePercent: 15 },
   },
   {
-    food: "porkChop",
-    computedQty: { food: "porkChop", sets: [{ set: "set7" }], wastePercent: 10 },
+    food: "porkTenderloin",
+    computedQty: { food: "porkTenderloin", sets: [{ set: "set7" }], wastePercent: 5 },
   },
   { food: "mackerel", computedQty: { food: "mackerel", sets: [{ set: "set3", day: 1 }] } },
   { food: "cottageCheese", qualifier: "5–9%", qty: "500 г, для сирників" },
@@ -143,10 +143,10 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       marinade: "Медово-гірчичний",
     },
     {
-      food: "porkChop",
+      food: "porkTenderloin",
       qualifier: "Сет7",
-      computedQty: { food: "porkChop", sets: [{ set: "set7" }] },
-      marinade: "Суха трав'яна база",
+      computedQty: { food: "porkTenderloin", sets: [{ set: "set7" }] },
+      marinade: "Часник, кумін, паприка, лайм",
     },
     {
       food: "mackerel",
@@ -189,7 +189,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
     ),
   );
   const porkQty = formatGrams(
-    sumMacroGramsForSetsMulti(["porkChop"], [{ set: "set7" }], undefined, seasonOverride),
+    sumMacroGramsForSetsMulti(["porkTenderloin"], [{ set: "set7" }], undefined, seasonOverride),
   );
   const bunFillingQty = formatGrams(
     sumMacroGramsForSetsMulti(
@@ -215,13 +215,13 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       steps: [
         "Дістати все м'ясо з холодильника, розкласти на робочій поверхні. Підготувати 5 глибоких мисок для маринування.",
         `Очищення: курячі серця (${heartsQty}) промити у друшляку, натискаючи пальцями для видалення згустків крові.`,
-        `Відбивання: шматки свинячої відбивної (${porkQty}) накрити харчовою плівкою і відбити молотком з обох боків.`,
+        `Нарізка: свинячу вирізку (${porkQty}) нарізати дрібними кубиками для боулів.`,
         `Нарізка: куряче філе для шашликів (${shashlikQty}) нарізати порційними шматочками розміром 2–3 см.`,
         `Миска 1: приготувати «Йогуртово-лимонний маринад» (рецепт нижче), додати куряче філе для шашликів (${shashlikQty}) та перемішати.`,
         `Миска 2: приготувати «Соєво-томатний маринад» (рецепт нижче), додати очищені курячі серця (${heartsQty}) та перемішати.`,
         `Миска 3: приготувати «Соєво-часниковий маринад» (рецепт нижче), додати куряче філе для смаження (${fryQty}) та перемішати.`,
         `Миска 4: приготувати «Медово-гірчичний маринад» (рецепт нижче), обмазати сумішшю куряче філе (${bakeQty}).`,
-        `Без миски: приготувати «Суху трав'яну базу» (рецепт нижче), натерти сумішшю відбивні (${porkQty}) з обох боків.`,
+        `Без миски: приготувати «Спеції для вирізки» (рецепт нижче), обваляти в них кубики вирізки (${porkQty}).`,
         "Скумбрія: випотрошити 2 тушки, промити, зробити кілька поперечних надрізів на боках. Половину лимона нарізати тонкими півкружальцями і вставити в надрізи, посолити та натерти «Скумбрія з лимоном» (рецепт нижче). Щільно загорнути кожну тушку в фольгу.",
       ],
     },
@@ -328,16 +328,16 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
         note: "Маринувати від 1 до 4 год. Запікати у фользі або рукаві при 180°C — 30–35 хв.",
       },
       {
-        title: "Суха трав'яна база",
-        for: "Для свинячої відбивної (Сет7). Соус подачі: Цибулево-вершковий",
+        title: "Спеції для вирізки",
+        for: "Для свинячої вирізки боула (Сет7).",
         ingredients: [
           { food: "salt" },
           { food: "blackPepper" },
-          { food: "rosemary", qty: "1 ч.л." },
-          { food: "thyme", qty: "½ ч.л." },
-          { food: "garlic", qty: "2 зубчики (тиском)" },
+          { food: "garlic", qty: "2 зубчики (тиском) або сухий" },
+          { food: "cumin", qty: "½ ч.л. (зіра)" },
+          { food: "paprika", qty: "1 ч.л. (копчена)" },
         ],
-        note: "Без олії та рідини — натерти суху суміш з обох боків, дати полежати 15–30 хв перед смаженням.",
+        note: "Нарізану вирізку перемішати зі спеціями, обсмажити на сковороді з мінімумом олії.",
       },
       {
         title: "Скумбрія з лимоном",
