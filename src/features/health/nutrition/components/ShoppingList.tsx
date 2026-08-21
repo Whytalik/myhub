@@ -182,6 +182,92 @@ function categoriesForTrip(tripIndex: number): ShoppingCategory[] {
   }).filter((category) => category.items.length > 0);
 }
 
+function combineShoppingItems(categories: ShoppingCategory[]): ShoppingCategory[] {
+  return categories.map((category) => {
+    const mergedItems: ShoppingItem[] = [];
+    const grouped = new Map<string, ShoppingItem[]>();
+
+    for (const item of category.items) {
+      if (!item.food) {
+        mergedItems.push(item);
+        continue;
+      }
+      const list = grouped.get(item.food) || [];
+      list.push(item);
+      grouped.set(item.food, list);
+    }
+
+    for (const [food, items] of grouped.entries()) {
+      if (items.length === 1) {
+        mergedItems.push(items[0]);
+        continue;
+      }
+
+      const first = items[0];
+      const combinedId = items.map((it) => it.id).join("+");
+      const combinedNote = items.map((it) => it.note).filter(Boolean).join(" + ");
+      const combinedQualifier = items.map((it) => it.qualifier).filter(Boolean).join(" / ");
+
+      const hasComputedQty = items.every((it) => !!it.computedQty);
+      let combinedComputedQty = undefined;
+      if (hasComputedQty) {
+        const sets: any[] = [];
+        let grams = 0;
+        let unit = undefined;
+        let wastePercent = undefined;
+        let extraFood: string[] = [];
+
+        for (const it of items) {
+          const cq = it.computedQty!;
+          sets.push(...cq.sets);
+          if (cq.grams !== undefined) grams += cq.grams;
+          if (cq.unit) unit = cq.unit;
+          if (cq.wastePercent) wastePercent = cq.wastePercent;
+          if (cq.extraFood) extraFood.push(...cq.extraFood);
+        }
+
+        combinedComputedQty = {
+          food,
+          sets,
+          grams: grams > 0 ? grams : undefined,
+          unit,
+          wastePercent,
+          extraFood: extraFood.length > 0 ? extraFood : undefined,
+        };
+      }
+
+      let combinedQty = undefined;
+      if (!hasComputedQty) {
+        const qties = items.map((it) => it.qty).filter(Boolean);
+        if (qties.length > 0) {
+          combinedQty = qties.join(" + ");
+        }
+      }
+
+      let combinedPrice = undefined;
+      const prices = items.map((it) => it.price).filter((p): p is number => typeof p === "number");
+      if (prices.length === items.length) {
+        combinedPrice = prices.reduce((sum, p) => sum + p, 0);
+      }
+
+      mergedItems.push({
+        ...first,
+        id: combinedId,
+        note: combinedNote || undefined,
+        qualifier: combinedQualifier || undefined,
+        qty: combinedQty,
+        price: combinedPrice,
+        computedQty: combinedComputedQty,
+      });
+    }
+
+    return {
+      ...category,
+      items: mergedItems,
+    };
+  });
+}
+
 /** Boolean per item — has it been bought this trip. */
 type FlagMap = Record<string, boolean>;
 /** Fraction 0–1 per item — how much of the needed amount is already at home
@@ -559,7 +645,7 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
   const activeTripIndex = tripIndexOfViewId(activeView);
 
   const filteredCategories =
-    activeTripIndex === null ? SHOPPING_LIST : categoriesForTrip(activeTripIndex);
+    activeTripIndex === null ? combineShoppingItems(SHOPPING_LIST) : categoriesForTrip(activeTripIndex);
 
   const visibleItemIds = new Set(
     filteredCategories.flatMap((category) => category.items.map((item) => item.id)),
