@@ -24,7 +24,7 @@ export const set2: DayPlan = {
         "Маринований огірок свіжий — 16 г (по 8 г кожному)",
         "Аджика — 32 г (по 16 г кожному)",
         "Салат айсберг — 40 г (по 20 г кожному)",
-        "Апельсини (як десерт) — 200 г (по 100 г кожному)",
+        "Сливи (як десерт) — 200 г (по 100 г кожному)",
       ],
       macroItems: [
         { food: "kipBroodje", vitalii: 100, olesia: 100 },
@@ -33,7 +33,7 @@ export const set2: DayPlan = {
         { food: "pickledCucumber", vitalii: 8, olesia: 8, component: "Начинка" },
         { food: "adjika", vitalii: 16, olesia: 16, component: "Начинка" },
         { food: "icebergLettuce", vitalii: 20, olesia: 20 },
-        { food: "orange", vitalii: 100, olesia: 100, component: "Десерт" },
+        { food: "plum", vitalii: 100, olesia: 100, component: "Десерт" },
       ],
     },
     {
@@ -45,7 +45,7 @@ export const set2: DayPlan = {
         "Гречка — 185 г сухої (Віталій 40 г, Олеся 145 г — Віталію зменшено, бо вуглеводи дня вже й так над ціллю)",
         "Соєва глазур до сердець і гречки: соєвий соус 30 г + мед 16 г + часник + краплі лимона (по стільки ж кожному)",
         "Для салату (окремо): рукола 150 г, помідори 4 шт (~520 г), твердий сир (для Олесі 30 г, Віталій без сиру), олія (лише для Олесі — 1 ч.л./5 г), яблучний оцет 2 ч.л.",
-        "Апельсини (як десерт) — 400 г (по 200 г кожному, по 100 г на обід та вечерю)",
+        "Сливи (як десерт) — 400 г (по 200 г кожному, по 100 г на обід та вечерю)",
       ],
       macroItems: [
         {
@@ -62,7 +62,7 @@ export const set2: DayPlan = {
         { food: "tomato", vitalii: 260, olesia: 260, component: "Салат з руколою" },
         { food: "hardCheese", vitalii: 0, olesia: 30, component: "Салат з руколою" },
         { food: "oil", vitalii: 0, olesia: 5, component: "Салат з руколою" },
-        { food: "orange", vitalii: 200, olesia: 200, component: "Десерт (обід + вечеря)" },
+        { food: "plum", vitalii: 200, olesia: 200, component: "Десерт (обід + вечеря)" },
       ],
     },
     {

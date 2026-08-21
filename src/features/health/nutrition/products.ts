@@ -348,6 +348,14 @@ export const PRODUCTS: Record<string, Product> = {
     "fruits",
     { searchTerm: "абрикос", basePrice: 90 },
   ),
+  peach: tracked("peach", "Персики", { kcal: 39, protein: 0.9, fat: 0.3, carbs: 9.5 }, "fruits", {
+    searchTerm: "персик",
+    basePrice: 85,
+  }),
+  plum: tracked("plum", "Сливи", { kcal: 46, protein: 0.7, fat: 0.3, carbs: 11.4 }, "fruits", {
+    searchTerm: "слив",
+    basePrice: 60,
+  }),
   pear: tracked("pear", "Груші", { kcal: 57, protein: 0.4, fat: 0.1, carbs: 15.2 }, "fruits", {
     searchTerm: "груш",
     basePrice: 40,
