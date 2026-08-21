@@ -1,6 +1,6 @@
 import { DayPlan } from "../types";
 
-export const friday: DayPlan = {
+export const set5: DayPlan = {
   setId: "set5",
   labelUk: "Куряче філе з картоплею",
   labelShort: "Сет 5",
@@ -80,18 +80,19 @@ export const friday: DayPlan = {
     {
       type: "snack",
       label: "Перекус",
-      title: "Йогуртово-ягідний десерт",
+      title: "Шоколадний творожний мус",
       ingredients: [
-        "Грецький йогурт — 385 г (Віталій 235 г, Олеся 150 г — збільшено замість протеїну)",
-        "Ягоди — 200 г (по 100 г)",
-        "Банан (для Олесі) — 1.5 шт (~180 г)",
-        "Мед (для Олесі) — 1 ч.л. (~20 г)",
+        "Творог — Віталій 100 г, Олеся 130 г",
+        "Какао-порошок — Віталій 5 г, Олеся 8 г",
+        "Молоко — Віталій 30 г, Олеся 50 г",
+        "Мед — Віталій 10 г, Олеся 20 г",
+        "Збити блендером (звичайним чи занурювальним) до кремової текстури.",
       ],
       macroItems: [
-        { food: "yogurtGreek", vitalii: 235, olesia: 150 },
-        { food: "berries", vitalii: 100, olesia: 100 },
-        { food: "banana", vitalii: 0, olesia: 180 },
-        { food: "honey", vitalii: 0, olesia: 20 },
+        { food: "cottageCheese", vitalii: 100, olesia: 130 },
+        { food: "cocoa", vitalii: 5, olesia: 8 },
+        { food: "milk", vitalii: 30, olesia: 50 },
+        { food: "honey", vitalii: 10, olesia: 20 },
       ],
     },
   ],

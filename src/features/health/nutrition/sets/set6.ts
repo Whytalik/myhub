@@ -1,6 +1,6 @@
 import { DayPlan } from "../types";
 
-export const saturday: DayPlan = {
+export const set6: DayPlan = {
   setId: "set6",
   labelUk: "Салат Цезар з куркою",
   labelShort: "Сет 6",

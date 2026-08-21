@@ -1,11 +1,11 @@
 import { DayPlan, ShoppingCategory, Profile } from "./types";
-import { monday } from "./days/monday";
-import { tuesday } from "./days/tuesday";
-import { wednesday } from "./days/wednesday";
-import { thursday } from "./days/thursday";
-import { friday } from "./days/friday";
-import { saturday } from "./days/saturday";
-import { sunday } from "./days/sunday";
+import { set1 } from "./sets/set1";
+import { set2 } from "./sets/set2";
+import { set3 } from "./sets/set3";
+import { set4 } from "./sets/set4";
+import { set5 } from "./sets/set5";
+import { set6 } from "./sets/set6";
+import { set7 } from "./sets/set7";
 
 export const PROFILES: Profile[] = [
   {
@@ -24,15 +24,7 @@ export const PROFILES: Profile[] = [
   },
 ];
 
-export const SUMMER_SET_PLAN: DayPlan[] = [
-  monday,
-  tuesday,
-  wednesday,
-  thursday,
-  friday,
-  saturday,
-  sunday,
-];
+export const SUMMER_SET_PLAN: DayPlan[] = [set1, set2, set3, set4, set5, set6, set7];
 
 export const SHOPPING_LIST: ShoppingCategory[] = [
   {

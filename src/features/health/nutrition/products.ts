@@ -183,6 +183,20 @@ export const PRODUCTS: Record<string, Product> = {
     { kcal: 400, protein: 80, fat: 6.7, carbs: 10 },
     "other",
   ),
+  cocoa: tracked(
+    "cocoa",
+    "Какао-порошок (несолодкий)",
+    { kcal: 228, protein: 19.6, fat: 13.7, carbs: 57.9 },
+    "other",
+    { basePrice: 250 },
+  ),
+  peanutButter: tracked(
+    "peanutButter",
+    "Арахісова паста",
+    { kcal: 588, protein: 22, fat: 50, carbs: 24 },
+    "other",
+    { searchTerm: "арахісов", basePrice: 220 },
+  ),
   buckwheat: tracked(
     "buckwheat",
     "Гречка",
@@ -369,6 +383,21 @@ export const PRODUCTS: Record<string, Product> = {
       "grains",
     ),
     gramsPerPiece: 50,
+  },
+  // Курячо-яєчний маффін з капустою (заготовка) — печеться раз на весь Сет3 (12 шт
+  // одразу, 6/день на 2 людей × 2 дні сету), зберігається в холодильнику (не в
+  // морозилці — тримати всього 2 дні, заморозка не потрібна). Макроси прораховані
+  // напряму з tracked-продуктів рецепту (eggs/chickenMarinated/cabbage/onion/milk):
+  // на весь батч ~1439 ккал/158г білка/74г жиру/40г вугл. ÷ 12 = макроси нижче.
+  // Докладніше — docs/recipes/chicken-egg-cabbage-muffins.md.
+  chickenCabbageMuffin: {
+    ...prepared(
+      "chickenCabbageMuffin",
+      "Курячо-яєчний маффін з капустою (заготовка)",
+      { kcal: 120, protein: 13.1, fat: 6.2, carbs: 3.4 },
+      "other",
+    ),
+    gramsPerPiece: 100,
   },
 
   // Спеції, приправи та інші pantry-продукти — купуються, але без обліку макросів.
