@@ -29,7 +29,7 @@ export const set7: DayPlan = {
         "Помідор — 45 г (Віталій 20 г, Олеся 25 г)",
         "Твердий сир — 15 г (лише Олесі)",
         "Хліб скибкою (окремо, не запечений) — 80 г (по 40 г кожному)",
-        "Яблуко (як десерт) — 200 г (по 100 г кожному)",
+        "Абрикоси (як десерт) — 200 г (по 100 г кожному)",
       ],
       macroItems: [
         { food: "chickenMarinated", vitalii: 140, olesia: 100, component: "Кальцоне" },
@@ -37,7 +37,7 @@ export const set7: DayPlan = {
         { food: "tomato", vitalii: 20, olesia: 25, component: "Кальцоне" },
         { food: "hardCheese", vitalii: 0, olesia: 15, component: "Кальцоне" },
         { food: "bread", vitalii: 40, olesia: 40 },
-        { food: "apple", vitalii: 100, olesia: 100, component: "Десерт" },
+        { food: "apricot", vitalii: 100, olesia: 100, component: "Десерт" },
       ],
     },
     {
@@ -52,7 +52,7 @@ export const set7: DayPlan = {
         "Твердий сир (кришений, замість фети) — 50 г (Віталій — 25 г, Олеся — 25 г)",
         "Олія оливкова (для смаження) — 33 г (Віталій — 15 г, Олеся — 18 г — збільшено, жир дня був суттєво під ціллю)",
         "Свіжа кінза або зелена цибуля, сік лайма, копчена паприка",
-        "Яблуко (як десерт) — 400 г (по 200 г кожному, по 100 г на обід та вечерю)",
+        "Абрикоси (як десерт) — 400 г (по 200 г кожному, по 100 г на обід та вечерю)",
       ],
       macroItems: [
         { food: "porkTenderloin", vitalii: 300, olesia: 75, component: "Свинина" },
@@ -62,7 +62,7 @@ export const set7: DayPlan = {
         { food: "mayo", vitalii: 4, olesia: 6, component: "Соус-крема" },
         { food: "hardCheese", vitalii: 25, olesia: 25, component: "Сирний топінг" },
         { food: "oil", vitalii: 15, olesia: 18, component: "Приготування" },
-        { food: "apple", vitalii: 200, olesia: 200, component: "Десерт (обід + вечеря)" },
+        { food: "apricot", vitalii: 200, olesia: 200, component: "Десерт (обід + вечеря)" },
       ],
     },
     {

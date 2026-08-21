@@ -26,12 +26,12 @@ export const set3: DayPlan = {
       ingredients: [
         "Маффіни (спечені заздалегідь, з холодильника) — 6 шт (Віталій 4 шт, Олеся 2 шт)",
         "Цільнозерновий хліб — Віталій 20 г (1 скибка), Олеся 45 г (1.5 скибки)",
-        "Яблуко (як десерт) — 200 г (по 100 г кожному)",
+        "Абрикоси (як десерт) — 200 г (по 100 г кожному)",
       ],
       macroItems: [
         { food: "chickenCabbageMuffin", vitalii: 400, olesia: 200 },
         { food: "bread", vitalii: 20, olesia: 45 },
-        { food: "apple", vitalii: 100, olesia: 100, component: "Десерт" },
+        { food: "apricot", vitalii: 100, olesia: 100, component: "Десерт" },
       ],
     },
     {
@@ -45,7 +45,7 @@ export const set3: DayPlan = {
         "Молоко тепле — 100 мл (Віталій 30 мл, Олеся 70 мл)",
         "Вершкове масло (для Олесі) — 15 г",
         "Для салату: помідори 2 шт (~260 г), огірки ~260 г, зелена цибуля, зелень, лимонний сік, для Олесі моцарела 40 г та оливкова олія 4 г (без олії для Віталія)",
-        "Яблуко (як десерт) — 400 г (по 200 г кожному, по 100 г на обід та вечерю)",
+        "Абрикоси (як десерт) — 400 г (по 200 г кожному, по 100 г на обід та вечерю)",
       ],
       macroItems: [
         { food: "mackerel", vitalii: 225, olesia: 130 },
@@ -58,7 +58,7 @@ export const set3: DayPlan = {
         { food: "cucumber", vitalii: 130, olesia: 130, component: "Свіжий овочевий салат" },
         { food: "mozzarella", vitalii: 0, olesia: 40, component: "Свіжий овочевий салат" },
         { food: "oil", vitalii: 0, olesia: 4, component: "Свіжий овочевий салат" },
-        { food: "apple", vitalii: 200, olesia: 200, component: "Десерт (обід + вечеря)" },
+        { food: "apricot", vitalii: 200, olesia: 200, component: "Десерт (обід + вечеря)" },
         // Символічна вага — pantry-продукт без macros, не впливає на калорії,
         // потрібен лише щоб зелень з'явилася в "Продукти на день".
         { food: "greenOnion", vitalii: 10, olesia: 10, component: "Свіжий овочевий салат" },

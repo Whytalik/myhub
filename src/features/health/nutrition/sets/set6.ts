@@ -17,7 +17,7 @@ export const set6: DayPlan = {
         "Маринований огірок свіжий — 16 г (по 8 г кожному)",
         "Аджика — 32 г (по 16 г кожному)",
         "Салат айсберг — 40 г (по 20 г кожному)",
-        "Яблуко (як десерт) — 200 г (по 100 г кожному)",
+        "Апельсини (як десерт) — 200 г (по 100 г кожному)",
       ],
       macroItems: [
         { food: "kipBroodje", vitalii: 100, olesia: 100 },
@@ -26,7 +26,7 @@ export const set6: DayPlan = {
         { food: "pickledCucumber", vitalii: 8, olesia: 8, component: "Начинка" },
         { food: "adjika", vitalii: 16, olesia: 16, component: "Начинка" },
         { food: "icebergLettuce", vitalii: 20, olesia: 20 },
-        { food: "apple", vitalii: 100, olesia: 100, component: "Десерт" },
+        { food: "orange", vitalii: 100, olesia: 100, component: "Десерт" },
       ],
     },
     {
@@ -42,7 +42,7 @@ export const set6: DayPlan = {
         "Шпинат заморожений — 100 г (по 50 г кожному)",
         "Олія оливкова (для обсмажування) — 8 г (Віталій — 3 г, Олеся — 5 г)",
         "Часник, прованські трави, сіль, перець — до смаку",
-        "Яблуко (як десерт) — 400 г (по 200 г кожному, по 100 г на обід та вечерю)",
+        "Апельсини (як десерт) — 400 г (по 200 г кожному, по 100 г на обід та вечерю)",
       ],
       macroItems: [
         { food: "shrimp", vitalii: 400, olesia: 200, component: "Креветки" },
@@ -52,7 +52,7 @@ export const set6: DayPlan = {
         { food: "tomato", vitalii: 100, olesia: 100, component: "Соус" },
         { food: "spinachFrozen", vitalii: 50, olesia: 50, component: "Соус" },
         { food: "oil", vitalii: 3, olesia: 5, component: "Приготування" },
-        { food: "apple", vitalii: 200, olesia: 200, component: "Десерт (обід + вечеря)" },
+        { food: "orange", vitalii: 200, olesia: 200, component: "Десерт (обід + вечеря)" },
       ],
     },
     {

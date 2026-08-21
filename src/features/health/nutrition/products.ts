@@ -334,6 +334,24 @@ export const PRODUCTS: Record<string, Product> = {
     searchTerm: "яблук",
     basePrice: 25,
   }),
+  orange: tracked(
+    "orange",
+    "Апельсини",
+    { kcal: 47, protein: 0.9, fat: 0.1, carbs: 11.8 },
+    "fruits",
+    { searchTerm: "апельсин", basePrice: 45 },
+  ),
+  apricot: tracked(
+    "apricot",
+    "Абрикоси",
+    { kcal: 48, protein: 1.4, fat: 0.4, carbs: 11.1 },
+    "fruits",
+    { searchTerm: "абрикос", basePrice: 90 },
+  ),
+  pear: tracked("pear", "Груші", { kcal: 57, protein: 0.4, fat: 0.1, carbs: 15.2 }, "fruits", {
+    searchTerm: "груш",
+    basePrice: 40,
+  }),
   hardCheese: tracked(
     "hardCheese",
     "Твердий сир",
