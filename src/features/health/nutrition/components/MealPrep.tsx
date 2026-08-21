@@ -62,6 +62,22 @@ const proteinIngredients: RecipeIngredient[] = [
     qualifier: "для сирників",
     computedQty: { food: "eggs", sets: [], grams: 60, unit: "piece" },
   },
+  { food: "chickenMarinated", qualifier: "сира, для Buffalo Pockets — Сет5", qty: "1135 г" },
+  { food: "cottageCheese", qualifier: "для буффало-дипу", qty: "340 г" },
+];
+
+const buffaloPocketIngredients: RecipeIngredient[] = [
+  { food: "flour", qty: "500 г" },
+  { food: "yogurtGreek", qualifier: "0% жиру, для тіста", qty: "520 г" },
+  { food: "onion", qty: "160 г" },
+  { food: "tomato", qty: "64 г" },
+  { food: "mozzarella", qty: "350 г" },
+  { food: "ketchup", qualifier: "для соус-міксу", qty: "240 г (у начинку) + 80 г (у дип)" },
+  { food: "adjika", qualifier: "для соус-міксу", qty: "120 г (у начинку) + 40 г (у дип)" },
+  { food: "milk", qualifier: "для дипу", qty: "60 мл" },
+  { food: "garlic", qualifier: "порошок" },
+  { food: "provencalHerbs", qualifier: "італійська суміш" },
+  { food: "salt" },
 ];
 
 const doughIngredients: RecipeIngredient[] = [
@@ -238,6 +254,18 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       ],
     },
     {
+      title: "Блок 5 — Buffalo Chicken Pockets для Сету5 (~40 хв, 10 шт)",
+      steps: [
+        "Соус-мікс (замість імпортного буффало-соусу): змішати кетчуп (320 г) з аджикою (160 г) та часниковим порошком — вийде ~480 г, вистачить і на начинку, і на дип.",
+        "Тісто: розім'яти борошно (500 г) з грецьким йогуртом 0% (520 г), часниковим порошком, італійськими травами та сіллю до однорідного тіста.",
+        "Начинка: сиру курку (1135 г, нарізану дрібно) змішати з цибулею (160 г, дрібно нарізаною), помідором (64 г, дрібно нарізаним), моцарелою (350 г) та частиною соус-міксу (240 г).",
+        "Розкачати тісто, розкласти начинку по 10 порціях, защипнути краї у формі кишеньки (hot pocket). Викласти на деко, застелене пергаментом.",
+        "Випікати при 190°C ~25–30 хв до готовності курки всередині та золотистої скоринки.",
+        "Дип: збити блендером творог (340 г) з рештою соус-міксу (240 г) та молоком (60 мл) до кремової текстури.",
+        "Повністю охолодити покети (гарячим у морозилку не класти), загорнути порційно у фольгу, дип розкласти по контейнерах — обидва в морозильну камеру.",
+      ],
+    },
+    {
       title: "Фінал",
       steps: [
         "Фасування: замариноване м'ясо розкласти по герметичних контейнерах або пакетах, загорнуту в фольгу скумбрію покласти окремо — підписати все номерами сетів та відразу відправити в морозильну камеру.",
@@ -276,7 +304,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       },
       {
         title: "Соєво-часниковий маринад",
-        for: "Для смаженої курки (Сет4)",
+        for: "Для плову з куркою (Сет4)",
         ingredients: [
           { food: "soySauce", qty: "3 ст.л." },
           { food: "oil", qualifier: "оливкова", qty: "1 ст.л." },
@@ -382,7 +410,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
 
         <div className="h-px bg-white/[0.06]" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
           <div>
             <span className="text-label block mb-2">М&apos;ясо та білки</span>
             <ul className="flex flex-col gap-1.5">
@@ -398,6 +426,17 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
             <span className="text-label block mb-2">Тісто для булочок</span>
             <ul className="flex flex-col gap-1.5">
               {doughIngredients.map((ing, idx) => (
+                <li key={idx} className={ingredientItemClass}>
+                  <span className="text-zinc-600">·</span>
+                  <span>{ingredientLabel(ing, seasonOverride)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <span className="text-label block mb-2">Buffalo Chicken Pockets</span>
+            <ul className="flex flex-col gap-1.5">
+              {buffaloPocketIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <span className="text-zinc-600">·</span>
                   <span>{ingredientLabel(ing, seasonOverride)}</span>

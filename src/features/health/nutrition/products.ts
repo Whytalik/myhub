@@ -105,6 +105,13 @@ export const PRODUCTS: Record<string, Product> = {
     "meat",
     { cookedMultiplier: 0.65 },
   ),
+  shrimp: tracked(
+    "shrimp",
+    "Креветки",
+    { kcal: 85, protein: 20, fat: 1, carbs: 0 },
+    "meat",
+    { cookedMultiplier: 0.8 },
+  ),
   potato: tracked(
     "potato",
     "Картопля",
@@ -154,6 +161,18 @@ export const PRODUCTS: Record<string, Product> = {
     "dairy",
     { basePrice: 250 },
   ),
+  parmesan: tracked(
+    "parmesan",
+    "Пармезан",
+    { kcal: 392, protein: 35.8, fat: 25.8, carbs: 3.2 },
+    "dairy",
+  ),
+  feta: tracked(
+    "feta",
+    "Фета",
+    { kcal: 264, protein: 14.2, fat: 21.3, carbs: 4.1 },
+    "dairy",
+  ),
   yogurtGreek: tracked(
     "yogurtGreek",
     "Грецький йогурт",
@@ -174,6 +193,17 @@ export const PRODUCTS: Record<string, Product> = {
     gramsPerPiece: 120,
     basePrice: 55,
   }),
+  // Оцінка типового укр. питного підсолодженого йогурту — звірити з етикеткою
+  // конкретного продукту перед закупівлею. Альтернатива банану на "Передтрен"
+  // (Сет1/3/5) — брати ПОРЦІЙНІ баночки (~100 г), не велику пляшку (270 г),
+  // інакше калорійність зростає в 3-4 рази проти банана на тому ж слоті.
+  yogurtSweetened: tracked(
+    "yogurtSweetened",
+    "Йогурт питний підсолоджений",
+    { kcal: 78, protein: 2.9, fat: 1.5, carbs: 12 },
+    "dairy",
+    { searchTerm: "йогурт питний", basePrice: 65 },
+  ),
   oats: tracked("oats", "Вівсянка", { kcal: 389, protein: 13.5, fat: 6.9, carbs: 66.3 }, "grains", {
     cookedMultiplier: 2.8,
   }),
@@ -182,6 +212,13 @@ export const PRODUCTS: Record<string, Product> = {
     "Протеїновий порошок",
     { kcal: 400, protein: 80, fat: 6.7, carbs: 10 },
     "other",
+  ),
+  chickenRollDobrov: tracked(
+    "chickenRollDobrov",
+    "Рулет курячий Добров (шинка)",
+    { kcal: 135, protein: 20, fat: 6, carbs: 0.2 },
+    "meat",
+    { searchTerm: "рулет курячий", basePrice: 260 },
   ),
   cocoa: tracked(
     "cocoa",
@@ -204,9 +241,41 @@ export const PRODUCTS: Record<string, Product> = {
     "grains",
     { cookedMultiplier: 2.8 },
   ),
+  sweetChiliSauce: tracked(
+    "sweetChiliSauce",
+    "Солодкий чилі-соус",
+    { kcal: 220, protein: 0.5, fat: 0.2, carbs: 54 },
+    "other",
+  ),
+  oysterSauce: tracked(
+    "oysterSauce",
+    "Устричний соус",
+    { kcal: 51, protein: 2.7, fat: 0.2, carbs: 10.9 },
+    "other",
+  ),
+  peasCarrots: tracked(
+    "peasCarrots",
+    "Горошок з морквою (заморожені)",
+    { kcal: 61, protein: 3.15, fat: 0.3, carbs: 12.25 },
+    "vegetables",
+    { searchTerm: "горошок" },
+  ),
   rice: tracked("rice", "Рис", { kcal: 365, protein: 7.1, fat: 0.7, carbs: 80 }, "grains", {
     cookedMultiplier: 2.8,
   }),
+  breadcrumbs: tracked(
+    "breadcrumbs",
+    "Панірувальні сухарі",
+    { kcal: 360, protein: 10, fat: 2, carbs: 75 },
+    "grains",
+  ),
+  pasta: tracked(
+    "pasta",
+    "Макарони (сухі)",
+    { kcal: 350, protein: 12, fat: 1.5, carbs: 71.5 },
+    "grains",
+    { cookedMultiplier: 2.3 },
+  ),
   arugula: tracked(
     "arugula",
     "Рукола",
@@ -359,7 +428,15 @@ export const PRODUCTS: Record<string, Product> = {
     "meat",
     { cookedMultiplier: 0.7 },
   ),
+  porkTenderloin: tracked(
+    "porkTenderloin",
+    "Свиняча вирізка",
+    { kcal: 109, protein: 21, fat: 2.2, carbs: 0 },
+    "meat",
+    { cookedMultiplier: 0.75 },
+  ),
   cream: tracked("cream", "Вершки", { kcal: 145, protein: 2.8, fat: 12.5, carbs: 4 }, "dairy"),
+  ketchup: tracked("ketchup", "Кетчуп", { kcal: 112, protein: 1.2, fat: 0.2, carbs: 27 }, "other"),
 
   // Готується під час міл-препу з уже врахованих tracked-продуктів — не купується окремо.
   syrniki: {
@@ -399,6 +476,35 @@ export const PRODUCTS: Record<string, Product> = {
     ),
     gramsPerPiece: 100,
   },
+  // Buffalo Chicken Pocket (заготовка) — печеться партією (10 шт) під час великого
+  // 14-денного мілпрепу, заморожується, розігрівається в мікрохвильовці з вологим
+  // рушником + опційно кілька хвилин на пательні/аерогрилі для скоринки (Сет5,
+  // сніданок). "Буффало-соус" з оригінального рецепту замінено на дешевий домашній
+  // мікс — кетчуп + аджика (2:1) + часниковий порошок — замість імпортного
+  // Frank's/Tabasco Buffalo (недоступно/дорого). Макроси прораховані напряму з
+  // tracked-продуктів (борошно+йогурт для тіста; сира курка+цибуля+помідор+соус-мікс+
+  // моцарела для начинки): весь батч (тісто+начинка) ~4747 ккал/422г білка/109г
+  // жиру/485г вугл на 10 покетів (~250г готового покета кожен) — макроси нижче на
+  // 100г. Докладніше — docs/recipes/buffalo-chicken-hot-pockets.md.
+  buffaloChickenPocket: {
+    ...prepared(
+      "buffaloChickenPocket",
+      "Buffalo Chicken Pocket (заготовка)",
+      { kcal: 190, protein: 17, fat: 4.4, carbs: 19 },
+      "other",
+    ),
+    gramsPerPiece: 250,
+  },
+  // Білковий буффало-дип до покетів — творог + соус-мікс (кетчуп+аджика) + молоко,
+  // збивається блендером. Готується разом з покетами в тому ж блоці мілпрепу.
+  buffaloDip: {
+    ...prepared(
+      "buffaloDip",
+      "Білковий буффало-дип (заготовка)",
+      { kcal: 131, protein: 11.7, fat: 6.1, carbs: 7.6 },
+      "other",
+    ),
+  },
 
   // Спеції, приправи та інші pantry-продукти — купуються, але без обліку макросів.
   rosemary: pantry("rosemary", "Розмарин"),
@@ -437,6 +543,8 @@ export const PRODUCTS: Record<string, Product> = {
   ),
   basil: pantry("basil", "Базилік"),
   appleVinegar: pantry("appleVinegar", "Яблучний оцет"),
+  cumin: pantry("cumin", "Кмин"),
+  lime: pantry("lime", "Лайм"),
 };
 
 export type ProductKey = keyof typeof PRODUCTS;
