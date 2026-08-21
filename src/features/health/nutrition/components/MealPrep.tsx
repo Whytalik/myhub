@@ -41,9 +41,12 @@ function ingredientLabel(ing: RecipeIngredient, seasonOverride?: string): string
 const proteinIngredients: RecipeIngredient[] = [
   {
     food: "chickenMarinated",
+    // Лише Сет1 (шашлики) і Сет6 (начинка булочок — спеції, без маринаду) справді
+    // готуються в межах великого мілпрепу. Сет4/Сет5 тепер на свіжому курячому
+    // філе, що готується того ж дня — див. окремі флет-рядки нижче.
     computedQty: {
       food: "chickenMarinated",
-      sets: [{ set: "set1" }, { set: "set4" }, { set: "set5" }, { set: "set6" }],
+      sets: [{ set: "set1" }, { set: "set6" }],
       wastePercent: 5,
     },
   },
@@ -64,6 +67,16 @@ const proteinIngredients: RecipeIngredient[] = [
   },
   { food: "chickenMarinated", qualifier: "сира, для Buffalo Pockets — Сет5", qty: "1135 г" },
   { food: "cottageCheese", qualifier: "для буффало-дипу", qty: "340 г" },
+  {
+    food: "chickenMarinated",
+    qualifier: "свіжа, НЕ з мілпрепу — Сет4 (купувати окремо щотижня)",
+    qty: "~300 г",
+  },
+  {
+    food: "chickenMarinated",
+    qualifier: "свіжа, НЕ з мілпрепу — Сет5 (хрустка курка, купувати окремо щотижня)",
+    qty: "~280 г",
+  },
 ];
 
 const buffaloPocketIngredients: RecipeIngredient[] = [
@@ -131,18 +144,6 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       marinade: "Соєво-томатний",
     },
     {
-      food: "chickenMarinated",
-      qualifier: "смажена курка — Сет4",
-      computedQty: { food: "chickenMarinated", sets: [{ set: "set4" }] },
-      marinade: "Соєво-часниковий",
-    },
-    {
-      food: "chickenMarinated",
-      qualifier: "запечене — Сет5 + Цезар Сет6",
-      computedQty: { food: "chickenMarinated", sets: [{ set: "set5" }, { set: "set6" }] },
-      marinade: "Медово-гірчичний",
-    },
-    {
       food: "porkTenderloin",
       qualifier: "Сет7",
       computedQty: { food: "porkTenderloin", sets: [{ set: "set7" }] },
@@ -177,17 +178,6 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
   const heartsQty = formatGrams(
     sumMacroGramsForSetsMulti(["chickenHearts"], [{ set: "set2" }], undefined, seasonOverride),
   );
-  const fryQty = formatGrams(
-    sumMacroGramsForSetsMulti(["chickenMarinated"], [{ set: "set4" }], undefined, seasonOverride),
-  );
-  const bakeQty = formatGrams(
-    sumMacroGramsForSetsMulti(
-      ["chickenMarinated"],
-      [{ set: "set5" }, { set: "set6" }],
-      undefined,
-      seasonOverride,
-    ),
-  );
   const porkQty = formatGrams(
     sumMacroGramsForSetsMulti(["porkTenderloin"], [{ set: "set7" }], undefined, seasonOverride),
   );
@@ -213,14 +203,12 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
     {
       title: "Блок 1 — Маринування (~20 хв)",
       steps: [
-        "Дістати все м'ясо з холодильника, розкласти на робочій поверхні. Підготувати 5 глибоких мисок для маринування.",
+        "Дістати все м'ясо з холодильника, розкласти на робочій поверхні. Підготувати 2 глибокі миски для маринування.",
         `Очищення: курячі серця (${heartsQty}) промити у друшляку, натискаючи пальцями для видалення згустків крові.`,
         `Нарізка: свинячу вирізку (${porkQty}) нарізати дрібними кубиками для боулів.`,
         `Нарізка: куряче філе для шашликів (${shashlikQty}) нарізати порційними шматочками розміром 2–3 см.`,
         `Миска 1: приготувати «Йогуртово-лимонний маринад» (рецепт нижче), додати куряче філе для шашликів (${shashlikQty}) та перемішати.`,
         `Миска 2: приготувати «Соєво-томатний маринад» (рецепт нижче), додати очищені курячі серця (${heartsQty}) та перемішати.`,
-        `Миска 3: приготувати «Соєво-часниковий маринад» (рецепт нижче), додати куряче філе для смаження (${fryQty}) та перемішати.`,
-        `Миска 4: приготувати «Медово-гірчичний маринад» (рецепт нижче), обмазати сумішшю куряче філе (${bakeQty}).`,
         `Без миски: приготувати «Спеції для вирізки» (рецепт нижче), обваляти в них кубики вирізки (${porkQty}).`,
         "Скумбрія: випотрошити 2 тушки, промити, зробити кілька поперечних надрізів на боках. Половину лимона нарізати тонкими півкружальцями і вставити в надрізи, посолити та натерти «Скумбрія з лимоном» (рецепт нижче). Щільно загорнути кожну тушку в фольгу.",
       ],
@@ -301,31 +289,6 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
           { food: "blackPepper", qty: "сіль не потрібна — соєвий соус солоний" },
         ],
         note: "Маринувати 30–60 хв, перемішувати кожні 10 хв.",
-      },
-      {
-        title: "Соєво-часниковий маринад",
-        for: "Для плову з куркою (Сет4)",
-        ingredients: [
-          { food: "soySauce", qty: "3 ст.л." },
-          { food: "oil", qualifier: "оливкова", qty: "1 ст.л." },
-          { food: "garlic", qty: "2 зубчики (тиском)" },
-          { food: "paprika", qty: "½ ч.л." },
-          { food: "blackPepper" },
-        ],
-        note: "Маринувати від 1 до 4 год.",
-      },
-      {
-        title: "Медово-гірчичний маринад",
-        for: "Для запеченого курячого філе (Сет5 + Цезар Сет6). Утворює соус при запіканні.",
-        ingredients: [
-          { food: "mustardDijon", qty: "2 ст.л., французька зернова або діжонська" },
-          { food: "honey", qty: "1 ст.л." },
-          { food: "oil", qualifier: "оливкова", qty: "2 ст.л." },
-          { food: "garlic", qty: "2 зубчики (тиском)" },
-          { food: "salt" },
-          { food: "blackPepper" },
-        ],
-        note: "Маринувати від 1 до 4 год. Запікати у фользі або рукаві при 180°C — 30–35 хв.",
       },
       {
         title: "Спеції для вирізки",

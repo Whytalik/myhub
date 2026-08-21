@@ -188,7 +188,10 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "dairy-2-wed",
         food: "cottageCheese",
         qualifier: "5–9%",
-        computedQty: { food: "cottageCheese", sets: [{ set: "set3" }, { set: "set7" }, { set: "set5" }] },
+        computedQty: {
+          food: "cottageCheese",
+          sets: [{ set: "set3" }, { set: "set7" }, { set: "set5" }],
+        },
         note: "Сет3 + Сет7 + Сет5",
         price: 175,
         buyDay: "wed",
@@ -237,7 +240,13 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         // який не стає власним macroItem (булочка зважується одним ключем "kipBroodje").
         computedQty: {
           food: "hardCheese",
-          sets: [{ set: "set1" }, { set: "set2" }, { set: "set6" }, { set: "set7" }, { set: "set4" }],
+          sets: [
+            { set: "set1" },
+            { set: "set2" },
+            { set: "set6" },
+            { set: "set7" },
+            { set: "set4" },
+          ],
           grams: 40,
         },
         note: "Сет1 + Сет2 + Сет6 + Сет7 + Сет4 + 40г скоринка булочок",
@@ -431,7 +440,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "vegetables-8",
         food: "icebergLettuce",
         computedQty: { food: "icebergLettuce", sets: [{ set: "set6" }, { set: "set2" }] },
-        note: "Сет6 (Цезар 240г + булочки 40г) + Сет2 (булочки 40г)",
+        note: "Сет6 (булочки 40г) + Сет2 (булочки 40г)",
         price: 60,
         buyDay: "wed",
       },
