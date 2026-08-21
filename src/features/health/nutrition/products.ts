@@ -105,13 +105,9 @@ export const PRODUCTS: Record<string, Product> = {
     "meat",
     { cookedMultiplier: 0.65 },
   ),
-  shrimp: tracked(
-    "shrimp",
-    "Креветки",
-    { kcal: 85, protein: 20, fat: 1, carbs: 0 },
-    "meat",
-    { cookedMultiplier: 0.8 },
-  ),
+  shrimp: tracked("shrimp", "Креветки", { kcal: 85, protein: 20, fat: 1, carbs: 0 }, "meat", {
+    cookedMultiplier: 0.8,
+  }),
   potato: tracked(
     "potato",
     "Картопля",
@@ -167,12 +163,7 @@ export const PRODUCTS: Record<string, Product> = {
     { kcal: 392, protein: 35.8, fat: 25.8, carbs: 3.2 },
     "dairy",
   ),
-  feta: tracked(
-    "feta",
-    "Фета",
-    { kcal: 264, protein: 14.2, fat: 21.3, carbs: 4.1 },
-    "dairy",
-  ),
+  feta: tracked("feta", "Фета", { kcal: 264, protein: 14.2, fat: 21.3, carbs: 4.1 }, "dairy"),
   yogurtGreek: tracked(
     "yogurtGreek",
     "Грецький йогурт",
@@ -182,13 +173,6 @@ export const PRODUCTS: Record<string, Product> = {
   berries: tracked("berries", "Ягоди", { kcal: 43, protein: 0.8, fat: 0.4, carbs: 10 }, "fruits", {
     basePrice: 180,
   }),
-  fruitMix: tracked(
-    "fruitMix",
-    "Фрукти (мікс)",
-    { kcal: 60, protein: 0.5, fat: 0.3, carbs: 15 },
-    "fruits",
-    { basePrice: 75 },
-  ),
   banana: tracked("banana", "Банан", { kcal: 89, protein: 1.1, fat: 0.3, carbs: 23 }, "fruits", {
     gramsPerPiece: 120,
     basePrice: 55,

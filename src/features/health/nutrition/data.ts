@@ -512,29 +512,15 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "fruits-0",
         food: "berries",
-        // Сет3 тут немає — новий сніданок сету3 (творог з огірком) без ягід, а перекус сету3
-        // на fruitMix, не на berries.
+        // Перекуси-ротація: пудинг (Сет1/4) і сирники (Сет6) на ягодах; мус (Сет2/5)
+        // на какао, кульки (Сет3/7) на арахісовій пасті — жоден з цих трьох ягід не бере.
         computedQty: {
           food: "berries",
-          sets: [
-            { set: "set1" },
-            { set: "set2" },
-            { set: "set4" },
-            { set: "set5" },
-            { set: "set6" },
-          ],
+          sets: [{ set: "set1" }, { set: "set4" }, { set: "set6" }],
         },
-        note: "Усі сети, крім Сету 3 та Сету 7",
+        note: "Сет1, Сет4 (протеїновий пудинг) + Сет6 (сирники)",
         options: ["полуниця", "малина", "чорниця", "змішані заморожені"],
         price: 243,
-        buyDay: "sun",
-      },
-      {
-        id: "fruits-1",
-        food: "fruitMix",
-        computedQty: { food: "fruitMix", sets: [{ set: "set3" }] },
-        note: "Сет3 — тепер на 2 дні, фруктів вдвічі більше",
-        price: 30,
         buyDay: "sun",
       },
       {

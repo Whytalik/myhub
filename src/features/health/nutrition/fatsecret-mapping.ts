@@ -17,7 +17,6 @@ export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
   pepper: { foodId: "285829", servingId: "321558", servingGrams: 1 },
   onion: { foodId: "36442", servingId: "59173", servingGrams: 1 },
   berries: { foodId: "91621", servingId: "131951", servingGrams: 140 },
-  fruitMix: { foodId: "3352146", servingId: "3260931", servingGrams: 126 },
   banana: { foodId: "35755", servingId: "58486", servingGrams: 1 },
   oats: { foodId: "39715", servingId: "62446", servingGrams: 1 },
   // raw/dry basis (food_id 4435/4501 were cooked-basis — mismatched our raw-gram macros ~2.8x low)
