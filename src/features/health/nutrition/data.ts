@@ -410,14 +410,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         price: 6,
         buyDay: "sun",
       },
-      {
-        id: "vegetables-5",
-        food: "carrot",
-        computedQty: { food: "carrot", sets: [{ set: "set1" }] },
-        note: "Сет 1 (зимовий/осінній салат)",
-        price: 8,
-        buyDay: "sun",
-      },
+
       {
         id: "vegetables-6",
         food: "garlic",
@@ -548,15 +541,25 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         buyDay: "sun",
       },
       {
-        id: "fruits-2-wed",
-        food: "banana",
+        id: "fruits-apple-sun",
+        food: "apple",
         computedQty: {
-          food: "banana",
-          sets: [{ set: "set4" }, { set: "set5" }, { set: "set6" }],
-          unit: "piece",
+          food: "apple",
+          sets: [{ set: "set1" }, { set: "set2" }, { set: "set3" }, { set: "set7" }],
         },
-        note: "Сет4–Сет5–Сет6",
-        price: 47,
+        note: "Сет1, Сет2, Сет3, Сет7 (десерт до прийомів)",
+        price: 45,
+        buyDay: "sun",
+      },
+      {
+        id: "fruits-apple-wed",
+        food: "apple",
+        computedQty: {
+          food: "apple",
+          sets: [{ set: "set4" }, { set: "set5" }, { set: "set6" }],
+        },
+        note: "Сет4, Сет5, Сет6 (десерт до прийомів)",
+        price: 45,
         buyDay: "wed",
       },
       {
