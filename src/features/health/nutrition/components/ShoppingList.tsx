@@ -205,17 +205,23 @@ function combineShoppingItems(categories: ShoppingCategory[]): ShoppingCategory[
 
       const first = items[0];
       const combinedId = items.map((it) => it.id).join("+");
-      const combinedNote = items.map((it) => it.note).filter(Boolean).join(" + ");
-      const combinedQualifier = items.map((it) => it.qualifier).filter(Boolean).join(" / ");
+      const combinedNote = items
+        .map((it) => it.note)
+        .filter(Boolean)
+        .join(" + ");
+      const combinedQualifier = items
+        .map((it) => it.qualifier)
+        .filter(Boolean)
+        .join(" / ");
 
       const hasComputedQty = items.every((it) => !!it.computedQty);
       let combinedComputedQty = undefined;
       if (hasComputedQty) {
-        const sets: any[] = [];
+        const sets: SetOccurrence[] = [];
         let grams = 0;
         let unit = undefined;
         let wastePercent = undefined;
-        let extraFood: string[] = [];
+        const extraFood: string[] = [];
 
         for (const it of items) {
           const cq = it.computedQty!;
@@ -645,7 +651,9 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
   const activeTripIndex = tripIndexOfViewId(activeView);
 
   const filteredCategories =
-    activeTripIndex === null ? combineShoppingItems(SHOPPING_LIST) : categoriesForTrip(activeTripIndex);
+    activeTripIndex === null
+      ? combineShoppingItems(SHOPPING_LIST)
+      : categoriesForTrip(activeTripIndex);
 
   const visibleItemIds = new Set(
     filteredCategories.flatMap((category) => category.items.map((item) => item.id)),
