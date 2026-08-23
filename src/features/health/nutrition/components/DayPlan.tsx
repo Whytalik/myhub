@@ -2,7 +2,7 @@
 
 import { Scale, ClipboardList, Flame, UtensilsCrossed, Snowflake } from "lucide-react";
 import { PROFILES } from "../data";
-import { calculateDayMacros } from "../nutrition-calc";
+import { calculateDayMacros, type MacroOverrides } from "../nutrition-calc";
 import { PRODUCTS, getProductName } from "../products";
 import { highlightProductMentions, findMentionedPantryProductKeys } from "../highlight-products";
 import { MealCard } from "./MealCard";
@@ -265,15 +265,17 @@ function computeServingDisplay(group: ServingGroup): ServingDisplay {
 export function DayPlan({
   day,
   tomorrowThaw,
+  overrides,
 }: {
   day: ResolvedDayView;
   tomorrowThaw: ThawInstruction[];
+  overrides?: MacroOverrides;
 }) {
   const processedDay = splitRepeatMeals(day);
   const viewedDayKey = weekStartKey(day.date);
   const actual = {
-    vitalii: calculateDayMacros(processedDay, "vitalii"),
-    olesia: calculateDayMacros(processedDay, "olesia"),
+    vitalii: calculateDayMacros(processedDay, "vitalii", overrides),
+    olesia: calculateDayMacros(processedDay, "olesia", overrides),
   };
 
   const dayProductTotals = buildDayProductTotals(processedDay.meals, processedDay.prepSteps);
@@ -351,7 +353,7 @@ export function DayPlan({
         </div>
         <div className="grid grid-cols-1 gap-2">
           {processedDay.meals.map((meal) => (
-            <MealCard key={`${meal.type}-${meal.label}`} meal={meal} />
+            <MealCard key={`${meal.type}-${meal.label}`} meal={meal} overrides={overrides} />
           ))}
         </div>
       </div>

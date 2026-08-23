@@ -1,6 +1,6 @@
 import { Coffee, Soup, UtensilsCrossed, Apple } from "lucide-react";
 import type { Meal, MealType } from "../types";
-import { calculateMealMacros } from "../nutrition-calc";
+import { calculateMealMacros, type MacroOverrides } from "../nutrition-calc";
 
 const MEAL_ICON: Record<MealType, typeof Coffee> = {
   breakfast: Coffee,
@@ -9,10 +9,10 @@ const MEAL_ICON: Record<MealType, typeof Coffee> = {
   snack: Apple,
 };
 
-export function MealCard({ meal }: { meal: Meal }) {
+export function MealCard({ meal, overrides }: { meal: Meal; overrides?: MacroOverrides }) {
   const Icon = MEAL_ICON[meal.type];
-  const vitaliiMacros = calculateMealMacros(meal, "vitalii");
-  const olesiaMacros = calculateMealMacros(meal, "olesia");
+  const vitaliiMacros = calculateMealMacros(meal, "vitalii", overrides);
+  const olesiaMacros = calculateMealMacros(meal, "olesia", overrides);
 
   const hasMacros = vitaliiMacros.kcal > 0 || olesiaMacros.kcal > 0;
 

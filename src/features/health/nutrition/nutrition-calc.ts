@@ -1,4 +1,4 @@
-import { PRODUCTS } from "./products";
+import { PRODUCTS, type FoodMacros } from "./products";
 import type { DayPlan, MacroItem, Meal } from "./types";
 
 export interface DayMacros {
@@ -8,12 +8,21 @@ export interface DayMacros {
   carbs: number;
 }
 
+/** productKey → макроси на 100г, зазвичай зі збережених override Food Mapper'а
+ *  (`getMacroOverrides`) — коли задано, підміняє статичні `PRODUCTS[key].macros`. */
+export type MacroOverrides = Record<string, FoodMacros>;
+
 const ZERO: DayMacros = { kcal: 0, protein: 0, fat: 0, carbs: 0 };
 
-function addItem(totals: DayMacros, item: MacroItem, person: "vitalii" | "olesia"): DayMacros {
+function addItem(
+  totals: DayMacros,
+  item: MacroItem,
+  person: "vitalii" | "olesia",
+  overrides?: MacroOverrides,
+): DayMacros {
   const grams = person === "vitalii" ? item.vitalii : item.olesia;
   if (grams <= 0) return totals;
-  const macros = PRODUCTS[item.food]?.macros;
+  const macros = overrides?.[item.food] ?? PRODUCTS[item.food]?.macros;
   if (!macros) return totals;
   const factor = grams / 100;
   return {
@@ -24,10 +33,14 @@ function addItem(totals: DayMacros, item: MacroItem, person: "vitalii" | "olesia
   };
 }
 
-export function calculateDayMacros(day: DayPlan, person: "vitalii" | "olesia"): DayMacros {
+export function calculateDayMacros(
+  day: DayPlan,
+  person: "vitalii" | "olesia",
+  overrides?: MacroOverrides,
+): DayMacros {
   const raw = day.meals
     .flatMap((meal) => meal.macroItems ?? [])
-    .reduce((totals, item) => addItem(totals, item, person), ZERO);
+    .reduce((totals, item) => addItem(totals, item, person, overrides), ZERO);
 
   return {
     kcal: Math.round(raw.kcal),
@@ -37,8 +50,15 @@ export function calculateDayMacros(day: DayPlan, person: "vitalii" | "olesia"): 
   };
 }
 
-export function calculateMealMacros(meal: Meal, person: "vitalii" | "olesia"): DayMacros {
-  const raw = (meal.macroItems ?? []).reduce((totals, item) => addItem(totals, item, person), ZERO);
+export function calculateMealMacros(
+  meal: Meal,
+  person: "vitalii" | "olesia",
+  overrides?: MacroOverrides,
+): DayMacros {
+  const raw = (meal.macroItems ?? []).reduce(
+    (totals, item) => addItem(totals, item, person, overrides),
+    ZERO,
+  );
 
   return {
     kcal: Math.round(raw.kcal),

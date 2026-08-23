@@ -77,7 +77,7 @@ export const PRODUCTS: Record<string, Product> = {
   bread: tracked(
     "bread",
     "Хліб гречаний",
-    { kcal: 240, protein: 8.2, fat: 2.3, carbs: 47.9 },
+    { kcal: 240, protein: 10, fat: 2.8, carbs: 49 },
     "grains",
     { basePrice: 150 },
   ),
@@ -114,7 +114,7 @@ export const PRODUCTS: Record<string, Product> = {
     "vegetables",
     { basePrice: 22 },
   ),
-  milk: tracked("milk", "Молоко", { kcal: 42, protein: 3.4, fat: 1, carbs: 5 }, "dairy"),
+  milk: tracked("milk", "Молоко", { kcal: 52, protein: 2.8, fat: 2.5, carbs: 4.7 }, "dairy"),
   butter: tracked(
     "butter",
     "Вершкове масло",
@@ -229,13 +229,13 @@ export const PRODUCTS: Record<string, Product> = {
   sweetChiliSauce: tracked(
     "sweetChiliSauce",
     "Солодкий чилі-соус",
-    { kcal: 220, protein: 0.5, fat: 0.2, carbs: 54 },
+    { kcal: 148, protein: 0.6, fat: 0.1, carbs: 41.4 },
     "other",
   ),
   oysterSauce: tracked(
     "oysterSauce",
     "Устричний соус",
-    { kcal: 51, protein: 2.7, fat: 0.2, carbs: 10.9 },
+    { kcal: 85, protein: 1, fat: 0, carbs: 20 },
     "other",
   ),
   peasCarrots: tracked(
@@ -431,20 +431,20 @@ export const PRODUCTS: Record<string, Product> = {
   mustardDijon: tracked(
     "mustardDijon",
     "Гірчиця діжонська",
-    { kcal: 183.5, protein: 8.8, fat: 6.9, carbs: 23 },
+    { kcal: 150, protein: 7.7, fat: 8.4, carbs: 8.4 },
     "other",
     // текст майже завжди каже просто "гірчиця", а не "діжонська".
     // "гірчичний" (маринади) не ловиться відкиданням закінчень від "гірчиця" —
     // чергування ц→ч — тому окремий корінь.
     { searchTerm: "гірчиця гірчичн" },
   ),
-  adjika: tracked("adjika", "Аджика", { kcal: 70, protein: 2, fat: 1, carbs: 12 }, "other", {
+  adjika: tracked("adjika", "Аджика", { kcal: 65, protein: 1.5, fat: 3, carbs: 8 }, "other", {
     basePrice: 250,
   }),
   porkChop: tracked(
     "porkChop",
     "Свиняча відбивна",
-    { kcal: 250, protein: 26, fat: 16, carbs: 0 },
+    { kcal: 180, protein: 21, fat: 9, carbs: 0 },
     "meat",
     { cookedMultiplier: 0.7 },
   ),
@@ -455,7 +455,7 @@ export const PRODUCTS: Record<string, Product> = {
     "meat",
     { cookedMultiplier: 0.75, basePrice: 350 },
   ),
-  cream: tracked("cream", "Вершки", { kcal: 145, protein: 2.8, fat: 12.5, carbs: 4 }, "dairy", {
+  cream: tracked("cream", "Вершки", { kcal: 118, protein: 2.8, fat: 10, carbs: 3.8 }, "dairy", {
     basePrice: 195,
   }),
   ketchup: tracked("ketchup", "Кетчуп", { kcal: 112, protein: 1.2, fat: 0.2, carbs: 27 }, "other"),

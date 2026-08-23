@@ -112,6 +112,22 @@ export async function getMappingOverview(): Promise<ProductMappingOverviewItem[]
     });
 }
 
+/**
+ * productKey → макроси на 100г із збережених override (Food Mapper), для підстановки
+ * замість статичних `PRODUCTS[key].macros` у `calculateDayMacros`/`calculateMealMacros` —
+ * без цього ручний override у мапері ніяк не впливав на "Факт" по днях, лише на
+ * інформаційний рядок усередині сторінки мапера.
+ */
+export async function getMacroOverrides(): Promise<Record<string, FoodMacros>> {
+  const rows = await getCachedProductMappings();
+  const overrides: Record<string, FoodMacros> = {};
+  for (const row of rows) {
+    const macros = scaleTo100g(row.kcal, row.protein, row.fat, row.carbs, row.macroGrams);
+    if (macros) overrides[row.productKey] = macros;
+  }
+  return overrides;
+}
+
 export async function upsertMapping(input: UpsertMappingInput) {
   return productMappingRepository.upsert(input.productKey, {
     foodId: input.foodId,

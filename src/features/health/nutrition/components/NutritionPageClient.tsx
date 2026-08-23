@@ -4,12 +4,14 @@ import { useState } from "react";
 import { DayPlan } from "./DayPlan";
 import { getActiveSetPlan } from "../week";
 import { addDays, cyclePositionOf, dateForCyclePosition, resolveDayView } from "../cycle";
+import type { MacroOverrides } from "../nutrition-calc";
 
 interface NutritionPageClientProps {
   seasonOverride?: string;
+  macroOverrides?: MacroOverrides;
 }
 
-export function NutritionPageClient({ seasonOverride }: NutritionPageClientProps) {
+export function NutritionPageClient({ seasonOverride, macroOverrides }: NutritionPageClientProps) {
   const today = new Date();
   const todayPos = cyclePositionOf(today);
 
@@ -79,7 +81,7 @@ export function NutritionPageClient({ seasonOverride }: NutritionPageClientProps
         </div>
       )}
 
-      <DayPlan day={day} tomorrowThaw={tomorrowThaw} />
+      <DayPlan day={day} tomorrowThaw={tomorrowThaw} overrides={macroOverrides} />
     </div>
   );
 }
