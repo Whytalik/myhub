@@ -256,7 +256,7 @@ function combineShoppingItems(categories: ShoppingCategory[]): ShoppingCategory[
         combinedPrice = prices.reduce((sum, p) => sum + p, 0);
       }
 
-      mergedItems.push({
+      const merged: MergedShoppingItem = {
         ...first,
         id: combinedId,
         note: combinedNote || undefined,
@@ -264,7 +264,9 @@ function combineShoppingItems(categories: ShoppingCategory[]): ShoppingCategory[
         qty: combinedQty,
         price: combinedPrice,
         computedQty: combinedComputedQty,
-      });
+        sourceItems: items,
+      };
+      mergedItems.push(merged);
     }
 
     return {
@@ -402,6 +404,22 @@ function homeStockUnitLabel(item: ShoppingItem): string {
   return "г";
 }
 
+/** "Вже вдома" storage key, scoped to the trip being viewed — the same `item.id` shows
+ *  up (sliced) on every trip an item spans, so without this a single tap in one trip's
+ *  tab reads back as "already home" on every other trip's tab too, over-crediting the
+ *  ones you haven't actually shopped yet. `null` (the "Усі продукти" view) keeps the
+ *  bare id — that view represents the whole 14-day total, not one trip. */
+function homeStockKey(id: string, tripIndex: number | null): string {
+  return tripIndex === null ? id : `trip${tripIndex}:${id}`;
+}
+
+/** Extends a merged (combineShoppingItems) item with the pre-merge per-trip rows it was
+ *  built from — lets the "Усі продукти" view show "куплено X з Y" from `checked` state
+ *  on those original ids, since the merged item's own id/checked state can't see that. */
+interface MergedShoppingItem extends ShoppingItem {
+  sourceItems?: ShoppingItem[];
+}
+
 function CategoryList({
   categories,
   checked,
@@ -409,6 +427,7 @@ function CategoryList({
   priceOverrides,
   weekStart,
   seasonOverride,
+  activeTripIndex,
   onToggle,
   onToggleHomeStock,
   onSetHomeStockFraction,
@@ -420,6 +439,7 @@ function CategoryList({
   priceOverrides: PriceOverrideMap;
   weekStart: string;
   seasonOverride?: string;
+  activeTripIndex: number | null;
   onToggle: (id: string) => void;
   onToggleHomeStock: (id: string) => void;
   onSetHomeStockFraction: (id: string, fraction: number) => void;
@@ -439,14 +459,31 @@ function CategoryList({
                 ? item.id.split("+").every((subId) => checked[subId])
                 : !!checked[item.id];
               const fraction = item.id.includes("+")
-                ? (homeStock[item.id.split("+")[0]] ?? 0)
-                : (homeStock[item.id] ?? 0);
+                ? (homeStock[homeStockKey(item.id.split("+")[0], activeTripIndex)] ?? 0)
+                : (homeStock[homeStockKey(item.id, activeTripIndex)] ?? 0);
               const isHomeStock = fraction > 0;
               const qty = displayQtyOf(item, weekStart, seasonOverride);
               const itemTotal = computedTotal(item, weekStart, seasonOverride);
               const readout = isHomeStock
                 ? homeStockReadout(item, fraction, weekStart, seasonOverride)
                 : null;
+              // "Усі продукти" only: суми того, що вже відмічено купленим у
+              // конкретних трипах — щоб частковий прогрес по трипах був видно тут,
+              // а не ховався за одним булевим "куплено все".
+              const sourceItems = (item as MergedShoppingItem).sourceItems;
+              const purchasedSoFar =
+                sourceItems && sourceItems.length > 1
+                  ? sourceItems
+                      .filter((sub) => checked[sub.id])
+                      .reduce(
+                        (sum, sub) => sum + (computedTotal(sub, weekStart, seasonOverride) ?? 0),
+                        0,
+                      )
+                  : 0;
+              const purchasedReadout =
+                purchasedSoFar > 0 && itemTotal !== null && !isChecked
+                  ? `куплено ${formatGrams(purchasedSoFar, item.computedQty?.unit, item.computedQty ? PRODUCTS[item.computedQty.food]?.gramsPerPiece : undefined)} з ${formatGrams(itemTotal, item.computedQty?.unit, item.computedQty ? PRODUCTS[item.computedQty.food]?.gramsPerPiece : undefined)}`
+                  : null;
               const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
               // Не вимагає вже заданого `basePrice` — редагування дозволене для
               // будь-якого продукту з products.ts, щоб можна було вперше проставити
@@ -588,6 +625,14 @@ function CategoryList({
                     </div>
                   )}
 
+                  {purchasedReadout && (
+                    <div className="pl-6 -mt-1">
+                      <span className="text-label text-accent-nutrition/80">
+                        {purchasedReadout}
+                      </span>
+                    </div>
+                  )}
+
                   {item.options && item.options.length > 0 && (
                     <ul className="flex flex-col gap-1 pl-6">
                       {item.options.map((option, idx) => {
@@ -665,9 +710,9 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
     [...visibleItemIds].filter((id) => {
       if (id.includes("+")) {
         const ids = id.split("+");
-        return ids.some((subId) => (homeStock[subId] ?? 0) < 1);
+        return ids.some((subId) => (homeStock[homeStockKey(subId, activeTripIndex)] ?? 0) < 1);
       }
-      return (homeStock[id] ?? 0) < 1;
+      return (homeStock[homeStockKey(id, activeTripIndex)] ?? 0) < 1;
     }),
   );
   const totalItemsInView = buyableItemIds.size;
@@ -688,10 +733,10 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
         const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
         if (item.id.includes("+")) {
           const ids = item.id.split("+");
-          const fraction = homeStock[ids[0]] ?? 0;
+          const fraction = homeStock[homeStockKey(ids[0], activeTripIndex)] ?? 0;
           return itemSum + itemPrice * fraction;
         }
-        const fraction = homeStock[item.id] ?? 0;
+        const fraction = homeStock[homeStockKey(item.id, activeTripIndex)] ?? 0;
         return itemSum + itemPrice * fraction;
       }, 0)
     );
@@ -709,11 +754,11 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
         const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
         if (item.id.includes("+")) {
           const ids = item.id.split("+");
-          const fraction = homeStock[ids[0]] ?? 0;
+          const fraction = homeStock[homeStockKey(ids[0], activeTripIndex)] ?? 0;
           return itemSum + itemPrice * (1 - fraction);
         }
 
-        const fraction = homeStock[item.id] ?? 0;
+        const fraction = homeStock[homeStockKey(item.id, activeTripIndex)] ?? 0;
         return itemSum + itemPrice * (1 - fraction);
       }, 0)
     );
@@ -737,17 +782,21 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
 
   const reset = () => checkedStore.write({});
 
+  // `id` тут — сирий `item.id` з UI; фактичний ключ у сховищі прив'язується до
+  // активної вкладки закупу (`homeStockKey`), щоб позначка "вдома" в одному трипі
+  // не "протікала" в інші трипи того самого товару (див. `homeStockKey`).
   const toggleHomeStock = (id: string) => {
     if (id.includes("+")) {
       const ids = id.split("+");
       const nextHomeStock = { ...homeStock };
-      const nextVal = (homeStock[ids[0]] ?? 0) > 0 ? 0 : 1;
+      const nextVal = (homeStock[homeStockKey(ids[0], activeTripIndex)] ?? 0) > 0 ? 0 : 1;
       for (const subId of ids) {
-        nextHomeStock[subId] = nextVal;
+        nextHomeStock[homeStockKey(subId, activeTripIndex)] = nextVal;
       }
       homeStockStore.write(nextHomeStock);
     } else {
-      homeStockStore.write({ ...homeStock, [id]: (homeStock[id] ?? 0) > 0 ? 0 : 1 });
+      const key = homeStockKey(id, activeTripIndex);
+      homeStockStore.write({ ...homeStock, [key]: (homeStock[key] ?? 0) > 0 ? 0 : 1 });
     }
   };
 
@@ -756,11 +805,11 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
       const ids = id.split("+");
       const nextHomeStock = { ...homeStock };
       for (const subId of ids) {
-        nextHomeStock[subId] = fraction;
+        nextHomeStock[homeStockKey(subId, activeTripIndex)] = fraction;
       }
       homeStockStore.write(nextHomeStock);
     } else {
-      homeStockStore.write({ ...homeStock, [id]: fraction });
+      homeStockStore.write({ ...homeStock, [homeStockKey(id, activeTripIndex)]: fraction });
     }
   };
 
@@ -843,6 +892,7 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
         priceOverrides={priceOverrides}
         weekStart={weekStart}
         seasonOverride={seasonOverride}
+        activeTripIndex={activeTripIndex}
         onToggle={toggle}
         onToggleHomeStock={toggleHomeStock}
         onSetHomeStockFraction={setHomeStockFraction}
