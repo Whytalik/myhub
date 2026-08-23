@@ -105,9 +105,6 @@ export const PRODUCTS: Record<string, Product> = {
     "meat",
     { cookedMultiplier: 0.65 },
   ),
-  shrimp: tracked("shrimp", "Креветки", { kcal: 85, protein: 20, fat: 1, carbs: 0 }, "meat", {
-    cookedMultiplier: 0.8,
-  }),
   potato: tracked(
     "potato",
     "Картопля",
