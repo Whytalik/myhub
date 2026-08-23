@@ -140,10 +140,21 @@ function parseNoteTrips(note: string | undefined): number[] {
  * their earliest matching trip only — showing the same unsplit qty on every
  * matching trip would misread as "buy this amount again each time".
  */
+/** Earliest trip an item is relevant to — the same rule `sliceItemForTrip` uses to
+ *  decide which single trip keeps a hand-typed `qty`/flat `price`, reused to order
+ *  sub-items by shopping-trip proximity (nearest trip first) when spreading a "вже
+ *  вдома" amount across them — see `setHomeStockFraction` in `ShoppingList`. */
+function firstTripOf(item: ShoppingItem): number {
+  if (item.computedQty) {
+    return tripsForOccurrences(item.computedQty.sets)[0] ?? defaultTripForBuyDay(item.buyDay);
+  }
+  const noteTrips = parseNoteTrips(item.note);
+  return noteTrips.length > 0 ? Math.min(...noteTrips) : defaultTripForBuyDay(item.buyDay);
+}
+
 function sliceItemForTrip(item: ShoppingItem, tripIndex: number): ShoppingItem | null {
   if (item.computedQty) {
-    const firstTrip =
-      tripsForOccurrences(item.computedQty.sets)[0] ?? defaultTripForBuyDay(item.buyDay);
+    const firstTrip = firstTripOf(item);
     const sets = sliceOccurrencesForTrip(item.computedQty.sets, tripIndex);
     const grams = tripIndex === firstTrip ? (item.computedQty.grams ?? 0) : 0;
     if (sets.length === 0 && grams === 0) return null;
@@ -157,10 +168,71 @@ function sliceItemForTrip(item: ShoppingItem, tripIndex: number): ShoppingItem |
       computedQty: { ...item.computedQty, sets, grams },
     };
   }
-  const noteTrips = parseNoteTrips(item.note);
-  const firstTrip =
-    noteTrips.length > 0 ? Math.min(...noteTrips) : defaultTripForBuyDay(item.buyDay);
-  return tripIndex === firstTrip ? item : null;
+  return tripIndex === firstTripOf(item) ? item : null;
+}
+
+/** Every (trip, grams needed in that trip) pair a row touches — one bucket per trip,
+ *  in the item's own native quantity. A hand-typed `qty` row (no `computedQty`) has
+ *  exactly one bucket at `firstTripOf`, matching how `sliceItemForTrip` already shows
+ *  it just once. Used to spread a "вже вдома" amount entered in "Усі продукти" across
+ *  the specific trips it actually covers, nearest first, instead of smearing it
+ *  proportionally across every trip the row spans. */
+function tripBucketsFor(
+  item: ShoppingItem,
+  weekStart?: string,
+  seasonOverride?: string,
+): { tripIndex: number; grams: number }[] {
+  if (!item.computedQty) {
+    return [
+      { tripIndex: firstTripOf(item), grams: computedTotal(item, weekStart, seasonOverride) ?? 0 },
+    ];
+  }
+  const trips = tripsForOccurrences(item.computedQty.sets);
+  const relevantTrips = trips.length > 0 ? trips : [defaultTripForBuyDay(item.buyDay)];
+  return relevantTrips.map((tripIndex) => {
+    const sliced = sliceItemForTrip(item, tripIndex);
+    return {
+      tripIndex,
+      grams: sliced ? (computedTotal(sliced, weekStart, seasonOverride) ?? 0) : 0,
+    };
+  });
+}
+
+/** One bucket per (source row, trip it touches) — flattens `tripBucketsFor` across
+ *  every row a merged "Усі продукти" item was built from (or just the item itself,
+ *  unmerged). This is the actual unit "вже вдома" fills nearest-trip-first against. */
+function homeStockBucketsOf(
+  item: ShoppingItem,
+  weekStart?: string,
+  seasonOverride?: string,
+): { rowId: string; tripIndex: number; grams: number }[] {
+  const rows = (item as MergedShoppingItem).sourceItems ?? [item];
+  return rows.flatMap((row) =>
+    tripBucketsFor(row, weekStart, seasonOverride).map((bucket) => ({ ...bucket, rowId: row.id })),
+  );
+}
+
+/** "Вже вдома" coverage fraction (0–1) of `item`'s full need. In a specific trip's
+ *  tab there's only ever one trip in play, so this is a direct key lookup; in "Усі
+ *  продукти" it's the buckets' weighted average, since each (row, trip) pair can now
+ *  hold its own independent fraction (see `homeStockBucketsOf`). */
+function homeStockFractionOf(
+  item: ShoppingItem,
+  activeTripIndex: number | null,
+  homeStock: FractionMap,
+  itemTotal: number | null,
+  weekStart?: string,
+  seasonOverride?: string,
+): number {
+  if (activeTripIndex !== null) {
+    return homeStock[homeStockKey(item.id, activeTripIndex)] ?? 0;
+  }
+  if (!itemTotal || itemTotal <= 0) return 0;
+  const buckets = homeStockBucketsOf(item, weekStart, seasonOverride);
+  return buckets.reduce((sum, bucket) => {
+    const bucketFraction = homeStock[homeStockKey(bucket.rowId, bucket.tripIndex)] ?? 0;
+    return sum + (bucketFraction * bucket.grams) / itemTotal;
+  }, 0);
 }
 
 /** М'ясо/риба готуються наперед у мілпрепі й заморожуються порціями на весь
@@ -431,6 +503,7 @@ function CategoryList({
   onToggle,
   onToggleHomeStock,
   onSetHomeStockFraction,
+  onSetHomeStockEntries,
   onSetPriceOverride,
 }: {
   categories: ShoppingCategory[];
@@ -443,6 +516,7 @@ function CategoryList({
   onToggle: (id: string) => void;
   onToggleHomeStock: (id: string) => void;
   onSetHomeStockFraction: (id: string, fraction: number) => void;
+  onSetHomeStockEntries: (entries: { key: string; fraction: number }[]) => void;
   onSetPriceOverride: (foodKey: string, value: number | null) => void;
 }) {
   // Only one price editor open at a time, across the whole list.
@@ -458,19 +532,30 @@ function CategoryList({
               const isChecked = item.id.includes("+")
                 ? item.id.split("+").every((subId) => checked[subId])
                 : !!checked[item.id];
-              const fraction = item.id.includes("+")
-                ? (homeStock[homeStockKey(item.id.split("+")[0], activeTripIndex)] ?? 0)
-                : (homeStock[homeStockKey(item.id, activeTripIndex)] ?? 0);
-              const isHomeStock = fraction > 0;
-              const qty = displayQtyOf(item, weekStart, seasonOverride);
-              const itemTotal = computedTotal(item, weekStart, seasonOverride);
-              const readout = isHomeStock
-                ? homeStockReadout(item, fraction, weekStart, seasonOverride)
-                : null;
               // "Усі продукти" only: суми того, що вже відмічено купленим у
               // конкретних трипах — щоб частковий прогрес по трипах був видно тут,
               // а не ховався за одним булевим "куплено все".
               const sourceItems = (item as MergedShoppingItem).sourceItems;
+              const itemTotal = computedTotal(item, weekStart, seasonOverride);
+              // "Усі продукти": буде рахуватись по трип-бакетах (кожен закуп цього
+              // товару — окрема, незалежно заповнювана комірка) — див. `homeStockFractionOf`.
+              const buckets =
+                activeTripIndex === null
+                  ? homeStockBucketsOf(item, weekStart, seasonOverride)
+                  : null;
+              const fraction = homeStockFractionOf(
+                item,
+                activeTripIndex,
+                homeStock,
+                itemTotal,
+                weekStart,
+                seasonOverride,
+              );
+              const isHomeStock = fraction > 0;
+              const qty = displayQtyOf(item, weekStart, seasonOverride);
+              const readout = isHomeStock
+                ? homeStockReadout(item, fraction, weekStart, seasonOverride)
+                : null;
               const purchasedSoFar =
                 sourceItems && sourceItems.length > 1
                   ? sourceItems
@@ -543,7 +628,19 @@ function CategoryList({
                       </span>
                     </button>
                     <button
-                      onClick={() => onToggleHomeStock(item.id)}
+                      onClick={() => {
+                        if (buckets) {
+                          const nextVal = isHomeStock ? 0 : 1;
+                          onSetHomeStockEntries(
+                            buckets.map((bucket) => ({
+                              key: homeStockKey(bucket.rowId, bucket.tripIndex),
+                              fraction: nextVal,
+                            })),
+                          );
+                        } else {
+                          onToggleHomeStock(item.id);
+                        }
+                      }}
                       className={homeButtonClass}
                       title="Вже є вдома — не купувати цього разу"
                     >
@@ -608,9 +705,30 @@ function CategoryList({
                         value={Math.round(fraction * itemTotal)}
                         onChange={(e) => {
                           const amount = Number(e.target.value);
-                          if (!Number.isFinite(amount) || itemTotal <= 0) return;
+                          if (!Number.isFinite(amount) || itemTotal === null || itemTotal <= 0)
+                            return;
                           const clamped = Math.max(0, amount);
-                          onSetHomeStockFraction(item.id, clamped / itemTotal);
+                          if (buckets) {
+                            // "Усі продукти": заповнюємо найближчий закуп повністю,
+                            // залишок переходить у наступний — а не розмазується
+                            // порівну по всіх закупах цього товару одразу. Один
+                            // пакетний виклик (не цикл onSetHomeStockFraction) —
+                            // інакше кожен виклик пише поверх того самого застарілого
+                            // `homeStock` зі снепшоту рендера і губить попередні правки.
+                            const ordered = [...buckets].sort((a, b) => a.tripIndex - b.tripIndex);
+                            let remaining = clamped;
+                            const entries = ordered.map((bucket) => {
+                              const covered = Math.min(remaining, bucket.grams);
+                              remaining = Math.max(0, remaining - covered);
+                              return {
+                                key: homeStockKey(bucket.rowId, bucket.tripIndex),
+                                fraction: bucket.grams > 0 ? covered / bucket.grams : 0,
+                              };
+                            });
+                            onSetHomeStockEntries(entries);
+                          } else {
+                            onSetHomeStockFraction(item.id, clamped / itemTotal);
+                          }
                         }}
                         className="w-16 text-right text-xs bg-white/5 rounded border border-white/10 px-1.5 py-0.5 text-amber-400 focus:outline-none focus:border-amber-400/50"
                       />
@@ -700,20 +818,21 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
       ? combineShoppingItems(SHOPPING_LIST)
       : categoriesForTrip(activeTripIndex);
 
-  const visibleItemIds = new Set(
-    filteredCategories.flatMap((category) => category.items.map((item) => item.id)),
-  );
+  const visibleItems = filteredCategories.flatMap((category) => category.items);
+  const fractionOf = (item: ShoppingItem) =>
+    homeStockFractionOf(
+      item,
+      activeTripIndex,
+      homeStock,
+      computedTotal(item, weekStart, seasonOverride),
+      weekStart,
+      seasonOverride,
+    );
 
   // "Куплено" рахує лише те, що реально ще треба купити — позиції, повністю
   // відмічені "вдома" (fraction 1) не входять ні в знаменник, ні в лічильник прогресу.
   const buyableItemIds = new Set(
-    [...visibleItemIds].filter((id) => {
-      if (id.includes("+")) {
-        const ids = id.split("+");
-        return ids.some((subId) => (homeStock[homeStockKey(subId, activeTripIndex)] ?? 0) < 1);
-      }
-      return (homeStock[homeStockKey(id, activeTripIndex)] ?? 0) < 1;
-    }),
+    visibleItems.filter((item) => fractionOf(item) < 1).map((item) => item.id),
   );
   const totalItemsInView = buyableItemIds.size;
 
@@ -726,42 +845,18 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
 
   const totalCost = categoryCost(filteredCategories, weekStart, seasonOverride, priceOverrides);
 
-  const homeStockCost = filteredCategories.reduce((sum, category) => {
-    return (
-      sum +
-      category.items.reduce((itemSum, item) => {
-        const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
-        if (item.id.includes("+")) {
-          const ids = item.id.split("+");
-          const fraction = homeStock[homeStockKey(ids[0], activeTripIndex)] ?? 0;
-          return itemSum + itemPrice * fraction;
-        }
-        const fraction = homeStock[homeStockKey(item.id, activeTripIndex)] ?? 0;
-        return itemSum + itemPrice * fraction;
-      }, 0)
-    );
+  const homeStockCost = visibleItems.reduce((sum, item) => {
+    const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
+    return sum + itemPrice * fractionOf(item);
   }, 0);
 
-  const checkedCost = filteredCategories.reduce((sum, category) => {
-    return (
-      sum +
-      category.items.reduce((itemSum, item) => {
-        const isChecked = item.id.includes("+")
-          ? item.id.split("+").every((subId) => checked[subId])
-          : !!checked[item.id];
-        if (!isChecked) return itemSum;
-
-        const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
-        if (item.id.includes("+")) {
-          const ids = item.id.split("+");
-          const fraction = homeStock[homeStockKey(ids[0], activeTripIndex)] ?? 0;
-          return itemSum + itemPrice * (1 - fraction);
-        }
-
-        const fraction = homeStock[homeStockKey(item.id, activeTripIndex)] ?? 0;
-        return itemSum + itemPrice * (1 - fraction);
-      }, 0)
-    );
+  const checkedCost = visibleItems.reduce((sum, item) => {
+    const isChecked = item.id.includes("+")
+      ? item.id.split("+").every((subId) => checked[subId])
+      : !!checked[item.id];
+    if (!isChecked) return sum;
+    const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
+    return sum + itemPrice * (1 - fractionOf(item));
   }, 0);
 
   const remainingCost = totalCost - homeStockCost - checkedCost;
@@ -782,35 +877,30 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
 
   const reset = () => checkedStore.write({});
 
-  // `id` тут — сирий `item.id` з UI; фактичний ключ у сховищі прив'язується до
-  // активної вкладки закупу (`homeStockKey`), щоб позначка "вдома" в одному трипі
-  // не "протікала" в інші трипи того самого товару (див. `homeStockKey`).
+  // Only reachable from a specific trip's tab (never "Усі продукти" — merged/"+"
+  // items there go through `onSetHomeStockEntries` instead, computed straight from
+  // CategoryList where the per-trip buckets are known), so `id` is always plain —
+  // ключ у сховищі прив'язується до активної вкладки закупу (`homeStockKey`), щоб
+  // позначка "вдома" в одному трипі не "протікала" в інші трипи того самого товару.
   const toggleHomeStock = (id: string) => {
-    if (id.includes("+")) {
-      const ids = id.split("+");
-      const nextHomeStock = { ...homeStock };
-      const nextVal = (homeStock[homeStockKey(ids[0], activeTripIndex)] ?? 0) > 0 ? 0 : 1;
-      for (const subId of ids) {
-        nextHomeStock[homeStockKey(subId, activeTripIndex)] = nextVal;
-      }
-      homeStockStore.write(nextHomeStock);
-    } else {
-      const key = homeStockKey(id, activeTripIndex);
-      homeStockStore.write({ ...homeStock, [key]: (homeStock[key] ?? 0) > 0 ? 0 : 1 });
-    }
+    const key = homeStockKey(id, activeTripIndex);
+    homeStockStore.write({ ...homeStock, [key]: (homeStock[key] ?? 0) > 0 ? 0 : 1 });
   };
 
+  // Only reachable from a specific trip's tab, same as `toggleHomeStock` above.
   const setHomeStockFraction = (id: string, fraction: number) => {
-    if (id.includes("+")) {
-      const ids = id.split("+");
-      const nextHomeStock = { ...homeStock };
-      for (const subId of ids) {
-        nextHomeStock[homeStockKey(subId, activeTripIndex)] = fraction;
-      }
-      homeStockStore.write(nextHomeStock);
-    } else {
-      homeStockStore.write({ ...homeStock, [homeStockKey(id, activeTripIndex)]: fraction });
+    homeStockStore.write({ ...homeStock, [homeStockKey(id, activeTripIndex)]: fraction });
+  };
+
+  // `entries` carry fully-resolved storage keys already (CategoryList computed them
+  // via `homeStockKey` per bucket) — one batched write so every bucket's update lands
+  // in the same `homeStockStore.write` call instead of each clobbering the last.
+  const setHomeStockEntries = (entries: { key: string; fraction: number }[]) => {
+    const nextHomeStock = { ...homeStock };
+    for (const { key, fraction } of entries) {
+      nextHomeStock[key] = fraction;
     }
+    homeStockStore.write(nextHomeStock);
   };
 
   const setPriceOverride = (foodKey: string, value: number | null) => {
@@ -896,6 +986,7 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
         onToggle={toggle}
         onToggleHomeStock={toggleHomeStock}
         onSetHomeStockFraction={setHomeStockFraction}
+        onSetHomeStockEntries={setHomeStockEntries}
         onSetPriceOverride={setPriceOverride}
       />
     </div>
