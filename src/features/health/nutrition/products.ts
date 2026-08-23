@@ -72,12 +72,14 @@ function pantry(
 export const PRODUCTS: Record<string, Product> = {
   eggs: tracked("eggs", "Яйця", { kcal: 157, protein: 12.7, fat: 11.5, carbs: 0.7 }, "other", {
     gramsPerPiece: 60,
+    basePrice: 80,
   }),
   bread: tracked(
     "bread",
     "Хліб гречаний",
     { kcal: 240, protein: 8.2, fat: 2.3, carbs: 47.9 },
     "grains",
+    { basePrice: 150 },
   ),
   oil: tracked("oil", "Олія", { kcal: 884, protein: 0, fat: 100, carbs: 0 }, "other"),
   chickenMarinated: tracked(
@@ -89,7 +91,7 @@ export const PRODUCTS: Record<string, Product> = {
     "Куряче філе",
     { kcal: 180, protein: 29, fat: 6, carbs: 2 },
     "meat",
-    { searchTerm: "куряче", cookedMultiplier: 0.75 },
+    { searchTerm: "куряче", cookedMultiplier: 0.75, basePrice: 218 },
   ),
   friedChicken: tracked(
     "friedChicken",
@@ -103,14 +105,14 @@ export const PRODUCTS: Record<string, Product> = {
     "Курячі серця",
     { kcal: 153, protein: 15.6, fat: 9.3, carbs: 0.1 },
     "meat",
-    { cookedMultiplier: 0.65 },
+    { cookedMultiplier: 0.65, basePrice: 140 },
   ),
   potato: tracked(
     "potato",
     "Картопля",
     { kcal: 87, protein: 1.9, fat: 0.1, carbs: 20 },
     "vegetables",
-    { basePrice: 25 },
+    { basePrice: 22 },
   ),
   milk: tracked("milk", "Молоко", { kcal: 42, protein: 3.4, fat: 1, carbs: 5 }, "dairy"),
   butter: tracked(
@@ -118,41 +120,42 @@ export const PRODUCTS: Record<string, Product> = {
     "Вершкове масло",
     { kcal: 717, protein: 0.9, fat: 81, carbs: 0.1 },
     "dairy",
+    { basePrice: 550 },
   ),
   tomato: tracked(
     "tomato",
     "Помідори",
     { kcal: 18, protein: 0.9, fat: 0.2, carbs: 3.9 },
     "vegetables",
-    { basePrice: 110 },
+    { basePrice: 25 },
   ),
   cucumber: tracked(
     "cucumber",
     "Огірки",
     { kcal: 15, protein: 0.7, fat: 0.1, carbs: 3.6 },
     "vegetables",
-    { basePrice: 35 },
+    { basePrice: 25 },
   ),
   pepper: tracked(
     "pepper",
     "Болгарський перець",
     { kcal: 20, protein: 1, fat: 0.2, carbs: 4.6 },
     "vegetables",
-    { basePrice: 55 },
+    { basePrice: 45 },
   ),
   onion: tracked(
     "onion",
     "Цибуля",
     { kcal: 40, protein: 1.1, fat: 0.1, carbs: 9.3 },
     "vegetables",
-    { basePrice: 25 },
+    { basePrice: 28 },
   ),
   mozzarella: tracked(
     "mozzarella",
     "Моцарела",
     { kcal: 250, protein: 17.9, fat: 17.9, carbs: 3.6 },
     "dairy",
-    { basePrice: 250 },
+    { basePrice: 400 },
   ),
   parmesan: tracked(
     "parmesan",
@@ -166,13 +169,14 @@ export const PRODUCTS: Record<string, Product> = {
     "Грецький йогурт",
     { kcal: 73, protein: 9, fat: 2, carbs: 4 },
     "dairy",
+    { basePrice: 260 },
   ),
   berries: tracked("berries", "Ягоди", { kcal: 43, protein: 0.8, fat: 0.4, carbs: 10 }, "fruits", {
-    basePrice: 180,
+    basePrice: 310,
   }),
   banana: tracked("banana", "Банан", { kcal: 89, protein: 1.1, fat: 0.3, carbs: 23 }, "fruits", {
     gramsPerPiece: 120,
-    basePrice: 55,
+    basePrice: 62,
   }),
   // Оцінка типового укр. питного підсолодженого йогурту — звірити з етикеткою
   // конкретного продукту перед закупівлею. Альтернатива банану на "Передтрен"
@@ -220,7 +224,7 @@ export const PRODUCTS: Record<string, Product> = {
     "Гречка",
     { kcal: 343, protein: 13.3, fat: 3.4, carbs: 71.5 },
     "grains",
-    { cookedMultiplier: 2.8 },
+    { cookedMultiplier: 2.8, basePrice: 72 },
   ),
   sweetChiliSauce: tracked(
     "sweetChiliSauce",
@@ -243,33 +247,35 @@ export const PRODUCTS: Record<string, Product> = {
   ),
   rice: tracked("rice", "Рис", { kcal: 365, protein: 7.1, fat: 0.7, carbs: 80 }, "grains", {
     cookedMultiplier: 2.8,
+    basePrice: 56,
   }),
   breadcrumbs: tracked(
     "breadcrumbs",
     "Панірувальні сухарі",
     { kcal: 360, protein: 10, fat: 2, carbs: 75 },
     "grains",
+    { basePrice: 65 },
   ),
   pasta: tracked(
     "pasta",
     "Макарони (сухі)",
     { kcal: 350, protein: 12, fat: 1.5, carbs: 71.5 },
     "grains",
-    { cookedMultiplier: 2.3 },
+    { cookedMultiplier: 2.3, basePrice: 42 },
   ),
   arugula: tracked(
     "arugula",
     "Рукола",
     { kcal: 25, protein: 2.6, fat: 0.7, carbs: 3.7 },
     "vegetables",
-    { basePrice: 45 },
+    { basePrice: 550 },
   ),
   icebergLettuce: tracked(
     "icebergLettuce",
     "Айсберг",
     { kcal: 14, protein: 0.9, fat: 0.1, carbs: 3 },
     "vegetables",
-    { basePrice: 50 },
+    { basePrice: 262 },
   ),
   zucchini: tracked(
     "zucchini",
@@ -283,14 +289,14 @@ export const PRODUCTS: Record<string, Product> = {
     "Броколі",
     { kcal: 34, protein: 2.8, fat: 0.4, carbs: 7 },
     "vegetables",
-    { searchTerm: "брокол", basePrice: 55 },
+    { searchTerm: "брокол", basePrice: 140 },
   ),
   cauliflower: tracked(
     "cauliflower",
     "Цвітна капуста",
     { kcal: 25, protein: 1.9, fat: 0.3, carbs: 5 },
     "vegetables",
-    { searchTerm: "цвітн", basePrice: 45 },
+    { searchTerm: "цвітн", basePrice: 70 },
   ),
   spinachFrozen: tracked(
     "spinachFrozen",
@@ -311,7 +317,7 @@ export const PRODUCTS: Record<string, Product> = {
     "Солоні огірки",
     { kcal: 11, protein: 0.8, fat: 0.1, carbs: 1.7 },
     "vegetables",
-    { searchTerm: "солон", basePrice: 40 },
+    { searchTerm: "солон", basePrice: 140 },
   ),
   radish: tracked(
     "radish",
@@ -329,33 +335,33 @@ export const PRODUCTS: Record<string, Product> = {
   ),
   apple: tracked("apple", "Яблука", { kcal: 52, protein: 0.3, fat: 0.2, carbs: 13.8 }, "fruits", {
     searchTerm: "яблук",
-    basePrice: 25,
+    basePrice: 40,
   }),
   orange: tracked(
     "orange",
     "Апельсини",
     { kcal: 47, protein: 0.9, fat: 0.1, carbs: 11.8 },
     "fruits",
-    { searchTerm: "апельсин", basePrice: 45 },
+    { searchTerm: "апельсин", basePrice: 75 },
   ),
   apricot: tracked(
     "apricot",
     "Абрикоси",
     { kcal: 48, protein: 1.4, fat: 0.4, carbs: 11.1 },
     "fruits",
-    { searchTerm: "абрикос", basePrice: 90 },
+    { searchTerm: "абрикос", basePrice: 80 },
   ),
   peach: tracked("peach", "Персики", { kcal: 39, protein: 0.9, fat: 0.3, carbs: 9.5 }, "fruits", {
     searchTerm: "персик",
-    basePrice: 85,
+    basePrice: 48,
   }),
   plum: tracked("plum", "Сливи", { kcal: 46, protein: 0.7, fat: 0.3, carbs: 11.4 }, "fruits", {
     searchTerm: "слив",
-    basePrice: 60,
+    basePrice: 35,
   }),
   pear: tracked("pear", "Груші", { kcal: 57, protein: 0.4, fat: 0.1, carbs: 15.2 }, "fruits", {
     searchTerm: "груш",
-    basePrice: 40,
+    basePrice: 55,
   }),
   hardCheese: tracked(
     "hardCheese",
@@ -363,7 +369,7 @@ export const PRODUCTS: Record<string, Product> = {
     { kcal: 363, protein: 24.1, fat: 29.5, carbs: 0.3 },
     "dairy",
     // "сир" є префіксом слова "сирники" (інша страва) — виключаємо цей збіг.
-    { excludeAfter: ["ник"] },
+    { excludeAfter: ["ник"], basePrice: 470 },
   ),
   suluguni: tracked(
     "suluguni",
@@ -376,6 +382,7 @@ export const PRODUCTS: Record<string, Product> = {
     "Творог",
     { kcal: 159, protein: 16.7, fat: 9, carbs: 3 },
     "dairy",
+    { basePrice: 300 },
   ),
   soySauce: tracked(
     "soySauce",
@@ -385,7 +392,9 @@ export const PRODUCTS: Record<string, Product> = {
     // "соус" занадто загальне слово (в тексті є й інші соуси) — беремо "соєвий".
     { searchTerm: "соєвий" },
   ),
-  honey: tracked("honey", "Мед", { kcal: 308, protein: 0.8, fat: 0, carbs: 80.3 }, "other"),
+  honey: tracked("honey", "Мед", { kcal: 308, protein: 0.8, fat: 0, carbs: 80.3 }, "other", {
+    basePrice: 320,
+  }),
   mackerel: tracked(
     "mackerel",
     "Скумбрія",
@@ -406,7 +415,7 @@ export const PRODUCTS: Record<string, Product> = {
     "Кукурудза консервована",
     { kcal: 76, protein: 2.9, fat: 1.2, carbs: 15.6 },
     "vegetables",
-    { searchTerm: "кукурудза" },
+    { searchTerm: "кукурудза", basePrice: 171 },
   ),
   carrot: tracked(
     "carrot",
@@ -416,7 +425,9 @@ export const PRODUCTS: Record<string, Product> = {
     { basePrice: 30 },
   ),
   sugar: tracked("sugar", "Цукор", { kcal: 374, protein: 0, fat: 0, carbs: 99.5 }, "other"),
-  mayo: tracked("mayo", "Майонез", { kcal: 680, protein: 1, fat: 75, carbs: 2.6 }, "other"),
+  mayo: tracked("mayo", "Майонез", { kcal: 680, protein: 1, fat: 75, carbs: 2.6 }, "other", {
+    basePrice: 230,
+  }),
   mustardDijon: tracked(
     "mustardDijon",
     "Гірчиця діжонська",
@@ -427,7 +438,9 @@ export const PRODUCTS: Record<string, Product> = {
     // чергування ц→ч — тому окремий корінь.
     { searchTerm: "гірчиця гірчичн" },
   ),
-  adjika: tracked("adjika", "Аджика", { kcal: 70, protein: 2, fat: 1, carbs: 12 }, "other"),
+  adjika: tracked("adjika", "Аджика", { kcal: 70, protein: 2, fat: 1, carbs: 12 }, "other", {
+    basePrice: 250,
+  }),
   porkChop: tracked(
     "porkChop",
     "Свиняча відбивна",
@@ -440,9 +453,11 @@ export const PRODUCTS: Record<string, Product> = {
     "Свиняча вирізка",
     { kcal: 109, protein: 21, fat: 2.2, carbs: 0 },
     "meat",
-    { cookedMultiplier: 0.75 },
+    { cookedMultiplier: 0.75, basePrice: 350 },
   ),
-  cream: tracked("cream", "Вершки", { kcal: 145, protein: 2.8, fat: 12.5, carbs: 4 }, "dairy"),
+  cream: tracked("cream", "Вершки", { kcal: 145, protein: 2.8, fat: 12.5, carbs: 4 }, "dairy", {
+    basePrice: 195,
+  }),
   ketchup: tracked("ketchup", "Кетчуп", { kcal: 112, protein: 1.2, fat: 0.2, carbs: 27 }, "other"),
 
   // Готується під час міл-препу з уже врахованих tracked-продуктів — не купується окремо.
@@ -532,7 +547,7 @@ export const PRODUCTS: Record<string, Product> = {
   nutmeg: pantry("nutmeg", "Мускатний горіх"),
   salt: pantry("salt", "Сіль"),
   blackPepper: pantry("blackPepper", "Чорний перець"),
-  lemon: pantry("lemon", "Лимон", { basePrice: 150 }),
+  lemon: pantry("lemon", "Лимон", { basePrice: 200 }),
   garlic: pantry("garlic", "Часник"),
   // корінь "паста" замінено на "томат" — так ловиться і "томатна", і "томатний" (маринади).
   tomatoPaste: pantry("tomatoPaste", "Томатна паста", { searchTerm: "томат" }),

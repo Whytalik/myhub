@@ -74,7 +74,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "свіжа",
         qty: "1 шт (~800 г)",
         note: "Сет3 — готується в мілпрепі. Потрібно ~390 г філе, що відповідає одній рибині ~800 г",
-        price: 150,
+        price: 240,
         buyDay: "sun",
       },
     ],
@@ -89,7 +89,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "у власному соку",
         qty: "3 банки (по 180 г)",
         note: "Сет3, день 2 — сет тепер на 2 дні, тунця більше",
-        price: 300,
+        price: 255,
         buyDay: "sun",
       },
       {
@@ -193,7 +193,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "milk",
         qty: "1 л",
         note: "270мл тісто для булочок (Сет2+Сет6) + Сет2 80мл (мус) + Сет3 100мл (картопляне пюре) + Сет5 80мл (мус)",
-        price: 46,
+        price: 32,
         buyDay: "sun",
       },
       {
@@ -288,7 +288,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "flour",
         qty: "650 г",
         note: "Нд (150г сирники + 500г тісто для булочок)",
-        price: 20,
+        price: 25,
         buyDay: "sun",
       },
       {
@@ -296,7 +296,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "yeast",
         qty: "7 г (1 пакетик)",
         note: "Тісто для булочок (Сет2+Сет6)",
-        price: 15,
+        price: 9,
         buyDay: "sun",
       },
       {
@@ -323,7 +323,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "vanillaSugar",
         qty: "1 пакетик",
         note: "Нд",
-        price: 8,
+        price: 7,
         buyDay: "sun",
       },
       {
@@ -420,7 +420,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "garlic",
         qty: "~80 г",
         note: "Сет7 + Сет5 + Сет6",
-        price: 16,
+        price: 10,
         buyDay: "sun",
       },
       {
@@ -591,7 +591,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "lime",
         qty: "3 шт",
         note: "Сет7 (боул та соус-крема) + Сет4 (рис та соус)",
-        price: 30,
+        price: 72,
         buyDay: "sun",
       },
     ],
@@ -605,7 +605,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "dillParsley",
         qty: "1 пучок",
         note: "Сет1",
-        price: 22,
+        price: 28,
         buyDay: "sun",
       },
       {
@@ -613,7 +613,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "dillParsley",
         qty: "1 пучок",
         note: "Сет3",
-        price: 23,
+        price: 28,
         buyDay: "wed",
       },
       {
@@ -621,7 +621,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "greenOnion",
         qty: "1 пучок",
         note: "Сет3",
-        price: 22,
+        price: 28,
         buyDay: "wed",
       },
       {
@@ -630,7 +630,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "свіжий",
         qty: "1 пучок",
         note: "Сет4",
-        price: 30,
+        price: 35,
         buyDay: "wed",
       },
     ],
@@ -645,7 +645,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "оливкова",
         qty: "185 мл",
         note: "Сет1 + Сет2 + Сет4 + Сет5 + Сет6 + Сет7",
-        price: 65,
+        price: 102,
         buyDay: "sun",
       },
       {
@@ -654,7 +654,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "рослинна",
         qty: "150 мл",
         note: "Сет1 + Сет2 + Сет4 + Сет5 + Сет6 + Сет7 + 50мл тісто/начинка для булочок",
-        price: 15,
+        price: 9,
         buyDay: "sun",
       },
       {
@@ -663,7 +663,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "9%",
         qty: "50 мл",
         note: "Сет1 + Сет2 + Сет4 + Сет5 + Сет7",
-        price: 4,
+        price: 6,
         buyDay: "sun",
       },
     ],
@@ -677,7 +677,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "soySauce",
         qty: "200 мл",
         note: "Нд (для маринування на Сет2 — глазур до сердець)",
-        price: 32,
+        price: 70,
         buyDay: "sun",
       },
       {
@@ -706,7 +706,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "mustardDijon",
         qty: "80 г",
         note: "Нд (для маринування) + Сет1 + Сет6",
-        price: 24,
+        price: 44,
         buyDay: "sun",
       },
       {
@@ -740,7 +740,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "сушений",
         qty: "1 упаковка",
         note: "Нд",
-        price: 25,
+        price: 28,
         buyDay: "sun",
       },
       {
@@ -749,7 +749,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "сушений",
         qty: "1 упаковка",
         note: "Нд",
-        price: 25,
+        price: 28,
         buyDay: "sun",
       },
       {
@@ -757,7 +757,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "paprika",
         qty: "1 упаковка",
         note: "Нд + Сет5",
-        price: 22,
+        price: 28,
         buyDay: "sun",
       },
       {
@@ -773,7 +773,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "oregano",
         qty: "1 упаковка",
         note: "Сет1 + Нд",
-        price: 24,
+        price: 28,
         buyDay: "sun",
       },
       {
@@ -781,7 +781,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "fishSeasoning",
         qty: "1 упаковка",
         note: "Нд — скумбрія",
-        price: 25,
+        price: 28,
         buyDay: "sun",
       },
       {
@@ -797,7 +797,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "nutmeg",
         qty: "1 упаковка",
         note: "Нд",
-        price: 30,
+        price: 28,
         buyDay: "sun",
       },
       {
@@ -805,7 +805,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         food: "salt",
         qty: "1 упаковка",
         note: "Щодня",
-        price: 15,
+        price: 28,
         buyDay: "sun",
       },
       {
@@ -814,7 +814,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qualifier: "мелений",
         qty: "1 упаковка",
         note: "Щодня",
-        price: 25,
+        price: 28,
         buyDay: "sun",
       },
     ],
