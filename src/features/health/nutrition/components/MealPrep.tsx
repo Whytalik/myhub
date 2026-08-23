@@ -1,4 +1,4 @@
-import { ClipboardList, Flame, Apple } from "lucide-react";
+import { ClipboardList, Flame, Apple, CalendarClock, ListOrdered } from "lucide-react";
 import { highlightProductMentions } from "../highlight-products";
 import { getProductName, PRODUCTS } from "../products";
 import { sumMacroGramsForSetsMulti, formatGrams } from "../quantities";
@@ -314,6 +314,70 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       },
     ];
 
+  const twoDayAlgorithm = [
+    {
+      title: "1. Раз на 14 днів — мілпреп сировини",
+      steps: [
+        "У неділю маринується/готується сировина про запас одразу на всі 7 сетів: м'ясо в маринаді, тісто, фарш, соус-заготовки — і замороджується порційно.",
+        "У мілпреп НЕ входить готова страва цілком — гарнір (крупа, картопля) і салат заморозку не переживають і в нього не потрапляють. Виняток — маффіни Сету3: у них своя окрема коротка заготовка на весь сет (спікаються заздалегідь, зберігаються в холодильнику 2 дні, не в морозилці) — див. prepSteps самого Сету3, до спільного мілпрепу вона не входить.",
+      ],
+    },
+    {
+      title: "2. День 1 сета — готуємо одразу на 2 дні",
+      steps: [
+        "Ввечері напередодні — дістати з морозилки потрібну порцію м'яса (див. «Підготовка на завтра»).",
+        "М'ясо і гарнір (крупа/картопля) готуються одразу ПОДВІЙНОЮ порцією — на сьогодні і про запас на завтра. Салат/свіжі овочі — лише в одинарній, сьогоднішній порції.",
+        "Половину готового м'яса й гарніру (завтрашню) швидко охолодити в неглибокому контейнері (шар ≤5 см, щоб охололо за ~1 год, критично для рису й гречки) і одразу в холодильник — «поклав і забув» до завтра.",
+        "Решту подати сьогодні на обід; на вечерю те саме м'ясо й гарнір лише розігріваються, а салат нарізається заново, свіжим.",
+      ],
+    },
+    {
+      title: "3. День 2 сета — розігрів + новий салат",
+      steps: [
+        "М'ясо й гарнір НЕ готуються заново — це вчорашня охолоджена порція з холодильника, просто розігріти наскрізь до 74°C (духовка/пательня/аерогриль повертають хрустким стравам текстуру краще за мікрохвильовку).",
+        "Салат — завжди новий, з нуля, зі свіжих овочів, за тим самим рецептом що й учора. Це стосується і обіду, і вечері дня 2.",
+        "Виняток — Сет 3: день 1 і день 2 це дві різні страви (запечена скумбрія → тунцевий салат), кожна своя, без розігріву однієї в іншу. Виняток — Сет 6 (паста з креветками): свіжого салату там немає, і на день 2 просто розігрівається вся страва цілком.",
+      ],
+    },
+    {
+      title: "4. Безпечне зберігання (USDA FSIS)",
+      steps: [
+        "Охолоджувати гарячу їжу до холодильника не довше ~2 год (для рису — ~1 год, через Bacillus cereus: токсин, який може утворитись при повільному охолодженні, не руйнується подальшим нагріванням).",
+        "Зберігати в холодильнику при ≤4°C; в межах 3–4 днів навіть 1 доба (наш випадок) — з великим запасом.",
+        "Розігрівати до 74°C (165°F) наскрізь, а не просто «тепле».",
+      ],
+    },
+    {
+      title: "5. Раз на тиждень — другий шопінг-трип (середа)",
+      steps: [
+        "Довозяться свіжі овочі й зелень для салатів сетів другої половини тижня, щоб жоден овоч не лежав у холодильнику довше ~3–4 днів до готування.",
+      ],
+    },
+  ];
+
+  const dayTemplate = [
+    {
+      title: "Передтрен (снек)",
+      text: "Банан — фіксовано, не залежить від сета.",
+    },
+    {
+      title: "Сніданок",
+      text: "Білок (яйця / сирники / маффіни) + вуглевод (бутерброд, хліб) + фрукт-десерт. Фрукт ротується по сетах за принципом «чим швидше сет їдять після закупівлі — тим менш стійкий до зберігання фрукт можна ставити»: Сет1 персик, Сет2 слива, Сет3 абрикос, Сет4 груша, Сет5 яблуко, Сет6 апельсин, Сет7 яблуко.",
+    },
+    {
+      title: "Обід",
+      text: "Білок активного сета + гарнір (крупа/картопля) + свіжий сезонний салат/овочі + соус. У день 1 сета м'ясо й гарнір готуються одразу подвійною порцією (сьогодні + завтра про запас), салат — лише сьогоднішня порція. У день 2 м'ясо й гарнір тільки розігріваються з учора, а салат готується заново, свіжим.",
+    },
+    {
+      title: "Вечеря",
+      text: "Та сама страва, що на обід цього дня: м'ясо й гарнір розігріваються, салат нарізається заново — свіжим, як і на обіді.",
+    },
+    {
+      title: "Перекус",
+      text: "Протеїновий йогуртовий пудинг: йогурт + протеїн + ягоди/фрукт, без варки — фіксований шаблон незалежно від сета.",
+    },
+  ];
+
   const sectionIconClass =
     "flex items-center justify-center w-8 h-8 rounded-lg bg-accent-nutrition/10 text-accent-nutrition shrink-0";
   const ingredientItemClass = "flex items-start gap-1.5 text-sm text-zinc-300";
@@ -328,8 +392,9 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
           <div>
             <h3 className="text-panel-title">Підготовка їжі (Міл-преп)</h3>
             <p className="text-caption">
-              Раз на 14 днів (у неділю) здійснюється закупка і підготовка білкових продуктів на весь
-              цикл із 7 сетів — готуємо раз, їмо два дні поспіль
+              Раз на 14 днів (у неділю) здійснюється закупка і підготовка (маринування) білкових
+              продуктів на весь цикл із 7 сетів — заморожується лише сировина. Гарнір і салат
+              мілпреп не зачіпає: вони готуються свіжими щоразу, див. алгоритм нижче.
             </p>
           </div>
         </div>
@@ -443,6 +508,56 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="glass-card p-4 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <div className={sectionIconClass}>
+            <CalendarClock size={16} />
+          </div>
+          <div>
+            <h3 className="text-panel-title">Алгоритм: сет → 2 дні</h3>
+            <p className="text-caption">Що саме готується раз на 14 днів, а що — заново щодня</p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          {twoDayAlgorithm.map((block, idx) => (
+            <div key={idx} className="flex flex-col gap-1.5">
+              <span className="text-sm font-semibold text-accent-nutrition">{block.title}</span>
+              <ol className="flex flex-col gap-1">
+                {block.steps.map((step, stepIdx) => (
+                  <li key={stepIdx} className="flex items-start gap-2 text-sm text-zinc-300">
+                    <span className="font-mono text-xs text-zinc-500 shrink-0">{stepIdx + 1}.</span>
+                    <span>{highlightProductMentions(step)}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="glass-card p-4 flex flex-col gap-4">
+        <div className="flex items-center gap-3">
+          <div className={sectionIconClass}>
+            <ListOrdered size={16} />
+          </div>
+          <div>
+            <h3 className="text-panel-title">Алгоритм формування дня</h3>
+            <p className="text-caption">Однаковий шаблон прийомів їжі для всіх 7 сетів</p>
+          </div>
+        </div>
+        <ol className="flex flex-col gap-2">
+          {dayTemplate.map((item, idx) => (
+            <li key={idx} className="flex items-start gap-2 text-sm text-zinc-300">
+              <span className="font-mono text-xs text-zinc-500 shrink-0">{idx + 1}.</span>
+              <span>
+                <span className="font-semibold text-zinc-200">{item.title}</span> —{" "}
+                {highlightProductMentions(item.text)}
+              </span>
+            </li>
+          ))}
+        </ol>
       </div>
 
       <div className="glass-card p-4 flex flex-col gap-4">
