@@ -70,7 +70,7 @@ function pantry(
  * - pantry — спеції й приправи: без обліку макросів.
  */
 export const PRODUCTS: Record<string, Product> = {
-  eggs: tracked("eggs", "Яйця", { kcal: 157, protein: 12.7, fat: 11.5, carbs: 0.7 }, "other", {
+  eggs: tracked("eggs", "Яйця", { kcal: 143, protein: 12.6, fat: 9.5, carbs: 0.7 }, "other", {
     gramsPerPiece: 60,
     basePrice: 80,
   }),
@@ -89,7 +89,7 @@ export const PRODUCTS: Record<string, Product> = {
     // олії дає інший макропрофіль, не через іншу сировину.
     "chickenMarinated",
     "Куряче філе",
-    { kcal: 180, protein: 29, fat: 6, carbs: 2 },
+    { kcal: 120, protein: 22.5, fat: 2.6, carbs: 0 },
     "meat",
     { searchTerm: "куряче", cookedMultiplier: 0.75, basePrice: 218 },
   ),
@@ -398,14 +398,14 @@ export const PRODUCTS: Record<string, Product> = {
   mackerel: tracked(
     "mackerel",
     "Скумбрія",
-    { kcal: 193, protein: 18.7, fat: 13.2, carbs: 0 },
+    { kcal: 205, protein: 18.6, fat: 13.9, carbs: 0 },
     "meat",
     { cookedMultiplier: 0.8 },
   ),
   tunaCanned: tracked(
     "tunaCanned",
     "Тунець консервований",
-    { kcal: 100, protein: 22, fat: 1.2, carbs: 0 },
+    { kcal: 116, protein: 25.5, fat: 0.8, carbs: 0 },
     "meat",
     // "консервований" спільне з cornCanned — беремо конкретний іменник.
     { searchTerm: "тунець" },
