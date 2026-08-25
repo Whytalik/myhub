@@ -4,6 +4,7 @@ import { useSyncExternalStore, useState } from "react";
 import { Check, Home, Pencil, RotateCcw } from "lucide-react";
 import { Tabs } from "@/components/ui/navigation/tabs";
 import { Input } from "@/components/ui/inputs/input";
+import { Select } from "@/components/ui/inputs/select";
 import { SHOPPING_LIST } from "../data";
 import { getProductName, PRODUCTS } from "../products";
 import { sumMacroGramsForSetsMulti, formatGrams } from "../quantities";
@@ -69,6 +70,22 @@ const VIEWS = [
 ];
 
 type ViewId = (typeof VIEWS)[number]["id"];
+
+const STORES = [
+  { id: "fora", label: "Фора" },
+  { id: "atb", label: "АТБ" },
+  { id: "rud", label: "Рудь" },
+  { id: "bazar", label: "Базар" },
+] as const;
+
+const ALL_STORE_GROUPS = [
+  ...STORES,
+  { id: "none", label: "Не вказано" },
+] as const;
+
+function storeKeyOf(item: ShoppingItem): string {
+  return item.food ?? item.id;
+}
 
 /** "trip2" -> 2, "all" -> null (немає трипа — повний 14-денний цикл одразу). */
 function tripIndexOfViewId(id: ViewId): number | null {
@@ -422,6 +439,14 @@ const priceOverrideStore = makeRecordStore<PriceOverrideMap>(
   EMPTY_PRICE_OVERRIDES,
 );
 
+const STORE_SELECTION_STORAGE_KEY = "nutrition-store-selection-v1";
+const EMPTY_STORE_SELECTIONS: Record<string, string> = {};
+
+const storeSelectionStore = makeRecordStore<Record<string, string>>(
+  () => STORE_SELECTION_STORAGE_KEY,
+  EMPTY_STORE_SELECTIONS,
+);
+
 /** getSeasonalPrice, but pulling the manual ₴/кг override for the item's product (if any). */
 function priceOf(
   item: ShoppingItem,
@@ -497,6 +522,7 @@ function CategoryList({
   checked,
   homeStock,
   priceOverrides,
+  storeSelections,
   weekStart,
   seasonOverride,
   activeTripIndex,
@@ -505,11 +531,13 @@ function CategoryList({
   onSetHomeStockFraction,
   onSetHomeStockEntries,
   onSetPriceOverride,
+  onSetStoreSelection,
 }: {
   categories: ShoppingCategory[];
   checked: FlagMap;
   homeStock: FractionMap;
   priceOverrides: PriceOverrideMap;
+  storeSelections: Record<string, string>;
   weekStart: string;
   seasonOverride?: string;
   activeTripIndex: number | null;
@@ -518,6 +546,7 @@ function CategoryList({
   onSetHomeStockFraction: (id: string, fraction: number) => void;
   onSetHomeStockEntries: (entries: { key: string; fraction: number }[]) => void;
   onSetPriceOverride: (foodKey: string, value: number | null) => void;
+  onSetStoreSelection: (key: string, storeId: string) => void;
 }) {
   // Only one price editor open at a time, across the whole list.
   const [editingPriceFood, setEditingPriceFood] = useState<string | null>(null);
@@ -627,6 +656,23 @@ function CategoryList({
                         </span>
                       </span>
                     </button>
+                    <div className="w-24 shrink-0">
+                      <Select
+                        variant="inline"
+                        value={storeSelections[storeKeyOf(item)] ?? "none"}
+                        onChange={(e) => onSetStoreSelection(storeKeyOf(item), e.target.value)}
+                        className="text-xs text-zinc-400 bg-white/5 border border-white/10 rounded px-2 py-0.5"
+                      >
+                        <option value="none" className="bg-zinc-900 text-zinc-400">
+                          Магазин...
+                        </option>
+                        {STORES.map((store) => (
+                          <option key={store.id} value={store.id} className="bg-zinc-900 text-zinc-200">
+                            {store.label}
+                          </option>
+                        ))}
+                      </Select>
+                    </div>
                     <button
                       onClick={() => {
                         if (buckets) {
@@ -810,15 +856,53 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
     priceOverrideStore.getSnapshot,
     priceOverrideStore.getServerSnapshot,
   );
+  const storeSelections = useSyncExternalStore(
+    storeSelectionStore.subscribe,
+    storeSelectionStore.getSnapshot,
+    storeSelectionStore.getServerSnapshot,
+  );
   const [activeView, setActiveView] = useState<ViewId>("all");
+  const [selectedStoreFilter, setSelectedStoreFilter] = useState<string>("all");
+  const [groupingMode, setGroupingMode] = useState<"category" | "store">("category");
+
   const activeTripIndex = tripIndexOfViewId(activeView);
 
-  const filteredCategories =
+  const currentCategories =
     activeTripIndex === null
       ? combineShoppingItems(SHOPPING_LIST)
       : categoriesForTrip(activeTripIndex);
 
-  const visibleItems = filteredCategories.flatMap((category) => category.items);
+  const filteredCategories = currentCategories
+    .map((category) => {
+      return {
+        ...category,
+        items: category.items.filter((item) => {
+          const itemStore = storeSelections[storeKeyOf(item)] ?? "none";
+          if (selectedStoreFilter === "all") return true;
+          return itemStore === selectedStoreFilter;
+        }),
+      };
+    })
+    .filter((category) => category.items.length > 0);
+
+  const displayedCategories =
+    groupingMode === "store"
+      ? ALL_STORE_GROUPS.map((store) => {
+          const storeItems = filteredCategories
+            .flatMap((category) => category.items)
+            .filter((item) => {
+              const itemStore = storeSelections[storeKeyOf(item)] ?? "none";
+              return itemStore === store.id;
+            });
+          return {
+            id: store.id,
+            title: store.label,
+            items: storeItems,
+          };
+        }).filter((group) => group.items.length > 0)
+      : filteredCategories;
+
+  const visibleItems = displayedCategories.flatMap((category) => category.items);
   const fractionOf = (item: ShoppingItem) =>
     homeStockFractionOf(
       item,
@@ -843,7 +927,7 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
   const progress =
     totalItemsInView > 0 ? Math.round((checkedCountInView / totalItemsInView) * 100) : 0;
 
-  const totalCost = categoryCost(filteredCategories, weekStart, seasonOverride, priceOverrides);
+  const totalCost = categoryCost(displayedCategories, weekStart, seasonOverride, priceOverrides);
 
   const homeStockCost = visibleItems.reduce((sum, item) => {
     const itemPrice = priceOf(item, weekStart, seasonOverride, priceOverrides);
@@ -913,6 +997,10 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
     }
   };
 
+  const setStoreSelection = (key: string, storeId: string) => {
+    storeSelectionStore.write({ ...storeSelections, [key]: storeId });
+  };
+
   const tabPills = VIEWS.map((v) => ({ id: v.id, label: v.label }));
 
   return (
@@ -928,6 +1016,78 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
         за весь цикл; &quot;Закуп 1-4&quot; — рівно те, що треба до наступної поїздки. М&apos;ясо і
         риба — винятково на Закупі 1: береться одразу на весь цикл під мілпреп.
       </p>
+
+      {/* Controls row */}
+      <div className="flex flex-wrap gap-4 items-center justify-between bg-white/[0.02] border border-white/[0.06] rounded-xl p-3">
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+            Магазин:
+          </span>
+          <div className="flex flex-wrap gap-1">
+            <button
+              onClick={() => setSelectedStoreFilter("all")}
+              className={`px-2.5 py-1 text-xs rounded-lg border transition-all duration-150 ${
+                selectedStoreFilter === "all"
+                  ? "bg-accent-nutrition border-accent-nutrition text-white"
+                  : "border-white/10 hover:border-white/20 text-zinc-400 hover:text-zinc-200"
+              }`}
+            >
+              Всі
+            </button>
+            {STORES.map((store) => (
+              <button
+                key={store.id}
+                onClick={() => setSelectedStoreFilter(store.id)}
+                className={`px-2.5 py-1 text-xs rounded-lg border transition-all duration-150 ${
+                  selectedStoreFilter === store.id
+                    ? "bg-accent-nutrition border-accent-nutrition text-white"
+                    : "border-white/10 hover:border-white/20 text-zinc-400 hover:text-zinc-200"
+                }`}
+              >
+                {store.label}
+              </button>
+            ))}
+            <button
+              onClick={() => setSelectedStoreFilter("none")}
+              className={`px-2.5 py-1 text-xs rounded-lg border transition-all duration-150 ${
+                selectedStoreFilter === "none"
+                  ? "bg-accent-nutrition border-accent-nutrition text-white"
+                  : "border-white/10 hover:border-white/20 text-zinc-400 hover:text-zinc-200"
+              }`}
+            >
+              Не вказано
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+            Групувати за:
+          </span>
+          <div className="flex bg-white/5 rounded-lg p-0.5 border border-white/10">
+            <button
+              onClick={() => setGroupingMode("category")}
+              className={`px-3 py-1 text-xs rounded-md font-medium transition-all duration-150 ${
+                groupingMode === "category"
+                  ? "bg-zinc-800 text-zinc-100 shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-200"
+              }`}
+            >
+              Категоріями
+            </button>
+            <button
+              onClick={() => setGroupingMode("store")}
+              className={`px-3 py-1 text-xs rounded-md font-medium transition-all duration-150 ${
+                groupingMode === "store"
+                  ? "bg-zinc-800 text-zinc-100 shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-200"
+              }`}
+            >
+              Магазинами
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div className="glass-card p-4 flex flex-col gap-3">
         <div className="flex items-center justify-between">
@@ -976,10 +1136,11 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
       </div>
 
       <CategoryList
-        categories={filteredCategories}
+        categories={displayedCategories}
         checked={checked}
         homeStock={homeStock}
         priceOverrides={priceOverrides}
+        storeSelections={storeSelections}
         weekStart={weekStart}
         seasonOverride={seasonOverride}
         activeTripIndex={activeTripIndex}
@@ -988,6 +1149,7 @@ export function ShoppingList({ weekStart, seasonOverride }: ShoppingListProps) {
         onSetHomeStockFraction={setHomeStockFraction}
         onSetHomeStockEntries={setHomeStockEntries}
         onSetPriceOverride={setPriceOverride}
+        onSetStoreSelection={setStoreSelection}
       />
     </div>
   );
