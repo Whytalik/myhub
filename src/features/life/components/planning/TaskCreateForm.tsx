@@ -37,7 +37,9 @@ export function TaskCreateForm({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [resistance, setResistance] = useState(0);
-  const [projectId, setProjectId] = useState(defaultProjectId ?? (projects.length === 1 ? projects[0].id : ""));
+  const [projectId, setProjectId] = useState(
+    defaultProjectId ?? (projects.length === 1 ? projects[0].id : ""),
+  );
   const [groupId, setGroupId] = useState<string | null>(defaultGroupId);
 
   useEffect(() => {
@@ -92,10 +94,18 @@ export function TaskCreateForm({
           ➕ Add Task
         </span>
         <div className="flex items-center bg-white/[0.04] rounded-lg p-0.5 border border-white/[0.06]">
-          <button type="button" onClick={() => setMode("group")} className={modeButtonClass(isGroup)}>
+          <button
+            type="button"
+            onClick={() => setMode("group")}
+            className={modeButtonClass(isGroup)}
+          >
             Group
           </button>
-          <button type="button" onClick={() => setMode("atom")} className={modeButtonClass(!isGroup)}>
+          <button
+            type="button"
+            onClick={() => setMode("atom")}
+            className={modeButtonClass(!isGroup)}
+          >
             Atom
           </button>
         </div>
@@ -109,13 +119,19 @@ export function TaskCreateForm({
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder={isGroup ? "e.g. Design phase, Backend setup..." : "e.g. Create wireframe, Write tests..."}
+            placeholder={
+              isGroup
+                ? "e.g. Design phase, Backend setup..."
+                : "e.g. Create wireframe, Write tests..."
+            }
             onKeyDown={handleKeyDown}
           />
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-[10px] font-mono text-zinc-450 uppercase">Description / Links (optional)</label>
+          <label className="text-[10px] font-mono text-zinc-450 uppercase">
+            Description / Links (optional)
+          </label>
           <Textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -138,7 +154,9 @@ export function TaskCreateForm({
 
         {!isGroup && groups.length > 0 && (
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-mono text-zinc-450 uppercase">Group (optional)</label>
+            <label className="text-[10px] font-mono text-zinc-450 uppercase">
+              Group (optional)
+            </label>
             <CustomSelect
               value={groupId ?? ""}
               onChange={(val) => setGroupId(val || null)}
@@ -197,11 +215,7 @@ export function TaskCreateForm({
           disabled={!canSubmit}
           className="w-fit self-end mt-1"
         >
-          {isGroup
-            ? "Add Group to Project"
-            : groupId
-              ? "Add Atom to Group"
-              : "Add Atom to Project"}
+          {isGroup ? "Add Group to Project" : groupId ? "Add Atom to Group" : "Add Atom to Project"}
         </Button>
       </div>
     </div>

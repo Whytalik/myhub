@@ -32,10 +32,12 @@ export default async function SprintKanbanPage() {
         description="Analyze goal progress, evaluate weeks (W1–W12), and coordinate tactical plans."
       />
       <SprintKanbanClient
-        sprint={dashboard.sprint as unknown as SprintKanbanClientProps['sprint']}
-        allTasks={dashboard.allTasks as unknown as SprintKanbanClientProps['allTasks']}
+        sprint={dashboard.sprint as unknown as SprintKanbanClientProps["sprint"]}
+        allTasks={dashboard.allTasks as unknown as SprintKanbanClientProps["allTasks"]}
         spheres={spheres}
-        sprintReviews={dashboard.sprintReviews as unknown as SprintKanbanClientProps['sprintReviews']}
+        sprintReviews={
+          dashboard.sprintReviews as unknown as SprintKanbanClientProps["sprintReviews"]
+        }
       />
     </div>
   );

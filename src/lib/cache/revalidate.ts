@@ -80,4 +80,3 @@ export function invalidateMissionCache(userId: string) {
   revalidateTag("mission-versions", INVALIDATE_PROFILE);
   revalidatePath("/life", "layout");
 }
-

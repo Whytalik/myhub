@@ -95,7 +95,9 @@ export async function decomposeThoughtAction(input: {
   resistance?: number | null;
   projectId?: string | null;
   parentId?: string | null;
-}): Promise<ActionResult<import("@/features/life/services/thought-service").DecomposeThoughtResult>> {
+}): Promise<
+  ActionResult<import("@/features/life/services/thought-service").DecomposeThoughtResult>
+> {
   return withAction(async (userId) => {
     const result = await thoughtService.decomposeThought(userId, input);
     invalidateThoughtCache(userId);

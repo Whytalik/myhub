@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { AlertTriangle, CheckCircle2, Sparkles, Trash2, FolderKanban, type LucideIcon } from "lucide-react";
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Sparkles,
+  Trash2,
+  FolderKanban,
+  type LucideIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { getThoughtTypeConfig } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog, type ThoughtDetailPatch } from "./ThoughtDetailDialog";

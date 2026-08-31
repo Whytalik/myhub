@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ClipboardList, Flame, Apple, } from "lucide-react";
+import { ClipboardList, Flame, Apple } from "lucide-react";
 import { highlightProductMentions } from "../highlight-products";
 import { getProductName, PRODUCTS } from "../products";
 import { CookingModeModal } from "./CookingModeModal";
@@ -318,7 +318,10 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
             <ul className="flex flex-col gap-1.5">
               {proteinIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
-                  <input type="checkbox" className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer" />
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer"
+                  />
                   <span>{ingredientLabel(ing, seasonOverride)}</span>
                 </li>
               ))}
@@ -329,7 +332,10 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
             <ul className="flex flex-col gap-1.5">
               {buffaloPocketIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
-                  <input type="checkbox" className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer" />
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer"
+                  />
                   <span>{ingredientLabel(ing, seasonOverride)}</span>
                 </li>
               ))}
@@ -340,7 +346,10 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
             <ul className="flex flex-col gap-1.5">
               {marinadeIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
-                  <input type="checkbox" className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer" />
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer"
+                  />
                   <span>{ingredientLabel(ing, seasonOverride)}</span>
                 </li>
               ))}

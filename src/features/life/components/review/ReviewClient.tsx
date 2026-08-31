@@ -10,7 +10,13 @@ import {
   compareWeeks,
   extractPatterns,
 } from "@/features/life/logic/review-analytics";
-import type { ReviewEntryData, HabitData, TaskData, WeekRange, DailyVector } from "@/features/life/types";
+import type {
+  ReviewEntryData,
+  HabitData,
+  TaskData,
+  WeekRange,
+  DailyVector,
+} from "@/features/life/types";
 import { SummaryTab } from "./SummaryTab";
 import { TrendsTab } from "./TrendsTab";
 import { PatternsTab } from "./PatternsTab";

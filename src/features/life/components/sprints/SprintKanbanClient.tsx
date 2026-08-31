@@ -50,7 +50,12 @@ interface SprintKanbanClientProps {
   }[];
 }
 
-export function SprintKanbanClient({ sprint, allTasks, spheres, sprintReviews }: SprintKanbanClientProps) {
+export function SprintKanbanClient({
+  sprint,
+  allTasks,
+  spheres,
+  sprintReviews,
+}: SprintKanbanClientProps) {
   const sprintStart = useMemo(() => new Date(sprint.startDate), [sprint.startDate]);
   const now = useMemo(() => new Date(), []);
 

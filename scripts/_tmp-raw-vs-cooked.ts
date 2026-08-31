@@ -10,7 +10,8 @@ async function printMacros(foodId: string, label: string) {
     ? detail.servings.serving
     : [detail.servings.serving];
   // Find a ~100g serving to read per-100g macros directly.
-  const s100 = servings.find((s: FoodServing) => s.metric_serving_unit === "g") as FoodServing | undefined;
+  const s100 = servings.find((s: FoodServing) => s.metric_serving_unit === "g") as
+    FoodServing | undefined;
   console.log(`${label} (food_id=${foodId}, "${detail.food_name}"):`);
   if (s100) {
     console.log(

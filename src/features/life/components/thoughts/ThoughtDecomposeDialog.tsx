@@ -80,7 +80,7 @@ export function ThoughtDecomposeDialog({
 
       if (result.success) {
         toast.success(
-          isTask ? "Думку успішно розбито на завдання!" : "Думку успішно розбито на проєкт!"
+          isTask ? "Думку успішно розбито на завдання!" : "Думку успішно розбито на проєкт!",
         );
         onDecomposed();
         onClose();
@@ -105,9 +105,7 @@ export function ThoughtDecomposeDialog({
               <p className="text-body italic text-zinc-150">«{thought.content}»</p>
             </div>
 
-            <p className="text-panel-title text-center mt-2">
-              Визначте характер цієї думки:
-            </p>
+            <p className="text-panel-title text-center mt-2">Визначте характер цієї думки:</p>
 
             <div className="grid grid-cols-2 gap-4">
               <button
@@ -163,7 +161,8 @@ export function ThoughtDecomposeDialog({
                     autoFocus
                   />
                   <p className="text-[11px] text-zinc-400 italic">
-                    💡 Має починатися з дієслова, бути максимально конкретним та займати до 15-30 хвилин.
+                    💡 Має починатися з дієслова, бути максимально конкретним та займати до 15-30
+                    хвилин.
                   </p>
                 </div>
 
@@ -202,7 +201,8 @@ export function ThoughtDecomposeDialog({
                 <div className="glass-card p-4 bg-orange-500/[0.02] border-orange-500/10 flex flex-col gap-3">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-label text-orange-400 font-semibold">
-                      Кайдзен-питання: Яка найперша, найменша фізична дія (атом) потрібна, щоб зрушити це з місця?
+                      Кайдзен-питання: Яка найперша, найменша фізична дія (атом) потрібна, щоб
+                      зрушити це з місця?
                     </label>
                     <Input
                       value={atomTitle}
@@ -217,7 +217,9 @@ export function ThoughtDecomposeDialog({
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-label text-zinc-300">Опис першого кроку (опціонально)</label>
+                    <label className="text-label text-zinc-300">
+                      Опис першого кроку (опціонально)
+                    </label>
                     <Textarea
                       value={atomDescription}
                       onChange={(e) => setAtomDescription(e.target.value)}
@@ -258,8 +260,12 @@ export function ThoughtDecomposeDialog({
             {/* Resistance Scale */}
             <div className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
               <div className="flex justify-between items-center">
-                <label className="text-label text-zinc-300">Внутрішній опір дії (1 - немає, 5 - ступор)</label>
-                <span className="font-mono text-xs font-bold text-orange-400">{resistance} / 5</span>
+                <label className="text-label text-zinc-300">
+                  Внутрішній опір дії (1 - немає, 5 - ступор)
+                </label>
+                <span className="font-mono text-xs font-bold text-orange-400">
+                  {resistance} / 5
+                </span>
               </div>
               <div className="flex gap-2 justify-between">
                 {[1, 2, 3, 4, 5].map((val) => (
@@ -283,14 +289,21 @@ export function ThoughtDecomposeDialog({
                 <div className="flex items-start gap-2 text-rose-400 text-xs mt-1 p-2 rounded-lg bg-rose-500/5 border border-rose-500/10">
                   <AlertTriangle size={14} className="shrink-0 mt-0.5" />
                   <p>
-                    Опір занадто великий! Кайдзен-правило каже: якщо опір відчутний, задачу погано розбито. Дробіть її ще дрібніше!
+                    Опір занадто великий! Кайдзен-правило каже: якщо опір відчутний, задачу погано
+                    розбито. Дробіть її ще дрібніше!
                   </p>
                 </div>
               )}
             </div>
 
             <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-white/[0.06]">
-              <Button type="button" variant="ghost" size="sm" onClick={onClose} disabled={isPending}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                disabled={isPending}
+              >
                 Скасувати
               </Button>
               <Button

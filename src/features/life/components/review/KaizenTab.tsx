@@ -28,10 +28,7 @@ import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
-import {
-  upsertTaskAction,
-  deleteTaskAction,
-} from "@/features/life/actions/task-actions";
+import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
 import { saveSprintReviewAction } from "@/features/life/actions/sprint-actions";
 import type { TaskData, WeekSummary, DailyVector } from "@/features/life/types";
 import type { Prisma } from "@/app/generated/prisma";
@@ -107,15 +104,14 @@ export function KaizenTab({
   const weekNum = activeSprint
     ? Math.floor(
         (new Date(weekStart).getTime() - new Date(activeSprint.startDate).getTime()) /
-          (7 * 24 * 60 * 60 * 1000)
+          (7 * 24 * 60 * 60 * 1000),
       ) + 1
     : null;
 
   // Find existing review for this sprint and week
   const currentReview = activeSprint
-    ? sprintReviews.find(
-        (r) => r.sprintId === activeSprint.id && r.weekNumber === weekNum
-      ) ?? null
+    ? (sprintReviews.find((r) => r.sprintId === activeSprint.id && r.weekNumber === weekNum) ??
+      null)
     : null;
 
   return (
@@ -211,7 +207,7 @@ function KaizenFormInner({
       toAutomate: null,
       toDelegate: null,
       toFix: null,
-    }
+    },
   );
 
   // Checklist states
@@ -224,7 +220,7 @@ function KaizenFormInner({
       t.status !== "CANCELLED" &&
       t.plannedDate &&
       new Date(t.plannedDate) >= new Date(weekStart) &&
-      new Date(t.plannedDate) < new Date(new Date(weekStart).getTime() + 7 * 24 * 60 * 60 * 1000)
+      new Date(t.plannedDate) < new Date(new Date(weekStart).getTime() + 7 * 24 * 60 * 60 * 1000),
   );
 
   const completedTasksCount = localTasks.filter(
@@ -232,7 +228,7 @@ function KaizenFormInner({
       t.status === "DONE" &&
       t.completedAt &&
       new Date(t.completedAt) >= new Date(weekStart) &&
-      new Date(t.completedAt) < new Date(new Date(weekStart).getTime() + 7 * 24 * 60 * 60 * 1000)
+      new Date(t.completedAt) < new Date(new Date(weekStart).getTime() + 7 * 24 * 60 * 60 * 1000),
   ).length;
 
   const handleMoveToBacklog = (taskId: string) => {
@@ -305,7 +301,7 @@ function KaizenFormInner({
           challenges,
           adjustments,
           kaizenVector: kaizenVector as unknown as Prisma.InputJsonValue,
-        }
+        },
       );
 
       if (result.success) {
@@ -380,8 +376,14 @@ function KaizenFormInner({
     if (!weekNum || weekNum < 1 || weekNum > 12) {
       return (
         <>
-          {renderCheckboxItem("w-1", `Metric collection: Review completed atoms (${completedTasksCount} done). Feel the win!`)}
-          {renderCheckboxItem("w-2", "Kaizen audit: Analyze stuck atoms in the list on the left. Why did they stall?")}
+          {renderCheckboxItem(
+            "w-1",
+            `Metric collection: Review completed atoms (${completedTasksCount} done). Feel the win!`,
+          )}
+          {renderCheckboxItem(
+            "w-2",
+            "Kaizen audit: Analyze stuck atoms in the list on the left. Why did they stall?",
+          )}
           {renderCheckboxItem("w-3", "Planning: Slice 5-10 new kaizen atoms for the next week.")}
         </>
       );
@@ -392,9 +394,18 @@ function KaizenFormInner({
           <p className="text-[10px] text-orange-400 font-mono mb-1">
             ⚠️ SPRINT MILESTONE. EVALUATE YOUR PROGRESS:
           </p>
-          {renderCheckboxItem("m-1", `Compass check: Have you completed ${weekNum === 4 ? "33%" : "66%"} of your Sprint goals?`)}
-          {renderCheckboxItem("m-2", "Hard priority: Are you ready to freeze secondary projects to save the primary?")}
-          {renderCheckboxItem("m-3", "Plan correction: Officially adjust or reassign Sprint projects.")}
+          {renderCheckboxItem(
+            "m-1",
+            `Compass check: Have you completed ${weekNum === 4 ? "33%" : "66%"} of your Sprint goals?`,
+          )}
+          {renderCheckboxItem(
+            "m-2",
+            "Hard priority: Are you ready to freeze secondary projects to save the primary?",
+          )}
+          {renderCheckboxItem(
+            "m-3",
+            "Plan correction: Officially adjust or reassign Sprint projects.",
+          )}
         </>
       );
     }
@@ -404,18 +415,39 @@ function KaizenFormInner({
           <p className="text-[10px] text-purple-400 font-mono mb-1">
             🎉 THIS IS YOUR NEW YEAR! TIME FOR STRATEGY & CELEBRATION:
           </p>
-          {renderCheckboxItem("s-1", "Celebration: Review and write down all achievements this Sprint. Feel the win!")}
-          {renderCheckboxItem("s-2", "Deep Kaizen: What habits/processes blocked you? Define one new rule for the next Sprint.")}
-          {renderCheckboxItem("s-3", "Backlog cleaning: Review Global Backlog and ruthlessly delete stale ideas.")}
-          {renderCheckboxItem("s-4", "New Sprint: Select 2-3 new goals/projects from the Backlog for the next 12 weeks.")}
-          {renderCheckboxItem("s-5", "Week 13 (Rest): Make the next week buffer. No planning — rest for the brain.")}
+          {renderCheckboxItem(
+            "s-1",
+            "Celebration: Review and write down all achievements this Sprint. Feel the win!",
+          )}
+          {renderCheckboxItem(
+            "s-2",
+            "Deep Kaizen: What habits/processes blocked you? Define one new rule for the next Sprint.",
+          )}
+          {renderCheckboxItem(
+            "s-3",
+            "Backlog cleaning: Review Global Backlog and ruthlessly delete stale ideas.",
+          )}
+          {renderCheckboxItem(
+            "s-4",
+            "New Sprint: Select 2-3 new goals/projects from the Backlog for the next 12 weeks.",
+          )}
+          {renderCheckboxItem(
+            "s-5",
+            "Week 13 (Rest): Make the next week buffer. No planning — rest for the brain.",
+          )}
         </>
       );
     }
     return (
       <>
-        {renderCheckboxItem("w-1", `Metric collection: Review completed atoms (${completedTasksCount} done). Feel the win!`)}
-        {renderCheckboxItem("w-2", "Kaizen audit: Analyze stuck atoms in the list on the left. Why did they stall?")}
+        {renderCheckboxItem(
+          "w-1",
+          `Metric collection: Review completed atoms (${completedTasksCount} done). Feel the win!`,
+        )}
+        {renderCheckboxItem(
+          "w-2",
+          "Kaizen audit: Analyze stuck atoms in the list on the left. Why did they stall?",
+        )}
         {renderCheckboxItem("w-3", "Planning: Slice new atoms for Sprint goals for the next week.")}
       </>
     );
@@ -562,17 +594,23 @@ function KaizenFormInner({
                     <span className="text-emerald-400 font-medium text-[10px]">Wins:</span>
                     <ul className="list-disc list-inside text-zinc-400 pl-1 space-y-0.5 max-h-20 overflow-y-auto">
                       {summary.wins.map((w, idx) => (
-                        <li key={idx} className="truncate">{w}</li>
+                        <li key={idx} className="truncate">
+                          {w}
+                        </li>
                       ))}
                     </ul>
                   </div>
                 )}
                 {summary.improvements.length > 0 && (
                   <div className="flex flex-col gap-1 mt-1">
-                    <span className="text-amber-400 font-medium text-[10px]">Needs Improvement:</span>
+                    <span className="text-amber-400 font-medium text-[10px]">
+                      Needs Improvement:
+                    </span>
                     <ul className="list-disc list-inside text-zinc-400 pl-1 space-y-0.5 max-h-20 overflow-y-auto">
                       {summary.improvements.map((imp, idx) => (
-                        <li key={idx} className="truncate">{imp}</li>
+                        <li key={idx} className="truncate">
+                          {imp}
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -689,7 +727,8 @@ function KaizenFormInner({
               className="mt-2 flex items-center justify-center gap-1.5"
             >
               <Save size={14} />
-              {currentReview ? "Update conclusions" : "Save conclusions"} {weekNum ? `for week ${weekNum}` : ""}
+              {currentReview ? "Update conclusions" : "Save conclusions"}{" "}
+              {weekNum ? `for week ${weekNum}` : ""}
             </Button>
           </div>
         ) : (

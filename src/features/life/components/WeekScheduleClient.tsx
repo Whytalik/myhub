@@ -13,8 +13,6 @@ import { getDefaultBlocks } from "../logic/context-blocks";
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const NONE_VALUE = "__none__";
 
-
-
 const STANDARD_BLOCK_TEMPLATES = [
   {
     id: "health",
@@ -107,14 +105,14 @@ const getBlockDisplayName = (blockId: string, originalName: string): string => {
 const getBlockHeight = (startTime: string, endTime: string): string => {
   const [startH, startM] = startTime.split(":").map(Number);
   const [endH, endM] = endTime.split(":").map(Number);
-  
+
   const startMinutes = startH * 60 + startM;
   let endMinutes = endH * 60 + endM;
-  
+
   if (endMinutes < startMinutes) {
     endMinutes += 24 * 60;
   }
-  
+
   const duration = endMinutes - startMinutes;
   // Scaled height: 64px baseline, +0.2px per minute above 45m, capped at 180px
   const calculatedHeight = Math.max(64, Math.min(180, 64 + (duration - 45) * 0.2));
@@ -174,8 +172,6 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
     });
   };
 
-
-
   const saveBlockChanges = () => {
     if (!editingBlock) {
       return;
@@ -184,7 +180,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
 
     const current = daysData[dayOfWeek];
     const newBlocks = [...current.contextBlocks];
-    
+
     if (blockIndex === newBlocks.length) {
       newBlocks.push(block);
     } else {
@@ -244,7 +240,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
     });
   };
 
-  const addTemplateToDay = (dayOfWeek: number, template: typeof STANDARD_BLOCK_TEMPLATES[0]) => {
+  const addTemplateToDay = (dayOfWeek: number, template: (typeof STANDARD_BLOCK_TEMPLATES)[0]) => {
     const current = daysData[dayOfWeek];
     const newBlock: ContextBlock = {
       ...template,
@@ -305,7 +301,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
       <div className="glass-card p-4 bg-black/10 flex flex-col gap-3">
         <div>
           <h2 className="text-panel-title">Block Templates Library</h2>
-          <p className="text-caption mt-0.5">Quickly add standard contextual blocks to any day of your week.</p>
+          <p className="text-caption mt-0.5">
+            Quickly add standard contextual blocks to any day of your week.
+          </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
@@ -352,9 +350,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
       {trainingDays.length === 0 && (
         <div className="glass-card p-4 flex items-center gap-2.5">
           <Dumbbell size={16} className="text-zinc-500 shrink-0" />
-          <p className="text-caption">
-            No training days found — add them in Training space.
-          </p>
+          <p className="text-caption">No training days found — add them in Training space.</p>
         </div>
       )}
 
@@ -363,7 +359,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
           const isToday = dayOfWeek === today;
           const { trainingDayId, contextBlocks } = daysData[dayOfWeek];
           const isPending = pending === dayOfWeek;
-          
+
           const cardClass = `glass-card p-4 flex flex-col gap-4 border ${
             isToday ? "border-accent/40 bg-accent/[0.01]" : "border-white/[0.06]"
           } ${isPending ? "opacity-60" : ""} transition-all duration-150`;
@@ -380,7 +376,8 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                 <span
                   className={`text-sm font-semibold ${isToday ? "text-accent" : "text-zinc-200"}`}
                 >
-                  {name} {isToday && <span className="text-[10px] font-normal opacity-85">(Today)</span>}
+                  {name}{" "}
+                  {isToday && <span className="text-[10px] font-normal opacity-85">(Today)</span>}
                 </span>
                 <div className={iconWrapClass}>
                   <Dumbbell size={14} />
@@ -429,9 +426,10 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                         } transition-all duration-150`}
                       >
                         <div className="flex items-center justify-between">
-                            <span className="text-xs font-semibold text-zinc-200">
-                              {getBlockDisplayName(block.id, block.name)} {!isBlockEnabled && "(Inactive)"}
-                            </span>
+                          <span className="text-xs font-semibold text-zinc-200">
+                            {getBlockDisplayName(block.id, block.name)}{" "}
+                            {!isBlockEnabled && "(Inactive)"}
+                          </span>
 
                           <button
                             type="button"
@@ -514,7 +512,8 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                   ? "Add Time Block"
                   : "Edit Time Block"}
               </h3>
-              {editingBlock.blockIndex !== daysData[editingBlock.dayOfWeek].contextBlocks.length && (
+              {editingBlock.blockIndex !==
+                daysData[editingBlock.dayOfWeek].contextBlocks.length && (
                 <p className="text-[11px] text-zinc-400 mt-0.5">
                   {getBlockDisplayName(editingBlock.block.id, editingBlock.block.name)}
                 </p>
@@ -525,7 +524,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
               {/* If it's a new custom block, let them type the block name! */}
               {editingBlock.blockIndex === daysData[editingBlock.dayOfWeek].contextBlocks.length ? (
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">Block Name</span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">
+                    Block Name
+                  </span>
                   <Input
                     type="text"
                     value={editingBlock.block.name}
@@ -562,7 +563,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">Start Time</span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">
+                    Start Time
+                  </span>
                   <Input
                     type="time"
                     value={editingBlock.block.startTime}
@@ -580,7 +583,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">End Time</span>
+                  <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">
+                    End Time
+                  </span>
                   <Input
                     type="time"
                     value={editingBlock.block.endTime}
@@ -599,7 +604,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
               </div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">Buffer Minutes</span>
+                <span className="text-[10px] uppercase font-mono tracking-wider text-zinc-500 font-semibold">
+                  Buffer Minutes
+                </span>
                 <Input
                   type="number"
                   min="0"
@@ -657,12 +664,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
 
             <div className="flex items-center justify-between gap-2 mt-2 border-t border-white/[0.04] pt-3">
               {editingBlock.blockIndex !== daysData[editingBlock.dayOfWeek].contextBlocks.length ? (
-                <Button
-                  variant="danger"
-                  size="sm"
-                  className="text-xs"
-                  onClick={deleteBlock}
-                >
+                <Button variant="danger" size="sm" className="text-xs" onClick={deleteBlock}>
                   Delete Block
                 </Button>
               ) : (
@@ -678,12 +680,7 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                 >
                   Cancel
                 </Button>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  className="text-xs"
-                  onClick={saveBlockChanges}
-                >
+                <Button variant="primary" size="sm" className="text-xs" onClick={saveBlockChanges}>
                   Save
                 </Button>
               </div>

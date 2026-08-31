@@ -16,10 +16,7 @@ export default function WizardError({
         {error.stack}
         {error.digest && `\n\nDigest: ${error.digest}`}
       </pre>
-      <button
-        onClick={reset}
-        className="px-4 py-2 bg-accent/20 text-accent rounded-lg text-sm"
-      >
+      <button onClick={reset} className="px-4 py-2 bg-accent/20 text-accent rounded-lg text-sm">
         Try again
       </button>
     </div>

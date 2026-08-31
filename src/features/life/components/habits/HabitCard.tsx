@@ -67,7 +67,11 @@ export function HabitCard({
   const behaviorDetails = BEHAVIOR_DETAILS.filter(({ key }) => habit[key]);
 
   const getISODateString = (d: Date) => {
-    const isUTCMidnight = d.getUTCHours() === 0 && d.getUTCMinutes() === 0 && d.getUTCSeconds() === 0 && d.getUTCMilliseconds() === 0;
+    const isUTCMidnight =
+      d.getUTCHours() === 0 &&
+      d.getUTCMinutes() === 0 &&
+      d.getUTCSeconds() === 0 &&
+      d.getUTCMilliseconds() === 0;
     if (isUTCMidnight) {
       return d.toISOString().slice(0, 10);
     } else {

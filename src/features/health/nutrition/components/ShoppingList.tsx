@@ -78,10 +78,7 @@ const STORES = [
   { id: "bazar", label: "Базар" },
 ] as const;
 
-const ALL_STORE_GROUPS = [
-  ...STORES,
-  { id: "none", label: "Не вказано" },
-] as const;
+const ALL_STORE_GROUPS = [...STORES, { id: "none", label: "Не вказано" }] as const;
 
 function storeKeyOf(item: ShoppingItem): string {
   return item.food ?? item.id;
@@ -667,7 +664,11 @@ function CategoryList({
                           Магазин...
                         </option>
                         {STORES.map((store) => (
-                          <option key={store.id} value={store.id} className="bg-zinc-900 text-zinc-200">
+                          <option
+                            key={store.id}
+                            value={store.id}
+                            className="bg-zinc-900 text-zinc-200"
+                          >
                             {store.label}
                           </option>
                         ))}

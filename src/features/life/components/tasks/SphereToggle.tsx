@@ -54,9 +54,10 @@ export function SphereToggle({
   const activeSpheres = spheres.filter((s) => s.isActive);
   const isCompact = size === "sm";
 
-  const SphereIcon = currentSphere?.icon && SPHERE_ICONS[currentSphere.icon]
-    ? SPHERE_ICONS[currentSphere.icon]
-    : FileText;
+  const SphereIcon =
+    currentSphere?.icon && SPHERE_ICONS[currentSphere.icon]
+      ? SPHERE_ICONS[currentSphere.icon]
+      : FileText;
 
   const triggerClass = `inline-flex items-center gap-1 rounded-md border text-[10px] font-mono uppercase tracking-wide transition-opacity duration-150 ${
     isCompact ? "px-1 py-0.5" : "px-1.5 py-0.5"
@@ -114,11 +115,7 @@ export function SphereToggle({
               }`;
 
               return (
-                <button
-                  key={s.id}
-                  onClick={() => handleSphereSelect(s)}
-                  className={optionClass}
-                >
+                <button key={s.id} onClick={() => handleSphereSelect(s)} className={optionClass}>
                   <div
                     className="flex items-center justify-center w-5 h-5 rounded"
                     style={{ backgroundColor: `${s.color}20`, border: `1px solid ${s.color}30` }}

@@ -7,7 +7,7 @@ async function main() {
   const connectionString = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
   const client = new pg.Client({
     connectionString,
-    ssl: { rejectUnauthorized: false }
+    ssl: { rejectUnauthorized: false },
   });
   await client.connect();
 

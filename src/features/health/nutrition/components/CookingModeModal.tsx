@@ -17,7 +17,7 @@ interface CookingModeModalProps {
 export function CookingModeModal({ algorithm, onClose }: CookingModeModalProps) {
   // Flatten steps into a single array with block context
   const flatSteps = algorithm
-    .flatMap((block, blockIdx) =>
+    .flatMap((block) =>
       block.steps.map((step, stepIdx) => ({
         blockTitle: block.title,
         text: step,
@@ -31,13 +31,16 @@ export function CookingModeModal({ algorithm, onClose }: CookingModeModalProps) 
 
   // Wake Lock API to keep screen on (works in modern Chrome/Edge/Opera on Android/Desktop, Safari iOS 16.4+)
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let wakeLock: any = null;
     const requestWakeLock = async () => {
       try {
         if ("wakeLock" in navigator) {
-          wakeLock = await (navigator as any).wakeLock.request("screen");
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const nav = navigator as any;
+          wakeLock = await nav.wakeLock.request("screen");
         }
-      } catch (err) {
+      } catch {
         console.warn("Wake Lock not supported or denied.");
       }
     };

@@ -6,7 +6,10 @@ import { toast } from "sonner";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
 import { Textarea } from "@/components/ui/inputs/textarea";
-import { quickCaptureAction, decomposeThoughtAction } from "@/features/life/actions/thought-actions";
+import {
+  quickCaptureAction,
+  decomposeThoughtAction,
+} from "@/features/life/actions/thought-actions";
 import { getAllSpheresAction } from "@/features/life/actions/task-actions";
 import { getCurrentSprintProjectsAction } from "@/features/life/actions/sprint-actions";
 import { ThoughtFields } from "./ThoughtFields";
@@ -109,14 +112,13 @@ export function QuickCaptureButton() {
     if (!draft.trim()) return;
     setStep("enrich");
     setSpheresLoading(true);
-    Promise.all([
-      getAllSpheresAction(),
-      getCurrentSprintProjectsAction(),
-    ]).then(([spheresResult, projectsResult]) => {
-      setSpheresLoading(false);
-      if (spheresResult.success) setSpheres(spheresResult.data);
-      if (projectsResult.success) setProjects(projectsResult.data || []);
-    });
+    Promise.all([getAllSpheresAction(), getCurrentSprintProjectsAction()]).then(
+      ([spheresResult, projectsResult]) => {
+        setSpheresLoading(false);
+        if (spheresResult.success) setSpheres(spheresResult.data);
+        if (projectsResult.success) setProjects(projectsResult.data || []);
+      },
+    );
   };
 
   const submit = () => {
