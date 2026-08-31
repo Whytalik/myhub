@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { ClipboardList, Flame, Apple, } from "lucide-react";
 import { highlightProductMentions } from "../highlight-products";
