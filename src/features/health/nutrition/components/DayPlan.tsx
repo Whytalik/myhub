@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { Scale, ClipboardList, Flame, UtensilsCrossed, Snowflake } from "lucide-react";
+import { CookingModeModal } from "./CookingModeModal";
 import { PROFILES } from "../data";
 import { calculateDayMacros, type MacroOverrides } from "../nutrition-calc";
 import { PRODUCTS, getProductName } from "../products";
@@ -279,6 +281,7 @@ export function DayPlan({
   };
 
   const dayProductTotals = buildDayProductTotals(processedDay.meals, processedDay.prepSteps);
+  const [isCookingMode, setIsCookingMode] = useState(false);
 
   const sectionIconClass =
     "flex items-center justify-center w-8 h-8 rounded-lg bg-accent-nutrition/10 text-accent-nutrition shrink-0";
@@ -406,11 +409,20 @@ export function DayPlan({
 
       {processedDay.prepSteps && processedDay.prepSteps.length > 0 && (
         <div className="glass-card p-4 flex flex-col gap-3">
-          <div className="flex items-center gap-3">
-            <div className={sectionIconClass}>
-              <Flame size={16} />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className={sectionIconClass}>
+                <Flame size={16} />
+              </div>
+              <span className="text-panel-title">Алгоритм приготування</span>
             </div>
-            <span className="text-panel-title">Алгоритм приготування</span>
+            <button
+              onClick={() => setIsCookingMode(true)}
+              className="px-4 py-2 bg-accent-nutrition text-white rounded-lg font-medium shadow-lg hover:bg-accent-nutrition/90 transition-colors flex items-center gap-2 w-fit"
+            >
+              <Flame size={16} />
+              Почати готувати
+            </button>
           </div>
           <div className="flex flex-col gap-3">
             {processedDay.prepSteps.map((section, idx) => (
@@ -581,6 +593,9 @@ export function DayPlan({
           </div>
         )}
       </div>
+      {isCookingMode && (
+        <CookingModeModal algorithm={processedDay.prepSteps!} onClose={() => setIsCookingMode(false)} />
+      )}
     </div>
   );
 }
