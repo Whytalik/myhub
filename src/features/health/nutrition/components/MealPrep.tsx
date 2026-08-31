@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { ClipboardList, Flame, Apple, CalendarClock, ListOrdered } from "lucide-react";
 import { highlightProductMentions } from "../highlight-products";
 import { getProductName, PRODUCTS } from "../products";
+import { CookingModeModal } from "./CookingModeModal";
 import { sumMacroGramsForSetsMulti, formatGrams } from "../quantities";
 import type { ComputedQuantity } from "../types";
 
@@ -119,6 +121,7 @@ interface MealPrepProps {
 }
 
 export function MealPrep({ seasonOverride }: MealPrepProps) {
+  const [isCookingMode, setIsCookingMode] = useState(false);
   const prepTable: (RecipeIngredient & { marinade: string })[] = [
     {
       food: "chickenMarinated",
@@ -214,7 +217,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       title: "Блок 3 — Начинка для самба-булочок (Сет2/Сет6) (~15 хв)",
       steps: [
         `Обсмажити куряче філе (${bunFillingQty}) на пательні з мінімумом олії (~1 ст.л. на всю партію) зі спеціями (паприка, часник і цибуля порошком, куркума).`,
-        "Охолодити курку, розкласти по контейнерах порційно і заморозити. Самі булочки (\"Малятко\") купуються готові і зберігаються за кімнатної температури.",
+        'Охолодити курку, розкласти по контейнерах порційно і заморозити. Самі булочки ("Малятко") купуються готові і зберігаються за кімнатної температури.',
       ],
     },
     {
@@ -430,7 +433,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
             <ul className="flex flex-col gap-1.5">
               {proteinIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
-                  <span className="text-zinc-600">·</span>
+                  <input type="checkbox" className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer" />
                   <span>{ingredientLabel(ing, seasonOverride)}</span>
                 </li>
               ))}
@@ -441,7 +444,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
             <ul className="flex flex-col gap-1.5">
               {buffaloPocketIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
-                  <span className="text-zinc-600">·</span>
+                  <input type="checkbox" className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer" />
                   <span>{ingredientLabel(ing, seasonOverride)}</span>
                 </li>
               ))}
@@ -452,7 +455,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
             <ul className="flex flex-col gap-1.5">
               {marinadeIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
-                  <span className="text-zinc-600">·</span>
+                  <input type="checkbox" className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer" />
                   <span>{ingredientLabel(ing, seasonOverride)}</span>
                 </li>
               ))}
@@ -462,9 +465,18 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       </div>
 
       <div className="glass-card p-4 flex flex-col gap-4">
-        <span className="text-panel-title">
-          Алгоритм великого мілпрепу (~40 хв активно, раз на 14 днів)
-        </span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <span className="text-panel-title">
+            Алгоритм великого мілпрепу (~40 хв активно, раз на 14 днів)
+          </span>
+          <button
+            onClick={() => setIsCookingMode(true)}
+            className="px-4 py-2 bg-accent-nutrition text-white rounded-lg font-medium shadow-lg hover:bg-accent-nutrition/90 transition-colors flex items-center gap-2 w-fit"
+          >
+            <Flame size={16} />
+            Почати готувати
+          </button>
+        </div>
         <div className="flex flex-col gap-4">
           {algorithm.map((block, idx) => (
             <div key={idx} className="flex flex-col gap-1.5">
@@ -545,7 +557,7 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
               <ul className="flex flex-col gap-1">
                 {m.ingredients.map((ing, ingIdx) => (
                   <li key={ingIdx} className="flex items-start gap-1.5 text-sm text-zinc-300">
-                    <span className="text-zinc-600">·</span>
+                    <input type="checkbox" className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer" />
                     <span>{ingredientLabel(ing, seasonOverride)}</span>
                   </li>
                 ))}
@@ -555,6 +567,9 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
           ))}
         </div>
       </div>
+      {isCookingMode && (
+        <CookingModeModal algorithm={algorithm} onClose={() => setIsCookingMode(false)} />
+      )}
     </div>
   );
 }
