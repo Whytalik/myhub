@@ -133,18 +133,18 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-0-sun",
         food: "eggs",
-        // +120г (2 яйця) — сирники (1 яйце) і тісто для булочок (1 яйце) у мілпрепі
+        // +60г (1 яйце) — сирники у мілпрепі
         // використовують яйце як інгредієнт рецепту, яке ніколи не стає власним
-        // macroItem (обидва зважуються одним ключем — "syrniki"/"kipBroodje").
+        // macroItem (зважується ключем "syrniki").
         // Сет3 теж тут — з'їдається в сеті3 (день 2, тунець), отже купується заздалегідь у неділю.
         // Сет7 більше не тут — сніданок замінено на курячий кальцоне (без яєць).
         computedQty: {
           food: "eggs",
           sets: [{ set: "set1" }, { set: "set3" }],
-          grams: 120,
+          grams: 60,
           unit: "piece",
         },
-        note: "Сет1 + Сет3 день2 (тунець, збільшено замість протеїну) + 2 яйця для сирників і тіста булочок",
+        note: "Сет1 + Сет3 день2 (тунець, збільшено замість протеїну) + 1 яйце для сирників",
         price: 55,
         buyDay: "sun",
       },
@@ -200,7 +200,7 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         id: "dairy-3",
         food: "milk",
         qty: "1 л",
-        note: "270мл тісто для булочок (Сет2+Сет6) + Сет2 80мл (мус) + Сет3 100мл (картопляне пюре) + Сет5 80мл (мус)",
+        note: "Сет2 80мл (мус) + Сет3 100мл (картопляне пюре) + Сет5 80мл (мус)",
         price: 32,
         buyDay: "sun",
       },
@@ -236,8 +236,6 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "dairy-8",
         food: "hardCheese",
-        // +40г — скоринка булочок (Сет2+Сет6) використовує сир як інгредієнт рецепту,
-        // який не стає власним macroItem (булочка зважується одним ключем "kipBroodje").
         computedQty: {
           food: "hardCheese",
           sets: [
@@ -247,9 +245,8 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
             { set: "set7" },
             { set: "set4" },
           ],
-          grams: 40,
         },
-        note: "Сет1 + Сет2 + Сет6 + Сет7 + Сет4 + 40г скоринка булочок",
+        note: "Сет1 + Сет2 + Сет6 + Сет7 + Сет4",
         price: 215,
         buyDay: "sun",
       },
@@ -305,17 +302,9 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
       {
         id: "grains-3",
         food: "flour",
-        qty: "650 г",
-        note: "Нд (150г сирники + 500г тісто для булочок)",
+        qty: "200 г",
+        note: "Нд (150г сирники)",
         price: 25,
-        buyDay: "sun",
-      },
-      {
-        id: "grains-yeast",
-        food: "yeast",
-        qty: "7 г (1 пакетик)",
-        note: "Тісто для булочок (Сет2+Сет6)",
-        price: 9,
         buyDay: "sun",
       },
       {
@@ -351,6 +340,14 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         qty: "50 г",
         note: "Нд 3 ст.л. + Пт 1 ст.л.",
         price: 2,
+        buyDay: "sun",
+      },
+      {
+        id: "grains-bun",
+        food: "bunMalyatko",
+        computedQty: { food: "bunMalyatko", sets: [{ set: "set2" }, { set: "set6" }] },
+        note: "Сет2 + Сет6 (готові булочки 'Малятко' 4 шт)",
+        price: 35,
         buyDay: "sun",
       },
       {

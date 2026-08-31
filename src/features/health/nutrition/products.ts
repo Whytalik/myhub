@@ -70,6 +70,17 @@ function pantry(
  * - pantry — спеції й приправи: без обліку макросів.
  */
 export const PRODUCTS: Record<string, Product> = {
+  bunMalyatko: tracked(
+    "bunMalyatko",
+    "Булочки 'Малятко' (Київхліб)",
+    { kcal: 338, protein: 8.5, fat: 7, carbs: 59 },
+    "grains",
+    {
+      gramsPerPiece: 50,
+      basePrice: 100,
+      searchTerm: "малятк",
+    },
+  ),
   eggs: tracked("eggs", "Яйця", { kcal: 143, protein: 12.6, fat: 9.5, carbs: 0.7 }, "other", {
     gramsPerPiece: 60,
     basePrice: 80,
