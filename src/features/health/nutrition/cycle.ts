@@ -23,7 +23,7 @@ export const SET_IDS: readonly SetId[] = ["set1", "set2", "set3", "set4", "set5"
  * `sumMacroGramsForSets` рахує правильну загальну кількість незалежно від того, на
  * який трип потрапив запис), тому цей straddle не вимагає негайних правок там.
  */
-export const SET_CYCLE_EPOCH = new Date(2023, 11, 31);
+export const SET_CYCLE_EPOCH = new Date(2024, 0, 7);
 
 function daysBetween(a: Date, b: Date): number {
   const utcA = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
