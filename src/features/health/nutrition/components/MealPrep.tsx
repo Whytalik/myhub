@@ -199,10 +199,10 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
         `Очищення: курячі серця (${heartsQty}) промити у друшляку, натискаючи пальцями для видалення згустків крові.`,
         `Нарізка: свинячу вирізку (${porkQty}) нарізати дрібними кубиками для боулів.`,
         `Нарізка: куряче філе для шашликів (${shashlikQty}) нарізати порційними шматочками розміром 2–3 см.`,
-        `Миска 1: приготувати «Йогуртово-лимонний маринад» (рецепт нижче), додати куряче філе для шашликів (${shashlikQty}) та перемішати.`,
-        `Миска 2: приготувати «Соєво-томатний маринад» (рецепт нижче), додати очищені курячі серця (${heartsQty}) та перемішати.`,
-        `Без миски: приготувати «Спеції для вирізки» (рецепт нижче), обваляти в них кубики вирізки (${porkQty}).`,
-        "Скумбрія: випотрошити 2 тушки, промити, зробити кілька поперечних надрізів на боках. Половину лимона нарізати тонкими півкружальцями і вставити в надрізи, посолити та натерти «Скумбрія з лимоном» (рецепт нижче). Щільно загорнути кожну тушку в фольгу.",
+        `Миска 1 (Йогуртово-лимонний маринад): змішати 150 г грецького йогурту, сік ½ лимона (+ цедра), 2 зуб. часнику, 1 ч.л. паприки, ½ ч.л. прованських трав, 1 ст.л. оливкової олії, сіль і перець. Додати куряче філе для шашликів (${shashlikQty}) та перемішати.`,
+        `Миска 2 (Соєво-томатний маринад): змішати 3 ст.л. соєвого соусу, 1 ст.л. томатної пасти, 1 ст.л. олії, ½ ч.л. прованських трав, перець (без солі). Додати курячі серця (${heartsQty}) та перемішати.`,
+        `Без миски (Спеції для вирізки): змішати сіль, перець, 2 зуб. часнику (або сухий), ½ ч.л. зіри та 1 ч.л. копченої паприки. Обваляти в них кубики вирізки (${porkQty}).`,
+        "Скумбрія з лимоном: випотрошити 2 тушки, промити, зробити надрізи. Вставити півкружальця лимона (½ шт). Посолити та натерти приправою до риби (1 ч.л.). Щільно загорнути кожну тушку в фольгу.",
       ],
     },
     {
@@ -249,59 +249,6 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       ],
     },
   ];
-
-  const marinades: { title: string; for: string; ingredients: RecipeIngredient[]; note: string }[] =
-    [
-      {
-        title: "Йогуртово-лимонний маринад",
-        for: "Для курячих шашликів (Сет1). Подача: гірчиця.",
-        ingredients: [
-          { food: "yogurtGreek", qty: "150 г" },
-          { food: "lemon", qty: "сік ½ шт + цедра" },
-          { food: "garlic", qty: "2 зубчики (тиском)" },
-          { food: "paprika", qty: "1 ч.л." },
-          { food: "provencalHerbs", qty: "½ ч.л." },
-          { food: "oil", qualifier: "оливкова", qty: "1 ст.л." },
-          { food: "salt" },
-          { food: "blackPepper" },
-        ],
-        note: "Маринувати мінімум 2 год, ідеально — ніч у холодильнику.",
-      },
-      {
-        title: "Соєво-томатний маринад",
-        for: "Для курячих сердець (Сет2). Соус подачі: Соєва глазур",
-        ingredients: [
-          { food: "soySauce", qty: "3 ст.л." },
-          { food: "tomatoPaste", qty: "1 ст.л." },
-          { food: "oil", qualifier: "оливкова", qty: "1 ст.л." },
-          { food: "provencalHerbs", qty: "½ ч.л." },
-          { food: "blackPepper", qty: "сіль не потрібна — соєвий соус солоний" },
-        ],
-        note: "Маринувати 30–60 хв, перемішувати кожні 10 хв.",
-      },
-      {
-        title: "Спеції для вирізки",
-        for: "Для свинячої вирізки боула (Сет7).",
-        ingredients: [
-          { food: "salt" },
-          { food: "blackPepper" },
-          { food: "garlic", qty: "2 зубчики (тиском) або сухий" },
-          { food: "cumin", qty: "½ ч.л. (зіра)" },
-          { food: "paprika", qty: "1 ч.л. (копчена)" },
-        ],
-        note: "Нарізану вирізку перемішати зі спеціями, обсмажити на сковороді з мінімумом олії.",
-      },
-      {
-        title: "Скумбрія з лимоном",
-        for: "Для запеченої скумбрії (Сет3, день 1). Одразу у фользі — готова з морозилки в духовку.",
-        ingredients: [
-          { food: "lemon", qty: "½ шт, тонкими півкружальцями в надрізи" },
-          { food: "fishSeasoning", qty: "1 ч.л." },
-          { food: "salt" },
-        ],
-        note: "Не розморожувати перед запіканням — просто запікати з морозилки, додавши ~10 хв до часу.",
-      },
-    ];
 
   const sectionIconClass =
     "flex items-center justify-center w-8 h-8 rounded-lg bg-accent-nutrition/10 text-accent-nutrition shrink-0";
@@ -433,26 +380,6 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
         </div>
       </div>
 
-      <div className="glass-card p-4 flex flex-col gap-4">
-        <span className="text-panel-title">Рецепти маринадів</span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {marinades.map((m, idx) => (
-            <div key={idx} className="flex flex-col gap-2 p-3 rounded-xl bg-white/[0.02]">
-              <span className="text-sm font-semibold text-zinc-100">{m.title}</span>
-              <p className="text-caption">{m.for}</p>
-              <ul className="flex flex-col gap-1">
-                {m.ingredients.map((ing, ingIdx) => (
-                  <li key={ingIdx} className="flex items-start gap-1.5 text-sm text-zinc-300">
-                    <input type="checkbox" className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer" />
-                    <span>{ingredientLabel(ing, seasonOverride)}</span>
-                  </li>
-                ))}
-              </ul>
-              {m.note && <p className="text-caption italic">{m.note}</p>}
-            </div>
-          ))}
-        </div>
-      </div>
       {isCookingMode && (
         <CookingModeModal algorithm={algorithm} onClose={() => setIsCookingMode(false)} />
       )}
