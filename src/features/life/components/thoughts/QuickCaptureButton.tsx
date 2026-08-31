@@ -183,7 +183,7 @@ export function QuickCaptureButton() {
         size="icon"
         onClick={() => setIsOpen(true)}
         title="Quick capture (n)"
-        className="fixed bottom-6 right-6 z-[7000] w-12 h-12 rounded-full shadow-lg shadow-black/40"
+        className="fixed bottom-24 right-4 md:bottom-6 md:right-6 z-[7000] w-12 h-12 rounded-full shadow-lg shadow-black/40"
       >
         <Plus size={20} />
       </Button>
