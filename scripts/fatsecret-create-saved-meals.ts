@@ -13,16 +13,15 @@
  *
  * Run with:
  *   set -a; source .env.local; set +a
- *   npx tsx scripts/fatsecret-create-saved-meals.ts <summer|winter|autumn|spring>
+ *   npx tsx scripts/fatsecret-create-saved-meals.ts
+ *
+ * Seasonal menu variants (summer/winter/autumn/spring) were removed — there's
+ * only one active plan now. `season` is kept as a fixed "current" label purely
+ * because it's part of FatSecretSavedMeal's idempotency key in the DB; no
+ * migration needed.
  */
 import { prisma } from "../src/lib/db/prisma";
-import {
-  PROFILES,
-  SUMMER_SET_PLAN,
-  WINTER_SET_PLAN,
-  AUTUMN_SET_PLAN,
-  SPRING_SET_PLAN,
-} from "../src/features/health/nutrition/data";
+import { PROFILES, SET_PLAN } from "../src/features/health/nutrition/data";
 import { getProductName } from "../src/features/health/nutrition/products";
 import { productMappingRepository } from "../src/features/health/nutrition/repositories/product-mapping.repository";
 import {
@@ -30,7 +29,6 @@ import {
   type FatSecretMapping,
 } from "../src/features/health/nutrition/fatsecret-mapping";
 import { createSavedMeal, addSavedMealItem, deleteSavedMeal } from "../src/lib/fatsecret/client";
-import type { DayPlan } from "../src/features/health/nutrition/types";
 
 /** Standalone-script equivalent of product-mapping-service's getMergedMappings —
  *  that one goes through Next's unstable_cache, which throws outside a Next server. */
@@ -47,13 +45,6 @@ async function getMergedMappingsStandalone(): Promise<Partial<Record<string, Fat
   return merged;
 }
 
-const SEASON_PLANS: Record<string, DayPlan[]> = {
-  summer: SUMMER_SET_PLAN,
-  winter: WINTER_SET_PLAN,
-  autumn: AUTUMN_SET_PLAN,
-  spring: SPRING_SET_PLAN,
-};
-
 type ProfileId = "vitalii" | "olesia";
 
 /** Same mapping fatsecret-actions.ts uses for food_entry.create's `meal` param. */
@@ -68,14 +59,8 @@ const RATE_LIMIT_DELAY_MS = 300;
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function main() {
-  const season = process.argv[2];
-  const plan = season ? SEASON_PLANS[season] : undefined;
-  if (!plan) {
-    console.error(
-      `Usage: npx tsx scripts/fatsecret-create-saved-meals.ts <${Object.keys(SEASON_PLANS).join("|")}>`,
-    );
-    process.exit(1);
-  }
+  const season = "current";
+  const plan = SET_PLAN;
 
   const accounts = await prisma.fatSecretAccount.findMany();
   if (accounts.length === 0) {

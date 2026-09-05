@@ -54,4 +54,7 @@ export const FATSECRET_MAPPING: Partial<Record<string, FatSecretMapping>> = {
   broccoli: { foodId: "36434", servingId: "59022", servingGrams: 1 },
   cauliflower: { foodId: "36440", servingId: "59058", servingGrams: 1 },
   spinachFrozen: { foodId: "35851", servingId: "59312", servingGrams: 1 },
+
+  tortilla: { foodId: "3742", servingId: "52422", servingGrams: 100 },
+  cottageCheeseLowFat: { foodId: "25852", servingId: "83238", servingGrams: 113 },
 };

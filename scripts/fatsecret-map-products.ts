@@ -55,6 +55,8 @@ const SEARCH_QUERY: Record<string, string> = {
   mustardDijon: "dijon mustard",
   porkChop: "pork chop",
   cream: "heavy cream",
+  tortilla: "flour tortilla",
+  cottageCheeseLowFat: "low fat cottage cheese 1%",
 };
 
 function findGramServings(servings: FoodServing | FoodServing[]): FoodServing[] {

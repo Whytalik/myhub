@@ -69,8 +69,6 @@ const proteinIngredients: RecipeIngredient[] = [
     qualifier: "для сирників",
     computedQty: { food: "eggs", sets: [], grams: 60, unit: "piece" },
   },
-  { food: "chickenMarinated", qualifier: "сира, для Buffalo Pockets — Сет5", qty: "1135 г" },
-  { food: "cottageCheese", qualifier: "для буффало-дипу", qty: "340 г" },
   {
     food: "chickenMarinated",
     qualifier: "свіжа, НЕ з мілпрепу — Сет4 (купувати окремо щотижня)",
@@ -81,20 +79,6 @@ const proteinIngredients: RecipeIngredient[] = [
     qualifier: "свіжа, НЕ з мілпрепу — Сет5 (хрустка курка, купувати окремо щотижня)",
     qty: "~280 г",
   },
-];
-
-const buffaloPocketIngredients: RecipeIngredient[] = [
-  { food: "flour", qty: "500 г" },
-  { food: "yogurtGreek", qualifier: "0% жиру, для тіста", qty: "520 г" },
-  { food: "onion", qty: "160 г" },
-  { food: "tomato", qty: "64 г" },
-  { food: "mozzarella", qty: "350 г" },
-  { food: "ketchup", qualifier: "для соус-міксу", qty: "240 г (у начинку) + 80 г (у дип)" },
-  { food: "adjika", qualifier: "для соус-міксу", qty: "120 г (у начинку) + 40 г (у дип)" },
-  { food: "milk", qualifier: "для дипу", qty: "60 мл" },
-  { food: "garlic", qualifier: "порошок" },
-  { food: "provencalHerbs", qualifier: "італійська суміш" },
-  { food: "salt" },
 ];
 
 const marinadeIngredients: RecipeIngredient[] = [
@@ -158,12 +142,6 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       },
       marinade: "Спеції, без маринаду",
     },
-    {
-      food: "chickenMarinated",
-      qualifier: "кальцоне (подрібнене) — Сет7",
-      computedQty: { food: "chickenMarinated", sets: [{ set: "set7" }] },
-      marinade: "Спеції, без маринаду",
-    },
   ];
 
   const shashlikQty = formatGrams(
@@ -183,16 +161,6 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       seasonOverride,
     ),
   );
-  const calzoneChickenQty = formatGrams(
-    sumMacroGramsForSetsMulti(["chickenMarinated"], [{ set: "set7" }], undefined, seasonOverride),
-  );
-  const calzoneCottageCheeseQty = formatGrams(
-    sumMacroGramsForSetsMulti(["cottageCheese"], [{ set: "set7" }], undefined, seasonOverride),
-  );
-  const calzoneHardCheeseQty = formatGrams(
-    sumMacroGramsForSetsMulti(["hardCheese"], [{ set: "set7" }], undefined, seasonOverride),
-  );
-
   const algorithm = [
     {
       title: "Блок 1 — Маринування (~20 хв)",
@@ -216,32 +184,10 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       ],
     },
     {
-      title: "Блок 3 — Начинка для самба-булочок (Сет2/Сет6) (~15 хв)",
+      title: "Блок 3 — Начинка для шаурми (Сет2/Сет6) (~15 хв)",
       steps: [
         `Обсмажити куряче філе (${bunFillingQty}) на пательні з мінімумом олії (~1 ст.л. на всю партію) зі спеціями (паприка, часник і цибуля порошком, куркума).`,
-        'Охолодити курку, розкласти по контейнерах порційно і заморозити. Самі булочки ("Малятко") купуються готові і зберігаються за кімнатної температури.',
-      ],
-    },
-    {
-      title: "Блок 4 — Курячий кальцоне для Сету7 (~35 хв, переважно пасивно)",
-      steps: [
-        `Подрібнити куряче філе (${calzoneChickenQty}) блендером або м'ясорубкою до фаршу, посолити й поперчити.`,
-        "Викласти фарш пластом на деко, застелене пергаментом (форма прямокутника, ~1 см завтовшки).",
-        `На одну половину викласти начинку: творог (${calzoneCottageCheeseQty}, попередньо розім'ятий виделкою), нарізаний помідор і твердий сир (${calzoneHardCheeseQty}) — Віталію без сиру, лише творог і помідор (менше жиру).`,
-        "Накрити другою половиною пласта, защипнути краї як кальцоне. Запікати при 200°C ~25 хв до готовності курки всередині.",
-        "Повністю охолодити (гарячим у морозилку не класти), щільно загорнути у фольгу порційно і відправити в морозильну камеру.",
-      ],
-    },
-    {
-      title: "Блок 5 — Buffalo Chicken Pockets для Сету5 (~40 хв, 10 шт)",
-      steps: [
-        "Соус-мікс (замість імпортного буффало-соусу): змішати кетчуп (320 г) з аджикою (160 г) та часниковим порошком — вийде ~480 г, вистачить і на начинку, і на дип.",
-        "Тісто: розім'яти борошно (500 г) з грецьким йогуртом 0% (520 г), часниковим порошком, італійськими травами та сіллю до однорідного тіста.",
-        "Начинка: сиру курку (1135 г, нарізану дрібно) змішати з цибулею (160 г, дрібно нарізаною), помідором (64 г, дрібно нарізаним), моцарелою (350 г) та частиною соус-міксу (240 г).",
-        "Розкачати тісто, розкласти начинку по 10 порціях, защипнути краї у формі кишеньки (hot pocket). Викласти на деко, застелене пергаментом.",
-        "Випікати при 190°C ~25–30 хв до готовності курки всередині та золотистої скоринки.",
-        "Дип: збити блендером творог (340 г) з рештою соус-міксу (240 г) та молоком (60 мл) до кремової текстури.",
-        "Повністю охолодити покети (гарячим у морозилку не класти), загорнути порційно у фольгу, дип розкласти по контейнерах — обидва в морозильну камеру.",
+        "Охолодити курку, розкласти по контейнерах порційно і заморозити. Тортильї купуються готові і зберігаються за кімнатної температури.",
       ],
     },
     {
@@ -312,25 +258,11 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
 
         <div className="h-px bg-white/[0.06]" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <span className="text-label block mb-2">М&apos;ясо та білки</span>
             <ul className="flex flex-col gap-1.5">
               {proteinIngredients.map((ing, idx) => (
-                <li key={idx} className={ingredientItemClass}>
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 shrink-0 rounded border-stroke bg-canvas text-accent-nutrition focus:ring-accent-nutrition focus:ring-offset-canvas cursor-pointer"
-                  />
-                  <span>{ingredientLabel(ing, seasonOverride)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <span className="text-label block mb-2">Buffalo Chicken Pockets</span>
-            <ul className="flex flex-col gap-1.5">
-              {buffaloPocketIngredients.map((ing, idx) => (
                 <li key={idx} className={ingredientItemClass}>
                   <input
                     type="checkbox"

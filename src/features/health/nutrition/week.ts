@@ -52,7 +52,7 @@ export function formatWeekRange(weekStart: string): string {
 }
 
 import { DayPlan, Weekday } from "./types";
-import { SUMMER_SET_PLAN, WINTER_SET_PLAN, AUTUMN_SET_PLAN, SPRING_SET_PLAN } from "./data";
+import { SET_PLAN } from "./data";
 
 const WEEKDAY_OFFSET_FROM_SUNDAY: Record<Weekday, number> = {
   sun: 0,
@@ -72,45 +72,12 @@ export function dateForWeekdayInWeek(weekStartSunday: Date, day: Weekday): Date 
 }
 
 /**
- * Повертає активний набір із 7 сетів залежно від дати чи weekStart та обраного сезону в налаштуваннях.
- * Якщо сезон задано явно (у cookies/параметрах), повертає відповідний план.
- * Якщо сезон "auto" або не задано, перемикає за місяцями в Україні.
+ * Повертає активний набір із 7 сетів. Сезонність (різні набори салатів по
+ * порах року) прибрана — лишилась одна поточна менюшка, тому параметри нижче
+ * зараз ігноруються. Сигнатура лишена незмінною, щоб не чіпати виклики
+ * (ShoppingList/MealPrep/NutritionPageClient/quantities.ts далі передають
+ * `seasonOverride` — він там ще працює для сезонності ЦІН, не меню).
  */
-export function getActiveSetPlan(weekStart?: string | Date, seasonOverride?: string): DayPlan[] {
-  let season = seasonOverride;
-  if (!season && typeof window !== "undefined") {
-    const match = document.cookie.match(/(^| )nutrition-menu-season=([^;]+)/);
-    season = match ? decodeURIComponent(match[2]) : undefined;
-  }
-
-  if (season === "summer") return SUMMER_SET_PLAN;
-  if (season === "autumn") return AUTUMN_SET_PLAN;
-  if (season === "winter") return WINTER_SET_PLAN;
-  if (season === "spring") return SPRING_SET_PLAN;
-
-  let date: Date;
-  if (!weekStart) {
-    date = new Date();
-  } else if (typeof weekStart === "string") {
-    date = new Date(`${weekStart}T00:00:00`);
-    if (isNaN(date.getTime())) date = new Date();
-  } else {
-    date = weekStart;
-  }
-
-  const month = date.getMonth();
-  // 5 = Червень, 6 = Липень, 7 = Серпень (Літо)
-  if (month >= 5 && month <= 7) {
-    return SUMMER_SET_PLAN;
-  }
-  // 8 = Вересень, 9 = Жовтень, 10 = Листопад (Осінь)
-  if (month >= 8 && month <= 10) {
-    return AUTUMN_SET_PLAN;
-  }
-  // 2 = Березень, 3 = Квітень, 4 = Травень (Весна)
-  if (month >= 2 && month <= 4) {
-    return SPRING_SET_PLAN;
-  }
-  // 11 = Грудень, 0 = Січень, 1 = Лютий (Зима)
-  return WINTER_SET_PLAN;
+export function getActiveSetPlan(_weekStart?: string | Date, _seasonOverride?: string): DayPlan[] {
+  return SET_PLAN;
 }
