@@ -8,7 +8,14 @@ const eslintConfig = defineConfig([
   ...nextTs,
   prettier,
 
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "src/app/generated/**"]),
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "src/app/generated/**",
+    ".claude/worktrees/**",
+  ]),
   {
     rules: {
       "@typescript-eslint/no-unused-vars": [
