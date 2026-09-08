@@ -1,0 +1,624 @@
+"use client";
+import { Textarea } from "@/components/ui/inputs/textarea";
+import { Checkbox } from "@/components/ui/inputs/checkbox";
+
+import { useState, useTransition } from "react";
+import * as React from "react";
+import { createPortal } from "react-dom";
+import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
+import { Input } from "@/components/ui/inputs/input";
+import { DatePicker } from "@/components/ui/inputs/date-picker";
+import { DateRangePicker } from "@/components/ui/inputs/date-range-picker";
+import { TimePicker } from "@/components/ui/inputs/time-picker";
+import { CustomSelect } from "@/components/ui/inputs/custom-select";
+import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
+import type { TaskData, LifeSphereData, TaskStatus, TaskPriority } from "@/features/life/types";
+import { toast } from "sonner";
+import { CalendarClock, Flag, FileText, Link2Off, Eye, Trash2, LayoutGrid, X } from "lucide-react";
+import { STATUS_CONFIG } from "./StatusToggle";
+import { PRIORITY_CONFIG } from "./PriorityBadge";
+import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
+import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
+
+interface TaskDetailProps {
+  task: TaskData;
+  spheres: LifeSphereData[];
+  allTasks: TaskData[];
+  onViewTask?: (t: TaskData) => void;
+  title: string;
+  setTitle: (v: string) => void;
+  description: string;
+  setDescription: (v: string) => void;
+  icon: string | null;
+  setIcon: (v: string | null) => void;
+  iconPickerOpen: boolean;
+  setIconPickerOpen: (v: boolean) => void;
+  status: TaskStatus;
+  setStatus: (v: TaskStatus) => void;
+  priority: TaskPriority;
+  setPriority: (v: TaskPriority) => void;
+  sphereId: string;
+  setSphereId: (v: string) => void;
+  parentId: string | null;
+  setParentId: (v: string | null) => void;
+  isPrivate: boolean;
+  setIsPrivate: (v: boolean) => void;
+  plannedDate: string;
+  setPlannedDate: (v: string) => void;
+  plannedTime: string;
+  setPlannedTime: (v: string) => void;
+  hasPlannedTime: boolean;
+  setHasPlannedTime: (v: boolean) => void;
+  plannedEndTime: string;
+  setPlannedEndTime: (v: string) => void;
+  plannedEndDate: string | null;
+  setPlannedEndDate: (v: string | null) => void;
+  hasPlannedEndTime: boolean;
+  setHasPlannedEndTime: (v: boolean) => void;
+  useDeadline: boolean;
+  setUseDeadline: (v: boolean) => void;
+  dueDate: string;
+  setDueDate: (v: string) => void;
+  dueTime: string;
+  setDueTime: (v: string) => void;
+  hasDueTime: boolean;
+  setHasDueTime: (v: boolean) => void;
+  hasChanges: boolean;
+  onSave: () => void;
+  onClose: () => void;
+}
+
+export function TaskDetail({
+  task,
+  spheres,
+  allTasks,
+  onViewTask,
+  title,
+  setTitle,
+  description,
+  setDescription,
+  icon,
+  setIconPickerOpen,
+  status,
+  setStatus,
+  priority,
+  setPriority,
+  sphereId,
+  setSphereId,
+  parentId,
+  setParentId,
+  isPrivate: _isPrivate,
+  setIsPrivate: _setIsPrivate,
+  plannedDate,
+  setPlannedDate,
+  plannedTime,
+  setPlannedTime,
+  hasPlannedTime,
+  setHasPlannedTime,
+  plannedEndTime,
+  setPlannedEndTime,
+  plannedEndDate,
+  setPlannedEndDate,
+  hasPlannedEndTime,
+  setHasPlannedEndTime,
+  useDeadline,
+  setUseDeadline,
+  dueDate,
+  setDueDate,
+  dueTime,
+  setDueTime,
+  hasDueTime,
+  setHasDueTime,
+  hasChanges,
+  onClose,
+}: TaskDetailProps) {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [, startTransition] = useTransition();
+
+  const handleTogglePlannedTime = (checked: boolean) => {
+    setHasPlannedTime(checked);
+    if (checked && !plannedTime) setPlannedTime("12:00");
+  };
+  const handleTogglePlannedEndTime = (checked: boolean) => {
+    setHasPlannedEndTime(checked);
+    if (checked && !plannedEndDate && plannedDate) setPlannedEndDate(plannedDate);
+    if (checked && !plannedEndTime) {
+      if (plannedTime) {
+        const [h, m] = plannedTime.split(":").map(Number);
+        const newH = (h + 1) % 24;
+        setPlannedEndTime(`${newH.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}`);
+      } else {
+        setPlannedEndTime("13:00");
+      }
+    }
+  };
+  const handlePlannedRangeChange = (start: string, end: string | null) => {
+    setPlannedDate(start);
+    setPlannedEndDate(end);
+    if (!start) {
+      setHasPlannedTime(false);
+      setPlannedTime("");
+      setHasPlannedEndTime(false);
+      setPlannedEndTime("");
+    }
+  };
+  const handleToggleDueTime = (checked: boolean) => {
+    setHasDueTime(checked);
+    if (checked && !dueTime) setDueTime("12:00");
+  };
+  const handleUnlinkSubtask = async (subtask: TaskData) => {
+    const result = await upsertTaskAction({ id: subtask.id, parentId: null });
+    if (result.success) {
+      toast.success("Subtask unlinked");
+    } else {
+      toast.error(result.error || "Failed to unlink subtask");
+    }
+  };
+  const handleDelete = () => {
+    startTransition(async () => {
+      const result = await deleteTaskAction(task.id);
+      if (result.success) {
+        toast.success("Task deleted");
+        onClose();
+      } else {
+        toast.error(result.error || "Failed to delete task");
+      }
+    });
+  };
+
+  const {
+    isOpen: sphereIsOpen,
+    coords: sphereCoords,
+    triggerRef: sphereTriggerRef,
+    contentRef: sphereContentRef,
+    toggle: sphereToggle,
+    close: sphereClose,
+  } = useDynamicPositioning<HTMLButtonElement>({ contentWidth: 200, offset: 6 });
+  const {
+    isOpen: priorityIsOpen,
+    coords: priorityCoords,
+    triggerRef: priorityTriggerRef,
+    contentRef: priorityContentRef,
+    toggle: priorityToggle,
+    close: priorityClose,
+  } = useDynamicPositioning<HTMLButtonElement>({ contentWidth: 160, offset: 6 });
+
+  const sphere = spheres.find((s) => s.id === sphereId);
+  const statusCfg = STATUS_CONFIG[status];
+  const priorityCfg = PRIORITY_CONFIG[priority];
+  const hasSubtasks = task.children.length > 0;
+  const symbolButtonClass =
+    "flex items-center justify-center w-11 h-11 rounded-xl glass-input cursor-pointer text-zinc-400 hover:text-accent transition-colors shrink-0 mt-0.5";
+  const spherePillClass =
+    "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide transition-colors";
+  const spherePillStyle: React.CSSProperties = sphere
+    ? {
+        color: sphere.color,
+        borderColor: `${sphere.color}30`,
+        backgroundColor: `${sphere.color}15`,
+      }
+    : {
+        color: "#a1a1aa",
+        borderColor: "rgba(255,255,255,0.06)",
+        backgroundColor: "rgba(255,255,255,0.05)",
+      };
+  const statusPillClass = `inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide ${statusCfg.style}`;
+  const priorityPillClass = `inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-[10px] font-mono font-semibold uppercase tracking-wide ${priorityCfg.style}`;
+  const iconActionButtonClass =
+    "p-2 rounded-lg text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors";
+  const deleteActionButtonClass =
+    "p-2 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors";
+  const sectionLabelClass = "text-label";
+  const timeCheckboxLabelClass =
+    "flex items-center gap-1.5 text-xs text-zinc-400 cursor-pointer w-fit";
+  const deadlineToggleClass =
+    "text-xs font-semibold text-accent hover:opacity-80 transition-opacity";
+  const clearButtonClass =
+    "p-1 rounded text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors shrink-0";
+  const planningLabel = hasSubtasks ? "Deadline" : parentId ? "When to do" : "Planning";
+
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="flex items-start gap-3">
+        <div onClick={() => setIconPickerOpen(true)} className={symbolButtonClass}>
+          {icon && ALL_ICONS[icon] ? (
+            (() => {
+              const I = ALL_ICONS[icon];
+              return <I size={20} />;
+            })()
+          ) : (
+            <FileText size={20} />
+          )}
+        </div>
+        <div className="flex-1 min-w-0">
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Task title"
+            variant="inline"
+            className="text-panel-title w-full"
+          />
+          <div className="flex items-center gap-2 flex-wrap mt-1.5">
+            <button
+              ref={sphereTriggerRef}
+              onClick={sphereToggle}
+              className={spherePillClass}
+              style={spherePillStyle}
+            >
+              {sphere &&
+                ALL_ICONS[sphere.icon] &&
+                (() => {
+                  const I = ALL_ICONS[sphere.icon];
+                  return <I size={9} strokeWidth={3} />;
+                })()}
+              {sphere?.name || "Sphere"}
+            </button>
+            <div className="w-1 h-1 rounded-full bg-zinc-700" />
+            <button
+              onClick={() =>
+                setStatus(status === "DONE" ? "TODO" : status === "TODO" ? "IN_PROGRESS" : "DONE")
+              }
+              className={statusPillClass}
+            >
+              <statusCfg.icon size={9} />
+              {statusCfg.label}
+            </button>
+            <button ref={priorityTriggerRef} onClick={priorityToggle} className={priorityPillClass}>
+              <priorityCfg.icon size={9} />
+              {priorityCfg.label}
+            </button>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
+          <button onClick={() => setDeleteDialogOpen(true)} className={deleteActionButtonClass}>
+            <Trash2 size={18} />
+          </button>
+          <button onClick={onClose} className={iconActionButtonClass}>
+            <X size={18} />
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-6">
+        <div className="flex flex-col gap-5">
+          <section className="flex flex-col gap-1.5">
+            <label className={sectionLabelClass}>Description</label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Add notes, steps, or details..."
+              rows={6}
+            />
+          </section>
+
+          <section className="flex flex-col gap-1.5">
+            <label className={`${sectionLabelClass} flex items-center gap-1.5`}>
+              <span>Subtasks</span>
+              {task.children?.length > 0 && (
+                <span className="text-zinc-600">({task.children.length})</span>
+              )}
+            </label>
+            {task.children?.length > 0 ? (
+              <div className="flex flex-col gap-1">
+                {task.children.map((child: TaskData) => (
+                  <div
+                    key={child.id}
+                    className="flex items-center justify-between gap-2 px-2.5 py-2 rounded-lg bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                  >
+                    <div className="flex items-center gap-2 min-w-0 text-sm text-zinc-300">
+                      {child.icon && SPHERE_ICONS[child.icon] ? (
+                        (() => {
+                          const I = SPHERE_ICONS[child.icon];
+                          return <I size={11} />;
+                        })()
+                      ) : (
+                        <FileText size={11} />
+                      )}
+                      <span className="truncate">{child.title}</span>
+                    </div>
+                    <div className="flex items-center gap-1 shrink-0">
+                      {onViewTask && (
+                        <button onClick={() => onViewTask(child)} className={clearButtonClass}>
+                          <Eye size={12} />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleUnlinkSubtask(child)}
+                        className={clearButtonClass}
+                      >
+                        <Link2Off size={12} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="glass-card p-4 flex items-center justify-center">
+                <span className="text-caption">No subtasks</span>
+              </div>
+            )}
+          </section>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          <section className="flex flex-col gap-3">
+            <label className={sectionLabelClass}>{planningLabel}</label>
+            {hasSubtasks ? (
+              <div className="glass-card p-3 flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <Flag size={13} className="text-zinc-400 shrink-0" />
+                  {useDeadline ? (
+                    <>
+                      <DatePicker value={dueDate} onChange={setDueDate} />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUseDeadline(false);
+                          setDueDate("");
+                          setDueTime("");
+                          setHasDueTime(false);
+                        }}
+                        title="Clear deadline"
+                        className={clearButtonClass}
+                      >
+                        <X size={11} />
+                      </button>
+                    </>
+                  ) : (
+                    <button onClick={() => setUseDeadline(true)} className={deadlineToggleClass}>
+                      Set deadline...
+                    </button>
+                  )}
+                </div>
+                {useDeadline && (
+                  <>
+                    <label className={timeCheckboxLabelClass}>
+                      <Checkbox
+                        checked={hasDueTime}
+                        onChange={(e) => handleToggleDueTime(e.target.checked)}
+                      />
+                      <span>Exact time</span>
+                    </label>
+                    {hasDueTime && (
+                      <div>
+                        <TimePicker value={dueTime} onChange={setDueTime} />
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            ) : (
+              <>
+                <div className="glass-card p-3 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <CalendarClock size={13} className="text-zinc-400 shrink-0" />
+                    <DateRangePicker
+                      startDate={plannedDate}
+                      endDate={plannedEndDate}
+                      onChange={handlePlannedRangeChange}
+                    />
+                    {plannedDate && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPlannedDate("");
+                          setPlannedEndDate(null);
+                          setPlannedTime("");
+                          setPlannedEndTime("");
+                          setHasPlannedTime(false);
+                          setHasPlannedEndTime(false);
+                        }}
+                        title="Clear date"
+                        className={clearButtonClass}
+                      >
+                        <X size={11} />
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <label className={timeCheckboxLabelClass}>
+                      <Checkbox
+                        checked={hasPlannedTime}
+                        onChange={(e) => handleTogglePlannedTime(e.target.checked)}
+                      />
+                      <span>Start time</span>
+                    </label>
+                    {hasPlannedTime && <TimePicker value={plannedTime} onChange={setPlannedTime} />}
+
+                    <label className={timeCheckboxLabelClass}>
+                      <Checkbox
+                        checked={hasPlannedEndTime}
+                        onChange={(e) => handleTogglePlannedEndTime(e.target.checked)}
+                      />
+                      <span>End time</span>
+                    </label>
+                    {hasPlannedEndTime && (
+                      <TimePicker value={plannedEndTime} onChange={setPlannedEndTime} />
+                    )}
+                  </div>
+                </div>
+                <div className="glass-card p-3 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <Flag size={13} className="text-zinc-400 shrink-0" />
+                    {useDeadline ? (
+                      <>
+                        <DatePicker value={dueDate} onChange={setDueDate} />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setUseDeadline(false);
+                            setDueDate("");
+                            setDueTime("");
+                            setHasDueTime(false);
+                          }}
+                          title="Clear deadline"
+                          className={clearButtonClass}
+                        >
+                          <X size={11} />
+                        </button>
+                      </>
+                    ) : (
+                      <button onClick={() => setUseDeadline(true)} className={deadlineToggleClass}>
+                        Set deadline...
+                      </button>
+                    )}
+                  </div>
+                  {useDeadline && (
+                    <>
+                      <label className={timeCheckboxLabelClass}>
+                        <Checkbox
+                          checked={hasDueTime}
+                          onChange={(e) => handleToggleDueTime(e.target.checked)}
+                        />
+                        <span>Exact time</span>
+                      </label>
+                      {hasDueTime && (
+                        <div>
+                          <TimePicker value={dueTime} onChange={setDueTime} />
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              </>
+            )}
+          </section>
+
+          <section className="flex flex-col gap-2">
+            <label className={sectionLabelClass}>Organization</label>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-caption">Parent Task</label>
+                <CustomSelect
+                  value={parentId || "none"}
+                  onChange={(val) => setParentId(val === "none" ? null : val)}
+                  options={[
+                    { id: "none", label: "Top Level", icon: Link2Off },
+                    ...allTasks
+                      .filter((t: TaskData) => t.id !== task.id)
+                      .map((t: TaskData) => ({
+                        id: t.id,
+                        label: t.title,
+                        icon: LayoutGrid,
+                      })),
+                  ]}
+                />
+              </div>
+            </div>
+          </section>
+
+          {hasChanges && (
+            <div className="flex items-center gap-2 text-caption">
+              <div className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+              <span>Saving on close...</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <ConfirmationDialog
+        isOpen={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete Task"
+        description={`Permanently delete "${task.title}"?`}
+        confirmLabel="Delete"
+        variant="danger"
+      />
+
+      {sphereIsOpen &&
+        sphereCoords &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={sphereContentRef as React.RefObject<HTMLDivElement>}
+            style={{
+              position: "fixed",
+              left: sphereCoords.left,
+              top: sphereCoords.align === "bottom" ? sphereCoords.top : undefined,
+              bottom:
+                sphereCoords.align === "top" ? window.innerHeight - sphereCoords.top : undefined,
+              width: 200,
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="glass-elevated p-1.5 flex flex-col gap-0.5 z-[9000] max-h-[320px] overflow-y-auto"
+          >
+            {spheres.map((s) => {
+              const active = s.id === sphereId;
+              const SIcons = s.icon && ALL_ICONS[s.icon] ? ALL_ICONS[s.icon] : FileText;
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => {
+                    setSphereId(s.id);
+                    sphereClose();
+                  }}
+                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors duration-150 ${
+                    active
+                      ? "bg-accent/15 text-accent font-medium"
+                      : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  <div
+                    className="flex items-center justify-center w-5 h-5 rounded"
+                    style={{ backgroundColor: `${s.color}20`, border: `1px solid ${s.color}30` }}
+                  >
+                    <SIcons size={9} strokeWidth={3} style={{ color: s.color }} />
+                  </div>
+                  {s.name}
+                </button>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
+
+      {priorityIsOpen &&
+        priorityCoords &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            ref={priorityContentRef as React.RefObject<HTMLDivElement>}
+            style={{
+              position: "fixed",
+              left: priorityCoords.left,
+              top: priorityCoords.align === "bottom" ? priorityCoords.top : undefined,
+              bottom:
+                priorityCoords.align === "top"
+                  ? window.innerHeight - priorityCoords.top
+                  : undefined,
+              width: 160,
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="glass-elevated p-1.5 flex flex-col gap-0.5 z-[9000]"
+          >
+            {(Object.keys(PRIORITY_CONFIG) as TaskPriority[]).map((p) => {
+              const cfg = PRIORITY_CONFIG[p];
+              const PIcon = cfg.icon;
+              const active = p === priority;
+              return (
+                <button
+                  key={p}
+                  onClick={() => {
+                    setPriority(p);
+                    priorityClose();
+                  }}
+                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm text-left transition-colors duration-150 ${
+                    active
+                      ? "bg-accent/15 text-accent font-medium"
+                      : "text-zinc-300 hover:bg-white/5 hover:text-white"
+                  }`}
+                >
+                  <div className={`flex items-center justify-center w-5 h-5 rounded ${cfg.style}`}>
+                    <PIcon size={10} strokeWidth={3} />
+                  </div>
+                  {cfg.label}
+                </button>
+              );
+            })}
+          </div>,
+          document.body,
+        )}
+    </div>
+  );
+}
