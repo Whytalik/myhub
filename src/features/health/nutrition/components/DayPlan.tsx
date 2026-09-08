@@ -594,7 +594,10 @@ export function DayPlan({
         )}
       </div>
       {isCookingMode && (
-        <CookingModeModal algorithm={processedDay.prepSteps!} onClose={() => setIsCookingMode(false)} />
+        <CookingModeModal
+          algorithm={processedDay.prepSteps!}
+          onClose={() => setIsCookingMode(false)}
+        />
       )}
     </div>
   );
