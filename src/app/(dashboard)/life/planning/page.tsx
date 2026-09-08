@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { ThoughtsBoardClient } from "@/features/life/components/thoughts/ThoughtsBoardClient";
 import * as thoughtService from "@/features/life/services/thought-service";
-import * as taskService from "@/features/life/services/task-service";
+import * as sphereService from "@/features/life/services/sphere-service";
 import type { LifeSphereData, ThoughtStatusData } from "@/features/life/types";
 
 export const metadata: Metadata = { title: "Thoughts" };
@@ -23,7 +23,7 @@ export default async function PlanningPage() {
   try {
     [statuses, spheres] = await Promise.all([
       thoughtService.getBoard(userId) as unknown as Promise<ThoughtStatusData[]>,
-      taskService.getAllSpheres(userId),
+      sphereService.getAllSpheres(userId),
     ]);
   } catch (error) {
     console.error("Critical error in PlanningPage:", error);

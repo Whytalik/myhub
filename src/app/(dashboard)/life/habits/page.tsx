@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { HabitsPageClient } from "@/features/life/components/habits/HabitsPageClient";
 import * as habitService from "@/features/life/services/habit-service";
 import * as habitChainService from "@/features/life/services/habit-chain-service";
-import * as taskService from "@/features/life/services/task-service";
+import * as sphereService from "@/features/life/services/sphere-service";
 import type { HabitData, HabitChainData } from "@/features/life/types";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default async function HabitsPage() {
   const [habits, chains, spheres] = await Promise.all([
     habitService.getActiveHabits(userId),
     habitChainService.getActiveChains(userId),
-    taskService.getAllSpheres(userId),
+    sphereService.getAllSpheres(userId),
   ]);
 
   return (

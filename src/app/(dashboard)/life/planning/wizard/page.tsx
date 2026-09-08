@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import * as thoughtService from "@/features/life/services/thought-service";
-import * as taskService from "@/features/life/services/task-service";
+import * as sphereService from "@/features/life/services/sphere-service";
 import { getSprintDashboard } from "@/features/life/services/sprint-service";
 import { PlanningWizardClient } from "@/features/life/components/planning/PlanningWizardClient";
 import { getDailyResistanceBudget } from "@/lib/actions/user-settings-actions";
@@ -24,7 +24,7 @@ export default async function PlanningWizardPage() {
 
   const [thoughts, spheres, dashboard, dailyResistanceBudget] = await Promise.all([
     thoughtService.getThoughtsForWizard(userId),
-    taskService.getAllSpheres(userId),
+    sphereService.getAllSpheres(userId),
     getSprintDashboard(userId),
     getDailyResistanceBudget(),
   ]);

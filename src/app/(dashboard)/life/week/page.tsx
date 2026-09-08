@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { getAllTemplates } from "@/features/life/services/schedule-service";
 import { getPlans } from "@/features/health/training/services/training-plan-service";
-import { getAllSpheres } from "@/features/life/services/task-service";
+import { getAllSpheres } from "@/features/life/services/sphere-service";
 import { WeekScheduleClient } from "@/features/life/components/WeekScheduleClient";
 import type { DayScheduleData } from "@/features/life/types";
 

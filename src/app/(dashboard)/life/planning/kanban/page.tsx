@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { getSprintDashboard } from "@/features/life/services/sprint-service";
-import { getAllSpheres } from "@/features/life/services/task-service";
+import { getAllSpheres } from "@/features/life/services/sphere-service";
 import { SprintKanbanClient } from "@/features/life/components/sprints/SprintKanbanClient";
 
 type SprintKanbanClientProps = React.ComponentProps<typeof SprintKanbanClient>;

@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { getEntryByDate } from "@/features/life/services/journal-service";
 import * as taskService from "@/features/life/services/task-service";
+import * as sphereService from "@/features/life/services/sphere-service";
 import * as habitService from "@/features/life/services/habit-service";
 import * as thoughtService from "@/features/life/services/thought-service";
 import { getScheduleByDate } from "@/features/life/services/schedule-service";
@@ -58,7 +59,7 @@ export default async function JournalPage({
     getEntryByDate(userId, yesterday),
     taskService.getTasksByDate(userId, date),
     taskService.getAllTasks(userId),
-    taskService.getAllSpheres(userId),
+    sphereService.getAllSpheres(userId),
     habitService.getActiveHabits(userId),
     getScheduleByDate(userId, date),
     thoughtService.getBoard(userId),

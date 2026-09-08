@@ -1,6 +1,7 @@
 "use server";
 
 import * as taskService from "../services/task-service";
+import * as sphereService from "../services/sphere-service";
 import { invalidateTaskCache } from "@/lib/cache/revalidate";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type {
@@ -61,9 +62,9 @@ export async function updateTaskDateAction(
 
 export async function upsertSphereAction(
   input: UpsertSphereInput,
-): Promise<ActionResult<Awaited<ReturnType<typeof taskService.upsertSphere>>>> {
+): Promise<ActionResult<Awaited<ReturnType<typeof sphereService.upsertSphere>>>> {
   return withAction(async (userId) => {
-    const sphere = await taskService.upsertSphere(userId, input);
+    const sphere = await sphereService.upsertSphere(userId, input);
     invalidateTaskCache(userId);
     return sphere;
   });
@@ -71,7 +72,7 @@ export async function upsertSphereAction(
 
 export async function deleteSphereAction(id: string): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
-    await taskService.deleteSphere(userId, id);
+    await sphereService.deleteSphere(userId, id);
     invalidateTaskCache(userId);
   });
 }
@@ -81,15 +82,15 @@ export async function toggleSphereActiveAction(
   isActive: boolean,
 ): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
-    await taskService.toggleSphereActive(userId, id, isActive);
+    await sphereService.toggleSphereActive(userId, id, isActive);
     invalidateTaskCache(userId);
   });
 }
 
 export async function getAllSpheresAction(): Promise<
-  ActionResult<Awaited<ReturnType<typeof taskService.getAllSpheres>>>
+  ActionResult<Awaited<ReturnType<typeof sphereService.getAllSpheres>>>
 > {
-  return withAction(async (userId) => taskService.getAllSpheres(userId));
+  return withAction(async (userId) => sphereService.getAllSpheres(userId));
 }
 
 export async function instantDuplicateTaskAction(

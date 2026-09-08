@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import { SphereGrid } from "@/features/life/components/tasks/SphereGrid";
-import * as taskService from "@/features/life/services/task-service";
+import * as sphereService from "@/features/life/services/sphere-service";
 
 export const metadata: Metadata = { title: "Spheres" };
 
@@ -15,7 +15,7 @@ export default async function SpheresPage() {
     redirect("/login");
   }
 
-  const spheres = await taskService.getAllSpheres(userId);
+  const spheres = await sphereService.getAllSpheres(userId);
 
   return (
     <div className="flex flex-col gap-6">
