@@ -25,6 +25,7 @@ model User {
   habits                  Habit[]
   habitChains             HabitChain[]
   lifeSpheres             LifeSphere[]
+  directions              Direction[]
   milestones              Milestone[]
   pushSubscriptions       PushSubscription[]
   sessions                Session[]
@@ -192,6 +193,21 @@ model LifeSphere {
   objectives Objective[]
   tasks      Task[]
   thoughts   Thought[]
+  direction  Direction?
+
+  @@index([userId])
+}
+
+model Direction {
+  id        String      @id @default(cuid())
+  userId    String
+  sphereId  String      @unique
+  statement String
+  actions   Json?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sphere    LifeSphere  @relation(fields: [sphereId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -403,6 +419,7 @@ model Sprint {
   objectives Objective[]
   user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   reviews    SprintReview[]
+  afterAction SprintAfterAction?
 
   @@index([userId])
 }
@@ -497,6 +514,20 @@ model SprintReview {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   sprint       Sprint   @relation(fields: [sprintId], references: [id], onDelete: Cascade)
+
+  @@index([sprintId])
+}
+
+model SprintAfterAction {
+  id          String   @id @default(cuid())
+  sprintId    String   @unique
+  date        DateTime @db.Date
+  whatWorked  String?
+  challenges  String?
+  adjustments String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  sprint      Sprint   @relation(fields: [sprintId], references: [id], onDelete: Cascade)
 
   @@index([sprintId])
 }

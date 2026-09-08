@@ -7,10 +7,7 @@ import { Trophy, Heart } from "lucide-react";
 interface Props {
   winToday: string | null;
   gratitude: string | null;
-  onChange: (patch: {
-    winToday?: string | null;
-    gratitude?: string | null;
-  }) => void;
+  onChange: (patch: { winToday?: string | null; gratitude?: string | null }) => void;
 }
 
 const PROMPTS = [

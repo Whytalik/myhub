@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { upsertDayScheduleAction } from "../actions/schedule-actions";
 import { getDefaultBlocks } from "./context-blocks";
 import type { ContextBlock, DayScheduleData } from "../types";
@@ -26,7 +26,9 @@ export function initializeDaysState(
 export function usePersistDaySchedule(initialTemplates: DayScheduleData[]) {
   const [daysData, setDaysData] = useState(() => initializeDaysState(initialTemplates));
   const daysDataRef = useRef(daysData);
-  daysDataRef.current = daysData;
+  useEffect(() => {
+    daysDataRef.current = daysData;
+  }, [daysData]);
 
   const [pendingDay, setPendingDay] = useState<number | null>(null);
   const [, startTransition] = useTransition();

@@ -2,7 +2,14 @@
 import { useState } from "react";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { HintTooltip } from "@/components/ui/overlays/tooltip";
-import { ChevronDown, AlertTriangle, CheckCircle2, Lightbulb, Search, RefreshCw } from "lucide-react";
+import {
+  ChevronDown,
+  AlertTriangle,
+  CheckCircle2,
+  Lightbulb,
+  Search,
+  RefreshCw,
+} from "lucide-react";
 
 interface Props {
   frictionToday: string | null;

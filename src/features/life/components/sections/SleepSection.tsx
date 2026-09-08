@@ -200,7 +200,13 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
               <div className="w-4 h-4 rounded border border-white/10 bg-white/[0.03] peer-checked:bg-accent peer-checked:border-accent transition-colors flex items-center justify-center">
                 {bedtime !== null && (
                   <svg width="10" height="8" viewBox="0 0 10 8" fill="none" className="text-white">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M1 4L3.5 6.5L9 1"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 )}
               </div>
@@ -224,13 +230,21 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
               <div className="w-4 h-4 rounded border border-white/10 bg-white/[0.03] peer-checked:bg-accent peer-checked:border-accent transition-colors flex items-center justify-center">
                 {wakeup !== null && (
                   <svg width="10" height="8" viewBox="0 0 10 8" fill="none" className="text-white">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path
+                      d="M1 4L3.5 6.5L9 1"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 )}
               </div>
             </div>
             <Sun size={12} className="text-zinc-500" />
-            <span className="text-label group-hover:text-zinc-300 transition-colors">Встав в 6</span>
+            <span className="text-label group-hover:text-zinc-300 transition-colors">
+              Встав в 6
+            </span>
           </label>
         </div>
 

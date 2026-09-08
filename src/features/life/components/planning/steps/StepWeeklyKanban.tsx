@@ -383,7 +383,7 @@ export function StepWeeklyKanban({
         <Button
           variant="primary"
           size="sm"
-          onClick={() => router.push("/life/planning/kanban")}
+          onClick={() => router.push("/life/sprint")}
           className="flex items-center gap-1.5"
         >
           Open Kanban <CheckCircle2 size={14} />

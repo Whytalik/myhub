@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { addDays, format, endOfWeek } from "date-fns";
+import { addDays, format, endOfWeek, isWithinInterval } from "date-fns";
 import { Button } from "@/components/ui/actions/button";
 import { WeeklyStatusBoard } from "./WeeklyStatusBoard";
+import { WeeklyReviewDialog } from "./WeeklyReviewDialog";
 import type { TaskData, LifeSphereData } from "@/features/life/types";
 import { Trophy, Target, Calendar, Sparkles, ArrowRight, Lock } from "lucide-react";
-import Link from "next/link";
 
 interface SprintKanbanClientProps {
   sprint: {
@@ -69,6 +69,7 @@ export function SprintKanbanClient({
 
   const [selectedWeekIndex, setSelectedWeekIndex] = useState<number>(initialWeekIndex);
   const [activeTab, setActiveTab] = useState<"board" | "goals" | "scorecard">("board");
+  const [reviewOpen, setReviewOpen] = useState(false);
 
   const weekStart = useMemo(
     () => addDays(sprintStart, selectedWeekIndex * 7),
@@ -103,6 +104,25 @@ export function SprintKanbanClient({
     const totalScore = completedReviews.reduce((sum, review) => sum + (review.score ?? 0), 0);
     return (totalScore / completedReviews.length).toFixed(1);
   }, [completedReviews]);
+
+  const getWeekExecutionStats = useMemo(() => {
+    return (weekIndex: number) => {
+      const start = addDays(sprintStart, weekIndex * 7);
+      const end = addDays(start, 6);
+      const weekTasks = (allTasks || []).filter(
+        (t) => t.plannedDate && isWithinInterval(new Date(t.plannedDate), { start, end }),
+      );
+      const planned = weekTasks.filter((t) => t.status !== "CANCELLED");
+      const done = weekTasks.filter((t) => t.status === "DONE");
+      const percent = planned.length > 0 ? (done.length / planned.length) * 100 : 0;
+      return {
+        plannedCount: planned.length,
+        doneCount: done.length,
+        executionPercent: Math.round(percent),
+        suggestedScore: planned.length > 0 ? Math.round(percent / 10) : null,
+      };
+    };
+  }, [sprintStart, allTasks]);
 
   const getScoreColorClass = (score: number) => {
     if (score >= 8) return "text-emerald-400 bg-emerald-500/10 border-emerald-500/20";
@@ -353,6 +373,25 @@ export function SprintKanbanClient({
               <p className="text-caption mt-1">Weekly execution scores and Kaizen reports.</p>
             </div>
 
+            <div className="flex flex-wrap items-center gap-2">
+              {[
+                { label: "Commit", weeks: "W1–W4", color: "text-accent border-accent/30" },
+                { label: "Momentum", weeks: "W5–W8", color: "text-amber-400 border-amber-500/30" },
+                {
+                  label: "Finish Strong",
+                  weeks: "W9–W12",
+                  color: "text-emerald-400 border-emerald-500/30",
+                },
+              ].map((phase) => (
+                <span
+                  key={phase.label}
+                  className={`px-2.5 py-1 rounded-lg border text-[10px] font-semibold font-mono ${phase.color}`}
+                >
+                  {phase.label} · {phase.weeks}
+                </span>
+              ))}
+            </div>
+
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {weekButtons.map((week) => {
                 const review = sprintReviews.find((r) => r.weekNumber === week.index + 1);
@@ -399,6 +438,14 @@ export function SprintKanbanClient({
                     >
                       {hasReview && review?.score !== null ? `${review.score} / 10` : "—"}
                     </span>
+                    {!isDisabled && (
+                      <span className="text-[9px] font-mono font-semibold text-zinc-500">
+                        {(() => {
+                          const stats = getWeekExecutionStats(week.index);
+                          return `${stats.doneCount}/${stats.plannedCount}`;
+                        })()}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -413,19 +460,44 @@ export function SprintKanbanClient({
                   Evaluate your execution at the end of each week.
                 </span>
               </div>
-              <Link href="/life/review">
-                <Button size="sm" variant="ghost" className="text-xs flex items-center gap-1">
-                  Complete Review <ArrowRight size={13} />
-                </Button>
-              </Link>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="text-xs flex items-center gap-1"
+                onClick={() => setReviewOpen(true)}
+              >
+                Review W{selectedWeekIndex + 1} <ArrowRight size={13} />
+              </Button>
             </div>
           </div>
 
           {/* 🧠 Weekly reflection viewer */}
           <div className="glass-card p-5 bg-black/10 flex flex-col gap-4">
-            <div>
-              <p className="text-label text-zinc-500">Week Details</p>
-              <h2 className="text-panel-title mt-1">W{selectedWeekIndex + 1} Results</h2>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="text-label text-zinc-500">Week Details</p>
+                <h2 className="text-panel-title mt-1">W{selectedWeekIndex + 1} Results</h2>
+              </div>
+              {selectedWeekReview && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-xs flex items-center gap-1"
+                  onClick={() => setReviewOpen(true)}
+                >
+                  Edit Review <ArrowRight size={13} />
+                </Button>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center p-3 rounded-xl border border-white/[0.06] bg-black/10 text-xs text-zinc-300">
+              <span className="text-xs font-semibold text-zinc-400">Weekly Execution:</span>
+              <span className="font-mono text-zinc-200">
+                {(() => {
+                  const stats = getWeekExecutionStats(selectedWeekIndex);
+                  return `${stats.doneCount}/${stats.plannedCount} atoms · ${stats.executionPercent}%`;
+                })()}
+              </span>
             </div>
 
             {selectedWeekReview ? (
@@ -480,16 +552,29 @@ export function SprintKanbanClient({
                 <p className="text-caption text-zinc-500 italic">
                   Review for W{selectedWeekIndex + 1} has not been filled yet.
                 </p>
-                <Link href="/life/review" className="mt-4">
-                  <Button size="sm" variant="primary" className="text-xs">
-                    Fill Weekly Review
-                  </Button>
-                </Link>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  className="text-xs"
+                  onClick={() => setReviewOpen(true)}
+                >
+                  Fill Weekly Review
+                </Button>
               </div>
             )}
           </div>
         </div>
       )}
+
+      <WeeklyReviewDialog
+        isOpen={reviewOpen}
+        onClose={() => setReviewOpen(false)}
+        sprintId={sprint.id}
+        weekNumber={selectedWeekIndex + 1}
+        weekStart={weekStart}
+        review={selectedWeekReview ?? null}
+        tasks={allTasks}
+      />
     </div>
   );
 }

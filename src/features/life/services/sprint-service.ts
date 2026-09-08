@@ -3,28 +3,30 @@ import { startOfWeek, endOfWeek, startOfDay, endOfDay } from "date-fns";
 import type { TaskStatus } from "@/features/life/types";
 import { Prisma } from "@/app/generated/prisma";
 
-export async function getSprintDashboard(userId: string) {
-  // 1. Get or create active sprint
-  let sprint = await prisma.sprint.findFirst({
-    where: { userId, status: "ACTIVE" },
+const sprintObjectivesInclude = {
+  objectives: {
     include: {
-      objectives: {
+      sphere: true,
+      projects: {
         include: {
-          sphere: true,
-          projects: {
+          tasks: {
             include: {
-              tasks: {
-                include: {
-                  sphere: true,
-                  children: true,
-                },
-                orderBy: { createdAt: "asc" },
-              },
+              sphere: true,
+              children: true,
             },
+            orderBy: { createdAt: "asc" },
           },
         },
       },
     },
+  },
+} as const;
+
+async function getOrCreateActiveSprint(userId: string) {
+  // 1. Get or create active sprint
+  let sprint = await prisma.sprint.findFirst({
+    where: { userId, status: "ACTIVE" },
+    include: { ...sprintObjectivesInclude },
   });
 
   if (!sprint) {
@@ -52,26 +54,15 @@ export async function getSprintDashboard(userId: string) {
         endDate: sprintEnd,
         status: "ACTIVE",
       },
-      include: {
-        objectives: {
-          include: {
-            sphere: true,
-            projects: {
-              include: {
-                tasks: {
-                  include: {
-                    sphere: true,
-                    children: true,
-                  },
-                  orderBy: { createdAt: "asc" },
-                },
-              },
-            },
-          },
-        },
-      },
+      include: { ...sprintObjectivesInclude },
     });
   }
+
+  return sprint;
+}
+
+export async function getSprintDashboard(userId: string) {
+  const sprint = await getOrCreateActiveSprint(userId);
 
   // 2. Get backlog projects (owned by user but objectiveId is null)
   const backlogProjects = await prisma.project.findMany({
@@ -199,6 +190,65 @@ export async function getSprintDashboard(userId: string) {
     },
     allTasks,
     standaloneAtoms,
+    sprintReviews,
+  };
+}
+
+export async function getSprintExecutionCenter(userId: string) {
+  const sprint = await getOrCreateActiveSprint(userId);
+
+  const sprintStart = startOfWeek(new Date(sprint.startDate), { weekStartsOn: 1 });
+  const sprintEnd = endOfWeek(new Date(sprint.endDate), { weekStartsOn: 1 });
+
+  const allTasks = await prisma.task.findMany({
+    where: {
+      userId,
+      OR: [
+        {
+          plannedDate: {
+            lte: sprintEnd,
+          },
+          status: { in: ["TODO", "IN_PROGRESS"] },
+        },
+        {
+          plannedDate: null,
+          status: { in: ["TODO", "IN_PROGRESS"] },
+          project: {
+            objective: {
+              sprintId: sprint.id,
+            },
+          },
+        },
+        {
+          status: "DONE",
+          completedAt: {
+            gte: sprintStart,
+            lte: sprintEnd,
+          },
+        },
+      ],
+    },
+    include: {
+      sphere: true,
+      children: true,
+      project: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
+    },
+    orderBy: { order: "asc" },
+  });
+
+  const sprintReviews = await prisma.sprintReview.findMany({
+    where: { sprintId: sprint.id },
+    orderBy: { weekNumber: "asc" },
+  });
+
+  return {
+    sprint,
+    allTasks,
     sprintReviews,
   };
 }

@@ -9,11 +9,7 @@ import { Button } from "@/components/ui/actions/button";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { AddBlockMenu } from "./week/AddBlockMenu";
 import { usePersistDaySchedule } from "../logic/use-persist-day-schedule";
-import {
-  DAY_NAMES,
-  getBlockBorderClass,
-  getBlockDisplayName,
-} from "../logic/week-template-blocks";
+import { DAY_NAMES, getBlockBorderClass, getBlockDisplayName } from "../logic/week-template-blocks";
 import type { DayScheduleData, ContextBlock } from "../types";
 
 const NONE_VALUE = "__none__";
@@ -127,7 +123,12 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
     const countClass = `text-[9px] font-mono ${activeCount > 0 ? "text-zinc-400" : "text-zinc-600"}`;
 
     return (
-      <button key={dayOfWeek} type="button" onClick={() => setSelectedDay(dayOfWeek)} className={cellClass}>
+      <button
+        key={dayOfWeek}
+        type="button"
+        onClick={() => setSelectedDay(dayOfWeek)}
+        className={cellClass}
+      >
         <span className={nameClass}>{name}</span>
         <span className="flex items-center gap-1">
           <span className={countClass}>{activeCount}</span>
@@ -182,7 +183,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
                   {sphereName}
                 </span>
               ))}
-              {extraChips > 0 && <span className="text-[9px] text-zinc-600 font-mono">+{extraChips}</span>}
+              {extraChips > 0 && (
+                <span className="text-[9px] text-zinc-600 font-mono">+{extraChips}</span>
+              )}
             </span>
           )}
         </div>
@@ -286,7 +289,10 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
           onChange={(e) =>
             setEditingBlock((prev) =>
               prev
-                ? { ...prev, block: { ...prev.block, bufferMinutes: parseInt(e.target.value) || 0 } }
+                ? {
+                    ...prev,
+                    block: { ...prev.block, bufferMinutes: parseInt(e.target.value) || 0 },
+                  }
                 : prev,
             )
           }
@@ -367,7 +373,9 @@ export function WeekScheduleClient({ initialTemplates, trainingDays, spheres }: 
           </Button>
         </div>
 
-        <div className={`flex flex-col gap-4 ${isPending ? "opacity-60" : ""} transition-all duration-150`}>
+        <div
+          className={`flex flex-col gap-4 ${isPending ? "opacity-60" : ""} transition-all duration-150`}
+        >
           <div className="flex flex-col gap-1.5">
             <span className="flex items-center gap-1.5">
               <Dumbbell size={12} className="text-accent-training" />

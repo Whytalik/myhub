@@ -73,7 +73,7 @@ export const DOMAINS: Domain[] = [
           { href: "/life/planning/spheres", label: "Life Spheres", icon: LayoutGrid },
           { href: "/life/planning", label: "Inbox Thoughts", icon: Lightbulb },
           { href: "/life/planning/wizard", label: "Planning Wizard", icon: Sparkles },
-          { href: "/life/planning/kanban", label: "Sprint Dashboard", icon: FolderKanban },
+          { href: "/life/sprint", label: "Sprint Dashboard", icon: FolderKanban },
         ],
       },
     ],
