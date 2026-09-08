@@ -5,6 +5,7 @@ import { RefreshCw, Check, X, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
 import type { TaskData } from "@/features/life/types";
 import { carryOverTaskAction } from "@/features/life/actions/task-actions";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface Props {
   tasks: TaskData[];
@@ -26,7 +27,7 @@ export function TaskReviewSection({ tasks, date }: Props) {
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [customReason, setCustomReason] = useState("");
   const [showDone, setShowDone] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
   const [isBulkPanelOpen, setIsBulkPanelOpen] = useState(false);
   const [bulkPreset, setBulkPreset] = useState<string | null>(null);
   const [bulkCustomReason, setBulkCustomReason] = useState("");
@@ -55,17 +56,15 @@ export function TaskReviewSection({ tasks, date }: Props) {
 
   const handleConfirm = (taskId: string) => {
     const reason = selectedPreset ?? (customReason.trim() || null);
-    startTransition(async () => {
-      const result = await carryOverTaskAction(taskId, reason, tomorrowISO);
-      if (result.success) {
+    run(carryOverTaskAction(taskId, reason, tomorrowISO), {
+      successMessage: "Завдання перенесено на завтра",
+      errorMessage: "Помилка при переносі",
+      onSuccess: () => {
         setCarriedTaskIds((p) => [...p, taskId]);
         setExpandedId(null);
         setSelectedPreset(null);
         setCustomReason("");
-        toast.success("Завдання перенесено на завтра");
-      } else {
-        toast.error(result.error ?? "Помилка при переносі");
-      }
+      },
     });
   };
 

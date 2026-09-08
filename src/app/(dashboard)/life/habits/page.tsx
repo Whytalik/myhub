@@ -9,7 +9,7 @@ import * as sphereService from "@/features/life/services/sphere-service";
 import type { HabitData, HabitChainData } from "@/features/life/types";
 
 export const metadata: Metadata = {
-  title: "Habit Tracker",
+  title: "Habits",
 };
 
 export default async function HabitsPage() {
@@ -30,7 +30,7 @@ export default async function HabitsPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "habits" }]}
-        title="Habit Tracker"
+        title="Habits"
         description="Small disciplines compound into extraordinary results."
       />
       <HabitsPageClient

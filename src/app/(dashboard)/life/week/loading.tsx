@@ -9,30 +9,35 @@ export default function WeekTemplateLoading() {
         <Skeleton className="h-4 w-72 rounded" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        {Array.from({ length: 7 }).map((_, i) => (
-          <div key={i} className="glass-card p-4 flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <Skeleton className="h-4 w-10 rounded" />
-              <Skeleton className="h-7 w-7 rounded-lg" />
+      <div className="glass-card p-3">
+        <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+          {Array.from({ length: 7 }).map((_, i) => (
+            <div key={i} className="p-2 flex flex-col items-center gap-1.5">
+              <Skeleton className="h-3 w-8 rounded" />
+              <Skeleton className="h-3 w-6 rounded" />
             </div>
-            <div className="flex items-center gap-1.5">
-              <Skeleton className="h-8 flex-1 rounded-lg" />
-              <Skeleton className="h-8 flex-1 rounded-lg" />
-              <Skeleton className="h-8 flex-1 rounded-lg" />
-            </div>
-            <Skeleton className="h-3 w-20 rounded" />
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      <div className="glass-card p-4 flex flex-col gap-3">
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-2.5">
-            <Skeleton className="h-6 w-6 rounded-md" />
-            <Skeleton className="h-4 w-32 rounded" />
-          </div>
-        ))}
+      <div className="glass-card p-4 flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-8 w-8 rounded-lg" />
+          <Skeleton className="h-5 w-20 rounded" />
+          <Skeleton className="h-8 w-8 rounded-lg" />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-3 w-24 rounded" />
+          <Skeleton className="h-9 w-full rounded-lg" />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-3 w-24 rounded" />
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className="h-14 w-full rounded-lg" />
+          ))}
+        </div>
       </div>
     </div>
   );

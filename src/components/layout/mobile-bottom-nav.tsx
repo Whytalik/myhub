@@ -11,8 +11,6 @@ function getMobileDomainColors(domainId: string) {
       return "bg-[#6fbfbf]/10 text-[#6fbfbf] border border-[#6fbfbf]/20";
     case "health":
       return "bg-[#ff8c00]/10 text-[#ff8c00] border border-[#ff8c00]/20";
-    case "review":
-      return "bg-[#fbbf24]/10 text-[#fbbf24] border border-[#fbbf24]/20";
     default:
       return "bg-accent/15 text-accent border border-accent/20";
   }

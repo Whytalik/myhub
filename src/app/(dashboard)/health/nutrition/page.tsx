@@ -7,7 +7,7 @@ import { NutritionPageClient } from "@/features/health/nutrition/components/Nutr
 import { getMacroOverrides } from "@/features/health/nutrition/services/product-mapping-service";
 
 export const metadata: Metadata = {
-  title: "Nutrition — Daily",
+  title: "Daily",
 };
 
 export default async function NutritionDailyPage() {
@@ -24,7 +24,7 @@ export default async function NutritionDailyPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "health space", href: "/health" }, { label: "nutrition" }]}
-        title="Nutrition"
+        title="Daily"
       />
       <NutritionPageClient seasonOverride={seasonOverride} macroOverrides={macroOverrides} />
     </div>

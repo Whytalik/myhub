@@ -1,21 +1,15 @@
 import { prisma } from "@/lib/db/prisma";
 
 export const missionRepository = {
-  findLatest(userId: string) {
-    return prisma.missionVersion.findFirst({
-      where: { userId },
-      orderBy: { createdAt: "desc" },
-    });
+  find(userId: string) {
+    return prisma.mission.findUnique({ where: { userId } });
   },
 
-  findAll(userId: string) {
-    return prisma.missionVersion.findMany({
+  save(userId: string, content: string) {
+    return prisma.mission.upsert({
       where: { userId },
-      orderBy: { createdAt: "desc" },
+      update: { content },
+      create: { userId, content },
     });
-  },
-
-  create(userId: string, content: string) {
-    return prisma.missionVersion.create({ data: { userId, content } });
   },
 };

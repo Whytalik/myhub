@@ -12,7 +12,7 @@ import { TRAINING_SEQUENTIAL_RAMP } from "@/features/health/training/components/
 import { CalendarCheck, TrendingUp, Gauge, BatteryMedium, Scale } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Training — Statistics",
+  title: "Training Stats",
 };
 
 export default async function TrainingStatsPage() {
@@ -34,7 +34,7 @@ export default async function TrainingStatsPage() {
           { label: "training", href: "/health/training" },
           { label: "statistics" },
         ]}
-        title="Статистика"
+        title="Training Stats"
         description="Довгострокові тренди: адгеренс, прогресія 1ПМ, RPE та обсяг навантаження"
       />
 

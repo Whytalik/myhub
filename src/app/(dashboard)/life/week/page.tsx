@@ -41,7 +41,7 @@ export default async function WeekSchedulePage() {
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "week template" }]}
         title="Week Template"
-        description="Assign a training day to each weekday — it also shows up in the Journal."
+        description="Plan each weekday: assign a training day and set time blocks — they also show up in the Journal."
       />
 
       <WeekScheduleClient

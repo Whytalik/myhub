@@ -8,12 +8,10 @@ import {
   Clock,
   Loader2,
   AlertCircle,
-  Weight,
   Zap,
   Plus,
   Shuffle,
 } from "lucide-react";
-import { Input } from "@/components/ui/inputs/input";
 import { EmptyState } from "@/components/ui/display/empty-state";
 import { SleepSection } from "./sections/SleepSection";
 import { EnergySection } from "./sections/EnergySection";
@@ -47,6 +45,7 @@ import type {
 import type { RoutineMap } from "@/lib/life/routine-items";
 import { Tabs } from "@/components/ui/navigation/tabs";
 import { Sparkles as SparklesIcon } from "lucide-react";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 const RoutineSection = lazy(() =>
   import("./sections/RoutineSection").then((m) => ({ default: m.RoutineSection })),
@@ -59,7 +58,6 @@ interface Props {
   initialEntry: DailyEntryData | null;
   todayStr: string;
   isPast: boolean;
-  yesterdayBrainDump: string | null;
   tasks: TaskData[];
   allTasks: TaskData[];
   spheres: LifeSphereData[];
@@ -86,7 +84,6 @@ export function DailyEntryForm({
   initialEntry,
   todayStr,
   isPast,
-  yesterdayBrainDump,
   tasks,
   allTasks: _allTasks,
   spheres,
@@ -101,7 +98,7 @@ export function DailyEntryForm({
   const [parentTask, setParentTask] = useState<TaskData | null>(null);
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isCompletePending, startCompletePending] = useTransition();
-  const [isDistributing, startDistributeTransition] = useTransition();
+  const { run: runDistributeTasks, isPending: isDistributing } = useServerAction();
   const router = useRouter();
 
   const initDayView = (): "greeting" | "form" | "complete" => {
@@ -143,6 +140,7 @@ export function DailyEntryForm({
       weight: initialEntry?.weight ?? null,
       energyNote: initialEntry?.energyNote ?? null,
       eveningEnergy: initialEntry?.eveningEnergy ?? null,
+      eveningMood: initialEntry?.eveningMood ?? null,
       nutrition: initialEntry?.nutrition ?? null,
       nutritionNote: initialEntry?.nutritionNote ?? null,
       morningRoutine: (initialEntry?.morningRoutine as RoutineMap | null) ?? null,
@@ -154,7 +152,6 @@ export function DailyEntryForm({
       winToday: initialEntry?.winToday ?? null,
       improveTomorrow: initialEntry?.improveTomorrow ?? null,
       gratitude: initialEntry?.gratitude ?? null,
-      brainDump: initialEntry?.brainDump ?? null,
       frictionToday: initialEntry?.frictionToday ?? null,
       standupPlan: initialEntry?.standupPlan ?? null,
       confidenceLog: (initialEntry?.confidenceLog as ConfidenceLog | null) ?? null,
@@ -197,25 +194,23 @@ export function DailyEntryForm({
   };
 
   const handleDistributeTasks = () => {
-    startDistributeTransition(async () => {
-      const result = await distributeTasksAction(todayStr);
-      if (!result.success) {
-        toast.error(result.error || "Не вдалося розподілити завдання");
-        return;
-      }
-      const { scheduled, skipped } = result.data;
-      if (scheduled === 0 && skipped === 0) {
-        toast.info("Немає гнучких завдань для розподілу");
-      } else if (scheduled === 0) {
-        toast.info(`Жодна з ${skipped} гнучких завдань не влізла у вільні блоки`);
-      } else {
-        toast.success(
-          skipped > 0
-            ? `Розподілено ${scheduled} завдань, ${skipped} не влізло в блоки`
-            : `Розподілено ${scheduled} завдань по блоках`,
-        );
-      }
-      router.refresh();
+    runDistributeTasks(distributeTasksAction(todayStr), {
+      errorMessage: "Не вдалося розподілити завдання",
+      onSuccess: (data) => {
+        const { scheduled, skipped } = data;
+        if (scheduled === 0 && skipped === 0) {
+          toast.info("Немає гнучких завдань для розподілу");
+        } else if (scheduled === 0) {
+          toast.info(`Жодна з ${skipped} гнучких завдань не влізла у вільні блоки`);
+        } else {
+          toast.success(
+            skipped > 0
+              ? `Розподілено ${scheduled} завдань, ${skipped} не влізло в блоки`
+              : `Розподілено ${scheduled} завдань по блоках`,
+          );
+        }
+        router.refresh();
+      },
     });
   };
 
@@ -280,7 +275,6 @@ export function DailyEntryForm({
     return (
       <DayGreeting
         dateStr={todayStr}
-        yesterdayBrainDump={yesterdayBrainDump}
         onStart={handleStartDay}
       />
     );
@@ -348,6 +342,10 @@ export function DailyEntryForm({
         </div>
       </div>
 
+      <div className="sticky top-2 z-20">
+        <FocusSection plan={data.standupPlan ?? null} onChange={patch} compact />
+      </div>
+
       <Tabs
         tabs={[
           {
@@ -372,25 +370,7 @@ export function DailyEntryForm({
                   />
                 </div>
 
-                <div className="glass-card p-4 flex items-center gap-3">
-                  <span className="text-label shrink-0">Body</span>
-                  <Weight size={12} className="text-zinc-500 shrink-0" />
-                  <span className="text-sm text-zinc-300 shrink-0">Weight</span>
-                  <Input
-                    type="number"
-                    step="0.1"
-                    value={data.weight ?? ""}
-                    onChange={(e) =>
-                      patch({ weight: e.target.value ? parseFloat(e.target.value) : null })
-                    }
-                    placeholder="0.0 kg"
-                    className="max-w-[120px]"
-                  />
-                </div>
-
                 <EmotionsSection emotions={data.emotions ?? null} onChange={patch} />
-
-                <FocusSection plan={data.standupPlan ?? null} onChange={patch} />
 
                 <Suspense fallback={suspenseFallback}>
                   <RoutineSection
@@ -515,42 +495,71 @@ export function DailyEntryForm({
                     note={data.nutritionNote ?? null}
                     onChange={patch}
                   />
-                  <div className="glass-card p-4 flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400">
-                          <Zap size={14} />
-                        </div>
-                        <h3 className="text-panel-title">Evening Energy</h3>
+                  <div className="glass-card p-4 flex flex-col gap-4">
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400">
+                        <Zap size={14} />
                       </div>
-                      {data.eveningEnergy !== null && (
-                        <span className="text-caption">
-                          {EVENING_ENERGY_LABELS[data.eveningEnergy!]}
-                        </span>
-                      )}
+                      <h3 className="text-panel-title">Evening</h3>
                     </div>
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => {
-                        const isFilled = data.eveningEnergy != null && value <= data.eveningEnergy;
-                        const levelClass = `h-8 flex-1 rounded-lg text-xs font-mono font-semibold transition-colors duration-150 ${
-                          isFilled
-                            ? "bg-accent text-white"
-                            : "bg-white/[0.03] text-zinc-500 hover:bg-white/5 hover:text-zinc-200"
-                        }`;
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center justify-between">
+                        <label className="text-label">Energy</label>
+                        {data.eveningEnergy !== null && (
+                          <span className="text-caption">
+                            {EVENING_ENERGY_LABELS[data.eveningEnergy!]}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => {
+                          const isFilled = data.eveningEnergy != null && value <= data.eveningEnergy;
+                          const levelClass = `h-8 flex-1 rounded-lg text-xs font-mono font-semibold transition-colors duration-150 ${
+                            isFilled
+                              ? "bg-accent text-white"
+                              : "bg-white/[0.03] text-zinc-500 hover:bg-white/5 hover:text-zinc-200"
+                          }`;
 
-                        return (
-                          <button
-                            key={value}
-                            type="button"
-                            onClick={() =>
-                              patch({ eveningEnergy: data.eveningEnergy === value ? null : value })
-                            }
-                            className={levelClass}
-                          >
-                            {value}
-                          </button>
-                        );
-                      })}
+                          return (
+                            <button
+                              key={value}
+                              type="button"
+                              onClick={() =>
+                                patch({ eveningEnergy: data.eveningEnergy === value ? null : value })
+                              }
+                              className={levelClass}
+                            >
+                              {value}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label className="text-label">Mood</label>
+                      <div className="flex items-center gap-1">
+                        {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => {
+                          const isFilled = data.eveningMood != null && value <= data.eveningMood;
+                          const levelClass = `h-8 flex-1 rounded-lg text-xs font-mono font-semibold transition-colors duration-150 ${
+                            isFilled
+                              ? "bg-accent text-white"
+                              : "bg-white/[0.03] text-zinc-500 hover:bg-white/5 hover:text-zinc-200"
+                          }`;
+
+                          return (
+                            <button
+                              key={value}
+                              type="button"
+                              onClick={() =>
+                                patch({ eveningMood: data.eveningMood === value ? null : value })
+                              }
+                              className={levelClass}
+                            >
+                              {value}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -559,14 +568,13 @@ export function DailyEntryForm({
 
                 <ReflectionSection
                   winToday={data.winToday ?? null}
-                  improveTomorrow={data.improveTomorrow ?? null}
                   gratitude={data.gratitude ?? null}
-                  brainDump={data.brainDump ?? null}
-                  frictionToday={data.frictionToday ?? null}
                   onChange={patch}
                 />
 
                 <PostAnalysisSection
+                  frictionToday={data.frictionToday ?? null}
+                  improveTomorrow={data.improveTomorrow ?? null}
                   postAnalysisTrigger={data.postAnalysisTrigger ?? null}
                   postAnalysisMyReaction={data.postAnalysisMyReaction ?? null}
                   postAnalysisBetterResponse={data.postAnalysisBetterResponse ?? null}

@@ -9,7 +9,7 @@ import { getAllTemplates } from "@/features/life/services/schedule-service";
 import type { ExerciseData, TrainingPlanData } from "@/features/health/training/types";
 
 export const metadata: Metadata = {
-  title: "Training — Plan",
+  title: "Plan",
 };
 
 export default async function TrainingPlansPage() {

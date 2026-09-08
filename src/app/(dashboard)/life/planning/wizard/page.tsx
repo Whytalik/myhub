@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { PageHeader } from "@/components/ui/display/page-header";
 import * as thoughtService from "@/features/life/services/thought-service";
 import * as sphereService from "@/features/life/services/sphere-service";
+import * as missionService from "@/features/life/services/mission-service";
 import { getSprintDashboard } from "@/features/life/services/sprint-service";
 import { PlanningWizardClient } from "@/features/life/components/planning/PlanningWizardClient";
 import { getDailyResistanceBudget } from "@/lib/actions/user-settings-actions";
@@ -22,10 +23,11 @@ export default async function PlanningWizardPage() {
     redirect("/login");
   }
 
-  const [thoughts, spheres, dashboard, dailyResistanceBudget] = await Promise.all([
+  const [thoughts, spheres, dashboard, mission, dailyResistanceBudget] = await Promise.all([
     thoughtService.getThoughtsForWizard(userId),
     sphereService.getAllSpheres(userId),
     getSprintDashboard(userId),
+    missionService.getCurrentMission(userId),
     getDailyResistanceBudget(),
   ]);
 
@@ -37,7 +39,7 @@ export default async function PlanningWizardPage() {
           { label: "planning", href: "/life/planning" },
           { label: "wizard" },
         ]}
-        title="Kaizen Planning Flow"
+        title="Planning Wizard"
         description="Guided Flow: Brain Dump → Prime Filter → Decomposition → Kanban."
       />
       <PlanningWizardClient
@@ -52,6 +54,7 @@ export default async function PlanningWizardPage() {
           dashboard.standaloneAtoms as unknown as PlanningWizardClientProps["initialStandaloneAtoms"]
         }
         dailyResistanceBudget={dailyResistanceBudget}
+        missionContent={mission?.content ?? null}
       />
     </div>
   );

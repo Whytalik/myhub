@@ -15,10 +15,7 @@ export default async function MissionPage() {
     redirect("/login");
   }
 
-  const [current, history] = await Promise.all([
-    missionService.getCurrentMission(userId),
-    missionService.getMissionHistory(userId),
-  ]);
+  const mission = await missionService.getCurrentMission(userId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -31,10 +28,7 @@ export default async function MissionPage() {
         title="Mission"
         description="Your personal constitution — begin with the end in mind."
       />
-      <MissionPageClient
-        currentContent={current?.content ?? ""}
-        history={history.map((v) => ({ id: v.id, content: v.content, createdAt: v.createdAt }))}
-      />
+      <MissionPageClient currentContent={mission?.content ?? ""} />
     </div>
   );
 }

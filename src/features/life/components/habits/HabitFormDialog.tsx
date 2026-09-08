@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
@@ -11,7 +11,7 @@ import { upsertHabitAction } from "@/features/life/actions/habit-actions";
 import { habitSchema, type HabitFormData } from "@/features/life/schemas";
 import type { HabitData, HabitChainData, LifeSphereData } from "@/features/life/types";
 import { WEEKDAY_ORDER, WEEKDAY_LABELS } from "@/features/life/logic/habit-utils";
-import { toast } from "sonner";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 import {
   Anchor,
   Zap,
@@ -65,7 +65,7 @@ export function HabitFormDialog({
   chains = [],
 }: HabitFormDialogProps) {
   const isEditing = !!habit;
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
   const [showAdvanced, setShowAdvanced] = useState(!!(habit?.sphereId || habit?.chainId));
   const [showBehaviorDesign, setShowBehaviorDesign] = useState(
     !!(habit?.identityStatement || habit?.minimalThreshold),
@@ -98,8 +98,8 @@ export function HabitFormDialog({
   const isAvoidance = habitType === "avoidance";
 
   const onSubmit = (data: HabitFormData) => {
-    startTransition(async () => {
-      const result = await upsertHabitAction({
+    run(
+      upsertHabitAction({
         id: habit?.id,
         type: data.type,
         anchor: data.anchor?.trim() || "",
@@ -111,14 +111,13 @@ export function HabitFormDialog({
         chainId: data.chainId ?? null,
         identityStatement: data.identityStatement?.trim() || null,
         minimalThreshold: data.minimalThreshold?.trim() || null,
-      });
-      if (result.success) {
-        toast.success(isEditing ? "Habit updated" : "Habit created");
-        onClose();
-      } else {
-        toast.error(result.error || "Failed to save habit");
-      }
-    });
+      }),
+      {
+        successMessage: isEditing ? "Habit updated" : "Habit created",
+        errorMessage: "Failed to save habit",
+        onSuccess: onClose,
+      },
+    );
   };
 
   const dialogDescription = isAvoidance

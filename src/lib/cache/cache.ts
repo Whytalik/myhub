@@ -22,7 +22,7 @@ export const cacheTags = {
   trainingPlans: (userId: string) => `training-plans:${userId}`,
   trainingSessions: (userId: string) => `training-sessions:${userId}`,
   thoughtStatuses: (userId: string) => `thought-statuses:${userId}`,
-  missionVersions: (userId: string) => `mission-versions:${userId}`,
+  mission: (userId: string) => `mission:${userId}`,
 };
 
 export const getCachedSpheres = unstable_cache(
@@ -127,14 +127,8 @@ export const getCachedThoughtBoard = unstable_cache(
   { tags: ["thought-board"] },
 );
 
-export const getCachedLatestMission = unstable_cache(
-  (userId: string) => missionRepository.findLatest(userId),
+export const getCachedMission = unstable_cache(
+  (userId: string) => missionRepository.find(userId),
   [],
-  { tags: ["mission-versions"] },
-);
-
-export const getCachedMissionHistory = unstable_cache(
-  (userId: string) => missionRepository.findAll(userId),
-  [],
-  { tags: ["mission-versions"] },
+  { tags: ["mission"] },
 );

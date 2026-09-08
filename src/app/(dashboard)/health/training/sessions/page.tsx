@@ -7,7 +7,7 @@ import * as trainingSessionService from "@/features/health/training/services/tra
 import type { TrainingSessionSummaryData } from "@/features/health/training/types";
 
 export const metadata: Metadata = {
-  title: "Training — Sessions",
+  title: "Sessions",
 };
 
 export default async function TrainingHistoryPage() {

@@ -61,7 +61,6 @@ export const DOMAINS: Domain[] = [
           { href: "/life/journal", label: "Journal", icon: BookText },
           { href: "/life/habits", label: "Habits", icon: Zap },
           { href: "/life/week", label: "Week Template", icon: CalendarDays },
-          { href: "/life/review", label: "Weekly Review", icon: LineChart },
         ],
       },
       {
@@ -73,7 +72,6 @@ export const DOMAINS: Domain[] = [
           { href: "/life/planning/mission", label: "Mission", icon: Compass },
           { href: "/life/planning/spheres", label: "Life Spheres", icon: LayoutGrid },
           { href: "/life/planning", label: "Inbox Thoughts", icon: Lightbulb },
-          { href: "/life/planning/review", label: "Thoughts Filter", icon: Sparkles },
           { href: "/life/planning/wizard", label: "Planning Wizard", icon: Sparkles },
           { href: "/life/planning/kanban", label: "Sprint Dashboard", icon: FolderKanban },
         ],

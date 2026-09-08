@@ -5,7 +5,6 @@ import { ArrowRight, Loader2 } from "lucide-react";
 
 interface Props {
   dateStr: string;
-  yesterdayBrainDump: string | null;
   onStart: () => void;
 }
 
@@ -22,7 +21,7 @@ function formatDate(dateStr: string): string {
   return date.toLocaleDateString("uk-UA", { weekday: "long", day: "numeric", month: "long" });
 }
 
-export function DayGreeting({ dateStr, yesterdayBrainDump, onStart }: Props) {
+export function DayGreeting({ dateStr, onStart }: Props) {
   const [isPending, startTransition] = useTransition();
   const { text, emoji } = getGreeting();
   const dateLabel = formatDate(dateStr);
@@ -42,13 +41,6 @@ export function DayGreeting({ dateStr, yesterdayBrainDump, onStart }: Props) {
           <span className="text-4xl">{emoji}</span>
           <h1 className="text-page-title text-2xl">{text}!</h1>
         </div>
-
-        {yesterdayBrainDump && (
-          <div className="w-full glass-card p-3 flex flex-col gap-1 text-left">
-            <p className="text-label">Вчорашні думки</p>
-            <p className="text-caption">{yesterdayBrainDump}</p>
-          </div>
-        )}
 
         <button
           onClick={handleStart}

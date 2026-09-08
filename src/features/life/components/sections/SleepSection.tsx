@@ -2,7 +2,6 @@
 import { Textarea } from "@/components/ui/inputs/textarea";
 
 import { Moon, Bed, Sun, Star, FileText, Info } from "lucide-react";
-import { TimePicker } from "@/components/ui/inputs/time-picker";
 import { useEffect, useRef } from "react";
 import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
 import { createPortal } from "react-dom";
@@ -155,20 +154,10 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
     }
   }, [bedtime, wakeup, hours, onChange]);
 
-  const getTimeValue = (iso: string | null) => {
-    if (!iso) return "";
-    return new Date(iso).toTimeString().slice(0, 5);
-  };
-
-  const handleTimeChange = (field: "sleepBedtime" | "sleepWakeup", timeStr: string) => {
-    if (!timeStr) {
-      onChange({ [field]: null });
-      return;
-    }
-    const [h, m] = timeStr.split(":").map(Number);
+  const createPresetTime = (hours: number, minutes: number) => {
     const date = new Date();
-    date.setHours(h, m, 0, 0);
-    onChange({ [field]: date.toISOString() });
+    date.setHours(hours, minutes, 0, 0);
+    return date.toISOString();
   };
 
   const cardClass = `glass-card p-4 flex flex-col gap-4 border ${hasValue ? "border-accent/20" : "border-white/[0.06]"}`;
@@ -195,29 +184,54 @@ export function SleepSection({ bedtime, wakeup, hours, quality, note, onChange }
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center gap-1.5 text-zinc-500">
-              <Bed size={12} />
-              <label className="text-label">Bedtime</label>
+        <div className="flex flex-col gap-3">
+          <label className="flex items-center gap-2.5 cursor-pointer group">
+            <div className="relative flex items-center justify-center">
+              <input
+                type="checkbox"
+                checked={bedtime !== null}
+                onChange={() =>
+                  onChange({
+                    sleepBedtime: bedtime !== null ? null : createPresetTime(22, 0),
+                  })
+                }
+                className="sr-only peer"
+              />
+              <div className="w-4 h-4 rounded border border-white/10 bg-white/[0.03] peer-checked:bg-accent peer-checked:border-accent transition-colors flex items-center justify-center">
+                {bedtime !== null && (
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" className="text-white">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+              </div>
             </div>
-            <TimePicker
-              value={getTimeValue(bedtime)}
-              onChange={(val) => handleTimeChange("sleepBedtime", val)}
-              presets={[{ label: "22:00", value: "22:00" }]}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center gap-1.5 text-zinc-500">
-              <Sun size={12} />
-              <label className="text-label">Wakeup</label>
+            <Bed size={12} className="text-zinc-500" />
+            <span className="text-label group-hover:text-zinc-300 transition-colors">Ліг в 22</span>
+          </label>
+
+          <label className="flex items-center gap-2.5 cursor-pointer group">
+            <div className="relative flex items-center justify-center">
+              <input
+                type="checkbox"
+                checked={wakeup !== null}
+                onChange={() =>
+                  onChange({
+                    sleepWakeup: wakeup !== null ? null : createPresetTime(6, 0),
+                  })
+                }
+                className="sr-only peer"
+              />
+              <div className="w-4 h-4 rounded border border-white/10 bg-white/[0.03] peer-checked:bg-accent peer-checked:border-accent transition-colors flex items-center justify-center">
+                {wakeup !== null && (
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none" className="text-white">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+              </div>
             </div>
-            <TimePicker
-              value={getTimeValue(wakeup)}
-              onChange={(val) => handleTimeChange("sleepWakeup", val)}
-              presets={[{ label: "08:00", value: "08:00" }]}
-            />
-          </div>
+            <Sun size={12} className="text-zinc-500" />
+            <span className="text-label group-hover:text-zinc-300 transition-colors">Встав в 6</span>
+          </label>
         </div>
 
         <div className="flex flex-col gap-1.5">

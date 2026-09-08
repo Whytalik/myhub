@@ -121,7 +121,7 @@ export async function quickCapture(
   return upsertThought(userId, { statusId: inbox.id, content: trimmed, ...extra });
 }
 
-// Evening Review session outcome routing — resolves the destination status
+// Planning Wizard Prime Filter outcomes — resolves the destination status
 // by name (creating it lazily, same spirit as the "Inbox" default) and
 // appends the thought there. DELETE has no destination: it's a hard delete,
 // per the user's own "сміливо видаляй" wording for the Q1b "nothing

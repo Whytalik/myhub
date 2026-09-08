@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { MealPrep } from "@/features/health/nutrition/components/MealPrep";
 
 export const metadata: Metadata = {
-  title: "Nutrition — Meal Prep",
+  title: "Meal Prep",
 };
 
 export default async function NutritionMealPrepPage() {

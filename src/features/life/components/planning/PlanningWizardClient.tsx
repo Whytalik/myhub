@@ -19,6 +19,7 @@ import {
   Plus,
   Calendar,
   Check,
+  Compass,
   type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
@@ -129,6 +130,7 @@ interface PlanningWizardClientProps {
   initialColumns: Record<string, unknown>;
   initialStandaloneAtoms?: SprintTask[];
   dailyResistanceBudget?: number;
+  missionContent?: string | null;
 }
 
 function AtomCard({
@@ -201,6 +203,7 @@ export function PlanningWizardClient({
   initialColumns: _initialColumns,
   initialStandaloneAtoms,
   dailyResistanceBudget = 8,
+  missionContent,
 }: PlanningWizardClientProps) {
   const router = useRouter();
   const [step, setStep] = useState(() => {
@@ -462,6 +465,21 @@ export function PlanningWizardClient({
     ("q1" | "q1b" | "q_conflict" | "q2" | "q3")[]
   >([]);
   const [wantType, setWantType] = useState<"want" | "must" | null>(null);
+
+  // Accepted thoughts shown as reference context for the "does this conflict
+  // with something I already committed to?" step (same statuses as the
+  // decomposition pickup, but unfiltered by sphere).
+  const activeThoughts = useMemo(
+    () =>
+      thoughts.filter(
+        (currentThought) =>
+          currentThought.status.name === "Хочу" ||
+          currentThought.status.name === "Повинен" ||
+          currentThought.status.name === "Want" ||
+          currentThought.status.name === "Must",
+      ),
+    [thoughts],
+  );
 
   // Step 3: Decompose states
   const decomposableThoughts = useMemo(() => {
@@ -1841,6 +1859,12 @@ export function PlanningWizardClient({
       {/* STEP 2: PRIME FILTER */}
       {step === 2 && (
         <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6 items-center max-w-2xl mx-auto w-full">
+          {missionContent && (
+            <div className="w-full flex items-center gap-2 min-w-0 text-caption text-zinc-400 border-b border-white/[0.04] pb-3">
+              <Compass size={13} className="shrink-0 text-accent" />
+              <span className="truncate">{missionContent}</span>
+            </div>
+          )}
           <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
             <h3 className="text-panel-title font-semibold text-zinc-200">Step 2: Prime Filter</h3>
             <span className="text-xs font-mono text-zinc-500">
@@ -2024,6 +2048,20 @@ export function PlanningWizardClient({
                     <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
                       ❓ Does this conflict with my mission or values?
                     </p>
+                    {activeThoughts.length > 0 && (
+                      <div className="flex flex-col gap-1.5 w-full text-left">
+                        <span className="text-label text-zinc-500">
+                          Вже прийнято ({activeThoughts.length})
+                        </span>
+                        <div className="flex flex-col gap-1 max-h-40 overflow-y-auto rounded-lg bg-white/[0.02] border border-white/[0.06] p-2">
+                          {activeThoughts.map((thought) => (
+                            <p key={thought.id} className="text-caption truncate">
+                              {thought.content}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                     <div className="grid grid-cols-2 gap-3 w-full">
                       <Button
                         type="button"

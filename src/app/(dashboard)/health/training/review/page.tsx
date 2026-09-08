@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Training — Weekly Review",
+  title: "Training Review",
 };
 
 interface TrainingReviewPageProps {
@@ -161,7 +161,7 @@ export default async function TrainingReviewPage({ searchParams }: TrainingRevie
           { label: "training", href: "/health/training" },
           { label: "weekly review" },
         ]}
-        title="Тижневий звіт"
+        title="Training Review"
       />
 
       {/* Week Navigator */}

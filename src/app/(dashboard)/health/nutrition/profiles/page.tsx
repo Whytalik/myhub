@@ -4,7 +4,7 @@ import { Profiles } from "@/features/health/nutrition/components/Profiles";
 import { FatSecretLinkCard } from "@/features/health/nutrition/components/FatSecretLinkCard";
 
 export const metadata: Metadata = {
-  title: "Nutrition — Profiles",
+  title: "Profiles",
 };
 
 export default async function NutritionProfilesPage({

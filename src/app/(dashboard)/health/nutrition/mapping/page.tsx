@@ -6,7 +6,7 @@ import { FoodMapperClient } from "@/features/health/nutrition/components/FoodMap
 import { getMappingOverview } from "@/features/health/nutrition/services/product-mapping-service";
 
 export const metadata: Metadata = {
-  title: "Nutrition — Food Mapper",
+  title: "Food Mapper",
 };
 
 export default async function NutritionMappingPage() {

@@ -7,7 +7,7 @@ import * as thoughtService from "@/features/life/services/thought-service";
 import * as sphereService from "@/features/life/services/sphere-service";
 import type { LifeSphereData, ThoughtStatusData } from "@/features/life/types";
 
-export const metadata: Metadata = { title: "Thoughts" };
+export const metadata: Metadata = { title: "Inbox Thoughts" };
 
 export default async function PlanningPage() {
   const session = await auth();
@@ -44,7 +44,7 @@ export default async function PlanningPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         breadcrumb={[{ label: "life space", href: "/life" }, { label: "planning" }]}
-        title="Thoughts"
+        title="Inbox Thoughts"
         description="Zero-friction capture — drop any raw thought here without judging it. Clarify and commit them in the Planning Wizard."
       />
       <ThoughtsBoardClient initialStatuses={statuses} spheres={spheres} />

@@ -2,20 +2,14 @@
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { HintTooltip } from "@/components/ui/overlays/tooltip";
 
-import { Trophy, RefreshCw, Heart, Trash2, Search } from "lucide-react";
+import { Trophy, Heart } from "lucide-react";
 
 interface Props {
   winToday: string | null;
-  improveTomorrow: string | null;
   gratitude: string | null;
-  brainDump: string | null;
-  frictionToday: string | null;
   onChange: (patch: {
     winToday?: string | null;
-    improveTomorrow?: string | null;
     gratitude?: string | null;
-    brainDump?: string | null;
-    frictionToday?: string | null;
   }) => void;
 }
 
@@ -34,38 +28,10 @@ const PROMPTS = [
     placeholder: "A specific person, moment, or detail",
     hint: 'Name a specific person, moment, or detail — not a generic "family" or "health". Fresh, concrete entries keep gratitude effective; repeating the same vague items dulls the benefit.',
   },
-  {
-    key: "brainDump" as const,
-    icon: Trash2,
-    label: "Brain Dump",
-    placeholder: "Clear your mind before sleep. Worries, ideas, random thoughts...",
-    hint: "Unload every open loop: worries, ideas, tomorrow's tasks. Writing them out offloads working memory — in a Baylor sleep-lab study, a specific pre-bed to-do list helped people fall asleep ~9 minutes faster.",
-  },
-  {
-    key: "frictionToday" as const,
-    icon: Search,
-    label: "Kaizen: Friction Today",
-    placeholder: "What took more time or energy than it should have?",
-    hint: "Log one thing that took more time or energy than it deserved. Treat it as data, not self-blame — you're collecting friction points so tomorrow's fix has a real target.",
-  },
-  {
-    key: "improveTomorrow" as const,
-    icon: RefreshCw,
-    label: "Kaizen: Fix for Tomorrow",
-    placeholder: "One small tweak to make it easier next time",
-    hint: "Pick one tiny tweak that removes today's friction — so small it's impossible to skip. Kaizen compounds through 1% adjustments, not grand overhauls; check weekly which tweaks stuck.",
-  },
 ];
 
-export function ReflectionSection({
-  winToday,
-  improveTomorrow,
-  gratitude,
-  brainDump,
-  frictionToday,
-  onChange,
-}: Props) {
-  const values = { winToday, improveTomorrow, gratitude, brainDump, frictionToday };
+export function ReflectionSection({ winToday, gratitude, onChange }: Props) {
+  const values = { winToday, gratitude };
 
   return (
     <div className="glass-card p-4 flex flex-col gap-4">

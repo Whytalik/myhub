@@ -76,7 +76,7 @@ export function invalidateThoughtCache(userId: string) {
 }
 
 export function invalidateMissionCache(userId: string) {
-  revalidateTag(cacheTags.missionVersions(userId), INVALIDATE_PROFILE);
-  revalidateTag("mission-versions", INVALIDATE_PROFILE);
+  revalidateTag(cacheTags.mission(userId), INVALIDATE_PROFILE);
+  revalidateTag("mission", INVALIDATE_PROFILE);
   revalidatePath("/life", "layout");
 }

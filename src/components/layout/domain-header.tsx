@@ -18,11 +18,6 @@ function getDomainColors(domainId: string) {
         accentClass: "text-[#ff8c00]",
         activeClass: "text-zinc-50 bg-[#ff8c00]/20 border border-[#ff8c00]/30 shadow-sm",
       };
-    case "review":
-      return {
-        accentClass: "text-[#fbbf24]",
-        activeClass: "text-zinc-50 bg-[#fbbf24]/20 border border-[#fbbf24]/30 shadow-sm",
-      };
     default:
       return {
         accentClass: "text-accent",

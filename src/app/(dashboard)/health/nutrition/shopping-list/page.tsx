@@ -7,7 +7,7 @@ import { ShoppingList } from "@/features/health/nutrition/components/ShoppingLis
 import { currentWeekStart, weekStartKey } from "@/features/health/nutrition/week";
 
 export const metadata: Metadata = {
-  title: "Nutrition — Shopping List",
+  title: "Shopping List",
 };
 
 export default async function NutritionShoppingListPage() {

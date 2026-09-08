@@ -16,7 +16,7 @@ import { invalidateTaskCache } from "@/lib/cache/revalidate";
 import { History } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Daily Journal",
+  title: "Journal",
 };
 
 function currentTodayStr(): string {
@@ -109,7 +109,7 @@ export default async function JournalPage({
                   month: "long",
                   year: "numeric",
                 })
-              : "Daily Journal"
+              : "Journal"
           }
           description={isPast ? undefined : "Daily reflection, tracking, and intention."}
         />
@@ -155,7 +155,6 @@ export default async function JournalPage({
         initialEntry={entry}
         todayStr={dateStr}
         isPast={isPast}
-        yesterdayBrainDump={yesterdayRaw?.brainDump ?? null}
         tasks={tasks}
         allTasks={allTasks}
         spheres={spheres}

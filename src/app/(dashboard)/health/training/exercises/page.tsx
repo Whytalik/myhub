@@ -7,7 +7,7 @@ import * as exerciseService from "@/features/health/training/services/exercise-s
 import type { ExerciseData } from "@/features/health/training/types";
 
 export const metadata: Metadata = {
-  title: "Training — Exercises",
+  title: "Exercises",
 };
 
 export default async function TrainingExercisesPage() {

@@ -18,6 +18,7 @@ export const journalRepository = {
         energy: true,
         mood: true,
         eveningEnergy: true,
+        eveningMood: true,
         emotions: true,
         weight: true,
         sleepHours: true,

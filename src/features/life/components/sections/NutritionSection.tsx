@@ -57,7 +57,7 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
         {OPTIONS.map((opt) => {
           const Icon = opt.icon;
           const active = nutrition === opt.value;
-          const optionClass = `flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-colors duration-150 ${
+          const optionClass = `flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border transition-colors duration-150 ${
             active
               ? `${opt.bg} ${opt.border} ${opt.color}`
               : "border-white/[0.08] text-zinc-400 hover:bg-white/5"
@@ -70,7 +70,7 @@ export function NutritionSection({ nutrition, note, onChange }: Props) {
               onClick={() => onChange({ nutrition: active ? null : opt.value })}
               className={optionClass}
             >
-              <Icon size={16} />
+              <Icon size={14} />
               <span className="text-xs font-medium">{opt.label}</span>
             </button>
           );

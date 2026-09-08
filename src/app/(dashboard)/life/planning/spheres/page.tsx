@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { SphereGrid } from "@/features/life/components/tasks/SphereGrid";
 import * as sphereService from "@/features/life/services/sphere-service";
 
-export const metadata: Metadata = { title: "Spheres" };
+export const metadata: Metadata = { title: "Life Spheres" };
 
 export default async function SpheresPage() {
   const session = await auth();
@@ -25,7 +25,7 @@ export default async function SpheresPage() {
           { label: "planning" },
           { label: "spheres" },
         ]}
-        title="Spheres"
+        title="Life Spheres"
         description="Life areas shared by Tasks and Thoughts — Health, Work, Finance, and the rest of your wheel of life."
       />
       <SphereGrid spheres={spheres} />

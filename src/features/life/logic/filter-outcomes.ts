@@ -1,5 +1,5 @@
-// Destinations for the evening Review session's 3-question filter (see
-// ReviewSessionClient.tsx). Each non-DELETE outcome maps to a real
+// Destinations for the Planning Wizard's Primer Filter step (see
+// PlanningWizardClient.tsx step 2). Each non-DELETE outcome maps to a real
 // ThoughtStatus, created lazily by name the first time it's needed — same
 // pattern as the "Inbox" default (thought-service.ts getBoard).
 export type FilterOutcome = "KEEP_WANT" | "KEEP_MUST" | "SOMEDAY" | "NOT_MINE" | "DELETE";
