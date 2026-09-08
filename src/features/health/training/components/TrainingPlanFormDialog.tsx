@@ -1,16 +1,15 @@
 "use client";
 
-import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { FormField } from "@/components/ui/display/form-field";
-import { toast } from "sonner";
 import { trainingPlanSchema, type TrainingPlanFormData } from "../schemas";
 import { upsertTrainingPlanAction } from "../actions/training-plan-actions";
 import type { TrainingPlanData } from "../types";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface TrainingPlanFormDialogProps {
   isOpen: boolean;
@@ -20,7 +19,7 @@ interface TrainingPlanFormDialogProps {
 
 export function TrainingPlanFormDialog({ isOpen, onClose, plan }: TrainingPlanFormDialogProps) {
   const isEditing = !!plan;
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const {
     register,
@@ -36,20 +35,19 @@ export function TrainingPlanFormDialog({ isOpen, onClose, plan }: TrainingPlanFo
   });
 
   const onSubmit = (data: TrainingPlanFormData) => {
-    startTransition(async () => {
-      const result = await upsertTrainingPlanAction({
+    run(
+      upsertTrainingPlanAction({
         id: plan?.id,
         name: data.name.trim(),
         description: data.description?.trim() || null,
         archived: data.archived ?? false,
-      });
-      if (result.success) {
-        toast.success(isEditing ? "Plan updated" : "Plan created");
-        onClose();
-      } else {
-        toast.error(result.error || "Failed to save plan");
-      }
-    });
+      }),
+      {
+        successMessage: isEditing ? "Plan updated" : "Plan created",
+        errorMessage: "Failed to save plan",
+        onSuccess: onClose,
+      },
+    );
   };
 
   return (

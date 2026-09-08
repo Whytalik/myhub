@@ -1,16 +1,15 @@
 "use client";
 
-import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { FormField } from "@/components/ui/display/form-field";
-import { toast } from "sonner";
 import { trainingDaySchema, type TrainingDayFormData } from "../schemas";
 import { upsertTrainingDayAction } from "../actions/training-plan-actions";
 import type { TrainingDayData } from "../types";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface TrainingDayFormDialogProps {
   isOpen: boolean;
@@ -26,7 +25,7 @@ export function TrainingDayFormDialog({
   day,
 }: TrainingDayFormDialogProps) {
   const isEditing = !!day;
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const {
     register,
@@ -42,20 +41,19 @@ export function TrainingDayFormDialog({
   });
 
   const onSubmit = (data: TrainingDayFormData) => {
-    startTransition(async () => {
-      const result = await upsertTrainingDayAction({
+    run(
+      upsertTrainingDayAction({
         id: day?.id,
         planId,
         name: data.name.trim(),
         notes: data.notes?.trim() || null,
-      });
-      if (result.success) {
-        toast.success(isEditing ? "Day updated" : "Day created");
-        onClose();
-      } else {
-        toast.error(result.error || "Failed to save day");
-      }
-    });
+      }),
+      {
+        successMessage: isEditing ? "Day updated" : "Day created",
+        errorMessage: "Failed to save day",
+        onSuccess: onClose,
+      },
+    );
   };
 
   return (

@@ -3,7 +3,7 @@
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { useSpace } from "@/components/providers/space-provider";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import {
   Moon,
   Palette,
@@ -17,7 +17,7 @@ import {
   Zap,
 } from "lucide-react";
 import { updateDailyResistanceBudget } from "@/lib/actions/user-settings-actions";
-import { toast } from "sonner";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 function getSeasonFromCookie(): string {
   if (typeof document === "undefined") return "auto";
@@ -39,7 +39,7 @@ export function SettingsModal({
   const { theme, setTheme } = useSpace();
   const [season, setSeasonState] = useState<string>(getSeasonFromCookie);
   const [resistanceBudget, setResistanceBudget] = useState(initialResistanceBudget);
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const setSeason = (newSeason: string) => {
     setSeasonState(newSeason);
@@ -49,15 +49,11 @@ export function SettingsModal({
 
   const handleResistanceBudgetChange = (budget: number) => {
     setResistanceBudget(budget);
-    startTransition(async () => {
-      const result = await updateDailyResistanceBudget(budget);
-      if (result.success) {
-        toast.success(`Daily resistance budget set to ${budget}`);
-        router.refresh();
-      } else {
-        toast.error(result.error || "Failed to update");
-        setResistanceBudget(initialResistanceBudget);
-      }
+    run(updateDailyResistanceBudget(budget), {
+      successMessage: `Daily resistance budget set to ${budget}`,
+      errorMessage: "Failed to update",
+      onSuccess: () => router.refresh(),
+      onError: () => setResistanceBudget(initialResistanceBudget),
     });
   };
 

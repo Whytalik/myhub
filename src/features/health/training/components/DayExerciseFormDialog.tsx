@@ -1,6 +1,5 @@
 "use client";
 
-import { useTransition } from "react";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
@@ -8,10 +7,10 @@ import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { FormField } from "@/components/ui/display/form-field";
 import { CustomSelect } from "@/components/ui/inputs/custom-select";
-import { toast } from "sonner";
 import { dayExerciseSchema, type DayExerciseFormData } from "../schemas";
 import { upsertDayExerciseAction } from "../actions/training-plan-actions";
 import type { ExerciseData, TrainingDayExerciseData } from "../types";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface DayExerciseFormDialogProps {
   isOpen: boolean;
@@ -29,7 +28,7 @@ export function DayExerciseFormDialog({
   dayExercise,
 }: DayExerciseFormDialogProps) {
   const isEditing = !!dayExercise;
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const {
     register,
@@ -61,8 +60,8 @@ export function DayExerciseFormDialog({
     selectedExercise?.trackingType !== "duration" && selectedExercise?.trackingType !== "cardio";
 
   const onSubmit = (data: DayExerciseFormData) => {
-    startTransition(async () => {
-      const result = await upsertDayExerciseAction({
+    run(
+      upsertDayExerciseAction({
         id: dayExercise?.id,
         dayId,
         exerciseId: data.exerciseId,
@@ -75,14 +74,13 @@ export function DayExerciseFormDialog({
         targetDurationSeconds: showDurationFields ? (data.targetDurationSeconds ?? null) : null,
         targetDistanceMeters: showDurationFields ? (data.targetDistanceMeters ?? null) : null,
         notes: data.notes?.trim() || null,
-      });
-      if (result.success) {
-        toast.success(isEditing ? "Prescription updated" : "Exercise added to day");
-        onClose();
-      } else {
-        toast.error(result.error || "Failed to save");
-      }
-    });
+      }),
+      {
+        successMessage: isEditing ? "Prescription updated" : "Exercise added to day",
+        errorMessage: "Failed to save",
+        onSuccess: onClose,
+      },
+    );
   };
 
   if (exercises.length === 0) {

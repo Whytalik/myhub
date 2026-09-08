@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/inputs/textarea";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { EXERCISE_DETAILS } from "@/features/health/training/data/exercise-details";
 import { toast } from "sonner";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 import {
   Check,
   Dumbbell,
@@ -67,7 +68,7 @@ export function SessionClient({ session, pastLogs, progressionSuggestions }: Ses
   const router = useRouter();
   const [setLogs, setSetLogs] = useState<SetLogData[]>(session.setLogs);
   const [status, setStatus] = useState(session.status);
-  const [isFinishing, startFinishTransition] = useTransition();
+  const { run: runFinish, isPending: isFinishing } = useServerAction();
   const [selectedExercise, setSelectedExercise] = useState<{ id: string; name: string } | null>(
     null,
   );
@@ -259,23 +260,22 @@ export function SessionClient({ session, pastLogs, progressionSuggestions }: Ses
   };
 
   const handleFinish = () => {
-    startFinishTransition(async () => {
-      const durationSeconds = Math.max(
-        0,
-        Math.round((Date.now() - new Date(session.createdAt).getTime()) / 1000),
-      );
-      const result = await completeSessionAction({
+    const durationSeconds = Math.max(
+      0,
+      Math.round((Date.now() - new Date(session.createdAt).getTime()) / 1000),
+    );
+    runFinish(
+      completeSessionAction({
         id: session.id,
         durationSeconds,
         notes: sessionNotes.trim() || null,
-      });
-      if (result.success) {
-        setStatus("completed");
-        toast.success("Workout finished");
-      } else {
-        toast.error(result.error || "Failed to finish workout");
-      }
-    });
+      }),
+      {
+        successMessage: "Workout finished",
+        errorMessage: "Failed to finish workout",
+        onSuccess: () => setStatus("completed"),
+      },
+    );
   };
 
   const handleNotesBlur = () => {
