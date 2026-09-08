@@ -38,6 +38,7 @@ import { TrainingPlanFormDialog } from "./TrainingPlanFormDialog";
 import { TrainingDayFormDialog } from "./TrainingDayFormDialog";
 import { DayExerciseFormDialog } from "./DayExerciseFormDialog";
 import { useServerAction } from "@/lib/hooks/use-server-action";
+import { useConfirmDialog } from "@/lib/hooks/use-confirm-dialog";
 
 function todayDayOfWeek(): number {
   return (new Date().getDay() + 6) % 7;
@@ -190,19 +191,19 @@ export function TrainingPlansClient({
   const [expandedDays, setExpandedDays] = useState<Set<string>>(
     new Set(plan?.days.slice(0, 1).map((d) => d.id) ?? []),
   );
-  const [planToDelete, setPlanToDelete] = useState<string | null>(null);
+  const planToDelete = useConfirmDialog<string>();
 
   const [isPlanFormOpen, setIsPlanFormOpen] = useState(false);
 
   const [dayFormOpen, setDayFormOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState<TrainingDayData | null>(null);
-  const [dayToDelete, setDayToDelete] = useState<string | null>(null);
+  const dayToDelete = useConfirmDialog<string>();
 
   const [dayExerciseFormDayId, setDayExerciseFormDayId] = useState<string | null>(null);
   const [selectedDayExercise, setSelectedDayExercise] = useState<TrainingDayExerciseData | null>(
     null,
   );
-  const [dayExerciseToDelete, setDayExerciseToDelete] = useState<string | null>(null);
+  const dayExerciseToDelete = useConfirmDialog<string>();
   const [showVolumeAnalysis, setShowVolumeAnalysis] = useState(true);
 
   const activeExercises = initialExercises.filter((e) => !e.archived);
@@ -234,35 +235,32 @@ export function TrainingPlansClient({
   };
 
   const confirmDeletePlan = () => {
-    if (!planToDelete) return;
-    const closeDialog = () => setPlanToDelete(null);
-    runDeletePlan(deleteTrainingPlanAction(planToDelete), {
+    if (!planToDelete.target) return;
+    runDeletePlan(deleteTrainingPlanAction(planToDelete.target), {
       successMessage: "Plan deleted",
       errorMessage: "Failed to delete plan",
-      onSuccess: closeDialog,
-      onError: closeDialog,
+      onSuccess: planToDelete.close,
+      onError: planToDelete.close,
     });
   };
 
   const confirmDeleteDay = () => {
-    if (!dayToDelete) return;
-    const closeDialog = () => setDayToDelete(null);
-    runDeleteDay(deleteTrainingDayAction(dayToDelete), {
+    if (!dayToDelete.target) return;
+    runDeleteDay(deleteTrainingDayAction(dayToDelete.target), {
       successMessage: "Day deleted",
       errorMessage: "Failed to delete day",
-      onSuccess: closeDialog,
-      onError: closeDialog,
+      onSuccess: dayToDelete.close,
+      onError: dayToDelete.close,
     });
   };
 
   const confirmDeleteDayExercise = () => {
-    if (!dayExerciseToDelete) return;
-    const closeDialog = () => setDayExerciseToDelete(null);
-    runDeleteDayExercise(deleteDayExerciseAction(dayExerciseToDelete), {
+    if (!dayExerciseToDelete.target) return;
+    runDeleteDayExercise(deleteDayExerciseAction(dayExerciseToDelete.target), {
       successMessage: "Removed from day",
       errorMessage: "Failed to remove",
-      onSuccess: closeDialog,
-      onError: closeDialog,
+      onSuccess: dayExerciseToDelete.close,
+      onError: dayExerciseToDelete.close,
     });
   };
 
@@ -310,7 +308,7 @@ export function TrainingPlansClient({
               <button onClick={() => setIsPlanFormOpen(true)} className={iconActionClass}>
                 <Edit2 size={14} />
               </button>
-              <button onClick={() => setPlanToDelete(plan.id)} className={deleteActionClass}>
+              <button onClick={() => planToDelete.open(plan.id)} className={deleteActionClass}>
                 <Trash2 size={14} />
               </button>
             </div>
@@ -579,7 +577,7 @@ export function TrainingPlansClient({
                             <Edit2 size={14} />
                           </button>
                           <button
-                            onClick={() => setDayToDelete(day.id)}
+                            onClick={() => dayToDelete.open(day.id)}
                             className={smallDeleteActionClass}
                           >
                             <Trash2 size={14} />
@@ -699,7 +697,7 @@ export function TrainingPlansClient({
                                       <Edit2 size={12} />
                                     </button>
                                     <button
-                                      onClick={() => setDayExerciseToDelete(de.id)}
+                                      onClick={() => dayExerciseToDelete.open(de.id)}
                                       className={smallDeleteActionClass}
                                     >
                                       <Trash2 size={12} />
@@ -764,8 +762,8 @@ export function TrainingPlansClient({
       )}
 
       <ConfirmationDialog
-        isOpen={!!planToDelete}
-        onClose={() => setPlanToDelete(null)}
+        isOpen={planToDelete.isOpen}
+        onClose={planToDelete.close}
         onConfirm={confirmDeletePlan}
         title="Delete plan?"
         description="All days and prescriptions in this plan will be deleted. Session history is kept."
@@ -773,8 +771,8 @@ export function TrainingPlansClient({
         variant="danger"
       />
       <ConfirmationDialog
-        isOpen={!!dayToDelete}
-        onClose={() => setDayToDelete(null)}
+        isOpen={dayToDelete.isOpen}
+        onClose={dayToDelete.close}
         onConfirm={confirmDeleteDay}
         title="Delete day?"
         description="All exercise prescriptions in this day will be deleted."
@@ -782,8 +780,8 @@ export function TrainingPlansClient({
         variant="danger"
       />
       <ConfirmationDialog
-        isOpen={!!dayExerciseToDelete}
-        onClose={() => setDayExerciseToDelete(null)}
+        isOpen={dayExerciseToDelete.isOpen}
+        onClose={dayExerciseToDelete.close}
         onConfirm={confirmDeleteDayExercise}
         title="Remove exercise from day?"
         confirmLabel="Remove"

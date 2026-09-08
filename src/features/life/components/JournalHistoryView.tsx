@@ -14,6 +14,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { ROUTINE_ITEMS, type RoutineMap } from "@/lib/life/routine-items";
+import { useConfirmDialog } from "@/lib/hooks/use-confirm-dialog";
 import { deleteEntryAction } from "../actions/journal-actions";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 
@@ -64,13 +65,13 @@ function getWeekNumber(d: Date) {
 export function JournalHistoryView({ entries }: Props) {
   const [activeTab, setActiveTab] = useState("all");
   const [visibleGroups, setVisibleGroups] = useState(3);
-  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const deleteId = useConfirmDialog<string>();
   const [, startTransition] = useTransition();
 
   const handleDelete = (id: string) => {
     startTransition(async () => {
       const result = await deleteEntryAction(id);
-      if (result.success) setDeleteId(null);
+      if (result.success) deleteId.close();
     });
   };
 
@@ -194,7 +195,7 @@ export function JournalHistoryView({ entries }: Props) {
                     </Link>
 
                     <button
-                      onClick={() => setDeleteId(e.id)}
+                      onClick={() => deleteId.open(e.id)}
                       title="Delete Entry"
                       className="p-1.5 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors shrink-0"
                     >
@@ -209,9 +210,9 @@ export function JournalHistoryView({ entries }: Props) {
       </div>
 
       <ConfirmationDialog
-        isOpen={!!deleteId}
-        onClose={() => setDeleteId(null)}
-        onConfirm={() => deleteId && handleDelete(deleteId)}
+        isOpen={deleteId.isOpen}
+        onClose={deleteId.close}
+        onConfirm={() => deleteId.target && handleDelete(deleteId.target)}
         title="Delete Journal Entry"
         description="Are you sure you want to delete this entry? This action cannot be undone."
         confirmLabel="Delete"

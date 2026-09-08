@@ -11,6 +11,7 @@ import type { ExerciseData } from "../types";
 import { deleteExerciseAction } from "../actions/exercise-actions";
 import { ExerciseFormDialog } from "./ExerciseFormDialog";
 import { useServerAction } from "@/lib/hooks/use-server-action";
+import { useConfirmDialog } from "@/lib/hooks/use-confirm-dialog";
 
 const UNGROUPED_LABEL = "Ungrouped";
 
@@ -37,20 +38,19 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
   const [showArchived, setShowArchived] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selected, setSelected] = useState<ExerciseData | null>(null);
-  const [toDelete, setToDelete] = useState<string | null>(null);
+  const toDelete = useConfirmDialog<string>();
   const { run } = useServerAction();
 
   const activeExercises = initialExercises.filter((e) => !e.archived);
   const archivedExercises = initialExercises.filter((e) => e.archived);
 
   const confirmDelete = () => {
-    if (!toDelete) return;
-    const closeDialog = () => setToDelete(null);
-    run(deleteExerciseAction(toDelete), {
+    if (!toDelete.target) return;
+    run(deleteExerciseAction(toDelete.target), {
       successMessage: "Exercise deleted",
       errorMessage: "Failed to delete exercise",
-      onSuccess: closeDialog,
-      onError: closeDialog,
+      onSuccess: toDelete.close,
+      onError: toDelete.close,
     });
   };
 
@@ -79,7 +79,7 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
                 <Edit2 size={12} />
               </button>
               <button
-                onClick={() => setToDelete(ex.id)}
+                onClick={() => toDelete.open(ex.id)}
                 className="p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors"
               >
                 <Trash2 size={12} />
@@ -154,8 +154,8 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
       />
 
       <ConfirmationDialog
-        isOpen={!!toDelete}
-        onClose={() => setToDelete(null)}
+        isOpen={toDelete.isOpen}
+        onClose={toDelete.close}
         onConfirm={confirmDelete}
         title="Delete exercise?"
         description="This will remove it from any training days that use it."

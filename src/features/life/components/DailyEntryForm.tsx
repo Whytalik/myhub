@@ -3,15 +3,7 @@
 import { useRef, useState, useTransition, useCallback, lazy, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import {
-  CheckCircle2,
-  Clock,
-  Loader2,
-  AlertCircle,
-  Zap,
-  Plus,
-  Shuffle,
-} from "lucide-react";
+import { CheckCircle2, Clock, Loader2, AlertCircle, Zap, Plus, Shuffle } from "lucide-react";
 import { EmptyState } from "@/components/ui/display/empty-state";
 import { SleepSection } from "./sections/SleepSection";
 import { EnergySection } from "./sections/EnergySection";
@@ -272,12 +264,7 @@ export function DailyEntryForm({
   );
 
   if (dayView === "greeting") {
-    return (
-      <DayGreeting
-        dateStr={todayStr}
-        onStart={handleStartDay}
-      />
-    );
+    return <DayGreeting dateStr={todayStr} onStart={handleStartDay} />;
   }
 
   if (dayView === "complete") {
@@ -513,7 +500,8 @@ export function DailyEntryForm({
                       </div>
                       <div className="flex items-center gap-1">
                         {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => {
-                          const isFilled = data.eveningEnergy != null && value <= data.eveningEnergy;
+                          const isFilled =
+                            data.eveningEnergy != null && value <= data.eveningEnergy;
                           const levelClass = `h-8 flex-1 rounded-lg text-xs font-mono font-semibold transition-colors duration-150 ${
                             isFilled
                               ? "bg-accent text-white"
@@ -525,7 +513,9 @@ export function DailyEntryForm({
                               key={value}
                               type="button"
                               onClick={() =>
-                                patch({ eveningEnergy: data.eveningEnergy === value ? null : value })
+                                patch({
+                                  eveningEnergy: data.eveningEnergy === value ? null : value,
+                                })
                               }
                               className={levelClass}
                             >

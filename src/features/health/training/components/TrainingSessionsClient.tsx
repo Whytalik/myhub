@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { History as HistoryIcon, Trash2, ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/ui/display/empty-state";
 import { deleteSessionAction, getWeeklyReportAction } from "../actions/training-session-actions";
 import type { TrainingSessionSummaryData } from "../types";
 import { useServerAction } from "@/lib/hooks/use-server-action";
+import { useConfirmDialog } from "@/lib/hooks/use-confirm-dialog";
 
 interface TrainingHistoryClientProps {
   initialSessions: TrainingSessionSummaryData[];
@@ -17,18 +18,17 @@ interface TrainingHistoryClientProps {
 
 export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClientProps) {
   const router = useRouter();
-  const [sessionToDelete, setSessionToDelete] = useState<string | null>(null);
+  const sessionToDelete = useConfirmDialog<string>();
   const [isCopyingReport, startCopyReportTransition] = useTransition();
   const { run: runDelete } = useServerAction();
 
   const confirmDelete = () => {
-    if (!sessionToDelete) return;
-    const closeDialog = () => setSessionToDelete(null);
-    runDelete(deleteSessionAction(sessionToDelete), {
+    if (!sessionToDelete.target) return;
+    runDelete(deleteSessionAction(sessionToDelete.target), {
       successMessage: "Session deleted",
       errorMessage: "Failed to delete session",
-      onSuccess: closeDialog,
-      onError: closeDialog,
+      onSuccess: sessionToDelete.close,
+      onError: sessionToDelete.close,
     });
   };
 
@@ -95,7 +95,7 @@ export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClient
             <div className="flex items-center gap-2 shrink-0">
               <span className={statusClass}>{isCompleted ? "Completed" : "In progress"}</span>
               <button
-                onClick={() => setSessionToDelete(s.id)}
+                onClick={() => sessionToDelete.open(s.id)}
                 className="p-1.5 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors"
               >
                 <Trash2 size={14} />
@@ -106,8 +106,8 @@ export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClient
       })}
 
       <ConfirmationDialog
-        isOpen={!!sessionToDelete}
-        onClose={() => setSessionToDelete(null)}
+        isOpen={sessionToDelete.isOpen}
+        onClose={sessionToDelete.close}
         onConfirm={confirmDelete}
         title="Delete session?"
         description="This will permanently delete the session and all its logged sets."

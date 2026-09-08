@@ -14,6 +14,7 @@ import { HabitCard } from "./HabitCard";
 import { HabitFormDialog } from "./HabitFormDialog";
 import { HabitChainFormDialog } from "./HabitChainFormDialog";
 import { useServerAction } from "@/lib/hooks/use-server-action";
+import { useConfirmDialog } from "@/lib/hooks/use-confirm-dialog";
 
 interface HabitsPageClientProps {
   initialHabits: HabitData[];
@@ -25,11 +26,11 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedHabit, setSelectedHabit] = useState<HabitData | null>(null);
   const [showArchived, setShowArchived] = useState(false);
-  const [habitToDelete, setHabitToDelete] = useState<string | null>(null);
+  const habitToDelete = useConfirmDialog<string>();
 
   const [isChainFormOpen, setIsChainFormOpen] = useState(false);
   const [selectedChain, setSelectedChain] = useState<HabitChainData | null>(null);
-  const [chainToDelete, setChainToDelete] = useState<string | null>(null);
+  const chainToDelete = useConfirmDialog<string>();
   const { run: runDeleteHabit } = useServerAction();
   const { run: runDeleteChain } = useServerAction();
   const { run: runReorder } = useServerAction();
@@ -64,17 +65,16 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
   };
 
   const handleDelete = async (id: string) => {
-    setHabitToDelete(id);
+    habitToDelete.open(id);
   };
 
   const confirmDelete = () => {
-    if (!habitToDelete) return;
-    const closeDialog = () => setHabitToDelete(null);
-    runDeleteHabit(deleteHabitAction(habitToDelete), {
+    if (!habitToDelete.target) return;
+    runDeleteHabit(deleteHabitAction(habitToDelete.target), {
       successMessage: "Habit deleted",
       errorMessage: "Failed to delete habit",
-      onSuccess: closeDialog,
-      onError: closeDialog,
+      onSuccess: habitToDelete.close,
+      onError: habitToDelete.close,
     });
   };
 
@@ -94,13 +94,12 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
   };
 
   const confirmDeleteChain = () => {
-    if (!chainToDelete) return;
-    const closeDialog = () => setChainToDelete(null);
-    runDeleteChain(deleteHabitChainAction(chainToDelete), {
+    if (!chainToDelete.target) return;
+    runDeleteChain(deleteHabitChainAction(chainToDelete.target), {
       successMessage: "Chain deleted",
       errorMessage: "Failed to delete chain",
-      onSuccess: closeDialog,
-      onError: closeDialog,
+      onSuccess: chainToDelete.close,
+      onError: chainToDelete.close,
     });
   };
 
@@ -200,7 +199,7 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
                       <Edit2 size={14} />
                     </button>
                     <button
-                      onClick={() => setChainToDelete(chain.id)}
+                      onClick={() => chainToDelete.open(chain.id)}
                       className={chainDeleteActionClass}
                     >
                       <Trash2 size={14} />
@@ -285,8 +284,8 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
       </div>
 
       <ConfirmationDialog
-        isOpen={!!habitToDelete}
-        onClose={() => setHabitToDelete(null)}
+        isOpen={habitToDelete.isOpen}
+        onClose={habitToDelete.close}
         onConfirm={confirmDelete}
         title="Delete habit?"
         description="This action cannot be undone. All completion history will be lost."
@@ -295,8 +294,8 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
       />
 
       <ConfirmationDialog
-        isOpen={!!chainToDelete}
-        onClose={() => setChainToDelete(null)}
+        isOpen={chainToDelete.isOpen}
+        onClose={chainToDelete.close}
         onConfirm={confirmDeleteChain}
         title="Delete chain?"
         description="Habits in this chain won't be deleted — they'll just be ungrouped."

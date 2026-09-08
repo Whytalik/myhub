@@ -39,6 +39,7 @@ import {
   isSameDay,
 } from "date-fns";
 import type { TaskCreateFormData } from "./TaskCreateForm";
+import { useConfirmDialog } from "@/lib/hooks/use-confirm-dialog";
 import { StepIntro } from "./steps/StepIntro";
 import { StepBrainDump } from "./steps/StepBrainDump";
 import { StepPrimeFilter } from "./steps/StepPrimeFilter";
@@ -107,8 +108,8 @@ export function PlanningWizardClient({
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
   const [editProjectTitle, setEditProjectTitle] = useState("");
   const [editProjectDesc, setEditProjectDesc] = useState("");
-  const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
-  const [deleteTaskId, setDeleteTaskId] = useState<string | null>(null);
+  const deleteProjectId = useConfirmDialog<string>();
+  const deleteTaskId = useConfirmDialog<string>();
 
   // Step 5 state
   const activeSprintProjects = useMemo(() => {
@@ -195,7 +196,7 @@ export function PlanningWizardClient({
   const [isActionPending, startActionTransition] = useTransition();
   const [_isSavePending, startSaveTransition] = useTransition();
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const [deleteThoughtId, setDeleteThoughtId] = useState<string | null>(null);
+  const deleteThoughtId = useConfirmDialog<string>();
 
   useEffect(() => {
     localStorage.setItem("planning-wizard-step", String(step));
@@ -796,7 +797,7 @@ export function PlanningWizardClient({
       const result = await deleteProjectAction(projectId);
       if (result.success) {
         toast.success("Project deleted!");
-        setDeleteProjectId(null);
+        deleteProjectId.close();
 
         setSprint((prev: SprintData) => ({
           ...prev,
@@ -1409,7 +1410,7 @@ export function PlanningWizardClient({
           decomposeThoughtTypeConfig={decomposeThoughtTypeConfig}
           DecomposeThoughtIcon={DecomposeThoughtIcon}
           handleEditClick={handleEditClick}
-          setDeleteThoughtId={setDeleteThoughtId}
+          setDeleteThoughtId={deleteThoughtId.open}
           isActionPending={isActionPending}
           startActionTransition={startActionTransition}
           router={router}
@@ -1453,7 +1454,7 @@ export function PlanningWizardClient({
           isActionPending={isActionPending}
           sprint={sprint}
           handleOpenEditProject={handleOpenEditProject}
-          setDeleteProjectId={setDeleteProjectId}
+          setDeleteProjectId={deleteProjectId.open}
           handleAssignProject={handleAssignProject}
           backlogProjects={backlogProjects}
           backlogSearch={backlogSearch}
@@ -1474,12 +1475,12 @@ export function PlanningWizardClient({
           selectedDeconstructProject={selectedDeconstructProject}
           handleMarkProjectPlanned={handleMarkProjectPlanned}
           handleOpenEditProject={handleOpenEditProject}
-          setDeleteProjectId={setDeleteProjectId}
+          setDeleteProjectId={deleteProjectId.open}
           expandedGroupId={expandedGroupId}
           setExpandedGroupId={setExpandedGroupId}
           handleAddTopLevelTask={handleAddTopLevelTask}
           handleOpenEditTask={handleOpenEditTask}
-          setDeleteTaskId={setDeleteTaskId}
+          setDeleteTaskId={deleteTaskId.open}
         />
       )}
 
@@ -1494,7 +1495,7 @@ export function PlanningWizardClient({
           allAtomsForDistribution={allAtomsForDistribution}
           spheres={spheres}
           handleOpenEditTaskFromAnywhere={handleOpenEditTaskFromAnywhere}
-          setDeleteTaskId={setDeleteTaskId}
+          setDeleteTaskId={deleteTaskId.open}
           setSprint={setSprint}
           setStandaloneAtoms={setStandaloneAtoms}
           overdueScheduledAtoms={overdueScheduledAtoms}
@@ -1532,13 +1533,13 @@ export function PlanningWizardClient({
         />
       )}
 
-      {deleteThoughtId && (
+      {deleteThoughtId.isOpen && (
         <ConfirmationDialog
-          isOpen={deleteThoughtId !== null}
-          onClose={() => setDeleteThoughtId(null)}
+          isOpen={deleteThoughtId.isOpen}
+          onClose={deleteThoughtId.close}
           onConfirm={() => {
-            if (deleteThoughtId) {
-              handleDeleteThought(deleteThoughtId);
+            if (deleteThoughtId.target) {
+              handleDeleteThought(deleteThoughtId.target);
             }
           }}
           title="Delete Thought"
@@ -1689,14 +1690,14 @@ export function PlanningWizardClient({
         </Dialog>
       )}
 
-      {deleteTaskId && (
+      {deleteTaskId.isOpen && (
         <ConfirmationDialog
-          isOpen={deleteTaskId !== null}
-          onClose={() => setDeleteTaskId(null)}
+          isOpen={deleteTaskId.isOpen}
+          onClose={deleteTaskId.close}
           onConfirm={() => {
-            if (deleteTaskId) {
-              handleDeleteTaskAnywhere(deleteTaskId);
-              setDeleteTaskId(null);
+            if (deleteTaskId.target) {
+              handleDeleteTaskAnywhere(deleteTaskId.target);
+              deleteTaskId.close();
             }
           }}
           title="Delete Task"
@@ -2016,13 +2017,13 @@ export function PlanningWizardClient({
         </Dialog>
       )}
 
-      {deleteProjectId && (
+      {deleteProjectId.isOpen && (
         <ConfirmationDialog
-          isOpen={deleteProjectId !== null}
-          onClose={() => setDeleteProjectId(null)}
+          isOpen={deleteProjectId.isOpen}
+          onClose={deleteProjectId.close}
           onConfirm={() => {
-            if (deleteProjectId) {
-              handleDeleteProject(deleteProjectId);
+            if (deleteProjectId.target) {
+              handleDeleteProject(deleteProjectId.target);
             }
           }}
           title="Delete Project"
