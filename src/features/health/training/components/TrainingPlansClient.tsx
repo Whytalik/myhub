@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
 import { SectionHeader } from "@/components/ui/display/section-header";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
-import { toast } from "sonner";
 import {
   Plus,
   ClipboardList,
@@ -37,6 +36,7 @@ import { upsertDayScheduleAction } from "@/features/life/actions/schedule-action
 import { TrainingPlanFormDialog } from "./TrainingPlanFormDialog";
 import { TrainingDayFormDialog } from "./TrainingDayFormDialog";
 import { DayExerciseFormDialog } from "./DayExerciseFormDialog";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 function todayDayOfWeek(): number {
   return (new Date().getDay() + 6) % 7;
@@ -174,8 +174,11 @@ export function TrainingPlansClient({
   initialWeekAssignments,
 }: TrainingPlansClientProps) {
   const router = useRouter();
-  const [isStarting, startStartTransition] = useTransition();
-  const [, startScheduleTransition] = useTransition();
+  const { run: runStart, isPending: isStarting } = useServerAction();
+  const { run: runSchedule } = useServerAction();
+  const { run: runDeletePlan } = useServerAction();
+  const { run: runDeleteDay } = useServerAction();
+  const { run: runDeleteDayExercise } = useServerAction();
 
   const plan = initialPlans[0] ?? null;
 
@@ -216,48 +219,50 @@ export function TrainingPlansClient({
     const prev = weekAssignments[dayOfWeek] ?? null;
     setWeekAssignments((s) => ({ ...s, [dayOfWeek]: nextTrainingDayId }));
 
-    startScheduleTransition(async () => {
-      const result = await upsertDayScheduleAction({ dayOfWeek, trainingDayId: nextTrainingDayId });
-      if (!result.success) {
-        setWeekAssignments((s) => ({ ...s, [dayOfWeek]: prev }));
-        toast.error(result.error || "Failed to update schedule");
-      }
+    runSchedule(upsertDayScheduleAction({ dayOfWeek, trainingDayId: nextTrainingDayId }), {
+      errorMessage: "Failed to update schedule",
+      onError: () => setWeekAssignments((s) => ({ ...s, [dayOfWeek]: prev })),
     });
   };
 
   const handleStartSession = (dayId: string) => {
-    startStartTransition(async () => {
-      const result = await startSessionAction({ dayId });
-      if (result.success) {
-        router.push(`/health/training/session/${result.data.id}`);
-      } else {
-        toast.error(result.error || "Failed to start session");
-      }
+    runStart(startSessionAction({ dayId }), {
+      errorMessage: "Failed to start session",
+      onSuccess: (data) => router.push(`/health/training/session/${data.id}`),
     });
   };
 
-  const confirmDeletePlan = async () => {
+  const confirmDeletePlan = () => {
     if (!planToDelete) return;
-    const result = await deleteTrainingPlanAction(planToDelete);
-    if (result.success) toast.success("Plan deleted");
-    else toast.error(result.error || "Failed to delete plan");
-    setPlanToDelete(null);
+    const closeDialog = () => setPlanToDelete(null);
+    runDeletePlan(deleteTrainingPlanAction(planToDelete), {
+      successMessage: "Plan deleted",
+      errorMessage: "Failed to delete plan",
+      onSuccess: closeDialog,
+      onError: closeDialog,
+    });
   };
 
-  const confirmDeleteDay = async () => {
+  const confirmDeleteDay = () => {
     if (!dayToDelete) return;
-    const result = await deleteTrainingDayAction(dayToDelete);
-    if (result.success) toast.success("Day deleted");
-    else toast.error(result.error || "Failed to delete day");
-    setDayToDelete(null);
+    const closeDialog = () => setDayToDelete(null);
+    runDeleteDay(deleteTrainingDayAction(dayToDelete), {
+      successMessage: "Day deleted",
+      errorMessage: "Failed to delete day",
+      onSuccess: closeDialog,
+      onError: closeDialog,
+    });
   };
 
-  const confirmDeleteDayExercise = async () => {
+  const confirmDeleteDayExercise = () => {
     if (!dayExerciseToDelete) return;
-    const result = await deleteDayExerciseAction(dayExerciseToDelete);
-    if (result.success) toast.success("Removed from day");
-    else toast.error(result.error || "Failed to remove");
-    setDayExerciseToDelete(null);
+    const closeDialog = () => setDayExerciseToDelete(null);
+    runDeleteDayExercise(deleteDayExerciseAction(dayExerciseToDelete), {
+      successMessage: "Removed from day",
+      errorMessage: "Failed to remove",
+      onSuccess: closeDialog,
+      onError: closeDialog,
+    });
   };
 
   const iconActionClass =

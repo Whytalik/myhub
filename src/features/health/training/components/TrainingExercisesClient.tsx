@@ -5,11 +5,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
 import { Tabs } from "@/components/ui/navigation/tabs";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
-import { toast } from "sonner";
 import { Plus, Dumbbell, Edit2, Trash2 } from "lucide-react";
 import type { ExerciseData } from "../types";
 import { deleteExerciseAction } from "../actions/exercise-actions";
 import { ExerciseFormDialog } from "./ExerciseFormDialog";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 const UNGROUPED_LABEL = "Ungrouped";
 
@@ -37,16 +37,20 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selected, setSelected] = useState<ExerciseData | null>(null);
   const [toDelete, setToDelete] = useState<string | null>(null);
+  const { run } = useServerAction();
 
   const activeExercises = initialExercises.filter((e) => !e.archived);
   const archivedExercises = initialExercises.filter((e) => e.archived);
 
-  const confirmDelete = async () => {
+  const confirmDelete = () => {
     if (!toDelete) return;
-    const result = await deleteExerciseAction(toDelete);
-    if (result.success) toast.success("Exercise deleted");
-    else toast.error(result.error || "Failed to delete exercise");
-    setToDelete(null);
+    const closeDialog = () => setToDelete(null);
+    run(deleteExerciseAction(toDelete), {
+      successMessage: "Exercise deleted",
+      errorMessage: "Failed to delete exercise",
+      onSuccess: closeDialog,
+      onError: closeDialog,
+    });
   };
 
   const displayed = [...activeExercises, ...(showArchived ? archivedExercises : [])];

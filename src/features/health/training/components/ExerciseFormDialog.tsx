@@ -1,7 +1,6 @@
 "use client";
 import { Checkbox } from "@/components/ui/inputs/checkbox";
 
-import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
@@ -9,10 +8,10 @@ import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { FormField } from "@/components/ui/display/form-field";
 import { CustomSelect } from "@/components/ui/inputs/custom-select";
-import { toast } from "sonner";
 import { exerciseSchema, type ExerciseFormData } from "../schemas";
 import { upsertExerciseAction } from "../actions/exercise-actions";
 import type { ExerciseData, TrackingType } from "../types";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 const TRACKING_OPTIONS: { id: TrackingType; label: string }[] = [
   { id: "weight_reps", label: "Weight × reps" },
@@ -29,7 +28,7 @@ interface ExerciseFormDialogProps {
 
 export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDialogProps) {
   const isEditing = !!exercise;
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const {
     register,
@@ -49,8 +48,8 @@ export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDi
   });
 
   const onSubmit = (data: ExerciseFormData) => {
-    startTransition(async () => {
-      const result = await upsertExerciseAction({
+    run(
+      upsertExerciseAction({
         id: exercise?.id,
         name: data.name.trim(),
         muscleGroup: data.muscleGroup?.trim() || null,
@@ -58,14 +57,13 @@ export function ExerciseFormDialog({ isOpen, onClose, exercise }: ExerciseFormDi
         trackingType: data.trackingType ?? "weight_reps",
         notes: data.notes?.trim() || null,
         archived: data.archived ?? false,
-      });
-      if (result.success) {
-        toast.success(isEditing ? "Exercise updated" : "Exercise created");
-        onClose();
-      } else {
-        toast.error(result.error || "Failed to save exercise");
-      }
-    });
+      }),
+      {
+        successMessage: isEditing ? "Exercise updated" : "Exercise created",
+        errorMessage: "Failed to save exercise",
+        onSuccess: onClose,
+      },
+    );
   };
 
   return (
