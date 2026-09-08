@@ -2,23 +2,15 @@
 
 import { useMemo, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
-import { Dialog } from "@/components/ui/overlays/dialog";
-import { EXERCISE_DETAILS } from "@/features/health/training/data/exercise-details";
 import { toast } from "sonner";
 import {
-  Check,
   Dumbbell,
-  Activity,
-  ListChecks,
-  Video,
   ChevronDown,
   ChevronRight,
   ClipboardCopy,
-  Flame,
   TrendingUp,
   XCircle,
 } from "lucide-react";
@@ -32,6 +24,9 @@ import {
   unskipExerciseAction,
 } from "../actions/training-session-actions";
 import { buildSessionReportMarkdown } from "../utils/session-report";
+import { SessionWarmupSection } from "./SessionWarmupSection";
+import { SessionSetRow } from "./SessionSetRow";
+import { SessionExerciseDetailsModal } from "./SessionExerciseDetailsModal";
 
 const SKIP_REASONS = ["Втома", "Травма/біль", "Брак часу", "Нема обладнання", "Інше"] as const;
 const CUSTOM_SKIP_REASON = "Інше";
@@ -52,7 +47,7 @@ interface SessionClientProps {
   progressionSuggestions?: Record<string, ProgressionSuggestion>;
 }
 
-type EditableField =
+export type EditableField =
   | "reps"
   | "weight"
   | "rpe"
@@ -344,65 +339,10 @@ export function SessionClient({ session, pastLogs, progressionSuggestions }: Ses
       ) : (
         <div className="flex flex-col gap-4">
           {/* Collapsible Warmup Section */}
-          <div className="bg-amber-500/[0.02] border border-amber-500/10 rounded-xl p-3 flex flex-col gap-2">
-            <div
-              onClick={() => setWarmupCollapsed(!warmupCollapsed)}
-              className="flex items-center justify-between cursor-pointer select-none group/warmup"
-            >
-              <div className="flex items-center gap-2 text-amber-400">
-                <Activity size={16} />
-                <span className="text-xs font-bold uppercase tracking-wider font-mono">
-                  1. Розминка (Протокол RAMP)
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500">
-                <span>~8-10 хв</span>
-                <span>
-                  {warmupCollapsed ? <ChevronRight size={14} /> : <ChevronDown size={14} />}
-                </span>
-              </div>
-            </div>
-
-            {!warmupCollapsed && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs pt-1 border-t border-white/[0.04] mt-1">
-                {/* Raise */}
-                <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
-                  <div className="font-semibold text-zinc-200 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                    1. Підвищення (Raise)
-                  </div>
-                  <p className="text-[11px] text-zinc-400 leading-relaxed">
-                    3–5 хвилин легкого кардіо (еліпс, велотренажер або швидка ходьба). Підвищує
-                    температуру тіла, еластичність м&apos;язів та ЧСС.
-                  </p>
-                </div>
-
-                {/* Activate & Mobilize */}
-                <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
-                  <div className="font-semibold text-zinc-200 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                    2. Мобілізація (Mobilize)
-                  </div>
-                  <p className="text-[11px] text-zinc-400 leading-relaxed">
-                    Динамічні обертання плечових суглобів, розкриття грудного відділу хребта, 10
-                    присідань без ваги та 12 сідничних містків.
-                  </p>
-                </div>
-
-                {/* Potentiate */}
-                <div className="bg-white/[0.01] border border-white/[0.04] p-3 rounded-lg flex flex-col gap-1.5">
-                  <div className="font-semibold text-zinc-200 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                    3. Активація (Potentiate)
-                  </div>
-                  <p className="text-[11px] text-zinc-400 leading-relaxed">
-                    1–2 легкі розминочні підходи з 50% від робочої ваги для першої вправи дня, щоб
-                    підготувати ЦНС та суглоби.
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
+          <SessionWarmupSection
+            warmupCollapsed={warmupCollapsed}
+            setWarmupCollapsed={setWarmupCollapsed}
+          />
 
           <div className="flex items-center gap-2 text-accent-training pl-1 mt-2">
             <Dumbbell size={16} />
@@ -598,398 +538,21 @@ export function SessionClient({ session, pastLogs, progressionSuggestions }: Ses
                       }`;
 
                       return (
-                        <div
+                        <SessionSetRow
                           key={setLog.id}
-                          className="flex flex-col gap-1 w-full border-b border-white/[0.04] md:border-white/[0.02] pb-3 md:pb-1.5 last:border-b-0 last:pb-0"
-                        >
-                          {/* Desktop Layout */}
-                          <div className="hidden md:flex items-center gap-2 w-full min-w-0">
-                            <button
-                              onClick={() => toggleCompleted(setLog.id)}
-                              disabled={isCompleted}
-                              className={setToggleClass}
-                            >
-                              <Check size={14} />
-                            </button>
-                            <span className="font-mono text-xs text-zinc-500 w-4 text-center shrink-0">
-                              {setLog.setNumber}
-                            </span>
-                            <button
-                              onClick={() => toggleWarmup(setLog.id)}
-                              disabled={isCompleted}
-                              title="Розминочний підхід"
-                              className={warmupToggleClass}
-                            >
-                              <Flame size={12} />
-                            </button>
-
-                            {isTimeBased ? (
-                              <>
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  placeholder="—"
-                                  className={numberInputClass}
-                                  disabled={isCompleted}
-                                  value={setLog.durationSeconds ?? ""}
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      "durationSeconds",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  step="0.1"
-                                  placeholder="—"
-                                  className={numberInputClass}
-                                  disabled={isCompleted}
-                                  value={setLog.distanceMeters ?? ""}
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      "distanceMeters",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                              </>
-                            ) : (
-                              <>
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  placeholder="—"
-                                  className={numberInputClass}
-                                  disabled={isCompleted}
-                                  value={setLog.reps ?? ""}
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      "reps",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  step="0.5"
-                                  placeholder="—"
-                                  className={numberInputClass}
-                                  disabled={isCompleted}
-                                  value={setLog.weight ?? ""}
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      "weight",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                              </>
-                            )}
-
-                            <Input
-                              type="number"
-                              min={1}
-                              max={10}
-                              step="0.5"
-                              placeholder="—"
-                              className={numberInputClass}
-                              disabled={isCompleted}
-                              value={setLog.rpe ?? ""}
-                              onChange={(event) =>
-                                updateField(
-                                  setLog.id,
-                                  "rpe",
-                                  event.target.value === "" ? null : Number(event.target.value),
-                                )
-                              }
-                              onBlur={() => persist(setLog.id)}
-                            />
-
-                            <Input
-                              type="number"
-                              min={0}
-                              max={10}
-                              step="0.5"
-                              placeholder="—"
-                              className={numberInputClass}
-                              disabled={isCompleted}
-                              value={setLog.rir ?? ""}
-                              onChange={(event) =>
-                                updateField(
-                                  setLog.id,
-                                  "rir",
-                                  event.target.value === "" ? null : Number(event.target.value),
-                                )
-                              }
-                              onBlur={() => persist(setLog.id)}
-                            />
-
-                            <Input
-                              type="number"
-                              min={0}
-                              placeholder="—"
-                              className={numberInputClass}
-                              disabled={isCompleted}
-                              value={setLog.restSeconds ?? ""}
-                              onChange={(event) =>
-                                updateField(
-                                  setLog.id,
-                                  "restSeconds",
-                                  event.target.value === "" ? null : Number(event.target.value),
-                                )
-                              }
-                              onBlur={() => persist(setLog.id)}
-                            />
-
-                            <Input
-                              placeholder="Нотатки..."
-                              className={notesInputClass}
-                              disabled={isCompleted}
-                              value={setLog.notes ?? ""}
-                              onChange={(event) =>
-                                updateField(setLog.id, "notes", event.target.value)
-                              }
-                              onBlur={() => persist(setLog.id)}
-                            />
-                          </div>
-
-                          {pastSet && (
-                            <div className="hidden md:flex items-center gap-1.5 pl-13 text-[10px] text-zinc-500 font-mono select-none">
-                              <span>Минулого разу:</span>
-                              {isTimeBased ? (
-                                <span className="text-zinc-400">
-                                  {pastSet.durationSeconds ? `${pastSet.durationSeconds}с` : "—"}
-                                  {pastSet.distanceMeters ? ` / ${pastSet.distanceMeters}м` : ""}
-                                </span>
-                              ) : (
-                                <span className="text-zinc-400 font-bold">
-                                  {pastSet.weight !== null ? `${pastSet.weight}кг` : "—"}
-                                  {" х "}
-                                  {pastSet.reps !== null ? `${pastSet.reps}` : "—"}
-                                </span>
-                              )}
-                              {pastSet.rpe && (
-                                <span className="text-zinc-500">@ RPE {pastSet.rpe}</span>
-                              )}
-                              {pastSet.rir != null && (
-                                <span className="text-zinc-500">@ RIR {pastSet.rir}</span>
-                              )}
-                            </div>
-                          )}
-
-                          {/* Mobile Layout */}
-                          <div className="flex md:hidden flex-col gap-2.5 w-full">
-                            {/* Header: Set Number, Completed Checkbox, Past Set Info */}
-                            <div className="flex items-center justify-between gap-2">
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={() => toggleCompleted(setLog.id)}
-                                  disabled={isCompleted}
-                                  className={setToggleClass}
-                                >
-                                  <Check size={16} />
-                                </button>
-                                <span className="font-mono text-sm font-semibold text-zinc-300">
-                                  Сет {setLog.setNumber}
-                                </span>
-                                <button
-                                  onClick={() => toggleWarmup(setLog.id)}
-                                  disabled={isCompleted}
-                                  title="Розминочний підхід"
-                                  className={warmupToggleClass}
-                                >
-                                  <Flame size={12} />
-                                </button>
-                              </div>
-
-                              {pastSet && (
-                                <div className="text-[11px] text-zinc-500 font-mono select-none flex items-center gap-1 bg-white/[0.02] px-2 py-0.5 rounded border border-white/[0.04]">
-                                  <span className="text-zinc-500">Минулого разу:</span>
-                                  {isTimeBased ? (
-                                    <span className="text-zinc-400 font-medium">
-                                      {pastSet.durationSeconds
-                                        ? `${pastSet.durationSeconds}с`
-                                        : "—"}
-                                      {pastSet.distanceMeters
-                                        ? ` / ${pastSet.distanceMeters}м`
-                                        : ""}
-                                    </span>
-                                  ) : (
-                                    <span className="text-zinc-400 font-bold">
-                                      {pastSet.weight !== null ? `${pastSet.weight}кг` : "—"}
-                                      {" х "}
-                                      {pastSet.reps !== null ? `${pastSet.reps}` : "—"}
-                                    </span>
-                                  )}
-                                  {pastSet.rpe && (
-                                    <span className="text-zinc-500">@ {pastSet.rpe}</span>
-                                  )}
-                                  {pastSet.rir != null && (
-                                    <span className="text-zinc-500">/ RIR {pastSet.rir}</span>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Inputs Grid */}
-                            <div className="grid grid-cols-2 gap-2">
-                              {/* Input 1: Reps / Time */}
-                              <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
-                                  {isTimeBased ? "Час (с)" : "Повт"}
-                                </label>
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  placeholder="—"
-                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
-                                  disabled={isCompleted}
-                                  value={
-                                    isTimeBased
-                                      ? (setLog.durationSeconds ?? "")
-                                      : (setLog.reps ?? "")
-                                  }
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      isTimeBased ? "durationSeconds" : "reps",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                              </div>
-
-                              {/* Input 2: Weight / Distance */}
-                              <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
-                                  {isTimeBased ? "Дист (м)" : "Вага"}
-                                </label>
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  step={isTimeBased ? "0.1" : "0.5"}
-                                  placeholder="—"
-                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
-                                  disabled={isCompleted}
-                                  value={
-                                    isTimeBased
-                                      ? (setLog.distanceMeters ?? "")
-                                      : (setLog.weight ?? "")
-                                  }
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      isTimeBased ? "distanceMeters" : "weight",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="grid grid-cols-3 gap-2">
-                              {/* Input 3: RPE */}
-                              <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
-                                  RPE
-                                </label>
-                                <Input
-                                  type="number"
-                                  min={1}
-                                  max={10}
-                                  step="0.5"
-                                  placeholder="—"
-                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
-                                  disabled={isCompleted}
-                                  value={setLog.rpe ?? ""}
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      "rpe",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                              </div>
-
-                              {/* Input 4: RIR */}
-                              <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
-                                  RIR
-                                </label>
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  max={10}
-                                  step="0.5"
-                                  placeholder="—"
-                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
-                                  disabled={isCompleted}
-                                  value={setLog.rir ?? ""}
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      "rir",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                              </div>
-
-                              {/* Input 5: Rest */}
-                              <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-500 text-center">
-                                  Відпоч
-                                </label>
-                                <Input
-                                  type="number"
-                                  min={0}
-                                  placeholder="—"
-                                  className="w-full text-center text-sm px-1 h-9 rounded-lg"
-                                  disabled={isCompleted}
-                                  value={setLog.restSeconds ?? ""}
-                                  onChange={(event) =>
-                                    updateField(
-                                      setLog.id,
-                                      "restSeconds",
-                                      event.target.value === "" ? null : Number(event.target.value),
-                                    )
-                                  }
-                                  onBlur={() => persist(setLog.id)}
-                                />
-                              </div>
-                            </div>
-
-                            {/* Full-width Notes Textarea */}
-                            <div className="flex flex-col gap-1 w-full">
-                              <Textarea
-                                placeholder="Нотатки до підходу..."
-                                className="w-full text-xs min-h-[44px] py-2 px-2.5 rounded-lg border border-white/[0.04] bg-black/15 focus:bg-black/25 placeholder:text-zinc-600 focus:glass-input-focus transition-all duration-150 resize-none"
-                                disabled={isCompleted}
-                                value={setLog.notes ?? ""}
-                                onChange={(event) =>
-                                  updateField(setLog.id, "notes", event.target.value)
-                                }
-                                onBlur={() => persist(setLog.id)}
-                              />
-                            </div>
-                          </div>
-                        </div>
+                          setLog={setLog}
+                          isCompleted={isCompleted}
+                          isTimeBased={isTimeBased}
+                          toggleCompleted={toggleCompleted}
+                          toggleWarmup={toggleWarmup}
+                          updateField={updateField}
+                          persist={persist}
+                          setToggleClass={setToggleClass}
+                          warmupToggleClass={warmupToggleClass}
+                          numberInputClass={numberInputClass}
+                          notesInputClass={notesInputClass}
+                          pastSet={pastSet}
+                        />
                       );
                     })}
                   </div>
@@ -1015,92 +578,10 @@ export function SessionClient({ session, pastLogs, progressionSuggestions }: Ses
       )}
 
       {/* Exercise Details Modal */}
-      <Dialog
-        isOpen={!!selectedExercise}
-        onClose={() => setSelectedExercise(null)}
-        title={selectedExercise?.name}
-        maxWidth="640px"
-      >
-        {selectedExercise &&
-          (() => {
-            const details = EXERCISE_DETAILS[selectedExercise.name];
-            return (
-              <div className="flex flex-col gap-5 text-sm pb-2">
-                {/* Biomechanics */}
-                <div className="flex flex-col gap-2">
-                  <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-accent-training flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
-                    <Activity size={14} />
-                    Науковий аналіз
-                  </h4>
-                  <p className="text-zinc-300 leading-relaxed text-xs">
-                    {details?.explanation || "Пояснення вправи ще додається."}
-                  </p>
-                  {details?.scientificInsight && (
-                    <p className="text-[11px] text-zinc-400 leading-relaxed italic bg-white/[0.02] p-2.5 rounded-lg border border-white/[0.04]">
-                      {details.scientificInsight}
-                    </p>
-                  )}
-                </div>
-
-                {/* Technique */}
-                <div className="flex flex-col gap-2">
-                  <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-blue-400 flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
-                    <ListChecks size={14} />
-                    Техніка виконання
-                  </h4>
-                  <div className="flex flex-col gap-2">
-                    {details?.technique ? (
-                      details.technique.split("\n").map((step, idx) => (
-                        <div key={idx} className="flex gap-2 items-start text-xs text-zinc-300">
-                          <span className="w-5 h-5 rounded-full bg-white/5 border border-white/[0.08] text-[10px] font-mono flex items-center justify-center shrink-0 mt-0.5">
-                            {idx + 1}
-                          </span>
-                          <p className="pt-0.5">{step.replace(/^\d+\.\s*/, "")}</p>
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-zinc-400 italic">Слідкуйте за правильною формою.</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Video Player */}
-                {details?.videoUrl && (
-                  <div className="flex flex-col gap-2">
-                    <h4 className="text-xs font-semibold font-mono uppercase tracking-wider text-red-400 flex items-center gap-1.5 border-b border-white/[0.04] pb-1">
-                      <Video size={14} />
-                      Відеопояснення
-                    </h4>
-                    <div className="w-full aspect-video rounded-lg overflow-hidden border border-white/[0.08] bg-black/20 mt-1">
-                      <iframe
-                        className="w-full h-full"
-                        src={details.videoUrl}
-                        title={`Відеопояснення: ${selectedExercise.name}`}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                  </div>
-                )}
-
-                {/* Open Full Page */}
-                <div className="flex justify-between items-center pt-3 border-t border-white/[0.06] mt-1">
-                  <Link
-                    href={`/health/training/exercises/${selectedExercise.id}`}
-                    target="_blank"
-                    className="text-[11px] font-semibold text-zinc-400 hover:text-zinc-200 transition-colors underline flex items-center gap-1 focus:outline-none"
-                  >
-                    Відкрити повну сторінку вправи в новій вкладці →
-                  </Link>
-                  <Button variant="secondary" size="sm" onClick={() => setSelectedExercise(null)}>
-                    Закрити
-                  </Button>
-                </div>
-              </div>
-            );
-          })()}
-      </Dialog>
+      <SessionExerciseDetailsModal
+        selectedExercise={selectedExercise}
+        setSelectedExercise={setSelectedExercise}
+      />
     </div>
   );
 }
