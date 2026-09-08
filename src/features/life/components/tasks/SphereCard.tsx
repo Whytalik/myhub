@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { SPHERE_ICONS } from "./lucide-icons-map";
 import { deleteSphereAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
-import { toast } from "sonner";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface SphereCardProps {
   sphere: LifeSphereData;
@@ -15,18 +15,14 @@ interface SphereCardProps {
 
 export function SphereCard({ sphere, onEdit }: SphereCardProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [, startTransition] = useTransition();
+  const { run } = useServerAction();
   const Icon = SPHERE_ICONS[sphere.icon];
   const taskCountLabel = `${sphere.taskCount} task${sphere.taskCount !== 1 ? "s" : ""}`;
 
   const handleDelete = () => {
-    startTransition(async () => {
-      const result = await deleteSphereAction(sphere.id);
-      if (result.success) {
-        toast.success("Sphere deleted");
-      } else {
-        toast.error(result.error || "Failed to delete sphere");
-      }
+    run(deleteSphereAction(sphere.id), {
+      successMessage: "Sphere deleted",
+      errorMessage: "Failed to delete sphere",
     });
   };
 

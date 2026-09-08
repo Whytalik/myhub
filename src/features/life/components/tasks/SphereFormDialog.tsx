@@ -1,6 +1,5 @@
 "use client";
 
-import { useTransition } from "react";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
@@ -12,9 +11,9 @@ import { upsertSphereAction } from "@/features/life/actions/task-actions";
 import { IconPickerDialog } from "./IconPickerDialog";
 import { sphereSchema, type SphereFormData } from "@/features/life/schemas";
 import type { LifeSphereData } from "@/features/life/types";
-import { toast } from "sonner";
 import { Pencil, Palette } from "lucide-react";
 import { useState } from "react";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface SphereFormDialogProps {
   isOpen: boolean;
@@ -24,7 +23,7 @@ interface SphereFormDialogProps {
 
 export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogProps) {
   const isEditing = !!sphere;
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
   const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
   const {
@@ -46,20 +45,19 @@ export function SphereFormDialog({ isOpen, onClose, sphere }: SphereFormDialogPr
   const name = useWatch({ control, name: "name" });
 
   const onSubmit = (data: SphereFormData) => {
-    startTransition(async () => {
-      const result = await upsertSphereAction({
+    run(
+      upsertSphereAction({
         id: sphere?.id,
         name: data.name.trim(),
         color: data.color,
         icon: data.icon,
-      });
-      if (result.success) {
-        toast.success(isEditing ? "Sphere updated" : "Sphere created");
-        onClose();
-      } else {
-        toast.error(result.error || "Failed to save sphere");
-      }
-    });
+      }),
+      {
+        successMessage: isEditing ? "Sphere updated" : "Sphere created",
+        errorMessage: "Failed to save sphere",
+        onSuccess: onClose,
+      },
+    );
   };
 
   return (

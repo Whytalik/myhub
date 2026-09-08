@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { FolderKanban, CheckSquare, AlertTriangle, ChevronLeft } from "lucide-react";
 import { Dialog } from "@/components/ui/overlays/dialog";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { decomposeThoughtAction } from "@/features/life/actions/thought-actions";
 import type { LifeSphereData, ThoughtData } from "@/features/life/types";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface ThoughtDecomposeDialogProps {
   isOpen: boolean;
@@ -39,7 +40,7 @@ export function ThoughtDecomposeDialog({
   const [atomDescription, setAtomDescription] = useState("");
   const [sphereId, setSphereId] = useState<string | null>(thought.sphereId);
   const [resistance, setResistance] = useState<number>(1); // Scale 1-5
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const handleOpenForm = (selectedType: DecomposeType) => {
     setType(selectedType);
@@ -66,8 +67,8 @@ export function ThoughtDecomposeDialog({
       return;
     }
 
-    startTransition(async () => {
-      const result = await decomposeThoughtAction({
+    run(
+      decomposeThoughtAction({
         thoughtId: thought.id,
         type: type!,
         taskTitle: isTask ? taskTitle : undefined,
@@ -76,18 +77,18 @@ export function ThoughtDecomposeDialog({
         description: description || null,
         atomDescription: !isTask ? atomDescription : null,
         sphereId,
-      });
-
-      if (result.success) {
-        toast.success(
-          isTask ? "Думку успішно розбито на завдання!" : "Думку успішно розбито на проєкт!",
-        );
-        onDecomposed();
-        onClose();
-      } else {
-        toast.error(result.error || "Не вдалося зберегти декомпозицію");
-      }
-    });
+      }),
+      {
+        successMessage: isTask
+          ? "Думку успішно розбито на завдання!"
+          : "Думку успішно розбито на проєкт!",
+        errorMessage: "Не вдалося зберегти декомпозицію",
+        onSuccess: () => {
+          onDecomposed();
+          onClose();
+        },
+      },
+    );
   };
 
   return (

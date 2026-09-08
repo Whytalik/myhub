@@ -22,6 +22,7 @@ import { PriorityToggle } from "./PriorityToggle";
 import { SphereToggle } from "./SphereToggle";
 import { ALL_ICONS, SPHERE_ICONS } from "./lucide-icons-map";
 import type { DraggableAttributes, DraggableSyntheticListeners } from "@dnd-kit/core";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 export interface TaskCardBaseProps {
   task: TaskData;
@@ -60,6 +61,7 @@ export function TaskCardBase({
 }: TaskCardBaseProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [, startTransition] = useTransition();
+  const { run } = useServerAction();
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -95,13 +97,9 @@ export function TaskCardBase({
   };
 
   const handleToggleFrog = () => {
-    startTransition(async () => {
-      const result = await setTaskAsFrogAction(task.id);
-      if (result.success) {
-        toast.success(task.isFrog ? "Жабу знято" : "🐸 Жабу встановлено!");
-      } else {
-        toast.error(result.error || "Failed to update frog");
-      }
+    run(setTaskAsFrogAction(task.id), {
+      successMessage: task.isFrog ? "Жабу знято" : "🐸 Жабу встановлено!",
+      errorMessage: "Failed to update frog",
     });
   };
 

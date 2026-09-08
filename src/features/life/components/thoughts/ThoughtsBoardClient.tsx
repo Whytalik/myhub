@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -14,7 +14,6 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, horizontalListSortingStrategy } from "@dnd-kit/sortable";
 import { Eye, EyeOff, Plus } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/actions/button";
 import {
   deleteStatusAction,
@@ -28,6 +27,7 @@ import type { LifeSphereData, ThoughtData, ThoughtStatusData } from "@/features/
 import { StatusColumn } from "./StatusColumn";
 import { StatusFormDialog } from "./StatusFormDialog";
 import type { ThoughtDetailPatch } from "./ThoughtDetailDialog";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface ThoughtsBoardClientProps {
   initialStatuses: ThoughtStatusData[];
@@ -39,7 +39,7 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
   const [newStatusOpen, setNewStatusOpen] = useState(false);
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const [isTrashVisible, setIsTrashVisible] = useState(false);
-  const [, startTransition] = useTransition();
+  const { run } = useServerAction();
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
@@ -127,12 +127,9 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
       const reordered = arrayMove(columns, oldIndex, newIndex);
       setColumns(reordered);
 
-      startTransition(async () => {
-        const result = await reorderStatusesAction(reordered.map((c) => c.id));
-        if (!result.success) {
-          setColumns(previous);
-          toast.error(result.error || "Failed to reorder statuses");
-        }
+      run(reorderStatusesAction(reordered.map((c) => c.id)), {
+        errorMessage: "Failed to reorder statuses",
+        onError: () => setColumns(previous),
       });
       return;
     }
@@ -144,11 +141,8 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
 
       const orderedIds = targetColumn.thoughts.map((t) => t.id);
 
-      startTransition(async () => {
-        const result = await moveThoughtAction(thoughtId, targetColumn.id, orderedIds);
-        if (!result.success) {
-          toast.error(result.error || "Failed to move thought");
-        }
+      run(moveThoughtAction(thoughtId, targetColumn.id, orderedIds), {
+        errorMessage: "Failed to move thought",
       });
     }
   };
@@ -177,10 +171,10 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
       ),
     );
 
-    startTransition(async () => {
-      const result = await upsertThoughtAction({ statusId, content });
-      if (result.success) {
-        const saved = result.data as unknown as ThoughtData;
+    run(upsertThoughtAction({ statusId, content }), {
+      errorMessage: "Failed to add thought",
+      onSuccess: (data) => {
+        const saved = data as unknown as ThoughtData;
         setColumns((prev) =>
           prev.map((c) =>
             c.id === statusId
@@ -188,14 +182,14 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
               : c,
           ),
         );
-      } else {
+      },
+      onError: () => {
         setColumns((prev) =>
           prev.map((c) =>
             c.id === statusId ? { ...c, thoughts: c.thoughts.filter((t) => t.id !== tempId) } : c,
           ),
         );
-        toast.error(result.error || "Failed to add thought");
-      }
+      },
     });
   };
 
@@ -216,17 +210,16 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
       })),
     );
 
-    startTransition(async () => {
-      const result = await upsertThoughtAction({ id: thoughtId, ...patch });
-      if (!result.success) {
+    run(upsertThoughtAction({ id: thoughtId, ...patch }), {
+      errorMessage: "Failed to update thought",
+      onError: () => {
         setColumns((prev) =>
           prev.map((c) => ({
             ...c,
             thoughts: c.thoughts.map((t) => (t.id === thoughtId ? previous : t)),
           })),
         );
-        toast.error(result.error || "Failed to update thought");
-      }
+      },
     });
   };
 
@@ -241,14 +234,13 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
       ),
     );
 
-    startTransition(async () => {
-      const result = await deleteThoughtAction(thoughtId);
-      if (!result.success) {
+    run(deleteThoughtAction(thoughtId), {
+      errorMessage: "Failed to delete thought",
+      onError: () => {
         setColumns((prev) =>
           prev.map((c) => (c.id === column.id ? { ...c, thoughts: previousThoughts } : c)),
         );
-        toast.error(result.error || "Failed to delete thought");
-      }
+      },
     });
   };
 
@@ -266,12 +258,9 @@ export function ThoughtsBoardClient({ initialStatuses, spheres }: ThoughtsBoardC
     const previous = columns;
     setColumns((prev) => prev.filter((c) => c.id !== statusId));
 
-    startTransition(async () => {
-      const result = await deleteStatusAction(statusId);
-      if (!result.success) {
-        setColumns(previous);
-        toast.error(result.error || "Failed to delete status");
-      }
+    run(deleteStatusAction(statusId), {
+      errorMessage: "Failed to delete status",
+      onError: () => setColumns(previous),
     });
   };
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
@@ -10,7 +9,7 @@ import { FormField } from "@/components/ui/display/form-field";
 import { upsertStatusAction } from "@/features/life/actions/thought-actions";
 import { thoughtStatusSchema, type ThoughtStatusFormData } from "@/features/life/schemas";
 import type { ThoughtStatusData } from "@/features/life/types";
-import { toast } from "sonner";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface StatusFormDialogProps {
   isOpen: boolean;
@@ -20,7 +19,7 @@ interface StatusFormDialogProps {
 
 export function StatusFormDialog({ isOpen, onClose, status }: StatusFormDialogProps) {
   const isEditing = !!status;
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const {
     register,
@@ -36,19 +35,18 @@ export function StatusFormDialog({ isOpen, onClose, status }: StatusFormDialogPr
   });
 
   const onSubmit = (data: ThoughtStatusFormData) => {
-    startTransition(async () => {
-      const result = await upsertStatusAction({
+    run(
+      upsertStatusAction({
         id: status?.id,
         name: data.name.trim(),
         color: data.color,
-      });
-      if (result.success) {
-        toast.success(isEditing ? "Status updated" : "Status created");
-        onClose();
-      } else {
-        toast.error(result.error || "Failed to save status");
-      }
-    });
+      }),
+      {
+        successMessage: isEditing ? "Status updated" : "Status created",
+        errorMessage: "Failed to save status",
+        onSuccess: onClose,
+      },
+    );
   };
 
   return (

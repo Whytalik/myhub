@@ -12,10 +12,10 @@ import {
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { format, addDays, isSameDay, isToday } from "date-fns";
-import { toast } from "sonner";
 import { upsertTaskAction } from "@/features/life/actions/task-actions";
 import { TaskCardBase } from "@/features/life/components/tasks/TaskCardBase";
 import type { TaskData, TaskStatus, LifeSphereData } from "@/features/life/types";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 const STATUS_COLUMNS: { id: TaskStatus; label: string }[] = [
   { id: "TODO", label: "To Do" },
@@ -131,6 +131,7 @@ export function WeeklyStatusBoard({
   onTaskDelete,
 }: WeeklyStatusBoardProps) {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
+  const { run } = useServerAction();
   const days = weekStart ? Array.from({ length: 7 }, (_, i) => addDays(weekStart, i)) : [];
 
   const cellTasks = (status: TaskStatus, day: Date): TaskData[] =>
@@ -158,17 +159,17 @@ export function WeeklyStatusBoard({
       ),
     );
 
-    upsertTaskAction({
-      id: taskId,
-      plannedDate: null,
-      plannedEndDate: null,
-    }).then((result) => {
-      if (result.success) {
-        toast.success("Атом повернено в беклог");
-      } else {
-        toast.error(result.error || "Failed to unschedule atom");
-      }
-    });
+    run(
+      upsertTaskAction({
+        id: taskId,
+        plannedDate: null,
+        plannedEndDate: null,
+      }),
+      {
+        successMessage: "Атом повернено в беклог",
+        errorMessage: "Failed to unschedule atom",
+      },
+    );
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -210,14 +211,15 @@ export function WeeklyStatusBoard({
       ),
     );
 
-    upsertTaskAction({
-      id: taskId,
-      status,
-      plannedDate: newPlannedDate.toISOString(),
-      ...clearedTimeFields,
-    }).then((result) => {
-      if (!result.success) toast.error(result.error || "Failed to move atom");
-    });
+    run(
+      upsertTaskAction({
+        id: taskId,
+        status,
+        plannedDate: newPlannedDate.toISOString(),
+        ...clearedTimeFields,
+      }),
+      { errorMessage: "Failed to move atom" },
+    );
   };
 
   return (
