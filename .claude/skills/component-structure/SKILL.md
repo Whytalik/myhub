@@ -9,9 +9,7 @@ Every component body follows the same four-part order, top to bottom. Never comp
 
 ## Why this is a hard rule here
 
-A past refactor (`2d68982 refactor: ... strip styles and comments`) stripped inline className attributes across the codebase and left the JSX structurally intact but with **blank attribute slots** — the tag is still there, the line is just empty where the class string used to be. As of this writing that pattern still exists in **36 files / 85 occurrences** (e.g. `StatusToggle.tsx`, `HabitCard.tsx`, `TaskCalendar.tsx`, `dialog.tsx`) — components silently rendering unstyled because the style computation and the render were tangled together in one JSX expression, so removing the wrong thing removed both. Keeping computation and rendering as two visibly separate steps is what makes this class of regression impossible to introduce silently and easy to spot in review.
-
-`PRIORITY_CONFIG`/`STATUS_CONFIG` in `PriorityBadge.tsx`/`StatusToggle.tsx` have the same problem one level up: every `style: ""` field is a dead placeholder that was never filled back in after the strip.
+A past refactor (`2d68982 refactor: ... strip styles and comments`) stripped inline className attributes across the codebase and left the JSX structurally intact but with **blank attribute slots** — the tag was still there, but the class string was gone, so components silently rendered unstyled. That specific regression (including the `PRIORITY_CONFIG`/`STATUS_CONFIG` `style: ""` placeholders) has since been fixed and verified clean repo-wide (checked 2026-09-08 — zero blank `className`/`style` slots left). The rule below stays in force as prevention: keeping computation and rendering as two visibly separate steps is what makes this class of regression impossible to introduce silently and easy to spot in review.
 
 ## The four-part order
 
