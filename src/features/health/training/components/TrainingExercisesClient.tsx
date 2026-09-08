@@ -69,21 +69,19 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
               {ex.name}
             </Link>
             <div className="flex items-center gap-0.5 shrink-0">
-              <button
+              <Button
+                variant="ghost"
+                size="icon-sm"
                 onClick={() => {
                   setSelected(ex);
                   setIsFormOpen(true);
                 }}
-                className="p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors"
               >
                 <Edit2 size={12} />
-              </button>
-              <button
-                onClick={() => toDelete.open(ex.id)}
-                className="p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors"
-              >
+              </Button>
+              <Button variant="ghost-danger" size="icon-sm" onClick={() => toDelete.open(ex.id)}>
                 <Trash2 size={12} />
-              </button>
+              </Button>
             </div>
           </div>
           <div className="flex items-center gap-1.5 flex-wrap">

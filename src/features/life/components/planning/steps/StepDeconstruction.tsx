@@ -156,11 +156,11 @@ export function StepDeconstruction({
                     <span className="text-[9px] font-mono text-accent uppercase tracking-wider block font-semibold mb-1">
                       Currently Deconstructing
                     </span>
-                    <h4 className="text-base font-bold text-zinc-150 truncate">
+                    <h4 className="text-base font-bold text-zinc-200 truncate">
                       📂 {selectedDeconstructProject.title}
                     </h4>
                     {selectedDeconstructProject.description && (
-                      <p className="text-xs text-zinc-450 mt-1 whitespace-pre-wrap">
+                      <p className="text-xs text-zinc-400 mt-1 whitespace-pre-wrap">
                         {selectedDeconstructProject.description}
                       </p>
                     )}
@@ -183,24 +183,24 @@ export function StepDeconstruction({
                     >
                       <Check size={13} />
                     </button>
-                    <button
-                      type="button"
+                    <Button
+                      variant="ghost-accent"
+                      size="icon-sm"
                       onClick={() => handleOpenEditProject(selectedDeconstructProject)}
-                      className="p-1.5 rounded-lg text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150"
                       title="Edit project"
                       disabled={isActionPending}
                     >
                       <Pencil size={13} />
-                    </button>
-                    <button
-                      type="button"
+                    </Button>
+                    <Button
+                      variant="ghost-danger"
+                      size="icon-sm"
                       onClick={() => setDeleteProjectId(selectedDeconstructProject.id)}
-                      className="p-1.5 rounded-lg text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors duration-150"
                       title="Delete project"
                       disabled={isActionPending}
                     >
                       <Trash2 size={13} />
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -270,24 +270,26 @@ export function StepDeconstruction({
                                   {task.resistance}/5
                                 </span>
                               )}
-                              <button
-                                type="button"
+                              <Button
+                                variant="ghost-accent"
+                                size="icon-sm"
                                 onClick={() => handleOpenEditTask(task, "atom")}
-                                className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                className="opacity-0 group-hover:opacity-100 shrink-0"
                                 title="Edit atom"
                                 disabled={isActionPending}
                               >
                                 <Pencil size={11} />
-                              </button>
-                              <button
-                                type="button"
+                              </Button>
+                              <Button
+                                variant="ghost-danger"
+                                size="icon-sm"
                                 onClick={() => setDeleteTaskId(task.id)}
-                                className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                className="opacity-0 group-hover:opacity-100 shrink-0"
                                 title="Delete atom"
                                 disabled={isActionPending}
                               >
                                 <Trash2 size={11} />
-                              </button>
+                              </Button>
                             </div>
                           );
                         }
@@ -314,7 +316,7 @@ export function StepDeconstruction({
                                   📋 {task.title}
                                 </span>
                                 {task.description && (
-                                  <span className="text-[10px] text-zinc-505 line-clamp-1">
+                                  <span className="text-[10px] text-zinc-500 line-clamp-1">
                                     {task.description}
                                   </span>
                                 )}
@@ -324,24 +326,26 @@ export function StepDeconstruction({
                                   {doneCount}/{childCount}
                                 </span>
                               )}
-                              <button
-                                type="button"
+                              <Button
+                                variant="ghost-accent"
+                                size="icon-sm"
                                 onClick={() => handleOpenEditTask(task, "group")}
-                                className="p-1 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                className="opacity-0 group-hover:opacity-100 shrink-0"
                                 title="Edit group"
                                 disabled={isActionPending}
                               >
                                 <Pencil size={13} />
-                              </button>
-                              <button
-                                type="button"
+                              </Button>
+                              <Button
+                                variant="ghost-danger"
+                                size="icon-sm"
                                 onClick={() => setDeleteTaskId(task.id)}
-                                className="p-1 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover:opacity-100 duration-150 shrink-0"
+                                className="opacity-0 group-hover:opacity-100 shrink-0"
                                 title="Delete group"
                                 disabled={isActionPending}
                               >
                                 <Trash2 size={13} />
-                              </button>
+                              </Button>
                             </div>
 
                             {/* Expanded: sub-atoms + inline form */}
@@ -358,24 +362,26 @@ export function StepDeconstruction({
                                       >
                                         {atom.status === "DONE" ? "✔️" : "○"} {atom.title}
                                       </span>
-                                      <button
-                                        type="button"
+                                      <Button
+                                        variant="ghost-accent"
+                                        size="icon-sm"
                                         onClick={() => handleOpenEditTask(atom, "atom")}
-                                        className="p-0.5 rounded text-zinc-505 hover:text-accent hover:bg-accent/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
+                                        className="opacity-0 group-hover/atom:opacity-100 shrink-0"
                                         title="Edit atom"
                                         disabled={isActionPending}
                                       >
                                         <Pencil size={11} />
-                                      </button>
-                                      <button
-                                        type="button"
+                                      </Button>
+                                      <Button
+                                        variant="ghost-danger"
+                                        size="icon-sm"
                                         onClick={() => setDeleteTaskId(atom.id)}
-                                        className="p-0.5 rounded text-zinc-505 hover:text-rose-400 hover:bg-rose-500/10 transition-colors opacity-0 group-hover/atom:opacity-100 duration-150 shrink-0"
+                                        className="opacity-0 group-hover/atom:opacity-100 shrink-0"
                                         title="Delete atom"
                                         disabled={isActionPending}
                                       >
                                         <Trash2 size={11} />
-                                      </button>
+                                      </Button>
                                     </div>
                                   ))
                                 ) : (
@@ -393,7 +399,7 @@ export function StepDeconstruction({
               </div>
             </div>
           ) : (
-            <div className="text-zinc-505 text-xs italic py-16 text-center">
+            <div className="text-zinc-500 text-xs italic py-16 text-center">
               Select a project from the left to start deconstruction.
             </div>
           )}

@@ -231,7 +231,7 @@ export function Sidebar({ user, initialOpenSections, dailyResistanceBudget = 8 }
               >
                 <button
                   onClick={() => setIsMobileOpen(false)}
-                  className="md:hidden p-1.5 text-zinc-400 hover:text-zinc-250 hover:bg-zinc-850 rounded-md transition-colors"
+                  className="md:hidden p-1.5 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-900 rounded-md transition-colors"
                 >
                   <X size={14} />
                 </button>
@@ -240,7 +240,7 @@ export function Sidebar({ user, initialOpenSections, dailyResistanceBudget = 8 }
                     e.stopPropagation();
                     toggleSidebar();
                   }}
-                  className="hidden md:flex p-1.5 text-zinc-400 hover:text-zinc-250 hover:bg-zinc-850 rounded-md transition-colors"
+                  className="hidden md:flex p-1.5 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-900 rounded-md transition-colors"
                 >
                   <motion.div
                     animate={{ rotate: !isCollapsed ? 45 : 0 }}
@@ -330,7 +330,7 @@ export function Sidebar({ user, initialOpenSections, dailyResistanceBudget = 8 }
                           const pageLinkClass = `flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[13px] outline-none focus:outline-none transition-all duration-300 ease-in-out ${
                             isActive
                               ? `font-medium ${styles.bgActive} shadow-sm`
-                              : "text-zinc-350 hover:text-white hover:bg-white/10 border border-transparent"
+                              : "text-zinc-400 hover:text-white hover:bg-white/10 border border-transparent"
                           }`;
                           const pageIconClass = isActive ? styles.iconActive : "text-zinc-500";
                           const pageIconStrokeWidth = isActive ? 2.5 : 2;
@@ -363,7 +363,7 @@ export function Sidebar({ user, initialOpenSections, dailyResistanceBudget = 8 }
                 href="/life"
                 className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity"
               >
-                <div className="w-7 h-7 rounded-full bg-zinc-850 text-zinc-300 flex items-center justify-center border border-zinc-800 text-[11px] font-semibold flex-shrink-0">
+                <div className="w-7 h-7 rounded-full bg-zinc-900 text-zinc-300 flex items-center justify-center border border-zinc-800 text-[11px] font-semibold flex-shrink-0">
                   <span>{userInitials}</span>
                 </div>
                 <AnimatePresence initial={false}>

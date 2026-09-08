@@ -1,4 +1,5 @@
 import { Calendar, Pencil, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/actions/button";
 import type { SprintTask } from "./types";
 
 export function AtomCard({
@@ -34,30 +35,25 @@ export function AtomCard({
         </span>
       )}
       <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 shrink-0">
-        <button
-          type="button"
+        <Button
+          variant="ghost-accent"
+          size="icon-sm"
           onClick={() => onSchedule(atom.id)}
-          className="p-1 rounded-md text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150"
           title="Schedule"
         >
           <Calendar size={11} />
-        </button>
-        <button
-          type="button"
-          onClick={() => onEdit(atom)}
-          className="p-1 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors duration-150"
-          title="Edit"
-        >
+        </Button>
+        <Button variant="ghost" size="icon-sm" onClick={() => onEdit(atom)} title="Edit">
           <Pencil size={11} />
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="ghost-danger"
+          size="icon-sm"
           onClick={() => onDelete(atom.id)}
-          className="p-1 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors duration-150"
           title="Delete"
         >
           <Trash2 size={11} />
-        </button>
+        </Button>
       </div>
     </div>
   );

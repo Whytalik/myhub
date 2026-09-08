@@ -124,10 +124,6 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
   const showEmptyState = activeHabits.length === 0 && chainGroups.length === 0 && !showArchived;
   const reorderButtonClass =
     "p-1 rounded text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent";
-  const chainIconActionClass =
-    "p-1.5 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors";
-  const chainDeleteActionClass =
-    "p-1.5 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors";
 
   return (
     <div className="flex flex-col gap-6">
@@ -195,15 +191,16 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
                     </div>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
-                    <button onClick={() => handleEditChain(chain)} className={chainIconActionClass}>
+                    <Button variant="ghost" size="icon-sm" onClick={() => handleEditChain(chain)}>
                       <Edit2 size={14} />
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      variant="ghost-danger"
+                      size="icon-sm"
                       onClick={() => chainToDelete.open(chain.id)}
-                      className={chainDeleteActionClass}
                     >
                       <Trash2 size={14} />
-                    </button>
+                    </Button>
                   </div>
                 </div>
 

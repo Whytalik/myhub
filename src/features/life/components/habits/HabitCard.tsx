@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/actions/button";
 import {
   toggleHabitCompletionAction,
   toggleHabitArchivedAction,
@@ -149,10 +150,6 @@ export function HabitCard({
   const activeLabelClass = `text-[10px] font-mono uppercase tracking-wide ${activeLabel}`;
   const metaChipClass =
     "inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-white/5 text-zinc-400 text-[10px] font-mono uppercase tracking-wide";
-  const iconActionClass =
-    "p-1.5 rounded-md text-zinc-500 hover:text-zinc-200 hover:bg-white/5 transition-colors";
-  const deleteActionClass =
-    "p-1.5 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors";
   const toggleButtonClass = `flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 ${
     isCompletedOnDate
       ? completedButton
@@ -205,22 +202,23 @@ export function HabitCard({
         <div className="flex items-center gap-1 shrink-0">
           {!readOnly && (
             <>
-              <button
+              <Button
+                variant="ghost"
+                size="icon-sm"
                 onClick={handleArchive}
                 title={habit.archived ? "Restore" : "Archive"}
-                className={iconActionClass}
               >
                 <Archive size={14} />
-              </button>
+              </Button>
               {onEdit && (
-                <button onClick={() => onEdit(habit)} className={iconActionClass}>
+                <Button variant="ghost" size="icon-sm" onClick={() => onEdit(habit)}>
                   <Edit2 size={14} />
-                </button>
+                </Button>
               )}
               {onDelete && (
-                <button onClick={() => onDelete(habit.id)} className={deleteActionClass}>
+                <Button variant="ghost-danger" size="icon-sm" onClick={() => onDelete(habit.id)}>
                   <Trash2 size={14} />
-                </button>
+                </Button>
               )}
             </>
           )}

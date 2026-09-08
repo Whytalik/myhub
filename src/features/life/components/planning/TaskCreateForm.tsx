@@ -113,7 +113,7 @@ export function TaskCreateForm({
 
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <label className="text-[10px] font-mono text-zinc-450 uppercase">
+          <label className="text-[10px] font-mono text-zinc-500 uppercase">
             {isGroup ? "Group Title" : "Atom Title"}
           </label>
           <Input
@@ -129,7 +129,7 @@ export function TaskCreateForm({
         </div>
 
         <div className="flex flex-col gap-1">
-          <label className="text-[10px] font-mono text-zinc-450 uppercase">
+          <label className="text-[10px] font-mono text-zinc-500 uppercase">
             Description / Links (optional)
           </label>
           <Textarea
@@ -142,7 +142,7 @@ export function TaskCreateForm({
 
         {projects.length > 1 && (
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-mono text-zinc-450 uppercase">Project</label>
+            <label className="text-[10px] font-mono text-zinc-500 uppercase">Project</label>
             <CustomSelect
               value={projectId}
               onChange={setProjectId}
@@ -154,7 +154,7 @@ export function TaskCreateForm({
 
         {!isGroup && groups.length > 0 && (
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-mono text-zinc-450 uppercase">
+            <label className="text-[10px] font-mono text-zinc-500 uppercase">
               Group (optional)
             </label>
             <CustomSelect
@@ -185,7 +185,7 @@ export function TaskCreateForm({
                         : val >= 4
                           ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
                           : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
-                      : "bg-white/[0.01] border-white/[0.06] text-zinc-505 hover:bg-white/[0.03]"
+                      : "bg-white/[0.01] border-white/[0.06] text-zinc-500 hover:bg-white/[0.03]"
                   }`}
                 >
                   {val}

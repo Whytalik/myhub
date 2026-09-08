@@ -1,16 +1,22 @@
 /**
  * Design-token compliance check.
  *
- * Scans src/**\/*.{ts,tsx} for colors written as raw arbitrary values
- * (Tailwind bracket syntax like bg-[#6fbfbf], or literal hex/rgb(a) inside
- * an inline style={{...}}) instead of the tokens defined in
- * src/app/globals.css's @theme block (see docs/design-system.md).
+ * Scans src/**\/*.{ts,tsx} for two classes of "style from nowhere" instead
+ * of the design system's tokens (see docs/design-system.md):
+ *
+ * 1. Raw arbitrary color values — Tailwind bracket syntax like bg-[#6fbfbf],
+ *    or literal hex/rgb(a) inside an inline style={{...}} — instead of the
+ *    tokens defined in src/app/globals.css's @theme block.
+ * 2. Invalid Tailwind color-scale steps — e.g. text-zinc-450, hover:bg-zinc-750.
+ *    Tailwind's real palette only has 50/100/200/.../900/950; any other
+ *    number generates no CSS at all, so the class silently does nothing.
  *
  * Usage: npx tsx scripts/check-design-tokens.ts
- * Exits 1 if any value exactly duplicates an existing token (should just
- * use the token's utility class instead). Values with no matching token
- * are reported as warnings only — could be a legitimate one-off (chart
- * SVG colors, etc.) or could mean a new token is missing.
+ * Exits 1 if any arbitrary value exactly duplicates an existing token (should
+ * use the token's utility class instead) or any invalid color step is found.
+ * Arbitrary values with no matching token are warnings only — could be a
+ * legitimate one-off (chart SVG colors, etc.) or could mean a new token is
+ * missing.
  */
 import { readFileSync, readdirSync, statSync } from "fs";
 import path from "path";
@@ -62,13 +68,36 @@ const ARBITRARY_CLASS_RE = new RegExp(
 
 const HEX_OR_RGBA_RE = /#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)/g;
 
+// Tailwind's real palette step scale — any color-family-NNN utility using a
+// number outside this set (e.g. text-zinc-450, hover:bg-zinc-750) generates
+// no CSS at all and silently does nothing. These are almost always typos.
+const VALID_PALETTE_STEPS = new Set([
+  "50",
+  "100",
+  "200",
+  "300",
+  "400",
+  "500",
+  "600",
+  "700",
+  "800",
+  "900",
+  "950",
+]);
+const COLOR_FAMILIES =
+  "slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose";
+const INVALID_STEP_RE = new RegExp(
+  `\\b((?:${COLOR_UTILITY_PREFIXES})-(?:${COLOR_FAMILIES})-)(\\d{2,3})\\b`,
+  "g",
+);
+
 interface Finding {
   file: string;
   line: number;
   snippet: string;
   matchedValue: string;
   token?: Token;
-  kind: "arbitrary-class" | "inline-style";
+  kind: "arbitrary-class" | "inline-style" | "invalid-step";
 }
 
 function isIgnored(file: string): boolean {
@@ -109,6 +138,22 @@ function scanFile(file: string, tokens: Token[]): Finding[] {
         matchedValue: value,
         token: findToken(tokens, value),
         kind: "arbitrary-class",
+      });
+    }
+  });
+
+  lines.forEach((line, idx) => {
+    let m: RegExpExecArray | null;
+    INVALID_STEP_RE.lastIndex = 0;
+    while ((m = INVALID_STEP_RE.exec(line))) {
+      const step = m[2];
+      if (VALID_PALETTE_STEPS.has(step)) continue;
+      findings.push({
+        file,
+        line: idx + 1,
+        snippet: line.trim(),
+        matchedValue: m[0],
+        kind: "invalid-step",
       });
     }
   });
@@ -156,21 +201,37 @@ function main() {
     if (isIgnored(rel)) continue;
     if (rel === "src/app/globals.css") continue;
     for (const finding of scanFile(file, tokens)) {
-      if (finding.token) errors.push(finding);
+      if (finding.kind === "invalid-step" || finding.token) errors.push(finding);
       else warnings.push(finding);
     }
   }
 
   console.log(`Design tokens loaded from globals.css: ${tokens.map((t) => t.name).join(", ")}\n`);
 
-  if (errors.length > 0) {
-    console.log(`✖ ${errors.length} value(s) duplicate an existing token — use the token class:\n`);
-    for (const f of errors) {
+  const dupErrors = errors.filter((f) => f.kind !== "invalid-step");
+  const stepErrors = errors.filter((f) => f.kind === "invalid-step");
+
+  if (dupErrors.length > 0) {
+    console.log(
+      `✖ ${dupErrors.length} value(s) duplicate an existing token — use the token class:\n`,
+    );
+    for (const f of dupErrors) {
       const rel = path.relative(ROOT, f.file);
       console.log(`  ${rel}:${f.line}`);
       console.log(
         `    "${f.matchedValue}" matches token --color-${f.token!.name} -> use a "*-${f.token!.name}" class`,
       );
+      console.log(`    ${f.snippet}\n`);
+    }
+  }
+
+  if (stepErrors.length > 0) {
+    console.log(
+      `✖ ${stepErrors.length} invalid Tailwind color step(s) — not in the real palette scale (50/100/200/.../900/950), so they generate no CSS at all:\n`,
+    );
+    for (const f of stepErrors) {
+      const rel = path.relative(ROOT, f.file);
+      console.log(`  ${rel}:${f.line}  "${f.matchedValue}"`);
       console.log(`    ${f.snippet}\n`);
     }
   }

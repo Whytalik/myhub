@@ -103,7 +103,7 @@ export function ThoughtDecomposeDialog({
           <div className="flex flex-col gap-4">
             <div className="glass-card p-4 bg-white/[0.02]">
               <span className="text-label text-orange-400 block mb-1">Сира думка:</span>
-              <p className="text-body italic text-zinc-150">«{thought.content}»</p>
+              <p className="text-body italic text-zinc-200">«{thought.content}»</p>
             </div>
 
             <p className="text-panel-title text-center mt-2">Визначте характер цієї думки:</p>

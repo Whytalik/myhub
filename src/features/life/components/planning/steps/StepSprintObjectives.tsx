@@ -95,7 +95,7 @@ export function StepSprintObjectives({
               <select
                 value={newObjectiveSphereId}
                 onChange={(e) => setNewObjectiveSphereId(e.target.value)}
-                className="bg-black/30 border border-white/8 rounded-lg px-3 py-1.5 text-sm text-zinc-150"
+                className="bg-black/30 border border-white/8 rounded-lg px-3 py-1.5 text-sm text-zinc-200"
               >
                 {(spheres || []).map((s) => (
                   <option key={s.id} value={s.id}>
@@ -182,28 +182,28 @@ export function StepSprintObjectives({
                         >
                           <span className="text-zinc-200 font-medium truncate">📂 {p.title}</span>
                           <div className="flex items-center gap-1 opacity-0 group-hover/item:opacity-100 transition-opacity duration-150 shrink-0">
-                            <button
-                              type="button"
+                            <Button
+                              variant="ghost-accent"
+                              size="icon-sm"
                               onClick={() => handleOpenEditProject(p)}
-                              className="p-1 rounded text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150"
                               title="Edit project"
                               disabled={isActionPending}
                             >
                               <Pencil size={12} />
-                            </button>
-                            <button
-                              type="button"
+                            </Button>
+                            <Button
+                              variant="ghost-danger"
+                              size="icon-sm"
                               onClick={() => setDeleteProjectId(p.id)}
-                              className="p-1 rounded text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors duration-150"
                               title="Delete project"
                               disabled={isActionPending}
                             >
                               <Trash2 size={12} />
-                            </button>
+                            </Button>
                             <button
                               type="button"
                               onClick={() => handleAssignProject(p.id, null)}
-                              className="text-[10px] text-rose-450 hover:text-rose-400 font-mono ml-1"
+                              className="text-[10px] text-rose-500 hover:text-rose-400 font-mono ml-1"
                               disabled={isActionPending}
                             >
                               Unassign
@@ -258,32 +258,32 @@ export function StepSprintObjectives({
                       📂 {p.title}
                     </span>
                     <div className="flex items-center gap-0.5 opacity-0 group-hover/backlog:opacity-100 transition-opacity duration-150 shrink-0">
-                      <button
-                        type="button"
+                      <Button
+                        variant="ghost-accent"
+                        size="icon-sm"
                         onClick={() => handleOpenEditProject(p)}
-                        className="p-1 rounded text-zinc-500 hover:text-accent hover:bg-accent/10 transition-colors duration-150"
                         title="Edit project"
                         disabled={isActionPending}
                       >
                         <Pencil size={12} />
-                      </button>
-                      <button
-                        type="button"
+                      </Button>
+                      <Button
+                        variant="ghost-danger"
+                        size="icon-sm"
                         onClick={() => setDeleteProjectId(p.id)}
-                        className="p-1 rounded text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors duration-150"
                         title="Delete project"
                         disabled={isActionPending}
                       >
                         <Trash2 size={12} />
-                      </button>
+                      </Button>
                     </div>
                   </div>
                   {p.description && (
-                    <span className="text-[10px] text-zinc-505 line-clamp-2">{p.description}</span>
+                    <span className="text-[10px] text-zinc-500 line-clamp-2">{p.description}</span>
                   )}
                   {sprint.objectives && sprint.objectives.length > 0 ? (
                     <div className="flex flex-col gap-1 mt-1 pt-1.5 border-t border-white/[0.04]">
-                      <span className="text-[8px] font-mono text-zinc-505 uppercase">
+                      <span className="text-[8px] font-mono text-zinc-500 uppercase">
                         Assign to Objective:
                       </span>
                       <div className="flex flex-wrap gap-1.5">

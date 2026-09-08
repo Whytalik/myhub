@@ -327,7 +327,7 @@ export function DayPlan({
                   !
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-sm font-semibold text-zinc-150">{prep.title}</span>
+                  <span className="text-sm font-semibold text-zinc-200">{prep.title}</span>
                   <p className="text-sm text-zinc-300">{prep.action}</p>
                   {prep.note && <span className="text-caption text-zinc-400">{prep.note}</span>}
                 </div>

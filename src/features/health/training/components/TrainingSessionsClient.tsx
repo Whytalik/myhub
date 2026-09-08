@@ -94,12 +94,13 @@ export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClient
             </button>
             <div className="flex items-center gap-2 shrink-0">
               <span className={statusClass}>{isCompleted ? "Completed" : "In progress"}</span>
-              <button
+              <Button
+                variant="ghost-danger"
+                size="icon-sm"
                 onClick={() => sessionToDelete.open(s.id)}
-                className="p-1.5 rounded-md text-zinc-500 hover:text-rose-400 hover:bg-white/5 transition-colors"
               >
                 <Trash2 size={14} />
-              </button>
+              </Button>
             </div>
           </div>
         );

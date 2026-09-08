@@ -289,18 +289,19 @@ export function StepWeeklyKanban({
                           <span className="text-[8px] font-mono text-zinc-600 bg-white/[0.04] px-1 py-0.5 rounded shrink-0">
                             {atoms.length}
                           </span>
-                          <button
-                            type="button"
+                          <Button
+                            variant="ghost-accent"
+                            size="icon-sm"
                             onClick={() => {
                               const ids = atoms.map((a) => a.id);
                               setBatchScheduleAtomIds(ids);
                               setBatchScheduleDate("");
                             }}
-                            className="p-1 rounded text-zinc-600 hover:text-accent hover:bg-accent/10 opacity-0 group-hover/grp:opacity-100 transition-all duration-150 shrink-0"
+                            className="opacity-0 group-hover/grp:opacity-100 shrink-0"
                             title={`Schedule all ${atoms.length} atoms`}
                           >
                             <Calendar size={11} />
-                          </button>
+                          </Button>
                         </div>
                         {!isGroupCollapsed && (
                           <div className="flex flex-col gap-1 pl-4">

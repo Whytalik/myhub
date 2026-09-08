@@ -119,7 +119,7 @@ export function StepPrimeFilter({
               </div>
             )}
 
-            <p className="text-base font-medium text-zinc-150 leading-relaxed font-sans whitespace-pre-wrap text-left w-full">
+            <p className="text-base font-medium text-zinc-200 leading-relaxed font-sans whitespace-pre-wrap text-left w-full">
               {currentFilterThought.content}
             </p>
 
@@ -147,7 +147,7 @@ export function StepPrimeFilter({
               <button
                 type="button"
                 onClick={() => handleEditClick(currentFilterThought)}
-                className="absolute top-3 right-3 p-1.5 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                className="absolute top-3 right-3 p-1.5 rounded text-zinc-500 hover:text-zinc-400 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                 title="Edit thought"
               >
                 <Pencil size={14} />
@@ -236,7 +236,7 @@ export function StepPrimeFilter({
                       setFilterStageHistory((previousHistory) => [...previousHistory, "q1b"]);
                       setFilterStage("q_conflict");
                     }}
-                    className="border-red-500/20 text-rose-450 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
+                    className="border-red-500/20 text-rose-400 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
                   >
                     ⚠️ Real consequence
                   </Button>
@@ -268,7 +268,7 @@ export function StepPrimeFilter({
                     type="button"
                     variant="outline"
                     onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "NOT_MINE")}
-                    className="border-red-500/20 text-rose-450 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
+                    className="border-red-500/20 text-rose-400 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
                   >
                     ❌ Yes, conflict
                   </Button>
@@ -282,7 +282,7 @@ export function StepPrimeFilter({
                       ]);
                       setFilterStage("q2");
                     }}
-                    className="border-emerald-500/20 text-emerald-455 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
+                    className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
                   >
                     ✅ No, fully aligned
                   </Button>
@@ -359,7 +359,7 @@ export function StepPrimeFilter({
                   setFilterStageHistory((previousHistory) => previousHistory.slice(0, -1));
                   setFilterStage(previousStage);
                 }}
-                className="text-[10px] font-mono text-zinc-500 hover:text-zinc-350 transition-colors duration-150 uppercase tracking-wider mt-1"
+                className="text-[10px] font-mono text-zinc-500 hover:text-zinc-400 transition-colors duration-150 uppercase tracking-wider mt-1"
               >
                 ↩️ Back to previous question
               </button>

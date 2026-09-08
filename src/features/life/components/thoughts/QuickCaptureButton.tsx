@@ -226,7 +226,7 @@ export function QuickCaptureButton() {
 
                 {projects.length > 0 && (
                   <div className="flex flex-col gap-2">
-                    <label className="text-[10px] font-mono text-zinc-450 uppercase">
+                    <label className="text-[10px] font-mono text-zinc-500 uppercase">
                       Route to project
                     </label>
                     <div className="flex flex-wrap gap-1.5">
@@ -270,7 +270,7 @@ export function QuickCaptureButton() {
 
                 {selectedProject && availableGroups.length > 0 && (
                   <div className="flex flex-col gap-2">
-                    <label className="text-[10px] font-mono text-zinc-450 uppercase">
+                    <label className="text-[10px] font-mono text-zinc-500 uppercase">
                       Route to group
                     </label>
                     <div className="flex flex-wrap gap-1.5">

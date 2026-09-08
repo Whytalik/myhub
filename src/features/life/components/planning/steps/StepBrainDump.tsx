@@ -214,14 +214,14 @@ export function StepBrainDump({
                       className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex flex-col gap-2 min-h-[48px] relative group"
                     >
                       <div className="flex items-start justify-between gap-3 w-full">
-                        <span className="text-zinc-305 leading-normal break-words flex-1 whitespace-pre-wrap">
+                        <span className="text-zinc-300 leading-normal break-words flex-1 whitespace-pre-wrap">
                           {thoughtItem.content}
                         </span>
                         <div className="flex items-center gap-1.5 shrink-0">
                           <button
                             type="button"
                             onClick={() => handleEditClick(thoughtItem)}
-                            className="p-1 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                            className="p-1 rounded text-zinc-500 hover:text-zinc-400 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                             title="Edit thought"
                           >
                             <Pencil size={12} />
@@ -249,7 +249,7 @@ export function StepBrainDump({
                       className="w-1.5 h-1.5 rounded-full shrink-0"
                       style={{ backgroundColor: currentSphere.color }}
                     />
-                    <span className="text-[10px] font-mono text-zinc-450 uppercase tracking-wider font-semibold">
+                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
                       {currentSphere.name} ({thoughtsInSphere.length})
                     </span>
                   </div>
@@ -260,14 +260,14 @@ export function StepBrainDump({
                         className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex flex-col gap-2 min-h-[48px] relative group"
                       >
                         <div className="flex items-start justify-between gap-3 w-full">
-                          <span className="text-zinc-305 leading-normal break-words flex-1 whitespace-pre-wrap">
+                          <span className="text-zinc-300 leading-normal break-words flex-1 whitespace-pre-wrap">
                             {thoughtItem.content}
                           </span>
                           <div className="flex items-center gap-1.5 shrink-0">
                             <button
                               type="button"
                               onClick={() => handleEditClick(thoughtItem)}
-                              className="p-1 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                              className="p-1 rounded text-zinc-500 hover:text-zinc-400 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                               title="Edit thought"
                             >
                               <Pencil size={12} />
@@ -296,14 +296,14 @@ export function StepBrainDump({
                   className="glass-card p-3 text-xs bg-white/[0.01] border-white/[0.04] flex flex-col gap-2 min-h-[48px] relative group"
                 >
                   <div className="flex items-start justify-between gap-3 w-full">
-                    <span className="text-zinc-305 leading-normal break-words flex-1 whitespace-pre-wrap">
+                    <span className="text-zinc-300 leading-normal break-words flex-1 whitespace-pre-wrap">
                       {thoughtItem.content}
                     </span>
                     <div className="flex items-center gap-1.5 shrink-0">
                       <button
                         type="button"
                         onClick={() => handleEditClick(thoughtItem)}
-                        className="p-1 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                        className="p-1 rounded text-zinc-500 hover:text-zinc-400 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                         title="Edit thought"
                       >
                         <Pencil size={12} />

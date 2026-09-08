@@ -5,6 +5,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { SPHERE_ICONS } from "./lucide-icons-map";
 import { deleteSphereAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
+import { Button } from "@/components/ui/actions/button";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { useServerAction } from "@/lib/hooks/use-server-action";
 
@@ -41,20 +42,17 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
       </div>
 
       <div className="flex items-center gap-1 shrink-0">
-        <button
-          onClick={() => onEdit(sphere)}
-          className="p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-white/5 rounded-md transition-colors"
-          title="Edit sphere"
-        >
+        <Button variant="ghost" size="icon-sm" onClick={() => onEdit(sphere)} title="Edit sphere">
           <Pencil size={13} />
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost-danger"
+          size="icon-sm"
           onClick={() => setIsDeleteDialogOpen(true)}
-          className="p-1.5 text-zinc-500 hover:text-rose-400 hover:bg-white/5 rounded-md transition-colors"
           title="Delete sphere"
         >
           <Trash2 size={13} />
-        </button>
+        </Button>
       </div>
 
       <ConfirmationDialog

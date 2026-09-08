@@ -159,7 +159,7 @@ export function StepDecomposition({
                   {decomposeThoughtTypeConfig && (
                     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.06] text-[9px] font-mono uppercase tracking-wider text-zinc-400">
                       {DecomposeThoughtIcon && (
-                        <DecomposeThoughtIcon size={9} className="text-amber-450" />
+                        <DecomposeThoughtIcon size={9} className="text-amber-500" />
                       )}
                       {decomposeThoughtTypeConfig.label}
                     </span>
@@ -167,7 +167,7 @@ export function StepDecomposition({
                 </div>
               )}
 
-              <p className="text-sm font-medium text-zinc-150 leading-relaxed font-sans whitespace-pre-wrap">
+              <p className="text-sm font-medium text-zinc-200 leading-relaxed font-sans whitespace-pre-wrap">
                 {currentDecomposeThought?.content}
               </p>
 
@@ -182,7 +182,7 @@ export function StepDecomposition({
                         <span className="text-[8px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">
                           {field.label}
                         </span>
-                        <p className="text-xs text-zinc-350 whitespace-pre-wrap leading-relaxed">
+                        <p className="text-xs text-zinc-400 whitespace-pre-wrap leading-relaxed">
                           {fieldValue}
                         </p>
                       </div>
@@ -195,7 +195,7 @@ export function StepDecomposition({
                 <button
                   type="button"
                   onClick={() => handleEditClick(currentDecomposeThought)}
-                  className="absolute top-3 right-3 p-1.5 rounded text-zinc-500 hover:text-zinc-350 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                  className="absolute top-3 right-3 p-1.5 rounded text-zinc-500 hover:text-zinc-400 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                   title="Edit thought"
                 >
                   <Pencil size={13} />
@@ -263,7 +263,7 @@ export function StepDecomposition({
                   type="button"
                   onClick={() => setDeleteThoughtId(currentDecomposeThought.id)}
                   disabled={isActionPending}
-                  className="text-rose-500 hover:text-rose-455 font-medium flex items-center gap-1.5 transition-colors duration-150"
+                  className="text-rose-400 hover:text-rose-500 font-medium flex items-center gap-1.5 transition-colors duration-150"
                   title="Delete this thought"
                 >
                   <Trash2 size={13} /> Delete
@@ -289,7 +289,7 @@ export function StepDecomposition({
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="text-zinc-450 hover:text-zinc-350"
+                className="text-zinc-500 hover:text-zinc-400"
               >
                 &larr; Back to Filtering
               </button>

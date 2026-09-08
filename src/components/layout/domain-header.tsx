@@ -45,7 +45,7 @@ export function DomainHeader() {
 
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
-          className="p-1 text-zinc-400 hover:text-zinc-250 hover:bg-zinc-850 rounded-md transition-colors"
+          className="p-1 text-zinc-400 hover:text-zinc-300 hover:bg-zinc-900 rounded-md transition-colors"
           aria-label="Toggle menu"
         >
           {isMobileOpen ? <X size={16} /> : <Menu size={16} />}
@@ -63,7 +63,7 @@ export function DomainHeader() {
           const domainLinkClass = `flex items-center gap-2 px-3.5 py-1 rounded-md text-xs font-medium outline-none focus:outline-none transition-all duration-150 ${
             isActive
               ? domainActiveClass
-              : "text-zinc-400 hover:text-zinc-250 hover:bg-white/5 border border-transparent"
+              : "text-zinc-400 hover:text-zinc-300 hover:bg-white/5 border border-transparent"
           }`;
           const domainIconClass = isActive ? domainAccentClass : "text-zinc-500";
           const domainIconStrokeWidth = isActive ? 2.5 : 2;
