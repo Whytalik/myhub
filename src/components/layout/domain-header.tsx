@@ -10,13 +10,14 @@ function getDomainColors(domainId: string) {
   switch (domainId) {
     case "life":
       return {
-        accentClass: "text-[#6fbfbf]",
-        activeClass: "text-zinc-50 bg-[#6fbfbf]/20 border border-[#6fbfbf]/30 shadow-sm",
+        accentClass: "text-accent-life",
+        activeClass: "text-zinc-50 bg-accent-life/20 border border-accent-life/30 shadow-sm",
       };
     case "health":
       return {
-        accentClass: "text-[#ff8c00]",
-        activeClass: "text-zinc-50 bg-[#ff8c00]/20 border border-[#ff8c00]/30 shadow-sm",
+        accentClass: "text-accent-nutrition",
+        activeClass:
+          "text-zinc-50 bg-accent-nutrition/20 border border-accent-nutrition/30 shadow-sm",
       };
     default:
       return {

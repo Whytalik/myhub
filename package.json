@@ -10,6 +10,7 @@
     "db:backup": "bash scripts/db-backup.sh",
     "start": "next start",
     "lint": "eslint",
+    "lint:tokens": "tsx scripts/check-design-tokens.ts",
     "format": "prettier --write .",
     "postinstall": "prisma generate"
   },

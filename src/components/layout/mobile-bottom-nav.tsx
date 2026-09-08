@@ -8,9 +8,9 @@ import { DOMAINS, getActiveDomain } from "@/lib/spaces/domains";
 function getMobileDomainColors(domainId: string) {
   switch (domainId) {
     case "life":
-      return "bg-[#6fbfbf]/10 text-[#6fbfbf] border border-[#6fbfbf]/20";
+      return "bg-accent-life/10 text-accent-life border border-accent-life/20";
     case "health":
-      return "bg-[#ff8c00]/10 text-[#ff8c00] border border-[#ff8c00]/20";
+      return "bg-accent-nutrition/10 text-accent-nutrition border border-accent-nutrition/20";
     default:
       return "bg-accent/15 text-accent border border-accent/20";
   }
