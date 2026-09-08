@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
 import { SectionHeader } from "@/components/ui/display/section-header";
+import { EmptyState } from "@/components/ui/display/empty-state";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { toast } from "sonner";
 import {
@@ -274,21 +275,18 @@ export function TrainingPlansClient({
   return (
     <div className="flex flex-col gap-6">
       {!plan ? (
-        <div className="glass-card p-8 flex flex-col items-center gap-3 text-center">
-          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-accent-training/10 text-accent-training">
-            <ClipboardList size={32} />
-          </div>
-          <div className="flex flex-col gap-1">
-            <p className="text-panel-title">No training plan yet</p>
-            <p className="text-caption max-w-sm">
-              Create your plan, add training days, then prescribe exercises to each day.
-            </p>
-          </div>
-          <Button variant="primary" size="sm" onClick={() => setIsPlanFormOpen(true)}>
-            <Plus size={16} />
-            Create plan
-          </Button>
-        </div>
+        <EmptyState
+          icon={ClipboardList}
+          accentClassName="bg-accent-training/10 text-accent-training"
+          title="No training plan yet"
+          description="Create your plan, add training days, then prescribe exercises to each day."
+          action={
+            <Button variant="primary" size="sm" onClick={() => setIsPlanFormOpen(true)}>
+              <Plus size={16} />
+              Create plan
+            </Button>
+          }
+        />
       ) : (
         <>
           <div className="glass-card p-5 flex items-center justify-between gap-4">

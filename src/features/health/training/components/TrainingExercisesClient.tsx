@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/actions/button";
+import { EmptyState } from "@/components/ui/display/empty-state";
 import { Tabs } from "@/components/ui/navigation/tabs";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { toast } from "sonner";
@@ -125,17 +126,12 @@ export function TrainingExercisesClient({ initialExercises }: TrainingExercisesC
       </div>
 
       {displayed.length === 0 ? (
-        <div className="glass-card p-8 flex flex-col items-center gap-3 text-center">
-          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-accent-training/10 text-accent-training">
-            <Dumbbell size={32} />
-          </div>
-          <div className="flex flex-col gap-1">
-            <p className="text-panel-title">No exercises in your library</p>
-            <p className="text-caption max-w-sm">
-              Add exercises here, then prescribe them to your training days.
-            </p>
-          </div>
-        </div>
+        <EmptyState
+          icon={Dumbbell}
+          accentClassName="bg-accent-training/10 text-accent-training"
+          title="No exercises in your library"
+          description="Add exercises here, then prescribe them to your training days."
+        />
       ) : (
         <Tabs
           tabs={groupedExercises.map(([muscleGroup, exercises]) => ({

@@ -14,6 +14,7 @@ import {
   Shuffle,
 } from "lucide-react";
 import { Input } from "@/components/ui/inputs/input";
+import { EmptyState } from "@/components/ui/display/empty-state";
 import { SleepSection } from "./sections/SleepSection";
 import { EnergySection } from "./sections/EnergySection";
 import { EmotionsSection } from "./sections/EmotionsSection";
@@ -411,19 +412,17 @@ export function DailyEntryForm({
             content: (
               <div>
                 {todaysHabits.length === 0 ? (
-                  <div className="glass-card p-8 flex flex-col items-center gap-3 text-center">
-                    <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-accent/10 text-accent">
-                      <SparklesIcon size={32} />
-                    </div>
-                    <p className="text-panel-title">
-                      {habits.length === 0 ? "No habits defined" : "No habits scheduled for today"}
-                    </p>
-                    <p className="text-caption max-w-sm">
-                      {habits.length === 0
+                  <EmptyState
+                    icon={SparklesIcon}
+                    title={
+                      habits.length === 0 ? "No habits defined" : "No habits scheduled for today"
+                    }
+                    description={
+                      habits.length === 0
                         ? "Configure your habits in the Habit Tracker to see them here."
-                        : "Enjoy your day! Or configure your habits in the Habit Tracker."}
-                    </p>
-                  </div>
+                        : "Enjoy your day! Or configure your habits in the Habit Tracker."
+                    }
+                  />
                 ) : (
                   <div className="flex flex-col gap-3">
                     {todaysHabits.map((habit) => (

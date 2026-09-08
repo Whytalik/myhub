@@ -6,8 +6,10 @@ import { History as HistoryIcon, Trash2, ClipboardCopy } from "lucide-react";
 import { toast } from "sonner";
 import { ConfirmationDialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
+import { EmptyState } from "@/components/ui/display/empty-state";
 import { deleteSessionAction, getWeeklyReportAction } from "../actions/training-session-actions";
 import type { TrainingSessionSummaryData } from "../types";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface TrainingHistoryClientProps {
   initialSessions: TrainingSessionSummaryData[];
@@ -17,13 +19,17 @@ export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClient
   const router = useRouter();
   const [sessionToDelete, setSessionToDelete] = useState<string | null>(null);
   const [isCopyingReport, startCopyReportTransition] = useTransition();
+  const { run: runDelete } = useServerAction();
 
-  const confirmDelete = async () => {
+  const confirmDelete = () => {
     if (!sessionToDelete) return;
-    const result = await deleteSessionAction(sessionToDelete);
-    if (result.success) toast.success("Session deleted");
-    else toast.error(result.error || "Failed to delete session");
-    setSessionToDelete(null);
+    const closeDialog = () => setSessionToDelete(null);
+    runDelete(deleteSessionAction(sessionToDelete), {
+      successMessage: "Session deleted",
+      errorMessage: "Failed to delete session",
+      onSuccess: closeDialog,
+      onError: closeDialog,
+    });
   };
 
   const handleCopyWeeklyReport = () => {
@@ -44,15 +50,12 @@ export function TrainingHistoryClient({ initialSessions }: TrainingHistoryClient
 
   if (initialSessions.length === 0) {
     return (
-      <div className="glass-card p-8 flex flex-col items-center gap-3 text-center">
-        <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-accent-training/10 text-accent-training">
-          <HistoryIcon size={32} />
-        </div>
-        <p className="text-panel-title">No sessions logged yet</p>
-        <p className="text-caption max-w-sm">
-          Start a session from the Plan tab to begin logging your workouts.
-        </p>
-      </div>
+      <EmptyState
+        icon={HistoryIcon}
+        accentClassName="bg-accent-training/10 text-accent-training"
+        title="No sessions logged yet"
+        description="Start a session from the Plan tab to begin logging your workouts."
+      />
     );
   }
 
