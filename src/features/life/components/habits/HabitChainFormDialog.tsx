@@ -1,7 +1,6 @@
 "use client";
 import { Checkbox } from "@/components/ui/inputs/checkbox";
 
-import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
@@ -11,7 +10,7 @@ import { FormField } from "@/components/ui/display/form-field";
 import { upsertHabitChainAction } from "@/features/life/actions/habit-chain-actions";
 import { habitChainSchema, type HabitChainFormData } from "@/features/life/schemas";
 import type { HabitChainData } from "@/features/life/types";
-import { toast } from "sonner";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface HabitChainFormDialogProps {
   isOpen: boolean;
@@ -21,7 +20,7 @@ interface HabitChainFormDialogProps {
 
 export function HabitChainFormDialog({ isOpen, onClose, chain }: HabitChainFormDialogProps) {
   const isEditing = !!chain;
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const {
     register,
@@ -37,20 +36,19 @@ export function HabitChainFormDialog({ isOpen, onClose, chain }: HabitChainFormD
   });
 
   const onSubmit = (data: HabitChainFormData) => {
-    startTransition(async () => {
-      const result = await upsertHabitChainAction({
+    run(
+      upsertHabitChainAction({
         id: chain?.id,
         name: data.name.trim(),
         description: data.description?.trim() || null,
         archived: data.archived ?? false,
-      });
-      if (result.success) {
-        toast.success(isEditing ? "Chain updated" : "Chain created");
-        onClose();
-      } else {
-        toast.error(result.error || "Failed to save chain");
-      }
-    });
+      }),
+      {
+        successMessage: isEditing ? "Chain updated" : "Chain created",
+        errorMessage: "Failed to save chain",
+        onSuccess: onClose,
+      },
+    );
   };
 
   return (

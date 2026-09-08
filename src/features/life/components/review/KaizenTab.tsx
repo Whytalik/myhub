@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 import {
   Compass,
   CheckCircle2,
@@ -98,7 +99,7 @@ export function KaizenTab({
   const [localTasks, setLocalTasks] = useState<TaskData[]>(tasks);
   const [decomposingTaskId, setDecomposingTaskId] = useState<string | null>(null);
   const [subtaskTitle, setSubtaskTitle] = useState("");
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   // Calculate week number of active sprint
   const weekNum = activeSprint
@@ -130,7 +131,7 @@ export function KaizenTab({
       subtaskTitle={subtaskTitle}
       setSubtaskTitle={setSubtaskTitle}
       isPending={isPending}
-      startTransition={startTransition}
+      run={run}
       router={router}
     />
   );
@@ -167,7 +168,7 @@ interface KaizenFormInnerProps {
   subtaskTitle: string;
   setSubtaskTitle: (title: string) => void;
   isPending: boolean;
-  startTransition: React.TransitionStartFunction;
+  run: ReturnType<typeof useServerAction>["run"];
   router: ReturnType<typeof import("next/navigation").useRouter>;
 }
 
@@ -185,7 +186,7 @@ function KaizenFormInner({
   subtaskTitle,
   setSubtaskTitle,
   isPending,
-  startTransition,
+  run,
   router,
 }: KaizenFormInnerProps) {
   useEffect(() => {
@@ -232,29 +233,24 @@ function KaizenFormInner({
   ).length;
 
   const handleMoveToBacklog = (taskId: string) => {
-    startTransition(async () => {
-      const result = await upsertTaskAction({
+    run(
+      upsertTaskAction({
         id: taskId,
         plannedDate: null,
-      });
-      if (result.success) {
-        toast.success("Task moved to Global Backlog");
-        setLocalTasks((prev) => prev.filter((t) => t.id !== taskId));
-      } else {
-        toast.error(result.error || "Failed to move task to backlog");
-      }
-    });
+      }),
+      {
+        successMessage: "Task moved to Global Backlog",
+        errorMessage: "Failed to move task to backlog",
+        onSuccess: () => setLocalTasks((prev) => prev.filter((t) => t.id !== taskId)),
+      },
+    );
   };
 
   const handleDeleteTask = (taskId: string) => {
-    startTransition(async () => {
-      const result = await deleteTaskAction(taskId);
-      if (result.success) {
-        toast.success("Task deleted successfully");
-        setLocalTasks((prev) => prev.filter((t) => t.id !== taskId));
-      } else {
-        toast.error(result.error || "Failed to delete task");
-      }
+    run(deleteTaskAction(taskId), {
+      successMessage: "Task deleted successfully",
+      errorMessage: "Failed to delete task",
+      onSuccess: () => setLocalTasks((prev) => prev.filter((t) => t.id !== taskId)),
     });
   };
 
@@ -262,26 +258,25 @@ function KaizenFormInner({
     const title = subtaskTitle.trim();
     if (!title) return;
 
-    startTransition(async () => {
-      const subtaskResult = await upsertTaskAction({
+    run(
+      upsertTaskAction({
         title,
         parentId: parentTask.id,
         sphereId: parentTask.sphereId,
         status: "TODO",
         priority: "MEDIUM",
         plannedDate: weekStart.toISOString(),
-      });
-
-      if (subtaskResult.success) {
-        toast.success("Created a smaller atom!");
-        setSubtaskTitle("");
-        setDecomposingTaskId(null);
-        const newSub: TaskData = subtaskResult.data as TaskData;
-        setLocalTasks((prev) => [newSub, ...prev]);
-      } else {
-        toast.error(subtaskResult.error || "Failed to create subtask");
-      }
-    });
+      }),
+      {
+        successMessage: "Created a smaller atom!",
+        errorMessage: "Failed to create subtask",
+        onSuccess: (data) => {
+          setSubtaskTitle("");
+          setDecomposingTaskId(null);
+          setLocalTasks((prev) => [data as TaskData, ...prev]);
+        },
+      },
+    );
   };
 
   const handleSaveReview = () => {
@@ -290,27 +285,20 @@ function KaizenFormInner({
       return;
     }
 
-    startTransition(async () => {
-      const result = await saveSprintReviewAction(
-        activeSprint.id,
-        weekNum,
-        weekStart.toISOString(),
-        {
-          score,
-          wins,
-          challenges,
-          adjustments,
-          kaizenVector: kaizenVector as unknown as Prisma.InputJsonValue,
-        },
-      );
-
-      if (result.success) {
-        toast.success("Weekly review saved successfully!");
-        router.refresh();
-      } else {
-        toast.error(result.error || "Failed to save review");
-      }
-    });
+    run(
+      saveSprintReviewAction(activeSprint.id, weekNum, weekStart.toISOString(), {
+        score,
+        wins,
+        challenges,
+        adjustments,
+        kaizenVector: kaizenVector as unknown as Prisma.InputJsonValue,
+      }),
+      {
+        successMessage: "Weekly review saved successfully!",
+        errorMessage: "Failed to save review",
+        onSuccess: () => router.refresh(),
+      },
+    );
   };
 
   const toggleCheck = (id: string) => {

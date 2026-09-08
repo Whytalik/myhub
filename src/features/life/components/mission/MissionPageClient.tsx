@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 import { ChevronDown, ChevronUp, Compass, History } from "lucide-react";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Button } from "@/components/ui/actions/button";
 import { saveMissionAction } from "@/features/life/actions/mission-actions";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface MissionVersionData {
   id: string;
@@ -32,7 +32,7 @@ export function MissionPageClient({ currentContent, history }: MissionPageClient
   const [draft, setDraft] = useState(currentContent);
   const [versions, setVersions] = useState(history);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
 
   const isDirty = draft.trim() !== (versions[0]?.content ?? "").trim();
 
@@ -40,14 +40,10 @@ export function MissionPageClient({ currentContent, history }: MissionPageClient
     const trimmed = draft.trim();
     if (!trimmed || isPending) return;
 
-    startTransition(async () => {
-      const result = await saveMissionAction(trimmed);
-      if (result.success) {
-        setVersions((prev) => [result.data, ...prev]);
-        toast.success("Mission saved");
-      } else {
-        toast.error(result.error || "Failed to save mission");
-      }
+    run(saveMissionAction(trimmed), {
+      successMessage: "Mission saved",
+      errorMessage: "Failed to save mission",
+      onSuccess: (data) => setVersions((prev) => [data, ...prev]),
     });
   };
 

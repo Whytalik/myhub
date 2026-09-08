@@ -9,11 +9,11 @@ import {
 } from "@/features/life/actions/habit-chain-actions";
 import type { HabitData, HabitChainData, LifeSphereData } from "@/features/life/types";
 import { ArrowDown, ArrowUp, Edit2, Link2, ListChecks, Plus, Sparkles, Trash2 } from "lucide-react";
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 import { HabitCard } from "./HabitCard";
 import { HabitFormDialog } from "./HabitFormDialog";
 import { HabitChainFormDialog } from "./HabitChainFormDialog";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 interface HabitsPageClientProps {
   initialHabits: HabitData[];
@@ -30,7 +30,9 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
   const [isChainFormOpen, setIsChainFormOpen] = useState(false);
   const [selectedChain, setSelectedChain] = useState<HabitChainData | null>(null);
   const [chainToDelete, setChainToDelete] = useState<string | null>(null);
-  const [, startReorderTransition] = useTransition();
+  const { run: runDeleteHabit } = useServerAction();
+  const { run: runDeleteChain } = useServerAction();
+  const { run: runReorder } = useServerAction();
 
   const activeHabits = initialHabits.filter((h) => !h.archived);
   const archivedHabits = initialHabits.filter((h) => h.archived);
@@ -65,15 +67,15 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
     setHabitToDelete(id);
   };
 
-  const confirmDelete = async () => {
+  const confirmDelete = () => {
     if (!habitToDelete) return;
-    const result = await deleteHabitAction(habitToDelete);
-    if (result.success) {
-      toast.success("Habit deleted");
-    } else {
-      toast.error(result.error || "Failed to delete habit");
-    }
-    setHabitToDelete(null);
+    const closeDialog = () => setHabitToDelete(null);
+    runDeleteHabit(deleteHabitAction(habitToDelete), {
+      successMessage: "Habit deleted",
+      errorMessage: "Failed to delete habit",
+      onSuccess: closeDialog,
+      onError: closeDialog,
+    });
   };
 
   const handleAdd = () => {
@@ -91,15 +93,15 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
     setIsChainFormOpen(true);
   };
 
-  const confirmDeleteChain = async () => {
+  const confirmDeleteChain = () => {
     if (!chainToDelete) return;
-    const result = await deleteHabitChainAction(chainToDelete);
-    if (result.success) {
-      toast.success("Chain deleted");
-    } else {
-      toast.error(result.error || "Failed to delete chain");
-    }
-    setChainToDelete(null);
+    const closeDialog = () => setChainToDelete(null);
+    runDeleteChain(deleteHabitChainAction(chainToDelete), {
+      successMessage: "Chain deleted",
+      errorMessage: "Failed to delete chain",
+      onSuccess: closeDialog,
+      onError: closeDialog,
+    });
   };
 
   const moveHabitInChain = (
@@ -115,9 +117,8 @@ export function HabitsPageClient({ initialHabits, initialChains, spheres }: Habi
     [reordered[index], reordered[targetIndex]] = [reordered[targetIndex], reordered[index]];
     const orderedHabitIds = reordered.map((h) => h.id);
 
-    startReorderTransition(async () => {
-      const result = await reorderHabitsInChainAction(chainId, orderedHabitIds);
-      if (!result.success) toast.error(result.error || "Failed to reorder chain");
+    runReorder(reorderHabitsInChainAction(chainId, orderedHabitIds), {
+      errorMessage: "Failed to reorder chain",
     });
   };
 

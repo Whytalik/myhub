@@ -46,6 +46,7 @@ import type {
 import type { RoutineMap } from "@/lib/life/routine-items";
 import { Tabs } from "@/components/ui/navigation/tabs";
 import { Sparkles as SparklesIcon } from "lucide-react";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 
 const RoutineSection = lazy(() =>
   import("./sections/RoutineSection").then((m) => ({ default: m.RoutineSection })),
@@ -100,7 +101,7 @@ export function DailyEntryForm({
   const [parentTask, setParentTask] = useState<TaskData | null>(null);
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isCompletePending, startCompletePending] = useTransition();
-  const [isDistributing, startDistributeTransition] = useTransition();
+  const { run: runDistributeTasks, isPending: isDistributing } = useServerAction();
   const router = useRouter();
 
   const initDayView = (): "greeting" | "form" | "complete" => {
@@ -196,25 +197,23 @@ export function DailyEntryForm({
   };
 
   const handleDistributeTasks = () => {
-    startDistributeTransition(async () => {
-      const result = await distributeTasksAction(todayStr);
-      if (!result.success) {
-        toast.error(result.error || "Не вдалося розподілити завдання");
-        return;
-      }
-      const { scheduled, skipped } = result.data;
-      if (scheduled === 0 && skipped === 0) {
-        toast.info("Немає гнучких завдань для розподілу");
-      } else if (scheduled === 0) {
-        toast.info(`Жодна з ${skipped} гнучких завдань не влізла у вільні блоки`);
-      } else {
-        toast.success(
-          skipped > 0
-            ? `Розподілено ${scheduled} завдань, ${skipped} не влізло в блоки`
-            : `Розподілено ${scheduled} завдань по блоках`,
-        );
-      }
-      router.refresh();
+    runDistributeTasks(distributeTasksAction(todayStr), {
+      errorMessage: "Не вдалося розподілити завдання",
+      onSuccess: (data) => {
+        const { scheduled, skipped } = data;
+        if (scheduled === 0 && skipped === 0) {
+          toast.info("Немає гнучких завдань для розподілу");
+        } else if (scheduled === 0) {
+          toast.info(`Жодна з ${skipped} гнучких завдань не влізла у вільні блоки`);
+        } else {
+          toast.success(
+            skipped > 0
+              ? `Розподілено ${scheduled} завдань, ${skipped} не влізло в блоки`
+              : `Розподілено ${scheduled} завдань по блоках`,
+          );
+        }
+        router.refresh();
+      },
     });
   };
 

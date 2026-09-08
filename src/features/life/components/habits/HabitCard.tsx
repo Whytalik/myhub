@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import {
   toggleHabitCompletionAction,
   toggleHabitArchivedAction,
 } from "@/features/life/actions/habit-actions";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 import {
   calculateStreak,
   getThisWeekCount,
@@ -61,7 +62,7 @@ export function HabitCard({
   nextHabitName,
   readOnly,
 }: HabitCardProps) {
-  const [isPending, startTransition] = useTransition();
+  const { run, isPending } = useServerAction();
   const [showDetails, setShowDetails] = useState(false);
 
   const behaviorDetails = BEHAVIOR_DETAILS.filter(({ key }) => habit[key]);
@@ -101,9 +102,9 @@ export function HabitCard({
   const isWeeklyTargetMet = isWeekly && thisWeekCount >= scheduledCountThisWeek;
 
   const handleToggle = () => {
-    startTransition(async () => {
-      const result = await toggleHabitCompletionAction(habit.id, activeDateStr);
-      if (result.success) {
+    run(toggleHabitCompletionAction(habit.id, activeDateStr), {
+      errorMessage: "Failed to update habit",
+      onSuccess: () => {
         if (!isCompletedOnDate) {
           toast.success(
             isAvoidance
@@ -113,16 +114,13 @@ export function HabitCard({
                 : "Great job! Keep the streak alive.",
           );
         }
-      } else {
-        toast.error(result.error || "Failed to update habit");
-      }
+      },
     });
   };
 
   const handleArchive = () => {
-    startTransition(async () => {
-      const result = await toggleHabitArchivedAction(habit.id);
-      if (!result.success) toast.error(result.error || "Failed to archive habit");
+    run(toggleHabitArchivedAction(habit.id), {
+      errorMessage: "Failed to archive habit",
     });
   };
 
