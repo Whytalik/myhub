@@ -1,3 +1,5 @@
+"use server";
+
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import { invalidateDirectionsCache } from "@/lib/cache/revalidate";
 import * as directionService from "@/features/life/services/direction-service";
