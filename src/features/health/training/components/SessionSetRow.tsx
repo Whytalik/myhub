@@ -3,8 +3,14 @@
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Check, Flame } from "lucide-react";
-import type { SetLogData } from "../types";
+import type { SetLogData, TrainingGoal } from "../types";
 import type { EditableField } from "./SessionClient";
+import {
+  REP_RANGES,
+  isRepsWithinRange,
+  WARMUP_WEIGHT_PERCENT,
+  WARMUP_REPS,
+} from "../constants/rep-ranges";
 
 interface SessionSetRowProps {
   setLog: SetLogData;
@@ -28,6 +34,7 @@ interface SessionSetRowProps {
         distanceMeters: number | null;
       }
     | undefined;
+  goal: TrainingGoal;
 }
 
 export function SessionSetRow({
@@ -43,7 +50,12 @@ export function SessionSetRow({
   numberInputClass,
   notesInputClass,
   pastSet,
+  goal,
 }: SessionSetRowProps) {
+  const repRange = REP_RANGES[goal];
+  const pastRepsInRange = !isTimeBased && pastSet ? isRepsWithinRange(pastSet.reps, goal) : null;
+  const repRangeHintClass = pastRepsInRange === false ? "text-amber-400" : "text-zinc-500";
+
   return (
     <div className="flex flex-col gap-1 w-full border-b border-white/[0.04] md:border-white/[0.02] pb-3 md:pb-1.5 last:border-b-0 last:pb-0">
       {/* Desktop Layout */}
@@ -56,12 +68,12 @@ export function SessionSetRow({
           <Check size={14} />
         </button>
         <span className="font-mono text-xs text-zinc-500 w-4 text-center shrink-0">
-          {setLog.setNumber}
+          {setLog.isWarmup ? "Р" : setLog.setNumber}
         </span>
         <button
           onClick={() => toggleWarmup(setLog.id)}
           disabled={isCompleted}
-          title="Розминочний підхід"
+          title={`Розминочний підхід (~${Math.round(WARMUP_WEIGHT_PERCENT * 100)}% ваги, ${WARMUP_REPS} повт)`}
           className={warmupToggleClass}
         >
           <Flame size={12} />
@@ -223,6 +235,11 @@ export function SessionSetRow({
           )}
           {pastSet.rpe && <span className="text-zinc-500">@ RPE {pastSet.rpe}</span>}
           {pastSet.rir != null && <span className="text-zinc-500">@ RIR {pastSet.rir}</span>}
+          {!isTimeBased && !setLog.isWarmup && (
+            <span className={repRangeHintClass}>
+              ({pastRepsInRange ? "✓" : "ціль"} {repRange.min}-{repRange.max})
+            </span>
+          )}
         </div>
       )}
 
@@ -239,12 +256,12 @@ export function SessionSetRow({
               <Check size={16} />
             </button>
             <span className="font-mono text-sm font-semibold text-zinc-300">
-              Сет {setLog.setNumber}
+              {setLog.isWarmup ? "Розминка" : `Сет ${setLog.setNumber}`}
             </span>
             <button
               onClick={() => toggleWarmup(setLog.id)}
               disabled={isCompleted}
-              title="Розминочний підхід"
+              title={`Розминочний підхід (~${Math.round(WARMUP_WEIGHT_PERCENT * 100)}% ваги, ${WARMUP_REPS} повт)`}
               className={warmupToggleClass}
             >
               <Flame size={12} />
@@ -268,6 +285,11 @@ export function SessionSetRow({
               )}
               {pastSet.rpe && <span className="text-zinc-500">@ {pastSet.rpe}</span>}
               {pastSet.rir != null && <span className="text-zinc-500">/ RIR {pastSet.rir}</span>}
+              {!isTimeBased && !setLog.isWarmup && (
+                <span className={repRangeHintClass}>
+                  ({pastRepsInRange ? "✓" : "ціль"} {repRange.min}-{repRange.max})
+                </span>
+              )}
             </div>
           )}
         </div>

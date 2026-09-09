@@ -32,6 +32,7 @@ export const dayExerciseSchema = z.object({
   restSeconds: z.number().int().min(0).optional().nullable(),
   targetDurationSeconds: z.number().int().min(0).optional().nullable(),
   targetDistanceMeters: z.number().min(0).optional().nullable(),
+  goal: z.enum(["strength", "hypertrophy", "endurance"]).optional(),
   notes: z.string().optional(),
 });
 

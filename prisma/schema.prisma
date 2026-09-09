@@ -646,6 +646,7 @@ model TrainingDayExercise {
   restSeconds           Int?
   targetDurationSeconds Int?
   targetDistanceMeters  Float?
+  goal                  String       @default("hypertrophy")
   notes                 String?
   user                  User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   day                   TrainingDay  @relation(fields: [dayId], references: [id], onDelete: Cascade)

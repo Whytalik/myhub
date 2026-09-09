@@ -1,4 +1,5 @@
 export type TrackingType = "weight_reps" | "bodyweight" | "duration" | "cardio";
+export type TrainingGoal = "strength" | "hypertrophy" | "endurance";
 
 export interface ExerciseData {
   id: string;
@@ -49,6 +50,7 @@ export interface TrainingDayExerciseData {
   restSeconds: number | null;
   targetDurationSeconds: number | null;
   targetDistanceMeters: number | null;
+  goal: TrainingGoal;
   notes: string | null;
   exercise: ExerciseData;
 }
@@ -66,6 +68,7 @@ export interface UpsertDayExerciseInput {
   restSeconds?: number | null;
   targetDurationSeconds?: number | null;
   targetDistanceMeters?: number | null;
+  goal?: TrainingGoal;
   notes?: string | null;
 }
 

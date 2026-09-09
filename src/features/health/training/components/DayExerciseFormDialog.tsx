@@ -11,6 +11,7 @@ import { dayExerciseSchema, type DayExerciseFormData } from "../schemas";
 import { upsertDayExerciseAction } from "../actions/training-plan-actions";
 import type { ExerciseData, TrainingDayExerciseData } from "../types";
 import { useServerAction } from "@/lib/hooks/use-server-action";
+import { TRAINING_GOAL_OPTIONS } from "../constants/rep-ranges";
 
 interface DayExerciseFormDialogProps {
   isOpen: boolean;
@@ -48,6 +49,7 @@ export function DayExerciseFormDialog({
       restSeconds: dayExercise?.restSeconds ?? undefined,
       targetDurationSeconds: dayExercise?.targetDurationSeconds ?? undefined,
       targetDistanceMeters: dayExercise?.targetDistanceMeters ?? undefined,
+      goal: dayExercise?.goal ?? "hypertrophy",
       notes: dayExercise?.notes ?? "",
     },
   });
@@ -73,6 +75,7 @@ export function DayExerciseFormDialog({
         restSeconds: data.restSeconds ?? null,
         targetDurationSeconds: showDurationFields ? (data.targetDurationSeconds ?? null) : null,
         targetDistanceMeters: showDurationFields ? (data.targetDistanceMeters ?? null) : null,
+        goal: data.goal ?? "hypertrophy",
         notes: data.notes?.trim() || null,
       }),
       {
@@ -134,6 +137,26 @@ export function DayExerciseFormDialog({
             )}
           />
         </FormField>
+
+        {showReps && (
+          <FormField label="Training goal" error={errors.goal?.message}>
+            <Controller
+              name="goal"
+              control={control}
+              render={({ field }) => (
+                <CustomSelect
+                  value={field.value ?? "hypertrophy"}
+                  onChange={field.onChange}
+                  options={TRAINING_GOAL_OPTIONS.map((option) => ({
+                    id: option.value,
+                    label: option.label,
+                  }))}
+                  placeholder="Pick a goal"
+                />
+              )}
+            />
+          </FormField>
+        )}
 
         <div className="grid grid-cols-2 gap-4">
           <FormField label="Sets">

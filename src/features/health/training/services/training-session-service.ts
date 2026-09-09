@@ -8,11 +8,14 @@ import type {
   UpdateSetLogInput,
   CompleteSessionInput,
   TrackingType,
+  TrainingGoal,
 } from "../types";
 import { setLogRepository } from "../repositories/set-log.repository";
 import { prisma } from "@/lib/db/prisma";
 import { buildWeeklyReportMarkdown } from "../utils/weekly-report";
 import { computeProgressionSuggestion, type ProgressionSuggestion } from "../utils/progression";
+import { isCompoundExercise } from "../utils/exercise-classification";
+import { WARMUP_WEIGHT_PERCENT, WARMUP_REPS } from "../constants/rep-ranges";
 
 export async function getRecentSessions(userId: string) {
   return getCachedRecentSessions(userId);
@@ -33,6 +36,33 @@ export async function startSession(userId: string, input: StartSessionInput) {
 
   for (const dayExercise of day.exercises) {
     const setCount = dayExercise.sets || 1;
+
+    // A single working set on a compound lift skips the usual ramp-up sets,
+    // so it gets one light warm-up set to groove the pattern before loading up.
+    const needsWarmup =
+      setCount === 1 &&
+      dayExercise.exercise.trackingType === "weight_reps" &&
+      isCompoundExercise(dayExercise.exercise.name);
+
+    if (needsWarmup) {
+      const warmupWeight =
+        dayExercise.targetWeight != null
+          ? Math.round(dayExercise.targetWeight * WARMUP_WEIGHT_PERCENT * 2) / 2
+          : null;
+      setLogsData.push({
+        userId,
+        exerciseId: dayExercise.exerciseId,
+        exerciseName: dayExercise.exercise.name,
+        setNumber: 0,
+        reps: WARMUP_REPS,
+        weight: warmupWeight,
+        restSeconds: dayExercise.restSeconds,
+        completed: false,
+        isWarmup: true,
+        order: order++,
+      });
+    }
+
     for (let setNumber = 1; setNumber <= setCount; setNumber++) {
       setLogsData.push({
         userId,
@@ -146,6 +176,7 @@ export async function getPastLogsForSession(userId: string, sessionId: string) {
           some: {
             exerciseId,
             completed: true,
+            isWarmup: false,
           },
         },
       },
@@ -157,6 +188,7 @@ export async function getPastLogsForSession(userId: string, sessionId: string) {
           where: {
             exerciseId,
             completed: true,
+            isWarmup: false,
           },
           orderBy: {
             order: "asc",
@@ -178,6 +210,18 @@ export async function getPastLogsForSession(userId: string, sessionId: string) {
   }
 
   return pastLogs;
+}
+
+export async function getGoalsForSession(userId: string, sessionId: string) {
+  const session = await trainingSessionRepository.findById(sessionId);
+  if (!session || session.userId !== userId || !session.dayId) return {};
+
+  const dayExercises = await trainingDayExerciseRepository.findByDayId(session.dayId);
+  const goals: Record<string, TrainingGoal> = {};
+  for (const dayExercise of dayExercises) {
+    goals[dayExercise.exerciseId] = (dayExercise.goal as TrainingGoal) || "hypertrophy";
+  }
+  return goals;
 }
 
 export async function getProgressionSuggestions(userId: string, sessionId: string) {

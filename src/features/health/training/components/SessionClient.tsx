@@ -16,7 +16,7 @@ import {
   TrendingUp,
   XCircle,
 } from "lucide-react";
-import type { SetLogData, TrainingSessionData } from "../types";
+import type { SetLogData, TrainingSessionData, TrainingGoal } from "../types";
 import type { ProgressionSuggestion } from "../utils/progression";
 import {
   updateSetLogAction,
@@ -47,6 +47,7 @@ interface SessionClientProps {
     }[]
   >;
   progressionSuggestions?: Record<string, ProgressionSuggestion>;
+  goalsByExerciseId?: Record<string, TrainingGoal>;
 }
 
 export type EditableField =
@@ -59,7 +60,12 @@ export type EditableField =
   | "distanceMeters"
   | "notes";
 
-export function SessionClient({ session, pastLogs, progressionSuggestions }: SessionClientProps) {
+export function SessionClient({
+  session,
+  pastLogs,
+  progressionSuggestions,
+  goalsByExerciseId,
+}: SessionClientProps) {
   const router = useRouter();
   const [setLogs, setSetLogs] = useState<SetLogData[]>(session.setLogs);
   const [status, setStatus] = useState(session.status);
@@ -552,6 +558,7 @@ export function SessionClient({ session, pastLogs, progressionSuggestions }: Ses
                           numberInputClass={numberInputClass}
                           notesInputClass={notesInputClass}
                           pastSet={pastSet}
+                          goal={goalsByExerciseId?.[group.exerciseId] ?? "hypertrophy"}
                         />
                       );
                     })}
