@@ -28,20 +28,20 @@ export function SphereCard({ sphere, onEdit }: SphereCardProps) {
   };
 
   return (
-    <div className="glass-card p-4 flex items-center justify-between gap-3 hover:border-white/[0.12] transition-colors duration-150">
-      <div className="flex items-center gap-3 min-w-0">
+    <div className="glass-card p-3 flex items-center justify-between gap-2 hover:border-white/[0.12] transition-colors duration-150 group">
+      <div className="flex items-center gap-2.5 min-w-0">
         {Icon && (
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-accent/10 text-accent shrink-0">
-            <Icon size={16} />
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/10 text-accent shrink-0">
+            <Icon size={14} />
           </div>
         )}
-        <div className="min-w-0">
-          <p className="text-panel-title truncate">{sphere.name}</p>
-          <p className="text-caption">{taskCountLabel}</p>
+        <div className="min-w-0 flex items-baseline gap-1.5">
+          <p className="text-body font-medium truncate">{sphere.name}</p>
+          <p className="text-caption shrink-0">{taskCountLabel}</p>
         </div>
       </div>
 
-      <div className="flex items-center gap-1 shrink-0">
+      <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
         <Button variant="ghost" size="icon-sm" onClick={() => onEdit(sphere)} title="Edit sphere">
           <Pencil size={13} />
         </Button>

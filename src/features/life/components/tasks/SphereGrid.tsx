@@ -58,7 +58,7 @@ export function SphereGrid({ spheres, onClose }: SphereGridProps) {
           <p className="text-caption">Create spheres like Career, Health, Learning…</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           {spheres.map((sphere) => (
             <SphereCard key={sphere.id} sphere={sphere} onEdit={handleEdit} />
           ))}
