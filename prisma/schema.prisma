@@ -727,6 +727,7 @@ model Thought {
   order        Int           @default(0)
   type         ThoughtType?
   templateData Json?
+  urgency      ThoughtUrgency?
   sphereId     String?
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -737,6 +738,13 @@ model Thought {
   @@index([userId])
   @@index([statusId])
   @@index([sphereId])
+}
+
+// Set by the Prime Filter's "when?" question. Null = not triaged, or Someday
+// (which is its own status, not an urgency level).
+enum ThoughtUrgency {
+  URGENT
+  SOON
 }
 
 enum ThoughtType {

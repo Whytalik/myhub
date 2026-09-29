@@ -5,7 +5,7 @@ import type { DecomposeThoughtResult } from "../services/thought-service";
 import { invalidateThoughtCache } from "@/lib/cache/revalidate";
 import { withAction, ActionResult } from "@/lib/actions/action-utils";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
-import type { FilterOutcome } from "../logic/filter-outcomes";
+import type { FilterOutcome, ThoughtUrgencyLevel } from "../logic/filter-outcomes";
 
 export async function upsertStatusAction(
   input: UpsertThoughtStatusInput,
@@ -75,9 +75,10 @@ export async function moveThoughtAction(
 export async function routeThoughtAction(
   thoughtId: string,
   outcome: FilterOutcome,
+  urgency: ThoughtUrgencyLevel | null = null,
 ): Promise<ActionResult<void>> {
   return withAction(async (userId) => {
-    await thoughtService.routeThought(userId, thoughtId, outcome);
+    await thoughtService.routeThought(userId, thoughtId, outcome, urgency);
     invalidateThoughtCache(userId);
   });
 }

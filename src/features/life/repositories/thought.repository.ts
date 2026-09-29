@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db/prisma";
-import { Prisma } from "@/app/generated/prisma";
+import { Prisma, type ThoughtUrgency } from "@/app/generated/prisma";
 
 export const thoughtRepository = {
   create(data: Prisma.ThoughtUncheckedCreateInput) {
@@ -10,10 +10,16 @@ export const thoughtRepository = {
     return prisma.thought.update({ where: { id, userId }, data, include: { sphere: true } });
   },
 
-  moveToEnd(userId: string, id: string, targetStatusId: string, orderIndex: number) {
+  moveToEnd(
+    userId: string,
+    id: string,
+    targetStatusId: string,
+    orderIndex: number,
+    urgency: ThoughtUrgency | null = null,
+  ) {
     return prisma.thought.update({
       where: { id, userId },
-      data: { statusId: targetStatusId, order: orderIndex },
+      data: { statusId: targetStatusId, order: orderIndex, urgency },
       include: { sphere: true },
     });
   },

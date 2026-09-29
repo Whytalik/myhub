@@ -25,6 +25,7 @@ import {
 } from "@/features/life/actions/sprint-actions";
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
+import type { ThoughtUrgencyLevel } from "@/features/life/logic/filter-outcomes";
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
@@ -324,16 +325,20 @@ export function PlanningWizardClient({
         lowerName === "вхідні"
       );
     });
-    if (!activeFilterSphereId) return baseThoughts;
-    return baseThoughts.filter(
-      (currentThought) => currentThought.sphereId === activeFilterSphereId,
-    );
+    const urgencyRank = { URGENT: 0, SOON: 1 } as const;
+    const rankOf = (thought: ThoughtItem) => (thought.urgency ? urgencyRank[thought.urgency] : 2);
+    const scopedThoughts = activeFilterSphereId
+      ? baseThoughts.filter((currentThought) => currentThought.sphereId === activeFilterSphereId)
+      : baseThoughts;
+    return [...scopedThoughts].sort((first, second) => rankOf(first) - rankOf(second));
   }, [thoughts, activeFilterSphereId]);
   const [filterIndex, setFilterIndex] = useState(0);
   const [initialFilterCount, setInitialFilterCount] = useState<number | null>(null);
-  const [filterStage, setFilterStage] = useState<"q1" | "q1b" | "q_conflict" | "q2" | "q3">("q1");
+  const [filterStage, setFilterStage] = useState<
+    "q1" | "q1b" | "q_conflict" | "q2" | "q_delegate" | "q3"
+  >("q1");
   const [filterStageHistory, setFilterStageHistory] = useState<
-    ("q1" | "q1b" | "q_conflict" | "q2" | "q3")[]
+    ("q1" | "q1b" | "q_conflict" | "q2" | "q_delegate" | "q3")[]
   >([]);
   const [wantType, setWantType] = useState<"want" | "must" | null>(null);
 
@@ -362,8 +367,10 @@ export function PlanningWizardClient({
         return 2;
       case "q2":
         return 3;
-      case "q3":
+      case "q_delegate":
         return 4;
+      case "q3":
+        return 5;
       default:
         return 1;
     }
@@ -536,7 +543,8 @@ export function PlanningWizardClient({
 
   const handleFilterThought = (
     thoughtId: string,
-    outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY",
+    outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY" | "DELEGATE",
+    urgency: ThoughtUrgencyLevel | null = null,
   ) => {
     const previousThoughts = [...thoughts];
     const isLastThought = inboxThoughts.length <= 1;
@@ -546,6 +554,7 @@ export function PlanningWizardClient({
       KEEP_MUST: "Must",
       NOT_MINE: "Basket",
       SOMEDAY: "Someday",
+      DELEGATE: "Делегувати",
     };
 
     // Optimistically update status name
@@ -555,13 +564,14 @@ export function PlanningWizardClient({
           ? {
               ...currentThought,
               status: { ...currentThought.status, name: statusNameMap[outcome] },
+              urgency,
             }
           : currentThought,
       ),
     );
 
     startActionTransition(async () => {
-      const result = await routeThoughtAction(thoughtId, outcome);
+      const result = await routeThoughtAction(thoughtId, outcome, urgency);
       if (result.success) {
         toast.success("Thought filtered");
         if (isLastThought) {
@@ -632,7 +642,6 @@ export function PlanningWizardClient({
         atomTitle: isProject ? undefined : title,
         atomDescription: undefined,
         sphereId: selectedSphereId,
-        priority: "MEDIUM",
         resistance: isProject ? undefined : resistance,
       });
 

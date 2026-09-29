@@ -7,7 +7,12 @@ import { DEFAULT_THOUGHT_STATUSES } from "../constants";
 import { Prisma, type TaskPriority } from "@/app/generated/prisma";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
 import { getThoughtTypeConfig, type ThoughtType } from "../logic/thought-types";
-import { FILTER_OUTCOME_STATUS, type FilterOutcome } from "../logic/filter-outcomes";
+import {
+  FILTER_OUTCOME_STATUS,
+  URGENCY_TASK_PRIORITY,
+  type FilterOutcome,
+  type ThoughtUrgencyLevel,
+} from "../logic/filter-outcomes";
 
 export async function getBoard(userId: string) {
   // Uncached check so a first-ever visit doesn't cache an empty board before
@@ -126,7 +131,12 @@ export async function quickCapture(
 // appends the thought there. DELETE has no destination: it's a hard delete,
 // per the user's own "сміливо видаляй" wording for the Q1b "nothing
 // catastrophic" branch specifically.
-export async function routeThought(userId: string, thoughtId: string, outcome: FilterOutcome) {
+export async function routeThought(
+  userId: string,
+  thoughtId: string,
+  outcome: FilterOutcome,
+  urgency: ThoughtUrgencyLevel | null = null,
+) {
   if (outcome === "DELETE") {
     return thoughtRepository.delete(thoughtId, userId);
   }
@@ -148,7 +158,15 @@ export async function routeThought(userId: string, thoughtId: string, outcome: F
   }
 
   const nextOrder = destination.thoughts.length;
-  return thoughtRepository.moveToEnd(userId, thoughtId, destination.id, nextOrder);
+  // Urgency only applies to accepted thoughts; any other route clears it.
+  const isAccepted = outcome === "KEEP_WANT" || outcome === "KEEP_MUST";
+  return thoughtRepository.moveToEnd(
+    userId,
+    thoughtId,
+    destination.id,
+    nextOrder,
+    isAccepted ? urgency : null,
+  );
 }
 
 export async function moveThought(
@@ -197,7 +215,7 @@ export async function decomposeThought(
     taskTitle,
     sphereId,
     description,
-    priority = "MEDIUM",
+    priority,
     projectTitle,
     atomTitle,
     atomDescription,
@@ -213,6 +231,9 @@ export async function decomposeThought(
   if (!thought) {
     throw new Error("Thought not found or unauthorized");
   }
+
+  const resolvedPriority =
+    priority ?? (thought.urgency ? URGENCY_TASK_PRIORITY[thought.urgency] : "MEDIUM");
 
   // Format template details if present
   let formattedDescription = description || "";
@@ -247,7 +268,7 @@ export async function decomposeThought(
           title,
           description: formattedDescription || null,
           status: "TODO",
-          priority: priority as TaskPriority,
+          priority: resolvedPriority as TaskPriority,
           sphereId: sphereId || thought.sphereId,
           resistance,
           depth: 0,
@@ -280,7 +301,7 @@ export async function decomposeThought(
             title: atomTitle,
             description: atomDescription || null,
             status: "TODO",
-            priority: priority as TaskPriority,
+            priority: resolvedPriority as TaskPriority,
             projectId: createdProject.id,
             sphereId: sphereId || thought.sphereId,
             resistance,

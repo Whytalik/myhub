@@ -9,9 +9,10 @@ import {
 import { Button } from "@/components/ui/actions/button";
 import type { LifeSphereData } from "@/features/life/types";
 import type { ThoughtTypeConfig } from "@/features/life/logic/thought-types";
+import type { ThoughtUrgencyLevel } from "@/features/life/logic/filter-outcomes";
 import type { ThoughtItem } from "../types";
 
-type FilterStage = "q1" | "q1b" | "q_conflict" | "q2" | "q3";
+type FilterStage = "q1" | "q1b" | "q_conflict" | "q2" | "q_delegate" | "q3";
 
 export function StepPrimeFilter({
   inboxThoughts,
@@ -54,13 +55,16 @@ export function StepPrimeFilter({
   setFilterStage: (value: FilterStage) => void;
   handleFilterThought: (
     thoughtId: string,
-    outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY",
+    outcome: "KEEP_WANT" | "KEEP_MUST" | "NOT_MINE" | "SOMEDAY" | "DELEGATE",
+    urgency?: ThoughtUrgencyLevel | null,
   ) => void;
   filterIndex: number;
   setFilterIndex: (value: number | ((previous: number) => number)) => void;
   setStep: (step: number) => void;
   missionContent?: string | null;
 }) {
+  const acceptedOutcome = wantType === "must" ? "KEEP_MUST" : "KEEP_WANT";
+
   return (
     <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6 items-center max-w-2xl mx-auto w-full">
       {missionContent && (
@@ -170,7 +174,7 @@ export function StepPrimeFilter({
           <div className="flex flex-col gap-4 w-full mt-2 items-center">
             {/* 4-step questionnaire progress bar */}
             <div className="flex gap-1.5 w-full max-w-[160px] mb-1">
-              {[1, 2, 3, 4].map((stepNum) => (
+              {[1, 2, 3, 4, 5].map((stepNum) => (
                 <div
                   key={stepNum}
                   className={`h-1 flex-1 rounded-full transition-all duration-300 ${
@@ -285,7 +289,7 @@ export function StepPrimeFilter({
                     variant="outline"
                     onClick={() => {
                       setFilterStageHistory((previousHistory) => [...previousHistory, "q2"]);
-                      setFilterStage("q3");
+                      setFilterStage("q_delegate");
                     }}
                     className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
                   >
@@ -303,24 +307,63 @@ export function StepPrimeFilter({
               </div>
             )}
 
-            {filterStage === "q3" && (
+            {filterStage === "q_delegate" && (
               <div className="flex flex-col gap-3 w-full items-center">
                 <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
-                  ❓ Do I have the resources for this in the near future?
+                  ❓ Do I have to do this personally?
                 </p>
                 <div className="grid grid-cols-2 gap-3 w-full">
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() =>
-                      handleFilterThought(
-                        inboxThoughts[filterIndex].id,
-                        wantType === "must" ? "KEEP_MUST" : "KEEP_WANT",
-                      )
-                    }
+                    onClick={() => {
+                      setFilterStageHistory((previousHistory) => [
+                        ...previousHistory,
+                        "q_delegate",
+                      ]);
+                      setFilterStage("q3");
+                    }}
                     className="border-emerald-500/20 text-emerald-400 bg-emerald-500/[0.02] hover:bg-emerald-500/10 h-11 text-xs"
                   >
-                    ⚡ Yes
+                    🙋 Yes, only me
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "DELEGATE")}
+                    className="border-sky-500/20 text-sky-400 bg-sky-500/[0.02] hover:bg-sky-500/10 h-11 text-xs"
+                  >
+                    🤝 Delegate
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {filterStage === "q3" && (
+              <div className="flex flex-col gap-3 w-full items-center">
+                <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
+                  ❓ When does this need to happen?
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      handleFilterThought(inboxThoughts[filterIndex].id, acceptedOutcome, "URGENT")
+                    }
+                    className="border-red-500/20 text-rose-400 bg-rose-500/[0.02] hover:bg-rose-500/10 h-11 text-xs"
+                  >
+                    🔥 Urgent (now)
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      handleFilterThought(inboxThoughts[filterIndex].id, acceptedOutcome, "SOON")
+                    }
+                    className="border-amber-500/20 text-amber-400 bg-amber-500/[0.02] hover:bg-amber-500/10 h-11 text-xs"
+                  >
+                    ⏳ ASAP (this month)
                   </Button>
                   <Button
                     type="button"
@@ -328,7 +371,7 @@ export function StepPrimeFilter({
                     onClick={() => handleFilterThought(inboxThoughts[filterIndex].id, "SOMEDAY")}
                     className="border-purple-500/20 text-purple-400 bg-purple-500/[0.02] hover:bg-purple-500/10 h-11 text-xs"
                   >
-                    ⏳ Not now (Someday)
+                    💤 Someday
                   </Button>
                 </div>
               </div>

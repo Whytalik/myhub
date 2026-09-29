@@ -1,3 +1,4 @@
+import type { ThoughtUrgencyLevel } from "@/features/life/logic/filter-outcomes";
 import type { ThoughtType } from "@/features/life/logic/thought-types";
 
 export interface ThoughtItem {
@@ -11,6 +12,7 @@ export interface ThoughtItem {
   sphereId: string | null;
   type?: ThoughtType | null;
   templateData?: Record<string, string> | null;
+  urgency?: ThoughtUrgencyLevel | null;
 }
 
 export interface SprintTask {
