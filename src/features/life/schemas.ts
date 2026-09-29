@@ -40,21 +40,6 @@ export const sphereSchema = z.object({
   icon: z.string().min(1, "Icon is required"),
 });
 
-export const directionSchema = z.object({
-  sphereId: z.string().min(1, "Sphere is required"),
-  statement: z.string().min(1, "Statement is required"),
-  actions: z
-    .array(
-      z.object({
-        label: z.string().trim().optional(),
-        text: z.string().trim(),
-      }),
-    )
-    .default([]),
-});
-
-export type DirectionFormData = z.infer<typeof directionSchema>;
-
 export const habitChainSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),

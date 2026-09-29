@@ -86,9 +86,3 @@ export function invalidateMissionCache(userId: string) {
   revalidateTag("mission", INVALIDATE_PROFILE);
   revalidatePath("/life", "layout");
 }
-
-export function invalidateDirectionsCache(userId: string) {
-  revalidateTag(cacheTags.directions(userId), INVALIDATE_PROFILE);
-  revalidateTag("directions", INVALIDATE_PROFILE);
-  revalidatePath("/life", "layout");
-}

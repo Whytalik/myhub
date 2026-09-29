@@ -31,29 +31,6 @@ export interface UpsertSphereInput {
   order?: number;
 }
 
-export type DirectionAction = {
-  label: string;
-  text: string;
-};
-
-export interface DirectionData {
-  id: string;
-  sphereId: string;
-  sphereName: string;
-  sphereColor: string;
-  sphereIcon: string;
-  statement: string;
-  actions: DirectionAction[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface UpsertDirectionInput {
-  sphereId: string;
-  statement: string;
-  actions?: DirectionAction[];
-}
-
 export type SphereGoalType = "COUNTER" | "DAYS" | "VALUE";
 
 export const MAX_GOALS_PER_SPHERE = 5;
