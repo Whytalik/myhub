@@ -71,6 +71,7 @@ interface PlanningWizardClientProps {
   initialStandaloneAtoms?: SprintTask[];
   dailyResistanceBudget?: number;
   missionContent?: string | null;
+  focusSphereId?: string | null;
 }
 
 export function PlanningWizardClient({
@@ -82,6 +83,7 @@ export function PlanningWizardClient({
   initialStandaloneAtoms,
   dailyResistanceBudget = 8,
   missionContent,
+  focusSphereId = null,
 }: PlanningWizardClientProps) {
   const router = useRouter();
   const [step, setStep] = useState(() => {
@@ -1493,6 +1495,7 @@ export function PlanningWizardClient({
       {/* STEP 4: SPRINT OBJECTIVES & PROJECTS */}
       {step === 4 && (
         <StepSprintObjectives
+          focusSphereId={focusSphereId}
           showAddObjectiveForm={showAddObjectiveForm}
           setShowAddObjectiveForm={setShowAddObjectiveForm}
           setStep={setStep}

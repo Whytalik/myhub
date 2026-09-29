@@ -10,7 +10,9 @@ import {
   MIN_GOALS_PER_SPHERE,
   type LifeSphereData,
   type SphereGoalData,
+  type YearFocusData,
 } from "@/features/life/types";
+import { FocusPanel } from "./FocusPanel";
 import { GoalFormDialog } from "./GoalFormDialog";
 import { GoalRow } from "./GoalRow";
 
@@ -19,6 +21,7 @@ interface GoalsPageClientProps {
   goals: SphereGoalData[];
   habits: { id: string; name: string }[];
   year: number;
+  focus: YearFocusData | null;
 }
 
 interface DialogState {
@@ -29,11 +32,17 @@ interface DialogState {
 function SphereGoalsCard({
   sphere,
   goals,
+  isFocus,
+  isMuted,
+  leverGoalId,
   onAdd,
   onEdit,
 }: {
   sphere: LifeSphereData;
   goals: SphereGoalData[];
+  isFocus: boolean;
+  isMuted: boolean;
+  leverGoalId: string | null;
   onAdd: () => void;
   onEdit: (goal: SphereGoalData) => void;
 }) {
@@ -42,12 +51,18 @@ function SphereGoalsCard({
   const needsMore = goals.length < MIN_GOALS_PER_SPHERE;
   const countClassName = `text-[11px] font-mono ${needsMore ? "text-amber-400" : "text-zinc-500"}`;
 
+  const cardClassName = `glass-card p-4 flex flex-col gap-2 ${
+    isFocus ? "border-accent-life/40 lg:col-span-2" : isMuted ? "opacity-75" : ""
+  }`;
+
   return (
-    <div className="glass-card p-4 flex flex-col gap-2">
+    <div className={cardClassName}>
       <div className="flex items-center justify-between gap-3 pb-2 border-b border-white/[0.06]">
         <div className="flex items-center gap-2.5 min-w-0">
           <SphereIcon size={16} className="shrink-0" style={{ color: sphere.color }} />
           <span className="text-panel-title truncate">{sphere.name}</span>
+          {isFocus && <span className="text-label text-accent-life">Focus</span>}
+          {isMuted && <span className="text-label">Maintenance</span>}
         </div>
         <span className={countClassName}>
           {goals.length}/{MAX_GOALS_PER_SPHERE}
@@ -61,7 +76,7 @@ function SphereGoalsCard({
       ) : (
         <div className="flex flex-col">
           {goals.map((goal) => (
-            <GoalRow key={goal.id} goal={goal} onEdit={onEdit} />
+            <GoalRow key={goal.id} goal={goal} onEdit={onEdit} isLever={goal.id === leverGoalId} />
           ))}
         </div>
       )}
@@ -75,14 +90,22 @@ function SphereGoalsCard({
   );
 }
 
-export function GoalsPageClient({ spheres, goals, habits, year }: GoalsPageClientProps) {
+export function GoalsPageClient({ spheres, goals, habits, year, focus }: GoalsPageClientProps) {
   const [dialog, setDialog] = useState<DialogState | null>(null);
 
   const goalsBySphere = (sphereId: string) => goals.filter((goal) => goal.sphereId === sphereId);
   const closeDialog = () => setDialog(null);
+  const orderedSpheres = focus
+    ? [...spheres].sort(
+        (first, second) =>
+          Number(second.id === focus.sphereId) - Number(first.id === focus.sphereId),
+      )
+    : spheres;
 
   return (
     <div className="flex flex-col gap-4">
+      <FocusPanel year={year} spheres={spheres} goals={goals} focus={focus} />
+
       <div className="flex items-center justify-between gap-3">
         <p className="text-caption">
           {year} · {goals.length} goal{goals.length !== 1 ? "s" : ""}. The white tick on a bar is
@@ -97,11 +120,14 @@ export function GoalsPageClient({ spheres, goals, habits, year }: GoalsPageClien
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {spheres.map((sphere) => (
+        {orderedSpheres.map((sphere) => (
           <SphereGoalsCard
             key={sphere.id}
             sphere={sphere}
             goals={goalsBySphere(sphere.id)}
+            isFocus={focus?.sphereId === sphere.id}
+            isMuted={!!focus && focus.sphereId !== sphere.id}
+            leverGoalId={focus?.sphereId === sphere.id ? focus.leverGoalId : null}
             onAdd={() => setDialog({ sphere, goal: null })}
             onEdit={(goal) => setDialog({ sphere, goal })}
           />

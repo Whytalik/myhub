@@ -1,11 +1,12 @@
 import { Target } from "lucide-react";
 import { SPHERE_ICONS } from "@/features/life/components/tasks/lucide-icons-map";
 import { formatGoalNumber } from "@/features/life/logic/sphere-goals";
-import type { LifeSphereData, SprintGoalProgress } from "@/features/life/types";
+import type { LifeSphereData, SprintGoalProgress, YearFocusData } from "@/features/life/types";
 
 interface SprintGoalsPanelProps {
   goals: SprintGoalProgress[];
   spheres: LifeSphereData[];
+  focus: YearFocusData | null;
 }
 
 function formatSprintProgress(goal: SprintGoalProgress): string {
@@ -14,12 +15,15 @@ function formatSprintProgress(goal: SprintGoalProgress): string {
   return `${sign}${formatGoalNumber(goal.sprintValue)} / ${formatGoalNumber(goal.sprintTarget)}${unit}`;
 }
 
-export function SprintGoalsPanel({ goals, spheres }: SprintGoalsPanelProps) {
+export function SprintGoalsPanel({ goals, spheres, focus }: SprintGoalsPanelProps) {
   if (goals.length === 0) return null;
 
-  const spheresWithGoals = spheres.filter((sphere) =>
-    goals.some((goal) => goal.sphereId === sphere.id),
-  );
+  const spheresWithGoals = spheres
+    .filter((sphere) => goals.some((goal) => goal.sphereId === sphere.id))
+    .sort(
+      (first, second) =>
+        Number(second.id === focus?.sphereId) - Number(first.id === focus?.sphereId),
+    );
 
   return (
     <div className="flex flex-col gap-4">
@@ -41,13 +45,21 @@ export function SprintGoalsPanel({ goals, spheres }: SprintGoalsPanelProps) {
                 <span className="text-xs font-semibold uppercase tracking-wider text-zinc-300">
                   {sphere.name}
                 </span>
+                {sphere.id === focus?.sphereId && (
+                  <span className="text-label text-accent-life">Focus</span>
+                )}
               </div>
               {goals
                 .filter((goal) => goal.sphereId === sphere.id)
                 .map((goal) => (
                   <div key={goal.goalId} className="flex flex-col gap-1">
                     <div className="flex items-baseline justify-between gap-3">
-                      <span className="text-xs text-zinc-200 break-words">{goal.title}</span>
+                      <span className="text-xs text-zinc-200 break-words">
+                        {goal.goalId === focus?.leverGoalId && (
+                          <span className="text-label text-accent-life mr-2">Lever</span>
+                        )}
+                        {goal.title}
+                      </span>
                       <span className="text-[11px] font-mono text-zinc-400 shrink-0">
                         {formatSprintProgress(goal)}
                       </span>

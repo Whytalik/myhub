@@ -27,6 +27,7 @@ model User {
   lifeSpheres             LifeSphere[]
   directions              Direction[]
   sphereGoals             SphereGoal[]
+  yearFocuses             YearFocus[]
   milestones              Milestone[]
   pushSubscriptions       PushSubscription[]
   sessions                Session[]
@@ -196,6 +197,7 @@ model LifeSphere {
   thoughts   Thought[]
   direction  Direction?
   goals      SphereGoal[]
+  yearFocuses YearFocus[]
 
   @@index([userId])
 }
@@ -222,10 +224,31 @@ model SphereGoal {
   sphere       LifeSphere        @relation(fields: [sphereId], references: [id], onDelete: Cascade)
   habit        Habit?            @relation(fields: [habitId], references: [id], onDelete: SetNull)
   slices       SprintGoalSlice[]
+  focusLevers  YearFocus[]
 
   @@index([userId, year])
   @@index([sphereId])
   @@index([habitId])
+}
+
+// The ONE sphere a user commits to for a year. Everything else runs in
+// maintenance mode. leverGoal is the yearly goal expected to pull the rest.
+model YearFocus {
+  id             String      @id @default(cuid())
+  userId         String
+  year           Int
+  sphereId       String
+  leverGoalId    String?
+  leverReason    String?
+  allowImperfect String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sphere         LifeSphere  @relation(fields: [sphereId], references: [id], onDelete: Cascade)
+  leverGoal      SphereGoal? @relation(fields: [leverGoalId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, year])
+  @@index([sphereId])
 }
 
 // The part of a yearly goal a single sprint is responsible for. Sprint

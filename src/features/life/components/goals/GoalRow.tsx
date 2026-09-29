@@ -23,9 +23,10 @@ import { GoalProgressBar } from "./GoalProgressBar";
 interface GoalRowProps {
   goal: SphereGoalData;
   onEdit: (goal: SphereGoalData) => void;
+  isLever?: boolean;
 }
 
-export function GoalRow({ goal, onEdit }: GoalRowProps) {
+export function GoalRow({ goal, onEdit, isLever = false }: GoalRowProps) {
   const { run, isPending } = useServerAction();
   const [draftValue, setDraftValue] = useState(formatGoalNumber(goal.currentValue));
 
@@ -58,7 +59,10 @@ export function GoalRow({ goal, onEdit }: GoalRowProps) {
     <div className="flex flex-col gap-1.5 py-2.5 border-b border-white/[0.04] last:border-b-0 group">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex flex-col">
-          <span className="text-sm text-zinc-200 break-words">{goal.title}</span>
+          <span className="text-sm text-zinc-200 break-words">
+            {isLever && <span className="text-label text-accent-life mr-2">Lever</span>}
+            {goal.title}
+          </span>
           <span className="text-[10px] font-mono text-zinc-500 uppercase">
             {GOAL_TYPE_LABELS[goal.type]}
             {goal.habitName ? ` · ${goal.habitName}` : ""}

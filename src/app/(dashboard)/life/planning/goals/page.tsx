@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { GoalsPageClient } from "@/features/life/components/goals/GoalsPageClient";
 import * as sphereService from "@/features/life/services/sphere-service";
 import * as sphereGoalService from "@/features/life/services/sphere-goal-service";
+import * as yearFocusService from "@/features/life/services/year-focus-service";
 import * as habitService from "@/features/life/services/habit-service";
 
 export const metadata: Metadata = { title: "Life Goals" };
@@ -18,10 +19,11 @@ export default async function GoalsPage() {
   }
 
   const year = new Date().getFullYear();
-  const [spheres, goals, habits] = await Promise.all([
+  const [spheres, goals, habits, focus] = await Promise.all([
     sphereService.getAllSpheres(userId),
     sphereGoalService.getGoalsForYear(userId, year),
     habitService.getActiveHabits(userId),
+    yearFocusService.getFocus(userId, year),
   ]);
 
   return (
@@ -42,6 +44,7 @@ export default async function GoalsPage() {
           .filter((habit) => !habit.archived)
           .map((habit) => ({ id: habit.id, name: habit.name }))}
         year={year}
+        focus={focus}
       />
     </div>
   );

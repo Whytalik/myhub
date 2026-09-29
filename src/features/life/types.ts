@@ -96,6 +96,23 @@ export interface SprintGoalProgress {
   yearlyPercent: number;
 }
 
+export interface YearFocusData {
+  id: string;
+  year: number;
+  sphereId: string;
+  leverGoalId: string | null;
+  leverReason: string | null;
+  allowImperfect: string | null;
+}
+
+export interface SetYearFocusInput {
+  year: number;
+  sphereId: string;
+  leverGoalId?: string | null;
+  leverReason?: string | null;
+  allowImperfect?: string | null;
+}
+
 export interface UpsertSphereGoalInput {
   id?: string;
   sphereId?: string;

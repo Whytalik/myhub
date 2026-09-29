@@ -5,22 +5,24 @@ import { Maximize2, Minimize2, Moon, Printer, Sun, Target } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { SPHERE_ICONS } from "@/features/life/components/tasks/lucide-icons-map";
 import { formatGoalProgress } from "@/features/life/logic/sphere-goals";
-import type { LifeSphereData, SphereGoalData } from "@/features/life/types";
+import type { LifeSphereData, SphereGoalData, YearFocusData } from "@/features/life/types";
 
 interface GoalsWallProps {
   spheres: LifeSphereData[];
   goals: SphereGoalData[];
   year: number;
   mission: string | null;
+  focus: YearFocusData | null;
 }
 
 type WallTheme = "dark" | "light";
 
-function WallGoal({ goal }: { goal: SphereGoalData }) {
+function WallGoal({ goal, isLever }: { goal: SphereGoalData; isLever: boolean }) {
   return (
     <li className="flex flex-col gap-1.5">
       <div className="flex items-baseline justify-between gap-3">
         <span className="text-[15px] font-medium text-[color:var(--wall-fg)] break-words">
+          {isLever ? "★ " : ""}
           {goal.title}
         </span>
         <span className="text-sm font-mono text-[color:var(--wall-muted)] shrink-0">
@@ -43,7 +45,7 @@ function WallGoal({ goal }: { goal: SphereGoalData }) {
   );
 }
 
-export function GoalsWall({ spheres, goals, year, mission }: GoalsWallProps) {
+export function GoalsWall({ spheres, goals, year, mission, focus }: GoalsWallProps) {
   const wallRef = useRef<HTMLDivElement>(null);
   const [theme, setTheme] = useState<WallTheme>("dark");
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -54,9 +56,12 @@ export function GoalsWall({ spheres, goals, year, mission }: GoalsWallProps) {
     return () => document.removeEventListener("fullscreenchange", handleChange);
   }, []);
 
-  const spheresWithGoals = spheres.filter((sphere) =>
-    goals.some((goal) => goal.sphereId === sphere.id),
-  );
+  const spheresWithGoals = spheres
+    .filter((sphere) => goals.some((goal) => goal.sphereId === sphere.id))
+    .sort(
+      (first, second) =>
+        Number(second.id === focus?.sphereId) - Number(first.id === focus?.sphereId),
+    );
   const FullscreenIcon = isFullscreen ? Minimize2 : Maximize2;
   const ThemeIcon = theme === "dark" ? Sun : Moon;
 
@@ -116,19 +121,32 @@ export function GoalsWall({ spheres, goals, year, mission }: GoalsWallProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-10 gap-y-8">
           {spheresWithGoals.map((sphere) => {
             const SphereIcon = SPHERE_ICONS[sphere.icon] || Target;
+            const isFocus = sphere.id === focus?.sphereId;
+            const sectionClassName = `flex flex-col gap-4 break-inside-avoid ${
+              isFocus ? "md:col-span-2 xl:col-span-3" : focus ? "opacity-80" : ""
+            }`;
             return (
-              <section key={sphere.id} className="flex flex-col gap-4 break-inside-avoid">
+              <section key={sphere.id} className={sectionClassName}>
                 <div className="flex items-center gap-2.5 pb-2 border-b border-[var(--wall-line)]">
                   <SphereIcon size={18} style={{ color: sphere.color }} />
                   <h3 className="text-base font-semibold uppercase tracking-wider text-[color:var(--wall-fg)]">
                     {sphere.name}
                   </h3>
+                  {isFocus && (
+                    <span className="text-xs font-mono uppercase tracking-wider text-[color:var(--wall-muted)]">
+                      · Focus of the year
+                    </span>
+                  )}
                 </div>
                 <ul className="flex flex-col gap-4">
                   {goals
                     .filter((goal) => goal.sphereId === sphere.id)
                     .map((goal) => (
-                      <WallGoal key={goal.id} goal={goal} />
+                      <WallGoal
+                        key={goal.id}
+                        goal={goal}
+                        isLever={goal.id === focus?.leverGoalId}
+                      />
                     ))}
                 </ul>
               </section>

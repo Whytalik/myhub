@@ -11,6 +11,12 @@ Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS
 
 ## Recently shipped
 
+- Year focus (2026-09-29): `YearFocus` = the ONE sphere of the year (unique per user+year) with an
+  optional lever goal (a `SphereGoal` of that sphere), a "why" and an "imperfect on purpose" note.
+  Set on `/life/planning/goals` (FocusPanel); highlighted on the goals page, the wall and the sprint
+  Goals tab (focus sphere first, lever badge). Soft nudge only: creating a sprint objective outside
+  the focus sphere shows a warning in the Planning Wizard, nothing is blocked. Objectives are not
+  linked to `SphereGoal` yet (only via their sphere).
 - Life Goals (2026-09-29): yearly measurable goals per life sphere (`SphereGoal`, 3-5 per sphere,
   types COUNTER / DAYS / VALUE). COUNTER/DAYS can be tracked by a habit (progress = year's
   `HabitCompletion` count, computed on read, so goals are deliberately not `unstable_cache`d).

@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import * as thoughtService from "@/features/life/services/thought-service";
 import * as sphereService from "@/features/life/services/sphere-service";
 import * as missionService from "@/features/life/services/mission-service";
+import * as yearFocusService from "@/features/life/services/year-focus-service";
 import {
   getPendingSprintClosure,
   getSprintDashboard,
@@ -27,7 +28,7 @@ export default async function PlanningWizardPage() {
     redirect("/login");
   }
 
-  const [thoughts, spheres, dashboard, mission, dailyResistanceBudget, pendingClosure] =
+  const [thoughts, spheres, dashboard, mission, dailyResistanceBudget, pendingClosure, focus] =
     await Promise.all([
       thoughtService.getThoughtsForWizard(userId),
       sphereService.getAllSpheres(userId),
@@ -35,6 +36,7 @@ export default async function PlanningWizardPage() {
       missionService.getCurrentMission(userId),
       getDailyResistanceBudget(),
       getPendingSprintClosure(userId),
+      yearFocusService.getFocus(userId, new Date().getFullYear()),
     ]);
 
   return (
@@ -70,6 +72,7 @@ export default async function PlanningWizardPage() {
         }
         dailyResistanceBudget={dailyResistanceBudget}
         missionContent={mission?.content ?? null}
+        focusSphereId={focus?.sphereId ?? null}
       />
     </div>
   );

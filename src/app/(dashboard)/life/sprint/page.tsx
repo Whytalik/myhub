@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { SprintKanbanClient } from "@/features/life/components/sprints/SprintKanbanClient";
 import * as sprintService from "@/features/life/services/sprint-service";
 import * as sphereService from "@/features/life/services/sphere-service";
+import * as yearFocusService from "@/features/life/services/year-focus-service";
 import * as sphereGoalService from "@/features/life/services/sphere-goal-service";
 import { SprintClosureDialog } from "@/features/life/components/sprints/SprintClosureDialog";
 
@@ -26,7 +27,10 @@ export default async function SprintPage() {
     sprintService.getPendingSprintClosure(userId),
   ]);
 
-  const sprintGoals = await sphereGoalService.getSprintGoalProgress(userId, dashboard.sprint);
+  const [sprintGoals, focus] = await Promise.all([
+    sphereGoalService.getSprintGoalProgress(userId, dashboard.sprint),
+    yearFocusService.getFocus(userId, dashboard.sprint.year),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,6 +45,7 @@ export default async function SprintPage() {
         allTasks={dashboard.allTasks as unknown as SprintKanbanClientProps["allTasks"]}
         spheres={spheres}
         sprintGoals={sprintGoals}
+        focus={focus}
         sprintReviews={
           dashboard.sprintReviews as unknown as SprintKanbanClientProps["sprintReviews"]
         }

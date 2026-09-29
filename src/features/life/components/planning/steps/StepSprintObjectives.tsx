@@ -32,6 +32,7 @@ function AssignObjectiveButton({
 }
 
 export function StepSprintObjectives({
+  focusSphereId,
   showAddObjectiveForm,
   setShowAddObjectiveForm,
   setStep,
@@ -52,6 +53,7 @@ export function StepSprintObjectives({
   backlogSearch,
   setBacklogSearch,
 }: {
+  focusSphereId: string | null;
   showAddObjectiveForm: boolean;
   setShowAddObjectiveForm: (value: boolean | ((previous: boolean) => boolean)) => void;
   setStep: (step: number) => void;
@@ -76,6 +78,15 @@ export function StepSprintObjectives({
   backlogSearch: string;
   setBacklogSearch: (value: string) => void;
 }) {
+  const focusSphereName = spheres.find((sphere) => sphere.id === focusSphereId)?.name;
+  const isOutsideFocus =
+    !!focusSphereId && !!newObjectiveSphereId && newObjectiveSphereId !== focusSphereId;
+  const objectives = sprint?.objectives ?? [];
+  const objectiveCount = objectives.length;
+  const objectivesOutsideFocus = objectives.filter(
+    (objective: SprintObjective) => objective.sphereId !== focusSphereId,
+  ).length;
+
   return (
     <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6">
       <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
@@ -129,6 +140,13 @@ export function StepSprintObjectives({
                   </option>
                 ))}
               </select>
+              {isOutsideFocus && (
+                <p className="text-[10px] text-amber-400">
+                  Your focus this year is {focusSphereName}. {objectivesOutsideFocus} of{" "}
+                  {objectiveCount} sprint objectives are already elsewhere; each extra one dilutes
+                  it.
+                </p>
+              )}
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-[10px] font-mono text-zinc-400">Description</label>

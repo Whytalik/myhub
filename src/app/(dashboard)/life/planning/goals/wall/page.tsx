@@ -6,6 +6,7 @@ import { GoalsWall } from "@/features/life/components/goals/GoalsWall";
 import * as sphereService from "@/features/life/services/sphere-service";
 import * as sphereGoalService from "@/features/life/services/sphere-goal-service";
 import * as missionService from "@/features/life/services/mission-service";
+import * as yearFocusService from "@/features/life/services/year-focus-service";
 
 export const metadata: Metadata = { title: "Goals Wall" };
 
@@ -18,10 +19,11 @@ export default async function GoalsWallPage() {
   }
 
   const year = new Date().getFullYear();
-  const [spheres, goals, mission] = await Promise.all([
+  const [spheres, goals, mission, focus] = await Promise.all([
     sphereService.getAllSpheres(userId),
     sphereGoalService.getGoalsForYear(userId, year),
     missionService.getCurrentMission(userId),
+    yearFocusService.getFocus(userId, year),
   ]);
 
   return (
@@ -41,6 +43,7 @@ export default async function GoalsWallPage() {
         goals={goals}
         year={year}
         mission={mission?.content ?? null}
+        focus={focus}
       />
     </div>
   );

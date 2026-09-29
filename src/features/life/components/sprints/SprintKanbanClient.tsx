@@ -6,7 +6,12 @@ import { Button } from "@/components/ui/actions/button";
 import { WeeklyStatusBoard } from "./WeeklyStatusBoard";
 import { WeeklyReviewDialog } from "./WeeklyReviewDialog";
 import { SprintGoalsPanel } from "./SprintGoalsPanel";
-import type { TaskData, LifeSphereData, SprintGoalProgress } from "@/features/life/types";
+import type {
+  TaskData,
+  LifeSphereData,
+  SprintGoalProgress,
+  YearFocusData,
+} from "@/features/life/types";
 import { Trophy, Target, Calendar, Sparkles, ArrowRight, Lock } from "lucide-react";
 
 interface SprintKanbanClientProps {
@@ -42,6 +47,7 @@ interface SprintKanbanClientProps {
   allTasks: TaskData[];
   spheres: LifeSphereData[];
   sprintGoals: SprintGoalProgress[];
+  focus: YearFocusData | null;
   sprintReviews: {
     id: string;
     weekNumber: number;
@@ -57,6 +63,7 @@ export function SprintKanbanClient({
   allTasks,
   spheres,
   sprintGoals,
+  focus,
   sprintReviews,
 }: SprintKanbanClientProps) {
   const sprintStart = useMemo(() => new Date(sprint.startDate), [sprint.startDate]);
@@ -280,7 +287,7 @@ export function SprintKanbanClient({
 
       {activeTab === "goals" && (
         <div className="glass-card p-5 bg-black/10 flex flex-col gap-6">
-          <SprintGoalsPanel goals={sprintGoals} spheres={spheres} />
+          <SprintGoalsPanel goals={sprintGoals} spheres={spheres} focus={focus} />
           <div>
             <h2 className="text-panel-title">Sprint Objectives & Key Results</h2>
             <p className="text-caption mt-1">Your targets for this 12-week year.</p>
