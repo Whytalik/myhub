@@ -1,6 +1,11 @@
 import { prisma } from "@/lib/db/prisma";
-import { startOfWeek, endOfWeek, startOfDay, endOfDay } from "date-fns";
-import type { TaskStatus } from "@/features/life/types";
+import { addDays, addWeeks, endOfDay, endOfWeek, max, startOfDay, startOfWeek } from "date-fns";
+import type {
+  PendingSprintClosure,
+  ProjectClosureAction,
+  SprintClosureInput,
+  TaskStatus,
+} from "@/features/life/types";
 import { Prisma } from "@/app/generated/prisma";
 
 const sprintObjectivesInclude = {
@@ -22,43 +27,70 @@ const sprintObjectivesInclude = {
   },
 } as const;
 
+const SPRINT_LENGTH_WEEKS = 12;
+
+type DatabaseClient = Prisma.TransactionClient | typeof prisma;
+
+async function createSprint(userId: string, startDate: Date, database: DatabaseClient = prisma) {
+  const start = startOfWeek(startDate, { weekStartsOn: 1 });
+  const firstWeekEnd = endOfWeek(start, { weekStartsOn: 1 });
+  const sprintEnd = addWeeks(firstWeekEnd, SPRINT_LENGTH_WEEKS - 1);
+
+  // Sprint numbers restart every calendar year.
+  const latestSprint = await database.sprint.findFirst({
+    where: { userId, year: start.getFullYear() },
+    orderBy: { number: "desc" },
+  });
+
+  return database.sprint.create({
+    data: {
+      userId,
+      number: latestSprint ? latestSprint.number + 1 : 1,
+      year: start.getFullYear(),
+      startDate: start,
+      endDate: sprintEnd,
+      status: "ACTIVE",
+    },
+    include: { ...sprintObjectivesInclude },
+  });
+}
+
+// Closes a sprint whose endDate has passed and starts the next one. Its
+// leftovers are resolved later via closeSprint (see getPendingSprintClosure).
+async function rollOverExpiredSprint(userId: string, expiredSprint: { id: string; endDate: Date }) {
+  const rolledOver = await prisma.$transaction(async (transaction) => {
+    // Only one concurrent request can flip ACTIVE -> COMPLETED; the loser
+    // waits on the row lock and then sees count === 0.
+    const closed = await transaction.sprint.updateMany({
+      where: { id: expiredSprint.id, userId, status: "ACTIVE" },
+      data: { status: "COMPLETED" },
+    });
+    if (closed.count === 0) return null;
+
+    const dayAfterExpiry = addDays(new Date(expiredSprint.endDate), 1);
+    const nextStart = max([startOfWeek(new Date(), { weekStartsOn: 1 }), dayAfterExpiry]);
+    return createSprint(userId, nextStart, transaction);
+  });
+
+  if (rolledOver) return rolledOver;
+
+  return prisma.sprint.findFirstOrThrow({
+    where: { userId, status: "ACTIVE" },
+    include: { ...sprintObjectivesInclude },
+  });
+}
+
 async function getOrCreateActiveSprint(userId: string) {
-  // 1. Get or create active sprint
-  let sprint = await prisma.sprint.findFirst({
+  const activeSprint = await prisma.sprint.findFirst({
     where: { userId, status: "ACTIVE" },
     include: { ...sprintObjectivesInclude },
   });
 
-  if (!sprint) {
-    // If no active sprint, find or create one
-    const now = new Date();
-    const start = startOfWeek(now, { weekStartsOn: 1 });
-    const end = endOfWeek(now, { weekStartsOn: 1 });
-    // Add 11 weeks for a 12-week sprint
-    const sprintEnd = new Date(end);
-    sprintEnd.setDate(sprintEnd.getDate() + 11 * 7);
-
-    // Let's see what is the highest sprint number for this year
-    const latestSprint = await prisma.sprint.findFirst({
-      where: { userId, year: now.getFullYear() },
-      orderBy: { number: "desc" },
-    });
-    const nextNumber = latestSprint ? latestSprint.number + 1 : 1;
-
-    sprint = await prisma.sprint.create({
-      data: {
-        userId,
-        number: nextNumber,
-        year: now.getFullYear(),
-        startDate: start,
-        endDate: sprintEnd,
-        status: "ACTIVE",
-      },
-      include: { ...sprintObjectivesInclude },
-    });
+  if (!activeSprint) return createSprint(userId, new Date());
+  if (new Date(activeSprint.endDate) < new Date()) {
+    return rollOverExpiredSprint(userId, activeSprint);
   }
-
-  return sprint;
+  return activeSprint;
 }
 
 export async function getSprintDashboard(userId: string) {
@@ -531,5 +563,181 @@ export async function updateSprintDates(
   return prisma.sprint.update({
     where: { id: sprintId },
     data: { startDate, endDate },
+  });
+}
+
+const FINISHED_PROJECT_STATUSES: TaskStatus[] = ["DONE", "CANCELLED"];
+
+export async function getPendingSprintClosure(
+  userId: string,
+): Promise<PendingSprintClosure | null> {
+  // Make sure an expired sprint has been rolled over before looking for leftovers.
+  await getOrCreateActiveSprint(userId);
+
+  const sprint = await prisma.sprint.findFirst({
+    where: { userId, status: "COMPLETED", objectives: { some: { status: "IN_PROGRESS" } } },
+    orderBy: { startDate: "desc" },
+    include: {
+      reviews: { select: { score: true } },
+      objectives: {
+        include: {
+          sphere: true,
+          projects: { include: { tasks: { select: { status: true } } } },
+        },
+      },
+    },
+  });
+  if (!sprint) return null;
+
+  const allProjects = sprint.objectives.flatMap((objective) => objective.projects);
+  const allTasks = allProjects.flatMap((project) => project.tasks);
+  const scoredReviews = sprint.reviews.filter((review) => review.score !== null);
+  const totalScore = scoredReviews.reduce((sum, review) => sum + (review.score ?? 0), 0);
+
+  return {
+    sprint: {
+      id: sprint.id,
+      number: sprint.number,
+      year: sprint.year,
+      startDate: sprint.startDate,
+      endDate: sprint.endDate,
+    },
+    summary: {
+      objectivesTotal: sprint.objectives.length,
+      projectsDone: allProjects.filter((project) => project.status === "DONE").length,
+      projectsTotal: allProjects.length,
+      tasksDone: allTasks.filter((task) => task.status === "DONE").length,
+      tasksTotal: allTasks.length,
+      averageScore: scoredReviews.length > 0 ? totalScore / scoredReviews.length : null,
+      reviewCount: scoredReviews.length,
+    },
+    objectives: sprint.objectives
+      .filter((objective) => objective.status === "IN_PROGRESS")
+      .map((objective) => ({
+        id: objective.id,
+        title: objective.title,
+        description: objective.description,
+        sphere: {
+          id: objective.sphere.id,
+          name: objective.sphere.name,
+          color: objective.sphere.color,
+          icon: objective.sphere.icon,
+        },
+        unfinishedProjects: objective.projects
+          .filter((project) => !FINISHED_PROJECT_STATUSES.includes(project.status))
+          .map((project) => ({
+            id: project.id,
+            title: project.title,
+            openTaskCount: project.tasks.filter(
+              (task) => task.status === "TODO" || task.status === "IN_PROGRESS",
+            ).length,
+          })),
+      })),
+  };
+}
+
+export async function closeSprint(userId: string, input: SprintClosureInput) {
+  const sprint = await prisma.sprint.findFirst({
+    where: { id: input.sprintId, userId, status: "COMPLETED" },
+    include: {
+      objectives: {
+        where: { status: "IN_PROGRESS" },
+        include: { projects: { select: { id: true, status: true } } },
+      },
+    },
+  });
+  if (!sprint) throw new Error("Sprint not found or not closed");
+
+  // Every open objective and every unfinished project needs an explicit decision.
+  const decisionsByObjective = new Map(input.objectives.map((entry) => [entry.objectiveId, entry]));
+  for (const objective of sprint.objectives) {
+    const decision = decisionsByObjective.get(objective.id);
+    if (!decision) throw new Error(`Missing decision for objective "${objective.title}"`);
+
+    const decidedProjectIds = new Set(decision.projects.map((entry) => entry.projectId));
+    const unfinished = objective.projects.filter(
+      (project) => !FINISHED_PROJECT_STATUSES.includes(project.status),
+    );
+    if (unfinished.some((project) => !decidedProjectIds.has(project.id))) {
+      throw new Error(`Missing project decision in objective "${objective.title}"`);
+    }
+  }
+
+  const activeSprint = await getOrCreateActiveSprint(userId);
+  const today = startOfDay(new Date());
+
+  await prisma.$transaction(async (transaction) => {
+    for (const objective of sprint.objectives) {
+      const decision = decisionsByObjective.get(objective.id)!;
+      const unfinishedIds = new Set(
+        objective.projects
+          .filter((project) => !FINISHED_PROJECT_STATUSES.includes(project.status))
+          .map((project) => project.id),
+      );
+      const decisions = decision.projects.filter((entry) => unfinishedIds.has(entry.projectId));
+      const idsFor = (action: ProjectClosureAction) =>
+        decisions.filter((entry) => entry.action === action).map((entry) => entry.projectId);
+
+      await transaction.objective.update({
+        where: { id: objective.id },
+        data: { status: decision.outcome },
+      });
+
+      const carriedIds = idsFor("CARRY");
+      if (carriedIds.length > 0) {
+        const carriedObjective = await transaction.objective.create({
+          data: {
+            sprintId: activeSprint.id,
+            sphereId: objective.sphereId,
+            title: objective.title,
+            description: objective.description,
+            status: "IN_PROGRESS",
+          },
+        });
+        await transaction.project.updateMany({
+          where: { id: { in: carriedIds }, userId },
+          data: { objectiveId: carriedObjective.id },
+        });
+      }
+
+      const backlogIds = idsFor("BACKLOG");
+      if (backlogIds.length > 0) {
+        await transaction.project.updateMany({
+          where: { id: { in: backlogIds }, userId },
+          data: { objectiveId: null },
+        });
+        // Drop stale dates so returned work doesn't show up as overdue.
+        await transaction.task.updateMany({
+          where: {
+            userId,
+            projectId: { in: backlogIds },
+            status: { in: ["TODO", "IN_PROGRESS"] },
+            plannedDate: { lt: today },
+          },
+          data: { plannedDate: null },
+        });
+      }
+
+      for (const status of ["DONE", "CANCELLED"] as const) {
+        const ids = idsFor(status);
+        if (ids.length > 0) {
+          await transaction.project.updateMany({
+            where: { id: { in: ids }, userId },
+            data: { status },
+          });
+        }
+      }
+    }
+
+    const afterAction = {
+      whatWorked: input.afterAction.whatWorked?.trim() || null,
+      challenges: input.afterAction.challenges?.trim() || null,
+      adjustments: input.afterAction.adjustments?.trim() || null,
+    };
+    await transaction.sprintAfterAction.upsert({
+      where: { sprintId: sprint.id },
+      create: { sprintId: sprint.id, date: today, ...afterAction },
+      update: { date: today, ...afterAction },
+    });
   });
 }

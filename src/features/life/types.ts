@@ -348,6 +348,46 @@ export interface UpsertThoughtStatusInput {
   order?: number;
 }
 
+export type SprintObjectiveOutcome = "ACHIEVED" | "PARTIAL" | "FAILED" | "CANCELLED";
+
+// What happens to an unfinished project when its sprint is closed.
+export type ProjectClosureAction = "CARRY" | "BACKLOG" | "DONE" | "CANCELLED";
+
+export interface SprintClosureInput {
+  sprintId: string;
+  objectives: {
+    objectiveId: string;
+    outcome: SprintObjectiveOutcome;
+    projects: { projectId: string; action: ProjectClosureAction }[];
+  }[];
+  afterAction: {
+    whatWorked?: string;
+    challenges?: string;
+    adjustments?: string;
+  };
+}
+
+export interface PendingSprintClosure {
+  sprint: { id: string; number: number; year: number; startDate: Date; endDate: Date };
+  summary: {
+    objectivesTotal: number;
+    projectsDone: number;
+    projectsTotal: number;
+    tasksDone: number;
+    tasksTotal: number;
+    averageScore: number | null;
+    reviewCount: number;
+  };
+  objectives: {
+    id: string;
+    title: string;
+    description: string | null;
+    sphere: { id: string; name: string; color: string; icon: string };
+    // Only projects that are still open (not DONE / CANCELLED).
+    unfinishedProjects: { id: string; title: string; openTaskCount: number }[];
+  }[];
+}
+
 export interface UpsertThoughtInput {
   id?: string;
   statusId?: string;

@@ -3,7 +3,7 @@
 import * as sprintService from "../services/sprint-service";
 import { invalidateTaskCache } from "@/lib/cache/revalidate";
 import { withAction } from "@/lib/actions/action-utils";
-import type { TaskStatus } from "@/features/life/types";
+import type { SprintClosureInput, TaskStatus } from "@/features/life/types";
 
 export async function createProjectAction(
   title: string,
@@ -133,5 +133,12 @@ export async function updateSprintDatesAction(
     );
     invalidateTaskCache(userId);
     return result;
+  });
+}
+
+export async function closeSprintAction(input: SprintClosureInput) {
+  return withAction(async (userId) => {
+    await sprintService.closeSprint(userId, input);
+    invalidateTaskCache(userId);
   });
 }
