@@ -51,6 +51,25 @@ export const THOUGHT_TYPE_CONFIGS: ThoughtTypeConfig[] = [
   },
 ];
 
+// Human-readable summary of a thought's template fields, used as the task /
+// project description when a thought is decomposed.
+export function formatThoughtTemplate(
+  type: ThoughtType | null | undefined,
+  templateData: Record<string, string> | null | undefined,
+): string {
+  if (!type) return "";
+  const config = getThoughtTypeConfig(type);
+  const header = `📋 Type: ${config?.label || type}`;
+  const fieldsText = Object.entries(templateData ?? {})
+    .filter(([, value]) => value && value.trim())
+    .map(([key, value]) => {
+      const fieldLabel = config?.fields.find((field) => field.key === key)?.label || key;
+      return `• ${fieldLabel}: ${value}`;
+    })
+    .join("\n");
+  return fieldsText ? `${header}\n${fieldsText}` : header;
+}
+
 export function getThoughtTypeConfig(
   type: ThoughtType | null | undefined,
 ): ThoughtTypeConfig | null {

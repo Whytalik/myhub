@@ -6,7 +6,7 @@ import { sphereRepository } from "../repositories/sphere.repository";
 import { DEFAULT_THOUGHT_STATUSES } from "../constants";
 import { Prisma, type TaskPriority } from "@/app/generated/prisma";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
-import { getThoughtTypeConfig, type ThoughtType } from "../logic/thought-types";
+import { formatThoughtTemplate, type ThoughtType } from "../logic/thought-types";
 import {
   FILTER_OUTCOME_STATUS,
   URGENCY_TASK_PRIORITY,
@@ -207,6 +207,7 @@ export async function decomposeThought(
     resistance?: number | null;
     projectId?: string | null;
     parentId?: string | null;
+    includeTemplateDetails?: boolean;
   },
 ) {
   const {
@@ -222,6 +223,7 @@ export async function decomposeThought(
     resistance,
     projectId,
     parentId,
+    includeTemplateDetails = true,
   } = input;
 
   // Verify thought ownership/existence
@@ -235,29 +237,12 @@ export async function decomposeThought(
   const resolvedPriority =
     priority ?? (thought.urgency ? URGENCY_TASK_PRIORITY[thought.urgency] : "MEDIUM");
 
-  // Format template details if present
-  let formattedDescription = description || "";
-  if (thought.type) {
-    const config = getThoughtTypeConfig(thought.type);
-    const typeLabel = config?.label || thought.type;
-    let templateText = `📋 Type: ${typeLabel}`;
-    if (thought.templateData && typeof thought.templateData === "object") {
-      const data = thought.templateData as Record<string, string>;
-      const fieldsText = Object.entries(data)
-        .filter(([_, val]) => val && val.trim())
-        .map(([key, val]) => {
-          const fieldLabel = config?.fields.find((f) => f.key === key)?.label || key;
-          return `• ${fieldLabel}: ${val}`;
-        })
-        .join("\n");
-      if (fieldsText) {
-        templateText += `\n${fieldsText}`;
-      }
-    }
-    formattedDescription = formattedDescription
-      ? `${templateText}\n\n${formattedDescription}`
-      : templateText;
-  }
+  // Callers that already show the template details to the user (the wizard)
+  // pass them inside `description` and opt out of the automatic prefix.
+  const templateText = includeTemplateDetails
+    ? formatThoughtTemplate(thought.type, thought.templateData as Record<string, string> | null)
+    : "";
+  const formattedDescription = [templateText, description].filter(Boolean).join("\n\n");
 
   return prisma.$transaction(async (tx) => {
     if (type === "task") {

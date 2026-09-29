@@ -96,6 +96,7 @@ export async function decomposeThoughtAction(input: {
   resistance?: number | null;
   projectId?: string | null;
   parentId?: string | null;
+  includeTemplateDetails?: boolean;
 }): Promise<
   ActionResult<import("@/features/life/services/thought-service").DecomposeThoughtResult>
 > {

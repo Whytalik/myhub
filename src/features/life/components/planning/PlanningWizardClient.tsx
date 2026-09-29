@@ -27,7 +27,11 @@ import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task
 import type { LifeSphereData } from "@/features/life/types";
 import type { ThoughtUrgencyLevel } from "@/features/life/logic/filter-outcomes";
 import type { RetriageChoice } from "./steps/StepDecomposition";
-import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
+import {
+  THOUGHT_TYPE_CONFIGS,
+  formatThoughtTemplate,
+  type ThoughtType,
+} from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
 import {
@@ -675,6 +679,7 @@ export function PlanningWizardClient({
         atomTitle: isProject ? undefined : title,
         atomDescription: undefined,
         sphereId: selectedSphereId,
+        includeTemplateDetails: false,
         resistance: isProject ? undefined : resistance,
       });
 
@@ -1227,10 +1232,18 @@ export function PlanningWizardClient({
   const currentDecomposeThought = decomposableThoughts[decomposeIndex];
   useEffect(() => {
     if (currentDecomposeThought) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTaskTitle(currentDecomposeThought.content);
+      /* eslint-disable react-hooks/set-state-in-effect */
+      const templateVerb = currentDecomposeThought.templateData?.verb?.trim();
+      const templateDetails = formatThoughtTemplate(
+        currentDecomposeThought.type,
+        currentDecomposeThought.templateData,
+      );
+      setTaskTitle(templateVerb || currentDecomposeThought.content);
       setProjectTitle(currentDecomposeThought.content);
+      setTaskDesc(templateDetails);
+      setProjectDesc(templateDetails);
       setSelectedSphereId(currentDecomposeThought.sphereId || "");
+      /* eslint-enable react-hooks/set-state-in-effect */
     }
   }, [currentDecomposeThought]);
 
