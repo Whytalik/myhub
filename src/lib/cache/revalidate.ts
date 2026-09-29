@@ -13,6 +13,12 @@ export function invalidateTaskCache(userId: string) {
   revalidatePath("/life", "layout");
 }
 
+// Goal progress is computed from live habit completions, so goals are read
+// uncached; only the pages need to be refreshed after a write.
+export function invalidateSphereGoalCache(_userId: string) {
+  revalidatePath("/life", "layout");
+}
+
 export function invalidateJournalCache(userId: string, date?: Date) {
   revalidateTag(cacheTags.dailyEntries(userId), INVALIDATE_PROFILE);
   revalidateTag("daily-entry", INVALIDATE_PROFILE);

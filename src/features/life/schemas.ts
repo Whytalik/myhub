@@ -75,3 +75,38 @@ export type SphereFormData = z.infer<typeof sphereSchema>;
 export type HabitChainFormData = z.infer<typeof habitChainSchema>;
 export type ThoughtStatusFormData = z.infer<typeof thoughtStatusSchema>;
 export type ThoughtFormData = z.infer<typeof thoughtSchema>;
+
+export const sphereGoalSchema = z
+  .object({
+    title: z.string().trim().min(1, "Title is required"),
+    type: z.enum(["COUNTER", "DAYS", "VALUE"]),
+    unit: z.string().trim().optional(),
+    startValue: z.number().finite().optional(),
+    targetValue: z.number().finite(),
+    habitId: z.string().nullable().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.type === "VALUE" && data.habitId) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "A value goal can't be tracked by a habit",
+        path: ["habitId"],
+      });
+    }
+    if (data.type !== "VALUE" && data.targetValue <= 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Target must be greater than zero",
+        path: ["targetValue"],
+      });
+    }
+    if (data.type === "VALUE" && data.targetValue === (data.startValue ?? 0)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Target must differ from the start value",
+        path: ["targetValue"],
+      });
+    }
+  });
+
+export type SphereGoalFormData = z.infer<typeof sphereGoalSchema>;

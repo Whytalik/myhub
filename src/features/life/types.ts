@@ -54,6 +54,44 @@ export interface UpsertDirectionInput {
   actions?: DirectionAction[];
 }
 
+export type SphereGoalType = "COUNTER" | "DAYS" | "VALUE";
+
+export const MAX_GOALS_PER_SPHERE = 5;
+export const MIN_GOALS_PER_SPHERE = 3;
+
+export interface SphereGoalData {
+  id: string;
+  sphereId: string;
+  year: number;
+  title: string;
+  type: SphereGoalType;
+  unit: string | null;
+  startValue: number;
+  targetValue: number;
+  currentValue: number;
+  // True when currentValue is derived from a habit's completions.
+  isAutoTracked: boolean;
+  habitId: string | null;
+  habitName: string | null;
+  order: number;
+  // 0-100, how much of the way from startValue to targetValue is done.
+  progressPercent: number;
+  // 0-100, share of the year that has passed; null for past/future years.
+  expectedPercent: number | null;
+}
+
+export interface UpsertSphereGoalInput {
+  id?: string;
+  sphereId?: string;
+  year?: number;
+  title?: string;
+  type?: SphereGoalType;
+  unit?: string | null;
+  startValue?: number;
+  targetValue?: number;
+  habitId?: string | null;
+}
+
 export interface TaskData {
   id: string;
   title: string;
