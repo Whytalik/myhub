@@ -3,6 +3,7 @@ import { taskRepository, type TaskRow } from "../repositories/task.repository";
 import { prisma } from "@/lib/db/prisma";
 import type { TaskData, LifeSphereData, TaskStatus, TaskPriority, UpsertTaskInput } from "../types";
 import { getScheduleByDate } from "./schedule-service";
+import { syncProjectCompletion } from "./sprint-service";
 import {
   createAppLocalDate,
   getDayOfWeekInAppTimeZone,
@@ -305,6 +306,8 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
       : (hasPlannedEndTime ?? undefined);
 
   if (id) {
+    // A task moved between projects must re-sync both of them.
+    const previousProjectId = (await taskRepository.findProjectId(id))?.projectId;
     const saved = await taskRepository.update(id, userId, {
       title: title ?? undefined,
       description: description !== undefined ? (description ?? null) : undefined,
@@ -327,6 +330,7 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
       sphereId: sphereId !== undefined ? (sphereId ?? null) : undefined,
       projectId: projectId !== undefined ? (projectId ?? null) : undefined,
     });
+    await syncProjectsOf(userId, [saved.projectId, previousProjectId]);
     return mapTask(saved);
   }
 
@@ -357,6 +361,7 @@ export async function upsertTask(userId: string, input: UpsertTaskInput): Promis
     sphereId: sphereId ?? null,
     projectId: projectId ?? null,
   });
+  await syncProjectsOf(userId, [saved.projectId]);
   return mapTask(saved);
 }
 
@@ -384,7 +389,9 @@ export async function autoCarryOverYesterdayTasks(
 }
 
 export async function deleteTask(userId: string, id: string): Promise<void> {
+  const projectId = (await taskRepository.findProjectId(id))?.projectId;
   await taskRepository.delete(id, userId);
+  await syncProjectsOf(userId, [projectId]);
 }
 
 export async function updateTaskStatus(
@@ -399,6 +406,17 @@ export async function updateTaskStatus(
       : {};
   await taskRepository.updateById(id, { status, completedAt, ...clearPlannedTime });
   if (status === "DONE") await autoCompleteParentIfAllChildrenDone(id);
+  await syncProjectsOf(userId, [(await taskRepository.findProjectId(id))?.projectId]);
+}
+
+async function syncProjectsOf(
+  userId: string,
+  projectIds: (string | null | undefined)[],
+): Promise<void> {
+  const uniqueIds = [
+    ...new Set(projectIds.filter((projectId): projectId is string => !!projectId)),
+  ];
+  await Promise.all(uniqueIds.map((projectId) => syncProjectCompletion(userId, projectId)));
 }
 
 async function autoCompleteParentIfAllChildrenDone(childId: string): Promise<void> {

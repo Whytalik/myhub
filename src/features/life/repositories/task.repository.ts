@@ -74,6 +74,10 @@ export const taskRepository = {
     });
   },
 
+  findProjectId(id: string) {
+    return prisma.task.findUnique({ where: { id }, select: { projectId: true } });
+  },
+
   findParentId(childId: string) {
     return prisma.task.findUnique({
       where: { id: childId },

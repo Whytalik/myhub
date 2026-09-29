@@ -7,6 +7,7 @@ import type {
   TaskStatus,
 } from "@/features/life/types";
 import { Prisma } from "@/app/generated/prisma";
+import { isProjectComplete } from "@/features/life/logic/project-completion";
 
 const sprintObjectivesInclude = {
   objectives: {
@@ -345,6 +346,27 @@ export async function updateProjectStatus(userId: string, projectId: string, sta
     where: { id: projectId, userId },
     data: { status },
   });
+}
+
+// Keeps Project.status in step with its atoms: DONE once everything is finished,
+// back to IN_PROGRESS if work reappears. CANCELLED projects are left alone.
+export async function syncProjectCompletion(userId: string, projectId: string) {
+  const project = await prisma.project.findFirst({
+    where: { id: projectId, userId },
+    select: { status: true, tasks: { where: { parentId: null }, select: { status: true } } },
+  });
+  if (!project || project.status === "CANCELLED") return;
+
+  const isComplete = isProjectComplete(project.tasks.map((task) => task.status));
+  const nextStatus: TaskStatus | null =
+    isComplete && project.status !== "DONE"
+      ? "DONE"
+      : !isComplete && project.status === "DONE"
+        ? "IN_PROGRESS"
+        : null;
+  if (!nextStatus) return;
+
+  await prisma.project.update({ where: { id: projectId }, data: { status: nextStatus } });
 }
 
 export async function assignProjectToObjective(

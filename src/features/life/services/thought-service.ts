@@ -6,6 +6,7 @@ import { sphereRepository } from "../repositories/sphere.repository";
 import { DEFAULT_THOUGHT_STATUSES } from "../constants";
 import { Prisma, type TaskPriority } from "@/app/generated/prisma";
 import type { UpsertThoughtStatusInput, UpsertThoughtInput } from "../types";
+import { syncProjectCompletion } from "./sprint-service";
 import { formatThoughtTemplate, type ThoughtType } from "../logic/thought-types";
 import {
   FILTER_OUTCOME_STATUS,
@@ -244,7 +245,7 @@ export async function decomposeThought(
     : "";
   const formattedDescription = [templateText, description].filter(Boolean).join("\n\n");
 
-  return prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx) => {
     if (type === "task") {
       const title = taskTitle || thought.content;
       const createdTask = await tx.task.create({
@@ -306,6 +307,10 @@ export async function decomposeThought(
       };
     }
   });
+
+  // A new atom can reopen an already completed project.
+  if (projectId) await syncProjectCompletion(userId, projectId);
+  return result;
 }
 
 export async function getThoughtsForWizard(userId: string) {
