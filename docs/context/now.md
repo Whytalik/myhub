@@ -2,15 +2,23 @@
 
 Active-work scratchpad — update as focus shifts. Keep this short; it's read at the start of every coding session per `CLAUDE.md`.
 
-## Current focus (2026-07-04)
+## Current focus (2026-09-29)
 
-Design system is being actively iterated on — several rewrites happened today:
-Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS Sonoma Minimalist** (current, see `docs/design-system.md`).
+Life planning stack is the active area: yearly goals per sphere -> one focus sphere + lever ->
+12-step playbook -> 12-week sprints (objectives serve yearly goals, projects inherit the goal) ->
+journal shows the focus. Design system is **macOS Sonoma Minimalist** (`docs/design-system.md`).
 
 **Known gap:** the `.claude/skills/design-system/SKILL.md` project skill was written against the Cyber-Craft Acrylic spec and is now stale relative to the current macOS Sonoma Minimalist doc — needs a refresh before relying on it for new component work.
 
 ## Recently shipped
 
+- System review fixes (2026-09-29): `Objective.goalId` (objective serves a yearly goal; projects
+  inherit it via `assignProjectToObjective` / `setObjectiveGoal`, carried objectives keep it);
+  Journal `FocusJournalCard` (focus, lever progress, pedal); Life Goals "Getting started"
+  checklist; the playbook pedal no longer steals an unfinished frog; dropped the unused
+  `KeyResult`/`Tactic`/`TacticCompletion`/`Milestone`/`AnnualCompass`/`Vision` tables (all empty).
+  Known limits: slice targets not editable, goals/focus are per calendar year (a sprint crossing
+  1 Jan gets no slices for next year's goals), `Direction` ("vector") overlaps yearly goals.
 - Goal Playbook (2026-09-29): the 12-step system per yearly goal at `/life/planning/playbook`
   (`GoalPlaybook` + `GoalPhase`, `Project.goalId`). Steps 2-8 and 12 are stored on the playbook;
   9-11 are derived from projects linked to the goal (current phase, this week's atoms, atoms

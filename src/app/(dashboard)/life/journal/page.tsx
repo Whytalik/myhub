@@ -8,6 +8,8 @@ import * as taskService from "@/features/life/services/task-service";
 import * as sphereService from "@/features/life/services/sphere-service";
 import * as habitService from "@/features/life/services/habit-service";
 import * as thoughtService from "@/features/life/services/thought-service";
+import { getFocusSummary } from "@/features/life/services/goal-playbook-service";
+import { FocusJournalCard } from "@/features/life/components/goals/FocusJournalCard";
 import { getScheduleByDate } from "@/features/life/services/schedule-service";
 import { DailyEntryForm } from "@/features/life/components/DailyEntryForm";
 import type { DailyEntryData, HabitData } from "@/features/life/types";
@@ -54,16 +56,18 @@ export default async function JournalPage({
   const [y, m, d] = dateStr.split("-").map(Number);
   const yesterday = new Date(y, m - 1, d - 1);
 
-  const [raw, yesterdayRaw, tasks, allTasks, spheres, habits, schedule, board] = await Promise.all([
-    getEntryByDate(userId, date),
-    getEntryByDate(userId, yesterday),
-    taskService.getTasksByDate(userId, date),
-    taskService.getAllTasks(userId),
-    sphereService.getAllSpheres(userId),
-    habitService.getActiveHabits(userId),
-    getScheduleByDate(userId, date),
-    thoughtService.getBoard(userId),
-  ]);
+  const [raw, yesterdayRaw, tasks, allTasks, spheres, habits, schedule, board, focusSummary] =
+    await Promise.all([
+      getEntryByDate(userId, date),
+      getEntryByDate(userId, yesterday),
+      taskService.getTasksByDate(userId, date),
+      taskService.getAllTasks(userId),
+      sphereService.getAllSpheres(userId),
+      habitService.getActiveHabits(userId),
+      getScheduleByDate(userId, date),
+      thoughtService.getBoard(userId),
+      isPast ? Promise.resolve(null) : getFocusSummary(userId),
+    ]);
 
   const inboxThoughtCount = board
     .filter((status) => {
@@ -149,6 +153,8 @@ export default async function JournalPage({
           </Link>
         </div>
       )}
+
+      {focusSummary && <FocusJournalCard summary={focusSummary} />}
 
       <DailyEntryForm
         key={dateStr}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Select } from "@/components/ui/inputs/select";
@@ -73,6 +74,9 @@ export function WeekPlanStep({ goalId, playbook }: StepProps) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
         <span className="text-label">Projects serving this goal</span>
+        <span className="text-caption">
+          Projects of sprint objectives that serve this goal are linked automatically.
+        </span>
         <div className="flex flex-wrap gap-1.5">
           {playbook.projects
             .filter(
@@ -230,8 +234,13 @@ export function PedalStep({ goalId, playbook }: StepProps) {
 
   const handleStart = () => {
     run(createPedalTaskAction(goalId), {
-      successMessage: "Added to today as your frog 🐸",
       errorMessage: "Failed to create the task",
+      onSuccess: (result) =>
+        toast.success(
+          result.isFrog
+            ? "Added to today as your frog 🐸"
+            : "Added to today. Your current frog stays the frog.",
+        ),
     });
   };
 

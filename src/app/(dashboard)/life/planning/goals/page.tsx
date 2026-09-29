@@ -5,6 +5,8 @@ import { PageHeader } from "@/components/ui/display/page-header";
 import { GoalsPageClient } from "@/features/life/components/goals/GoalsPageClient";
 import * as sphereService from "@/features/life/services/sphere-service";
 import * as sphereGoalService from "@/features/life/services/sphere-goal-service";
+import * as goalPlaybookService from "@/features/life/services/goal-playbook-service";
+import { SetupChecklist } from "@/features/life/components/goals/SetupChecklist";
 import * as yearFocusService from "@/features/life/services/year-focus-service";
 import * as habitService from "@/features/life/services/habit-service";
 
@@ -26,6 +28,12 @@ export default async function GoalsPage() {
     yearFocusService.getFocus(userId, year),
   ]);
 
+  const setupProgress = await goalPlaybookService.getSetupProgress(
+    userId,
+    goals.length,
+    focus !== null,
+  );
+
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
@@ -37,6 +45,7 @@ export default async function GoalsPage() {
         title="Life Goals"
         description="3–5 measurable goals per life sphere. Numbers, not wishes."
       />
+      <SetupChecklist progress={setupProgress} />
       <GoalsPageClient
         spheres={spheres.filter((sphere) => sphere.isActive)}
         goals={goals}

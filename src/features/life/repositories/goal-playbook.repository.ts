@@ -52,6 +52,29 @@ export const goalPlaybookRepository = {
     return prisma.goalPhase.delete({ where: { id } });
   },
 
+  countStartedPlaybooks(userId: string) {
+    return prisma.goalPlaybook.count({
+      where: {
+        userId,
+        OR: [{ path: { not: null } }, { keyChange: { not: null } }, { phases: { some: {} } }],
+      },
+    });
+  },
+
+  // Objectives of the running sprint that serve a yearly goal.
+  countLinkedObjectives(userId: string) {
+    return prisma.objective.count({
+      where: { goalId: { not: null }, sprint: { userId, status: "ACTIVE" } },
+    });
+  },
+
+  findSphere(sphereId: string) {
+    return prisma.lifeSphere.findUnique({
+      where: { id: sphereId },
+      select: { name: true, color: true, icon: true },
+    });
+  },
+
   findGoalForUser(goalId: string, userId: string) {
     return prisma.sphereGoal.findFirst({ where: { id: goalId, userId }, select: { id: true } });
   },

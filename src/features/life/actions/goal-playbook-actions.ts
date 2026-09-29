@@ -51,10 +51,13 @@ export async function linkProjectToGoalAction(
   });
 }
 
-export async function createPedalTaskAction(goalId: string): Promise<ActionResult<void>> {
+export async function createPedalTaskAction(
+  goalId: string,
+): Promise<ActionResult<{ isFrog: boolean }>> {
   return withAction(async (userId) => {
-    await playbookService.createPedalTask(userId, goalId);
+    const result = await playbookService.createPedalTask(userId, goalId);
     invalidateSphereGoalCache(userId);
     invalidateTaskCache(userId);
+    return result;
   });
 }

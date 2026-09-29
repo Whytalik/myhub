@@ -7,15 +7,20 @@ import { goalPhaseSchema, savePlaybookSchema } from "../schemas";
 import {
   PLAYBOOK_STEP_COUNT,
   type GoalPhaseData,
+  type FocusSummary,
   type GoalPlaybookData,
   type PlaybookAtom,
   type PlaybookObstacle,
   type PlaybookPerson,
+  type SetupProgress,
   type SavePlaybookInput,
   type TaskStatus,
   type UpsertGoalPhaseInput,
 } from "../types";
+import { taskRepository } from "../repositories/task.repository";
 import * as taskService from "./task-service";
+import * as sphereGoalService from "./sphere-goal-service";
+import * as yearFocusService from "./year-focus-service";
 
 const FINISHED_TASK_STATUSES: TaskStatus[] = ["DONE", "CANCELLED"];
 
@@ -169,6 +174,42 @@ export async function getPlaybook(userId: string, goalId: string): Promise<GoalP
   };
 }
 
+export async function getFocusSummary(userId: string): Promise<FocusSummary | null> {
+  const year = new Date().getFullYear();
+  const focus = await yearFocusService.getFocus(userId, year);
+  if (!focus) return null;
+
+  const [sphere, goals, playbook] = await Promise.all([
+    goalPlaybookRepository.findSphere(focus.sphereId),
+    sphereGoalService.getGoalsForYear(userId, year),
+    focus.leverGoalId ? goalPlaybookRepository.findByGoal(focus.leverGoalId) : null,
+  ]);
+  if (!sphere) return null;
+
+  const pedalTask = playbook?.pedalTaskId
+    ? await goalPlaybookRepository.findTask(playbook.pedalTaskId, userId)
+    : null;
+
+  return {
+    sphere,
+    leverGoal: goals.find((goal) => goal.id === focus.leverGoalId) ?? null,
+    pedalTask,
+  };
+}
+
+export async function getSetupProgress(userId: string, goalCount: number, hasFocus: boolean) {
+  const [startedPlaybooks, linkedObjectives] = await Promise.all([
+    goalPlaybookRepository.countStartedPlaybooks(userId),
+    goalPlaybookRepository.countLinkedObjectives(userId),
+  ]);
+  return {
+    hasGoals: goalCount > 0,
+    hasFocus,
+    hasPlaybook: startedPlaybooks > 0,
+    hasLinkedObjectives: linkedObjectives > 0,
+  } satisfies SetupProgress;
+}
+
 export async function savePlaybook(
   userId: string,
   goalId: string,
@@ -241,7 +282,12 @@ export async function linkProject(
 }
 
 // Step 12: the one 5-minute action to do right now, as today's frog task.
-export async function createPedalTask(userId: string, goalId: string): Promise<void> {
+// The frog is one per user: an unfinished frog is never replaced, the pedal task is
+// then a normal task for today. Returns whether the pedal became the frog.
+export async function createPedalTask(
+  userId: string,
+  goalId: string,
+): Promise<{ isFrog: boolean }> {
   const playbook = await requirePlaybook(userId, goalId);
   const title = playbook.pedalAction?.trim();
   if (!title) throw new Error("Write the 5-minute action first");
@@ -251,6 +297,8 @@ export async function createPedalTask(userId: string, goalId: string): Promise<v
     plannedDate: startOfDay(new Date()).toISOString(),
     priority: "HIGH",
   });
-  await taskService.setTaskAsFrog(userId, task.id);
+  const hasOpenFrog = (await taskRepository.findOpenFrog(userId)) !== null;
+  if (!hasOpenFrog) await taskService.setTaskAsFrog(userId, task.id);
   await goalPlaybookRepository.update(playbook.id, { pedalTaskId: task.id });
+  return { isFrog: !hasOpenFrog };
 }

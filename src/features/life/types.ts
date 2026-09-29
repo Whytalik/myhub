@@ -189,6 +189,20 @@ export interface UpsertGoalPhaseInput {
   outcome?: string | null;
 }
 
+// What the daily Journal shows about the year's focus.
+export interface FocusSummary {
+  sphere: { name: string; color: string; icon: string };
+  leverGoal: SphereGoalData | null;
+  pedalTask: { id: string; title: string; status: TaskStatus } | null;
+}
+
+export interface SetupProgress {
+  hasGoals: boolean;
+  hasFocus: boolean;
+  hasPlaybook: boolean;
+  hasLinkedObjectives: boolean;
+}
+
 export interface UpsertSphereGoalInput {
   id?: string;
   sphereId?: string;

@@ -74,6 +74,13 @@ export const taskRepository = {
     });
   },
 
+  findOpenFrog(userId: string) {
+    return prisma.task.findFirst({
+      where: { userId, isFrog: true, status: { notIn: ["DONE", "CANCELLED"] } },
+      select: { id: true },
+    });
+  },
+
   findProjectId(id: string) {
     return prisma.task.findUnique({ where: { id }, select: { projectId: true } });
   },
