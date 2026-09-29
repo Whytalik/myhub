@@ -18,13 +18,14 @@ import {
 import {
   assignProjectToObjectiveAction,
   createSprintObjectiveAction,
+  setObjectiveGoalAction,
   deleteProjectAction,
   updateProjectAction,
   updateProjectStatusAction,
   updateSprintDatesAction,
 } from "@/features/life/actions/sprint-actions";
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
-import type { LifeSphereData } from "@/features/life/types";
+import type { LifeSphereData, SphereGoalData } from "@/features/life/types";
 import { isProjectComplete } from "@/features/life/logic/project-completion";
 import type { ThoughtUrgencyLevel } from "@/features/life/logic/filter-outcomes";
 import type { RetriageChoice } from "./steps/StepDecomposition";
@@ -72,6 +73,7 @@ interface PlanningWizardClientProps {
   dailyResistanceBudget?: number;
   missionContent?: string | null;
   focusSphereId?: string | null;
+  sphereGoals?: SphereGoalData[];
 }
 
 export function PlanningWizardClient({
@@ -84,6 +86,7 @@ export function PlanningWizardClient({
   dailyResistanceBudget = 8,
   missionContent,
   focusSphereId = null,
+  sphereGoals = [],
 }: PlanningWizardClientProps) {
   const router = useRouter();
   const [step, setStep] = useState(() => {
@@ -112,6 +115,7 @@ export function PlanningWizardClient({
   const [newObjectiveTitle, setNewObjectiveTitle] = useState("");
   const [newObjectiveSphereId, setNewObjectiveSphereId] = useState(spheres?.[0]?.id || "");
   const [newObjectiveDesc, setNewObjectiveDesc] = useState("");
+  const [newObjectiveGoalId, setNewObjectiveGoalId] = useState("");
   const [showAddObjectiveForm, setShowAddObjectiveForm] = useState(false);
   const [backlogSearch, setBacklogSearch] = useState("");
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
@@ -714,20 +718,28 @@ export function PlanningWizardClient({
     const title = newObjectiveTitle.trim();
     if (!title || !sprint) return;
 
+    // The goal must belong to the chosen sphere; otherwise the objective has none.
+    const goal = sphereGoals.find(
+      (item) => item.id === newObjectiveGoalId && item.sphereId === newObjectiveSphereId,
+    );
+
     startActionTransition(async () => {
       const result = await createSprintObjectiveAction(
         sprint.id,
         title,
         newObjectiveSphereId,
         newObjectiveDesc,
+        goal?.id ?? null,
       );
       if (result.success) {
         toast.success("Objective created successfully!");
         setNewObjectiveTitle("");
         setNewObjectiveDesc("");
+        setNewObjectiveGoalId("");
         setShowAddObjectiveForm(false);
         const newObj = {
           ...result.data,
+          goal: goal ? { id: goal.id, title: goal.title } : null,
           sphere: spheres.find((s) => s.id === newObjectiveSphereId) ?? null,
           projects: [],
         };
@@ -737,6 +749,29 @@ export function PlanningWizardClient({
         }));
       } else {
         toast.error(result.error || "Failed to create objective");
+      }
+    });
+  };
+
+  const handleSetObjectiveGoal = (objectiveId: string, goalId: string | null) => {
+    const goal = sphereGoals.find((item) => item.id === goalId);
+    startActionTransition(async () => {
+      const result = await setObjectiveGoalAction(objectiveId, goalId);
+      if (result.success) {
+        setSprint((prev: SprintData) => ({
+          ...prev,
+          objectives: prev.objectives.map((objective: SprintObjective) =>
+            objective.id === objectiveId
+              ? {
+                  ...objective,
+                  goalId,
+                  goal: goal ? { id: goal.id, title: goal.title } : null,
+                }
+              : objective,
+          ),
+        }));
+      } else {
+        toast.error(result.error || "Failed to link the goal");
       }
     });
   };
@@ -1496,6 +1531,10 @@ export function PlanningWizardClient({
       {step === 4 && (
         <StepSprintObjectives
           focusSphereId={focusSphereId}
+          sphereGoals={sphereGoals}
+          newObjectiveGoalId={newObjectiveGoalId}
+          setNewObjectiveGoalId={setNewObjectiveGoalId}
+          handleSetObjectiveGoal={handleSetObjectiveGoal}
           showAddObjectiveForm={showAddObjectiveForm}
           setShowAddObjectiveForm={setShowAddObjectiveForm}
           setStep={setStep}

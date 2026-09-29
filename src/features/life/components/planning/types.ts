@@ -44,6 +44,8 @@ export interface SprintObjective {
   description: string | null;
   sphereId: string;
   sphere: { id: string; name: string; color: string; icon: string } | null;
+  goalId?: string | null;
+  goal?: { id: string; title: string } | null;
   projects: SprintProject[];
 }
 

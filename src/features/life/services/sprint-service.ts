@@ -13,6 +13,7 @@ const sprintObjectivesInclude = {
   objectives: {
     include: {
       sphere: true,
+      goal: { select: { id: true, title: true } },
       projects: {
         include: {
           tasks: {
@@ -380,9 +381,17 @@ export async function assignProjectToObjective(
   });
   if (!project) throw new Error("Project not found or unauthorized");
 
+  // A project inherits the yearly goal of the objective it joins.
+  const objective = objectiveId
+    ? await prisma.objective.findFirst({
+        where: { id: objectiveId, sprint: { userId } },
+        select: { goalId: true },
+      })
+    : null;
+
   return prisma.project.update({
     where: { id: projectId },
-    data: { objectiveId },
+    data: { objectiveId, goalId: objective?.goalId ?? project.goalId },
   });
 }
 
@@ -392,7 +401,10 @@ export async function createSprintObjective(
   title: string,
   sphereId: string,
   description?: string,
+  goalId?: string | null,
 ) {
+  await assertGoalMatchesSphere(userId, goalId, sphereId);
+
   // Verify sprint ownership
   const sprint = await prisma.sprint.findFirst({
     where: { id: sprintId, userId },
@@ -405,9 +417,40 @@ export async function createSprintObjective(
       sphereId,
       title,
       description: description || null,
+      goalId: goalId ?? null,
       status: "IN_PROGRESS",
     },
   });
+}
+
+// An objective can only serve a yearly goal of its own sphere.
+async function assertGoalMatchesSphere(
+  userId: string,
+  goalId: string | null | undefined,
+  sphereId: string,
+) {
+  if (!goalId) return;
+  const goal = await prisma.sphereGoal.findFirst({
+    where: { id: goalId, userId },
+    select: { sphereId: true },
+  });
+  if (!goal) throw new Error("Goal not found");
+  if (goal.sphereId !== sphereId) throw new Error("The goal belongs to a different sphere");
+}
+
+export async function setObjectiveGoal(userId: string, objectiveId: string, goalId: string | null) {
+  const objective = await prisma.objective.findFirst({
+    where: { id: objectiveId, sprint: { userId } },
+    select: { sphereId: true },
+  });
+  if (!objective) throw new Error("Objective not found or unauthorized");
+  await assertGoalMatchesSphere(userId, goalId, objective.sphereId);
+
+  await prisma.$transaction([
+    prisma.objective.update({ where: { id: objectiveId }, data: { goalId } }),
+    // Projects of the objective follow it, so the playbook sees them.
+    prisma.project.updateMany({ where: { objectiveId, userId }, data: { goalId } }),
+  ]);
 }
 
 export async function getSprintReviewForWeek(userId: string, date: Date) {
@@ -713,6 +756,7 @@ export async function closeSprint(userId: string, input: SprintClosureInput) {
             sphereId: objective.sphereId,
             title: objective.title,
             description: objective.description,
+            goalId: objective.goalId,
             status: "IN_PROGRESS",
           },
         });

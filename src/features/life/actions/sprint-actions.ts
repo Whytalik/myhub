@@ -48,6 +48,7 @@ export async function createSprintObjectiveAction(
   title: string,
   sphereId: string,
   description?: string,
+  goalId?: string | null,
 ) {
   return withAction(async (userId) => {
     const objective = await sprintService.createSprintObjective(
@@ -56,6 +57,7 @@ export async function createSprintObjectiveAction(
       title,
       sphereId,
       description,
+      goalId,
     );
     invalidateTaskCache(userId);
     return objective;
@@ -139,6 +141,13 @@ export async function updateSprintDatesAction(
 export async function closeSprintAction(input: SprintClosureInput) {
   return withAction(async (userId) => {
     await sprintService.closeSprint(userId, input);
+    invalidateTaskCache(userId);
+  });
+}
+
+export async function setObjectiveGoalAction(objectiveId: string, goalId: string | null) {
+  return withAction(async (userId) => {
+    await sprintService.setObjectiveGoal(userId, objectiveId, goalId);
     invalidateTaskCache(userId);
   });
 }

@@ -1,9 +1,10 @@
 import { ChevronRight, Pencil, Plus, Target, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
+import { Select } from "@/components/ui/inputs/select";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { SPHERE_ICONS } from "@/features/life/components/tasks/lucide-icons-map";
-import type { LifeSphereData } from "@/features/life/types";
+import type { LifeSphereData, SphereGoalData } from "@/features/life/types";
 import type { SprintData, SprintObjective, SprintProject } from "../types";
 
 function AssignObjectiveButton({
@@ -33,6 +34,10 @@ function AssignObjectiveButton({
 
 export function StepSprintObjectives({
   focusSphereId,
+  sphereGoals,
+  newObjectiveGoalId,
+  setNewObjectiveGoalId,
+  handleSetObjectiveGoal,
   showAddObjectiveForm,
   setShowAddObjectiveForm,
   setStep,
@@ -54,6 +59,10 @@ export function StepSprintObjectives({
   setBacklogSearch,
 }: {
   focusSphereId: string | null;
+  sphereGoals: SphereGoalData[];
+  newObjectiveGoalId: string;
+  setNewObjectiveGoalId: (value: string) => void;
+  handleSetObjectiveGoal: (objectiveId: string, goalId: string | null) => void;
   showAddObjectiveForm: boolean;
   setShowAddObjectiveForm: (value: boolean | ((previous: boolean) => boolean)) => void;
   setStep: (step: number) => void;
@@ -78,6 +87,7 @@ export function StepSprintObjectives({
   backlogSearch: string;
   setBacklogSearch: (value: string) => void;
 }) {
+  const goalsInNewSphere = sphereGoals.filter((goal) => goal.sphereId === newObjectiveSphereId);
   const focusSphereName = spheres.find((sphere) => sphere.id === focusSphereId)?.name;
   const isOutsideFocus =
     !!focusSphereId && !!newObjectiveSphereId && newObjectiveSphereId !== focusSphereId;
@@ -149,6 +159,28 @@ export function StepSprintObjectives({
               )}
             </div>
             <div className="flex flex-col gap-1">
+              <label className="text-[10px] font-mono text-zinc-400">Serves yearly goal</label>
+              <Select
+                value={
+                  goalsInNewSphere.some((goal) => goal.id === newObjectiveGoalId)
+                    ? newObjectiveGoalId
+                    : ""
+                }
+                onChange={(e) => setNewObjectiveGoalId(e.target.value)}
+              >
+                <option value="">
+                  {goalsInNewSphere.length === 0
+                    ? "No yearly goals in this sphere yet"
+                    : "No specific goal"}
+                </option>
+                {goalsInNewSphere.map((goal) => (
+                  <option key={goal.id} value={goal.id}>
+                    {goal.title}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div className="flex flex-col gap-1">
               <label className="text-[10px] font-mono text-zinc-400">Description</label>
               <Textarea
                 value={newObjectiveDesc}
@@ -207,6 +239,26 @@ export function StepSprintObjectives({
                 {obj.description && (
                   <p className="text-xs text-zinc-400 italic">{obj.description}</p>
                 )}
+
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider shrink-0">
+                    Serves goal
+                  </span>
+                  <Select
+                    value={obj.goalId ?? ""}
+                    onChange={(e) => handleSetObjectiveGoal(obj.id, e.target.value || null)}
+                    disabled={isActionPending}
+                  >
+                    <option value="">None</option>
+                    {sphereGoals
+                      .filter((goal) => goal.sphereId === obj.sphereId)
+                      .map((goal) => (
+                        <option key={goal.id} value={goal.id}>
+                          {goal.title}
+                        </option>
+                      ))}
+                  </Select>
+                </div>
 
                 <div className="flex flex-col gap-2 mt-2">
                   <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-wider font-semibold">

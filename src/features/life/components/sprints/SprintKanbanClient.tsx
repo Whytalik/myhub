@@ -26,6 +26,7 @@ interface SprintKanbanClientProps {
       id: string;
       title: string;
       description: string | null;
+      goal?: { id: string; title: string } | null;
       sphere: {
         id: string;
         name: string;
@@ -234,7 +235,7 @@ export function SprintKanbanClient({
         >
           <span className="flex items-center gap-1.5">
             <Target size={13} />
-            Sprint Goals (OKR)
+            Sprint Goals
           </span>
         </button>
         <button
@@ -289,7 +290,7 @@ export function SprintKanbanClient({
         <div className="glass-card p-5 bg-black/10 flex flex-col gap-6">
           <SprintGoalsPanel goals={sprintGoals} spheres={spheres} focus={focus} />
           <div>
-            <h2 className="text-panel-title">Sprint Objectives & Key Results</h2>
+            <h2 className="text-panel-title">Sprint Objectives</h2>
             <p className="text-caption mt-1">Your targets for this 12-week year.</p>
           </div>
 
@@ -315,6 +316,11 @@ export function SprintKanbanClient({
                       <h3 className="text-sm font-semibold text-zinc-100">{objective.title}</h3>
                       {objective.description && (
                         <p className="text-[11px] text-zinc-400 mt-0.5">{objective.description}</p>
+                      )}
+                      {objective.goal && (
+                        <p className="text-[10px] font-mono text-accent-life mt-0.5">
+                          Serves: {objective.goal.title}
+                        </p>
                       )}
                     </div>
                     <span
