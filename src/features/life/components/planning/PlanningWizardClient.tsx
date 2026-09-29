@@ -25,6 +25,7 @@ import {
 } from "@/features/life/actions/sprint-actions";
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
+import { isProjectComplete } from "@/features/life/logic/project-completion";
 import type { ThoughtUrgencyLevel } from "@/features/life/logic/filter-outcomes";
 import type { RetriageChoice } from "./steps/StepDecomposition";
 import {
@@ -129,8 +130,17 @@ export function PlanningWizardClient({
   // Set default selected project when entering Step 5
   useEffect(() => {
     if (step === 5 && !selectedDeconstructProjectId && activeSprintProjects.length > 0) {
+      const firstOpenProject =
+        activeSprintProjects.find(
+          (project: SprintProject) =>
+            !isProjectComplete(
+              (project.tasks || [])
+                .filter((task: SprintTask) => !task.parentId)
+                .map((task: SprintTask) => task.status),
+            ),
+        ) ?? activeSprintProjects[0];
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedDeconstructProjectId(activeSprintProjects[0].id);
+      setSelectedDeconstructProjectId(firstOpenProject.id);
     }
   }, [step, activeSprintProjects, selectedDeconstructProjectId]);
 
@@ -925,12 +935,14 @@ export function PlanningWizardClient({
     if (!sprint) return;
     const project = activeSprintProjects.find((p: SprintProject) => p.id === projectId);
     if (!project) return;
-    const newStatus = project.status === "DONE" ? "TODO" : "DONE";
+    const newStatus = project.status === "IN_PROGRESS" ? "TODO" : "IN_PROGRESS";
 
     startActionTransition(async () => {
       const result = await updateProjectStatusAction(projectId, newStatus);
       if (result.success) {
-        toast.success(newStatus === "DONE" ? "Project marked as planned!" : "Project unmarked");
+        toast.success(
+          newStatus === "IN_PROGRESS" ? "Project marked as planned!" : "Project unmarked",
+        );
         setSprint((prev: SprintData) => ({
           ...prev,
           objectives: prev.objectives.map((obj: SprintObjective) => ({

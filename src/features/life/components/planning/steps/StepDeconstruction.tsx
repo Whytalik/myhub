@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { useRouter } from "next/navigation";
 import {
   AlertTriangle,
@@ -10,9 +11,69 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { TaskCreateForm, type TaskCreateFormData } from "../TaskCreateForm";
+import { isProjectComplete } from "@/features/life/logic/project-completion";
 import type { SprintProject, SprintTask } from "../types";
 
 type Router = ReturnType<typeof useRouter>;
+
+function getProjectSummary(project: SprintProject) {
+  const tasks = project.tasks || [];
+  const topLevelTasks = tasks.filter((task: SprintTask) => !task.parentId);
+  const groupCount = tasks.filter((task: SprintTask) => task.resistance === null).length;
+  const standaloneAtoms = tasks.filter((task: SprintTask) => task.resistance !== null);
+  const subAtoms = tasks.flatMap((task: SprintTask) => task.children || []);
+  const leafAtoms = [...standaloneAtoms, ...subAtoms];
+
+  return {
+    isCompleted: isProjectComplete(topLevelTasks.map((task: SprintTask) => task.status)),
+    isPlanned: project.status === "IN_PROGRESS",
+    groupCount,
+    atomCount: leafAtoms.length,
+    doneAtomCount: leafAtoms.filter((atom: SprintTask) => atom.status === "DONE").length,
+  };
+}
+
+function ProjectListItem({
+  project,
+  isSelected,
+  onSelect,
+}: {
+  project: SprintProject;
+  isSelected: boolean;
+  onSelect: () => void;
+}) {
+  const { isCompleted, isPlanned, groupCount, atomCount, doneAtomCount } =
+    getProjectSummary(project);
+
+  const labelParts: string[] = [];
+  if (groupCount > 0) labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
+  if (atomCount > 0) labelParts.push(`${doneAtomCount}/${atomCount} atoms`);
+  const label = labelParts.length > 0 ? labelParts.join(", ") : "empty";
+
+  const stateClassName = isSelected
+    ? "bg-accent/10 border-accent/30 text-accent font-semibold shadow-sm"
+    : isCompleted
+      ? "bg-emerald-500/5 border-emerald-500/15 text-zinc-500 hover:bg-emerald-500/8"
+      : isPlanned
+        ? "bg-sky-500/5 border-sky-500/15 text-zinc-400 hover:bg-sky-500/8"
+        : "bg-white/[0.01] border-white/[0.04] text-zinc-400 hover:bg-white/[0.02]";
+  const buttonClassName = `w-full text-left p-3 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${stateClassName}`;
+  const titleClassName = `truncate w-full ${isCompleted ? "line-through" : ""}`;
+
+  return (
+    <div className="group/proj relative">
+      <button type="button" onClick={onSelect} className={buttonClassName}>
+        <span className={titleClassName}>
+          {isCompleted ? "✅" : "📂"} {project.title}
+        </span>
+        <span className="text-[9px] opacity-75 font-mono">
+          {label}
+          {isPlanned && !isCompleted ? " · planned" : ""}
+        </span>
+      </button>
+    </div>
+  );
+}
 
 export function StepDeconstruction({
   router,
@@ -53,6 +114,15 @@ export function StepDeconstruction({
   handleOpenEditTask: (task: SprintTask, mode: "group" | "atom") => void;
   setDeleteTaskId: (id: string | null) => void;
 }) {
+  const [showCompleted, setShowCompleted] = useState(false);
+
+  const openProjects = activeSprintProjects.filter(
+    (project: SprintProject) => !getProjectSummary(project).isCompleted,
+  );
+  const completedProjects = activeSprintProjects.filter(
+    (project: SprintProject) => getProjectSummary(project).isCompleted,
+  );
+
   return (
     <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6 min-h-0 flex-1">
       <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
@@ -106,44 +176,39 @@ export function StepDeconstruction({
             <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold mb-1">
               Active Projects
             </span>
-            {activeSprintProjects.map((p: SprintProject) => {
-              const isSelected = p.id === selectedDeconstructProjectId;
-              const isPlanned = p.status === "DONE";
-              const groupCount = (p.tasks || []).filter(
-                (t: SprintTask) => t.resistance === null,
-              ).length;
-              const standaloneAtomCount = (p.tasks || []).filter(
-                (t: SprintTask) => t.resistance !== null,
-              ).length;
-              const subAtomCount = (p.tasks || []).reduce(
-                (sum: number, t: SprintTask) => sum + (t.children?.length || 0),
-                0,
-              );
-              const totalAtoms = standaloneAtomCount + subAtomCount;
-              const labelParts: string[] = [];
-              if (groupCount > 0)
-                labelParts.push(`${groupCount} group${groupCount > 1 ? "s" : ""}`);
-              if (totalAtoms > 0) labelParts.push(`${totalAtoms} atom${totalAtoms > 1 ? "s" : ""}`);
-              const label = labelParts.length > 0 ? labelParts.join(", ") : "empty";
-              return (
-                <div key={p.id} className="group/proj relative">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedDeconstructProjectId(p.id)}
-                    className={`w-full text-left p-3 rounded-xl border text-xs transition-all duration-150 flex flex-col gap-1 ${
-                      isSelected
-                        ? "bg-accent/10 border-accent/30 text-accent font-semibold shadow-sm"
-                        : isPlanned
-                          ? "bg-emerald-500/5 border-emerald-500/15 text-zinc-400 hover:bg-emerald-500/8"
-                          : "bg-white/[0.01] border-white/[0.04] text-zinc-400 hover:bg-white/[0.02]"
-                    }`}
-                  >
-                    <span className="truncate w-full">📂 {p.title}</span>
-                    <span className="text-[9px] opacity-75 font-mono">{label}</span>
-                  </button>
-                </div>
-              );
-            })}
+            {openProjects.map((project) => (
+              <ProjectListItem
+                key={project.id}
+                project={project}
+                isSelected={project.id === selectedDeconstructProjectId}
+                onSelect={() => setSelectedDeconstructProjectId(project.id)}
+              />
+            ))}
+
+            {completedProjects.length > 0 && (
+              <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-white/[0.04]">
+                <button
+                  type="button"
+                  onClick={() => setShowCompleted(!showCompleted)}
+                  className="flex items-center gap-1 text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-semibold hover:text-zinc-300 transition-colors duration-150"
+                >
+                  <ChevronDown
+                    size={12}
+                    className={`transition-transform duration-150 ${showCompleted ? "rotate-0" : "-rotate-90"}`}
+                  />
+                  Completed ({completedProjects.length})
+                </button>
+                {showCompleted &&
+                  completedProjects.map((project) => (
+                    <ProjectListItem
+                      key={project.id}
+                      project={project}
+                      isSelected={project.id === selectedDeconstructProjectId}
+                      onSelect={() => setSelectedDeconstructProjectId(project.id)}
+                    />
+                  ))}
+              </div>
+            )}
           </div>
 
           {/* Right Deconstruction Panel */}
@@ -170,12 +235,12 @@ export function StepDeconstruction({
                       type="button"
                       onClick={() => handleMarkProjectPlanned(selectedDeconstructProject.id)}
                       className={`p-1.5 rounded-lg transition-colors duration-150 ${
-                        selectedDeconstructProject.status === "DONE"
+                        selectedDeconstructProject.status === "IN_PROGRESS"
                           ? "text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
                           : "text-zinc-500 hover:text-emerald-400 hover:bg-emerald-500/10"
                       }`}
                       title={
-                        selectedDeconstructProject.status === "DONE"
+                        selectedDeconstructProject.status === "IN_PROGRESS"
                           ? "Mark as not planned"
                           : "Mark as planned"
                       }
@@ -243,6 +308,10 @@ export function StepDeconstruction({
                         const doneCount = children.filter(
                           (c: SprintTask) => c.status === "DONE",
                         ).length;
+                        const isGroupDone =
+                          task.status === "DONE" || (childCount > 0 && doneCount === childCount);
+                        const groupTitleClassName = `font-medium truncate ${isGroupDone ? "text-zinc-500 line-through" : "text-zinc-200"}`;
+                        const groupCardClassName = `border border-white/[0.04] rounded-lg overflow-hidden ${isGroupDone ? "bg-emerald-500/[0.03]" : "bg-white/[0.01]"}`;
 
                         if (!isGroup) {
                           const resistanceClass =
@@ -295,10 +364,7 @@ export function StepDeconstruction({
                         }
 
                         return (
-                          <div
-                            key={task.id}
-                            className="border border-white/[0.04] rounded-lg overflow-hidden bg-white/[0.01]"
-                          >
+                          <div key={task.id} className={groupCardClassName}>
                             {/* Group header */}
                             <div className="flex items-center gap-2 p-3 text-xs group hover:bg-white/[0.02] transition-colors duration-150">
                               <button
@@ -312,8 +378,8 @@ export function StepDeconstruction({
                                 />
                               </button>
                               <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                                <span className="text-zinc-200 font-medium truncate">
-                                  📋 {task.title}
+                                <span className={groupTitleClassName}>
+                                  {isGroupDone ? "✅" : "📋"} {task.title}
                                 </span>
                                 {task.description && (
                                   <span className="text-[10px] text-zinc-500 line-clamp-1">
@@ -322,7 +388,9 @@ export function StepDeconstruction({
                                 )}
                               </div>
                               {childCount > 0 && (
-                                <span className="text-[9px] font-mono text-zinc-500 shrink-0">
+                                <span
+                                  className={`text-[9px] font-mono shrink-0 ${isGroupDone ? "text-emerald-400" : "text-zinc-500"}`}
+                                >
                                   {doneCount}/{childCount}
                                 </span>
                               )}
