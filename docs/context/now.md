@@ -11,6 +11,13 @@ Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS
 
 ## Recently shipped
 
+- Sprint closure (2026-09-29): an expired ACTIVE sprint is closed lazily (`getOrCreateActiveSprint` →
+  `rollOverExpiredSprint`, race-safe via `updateMany` on status) and the next 12-week sprint starts.
+  `/life/sprint` shows a blocking `SprintClosureDialog` while a COMPLETED sprint still has
+  IN_PROGRESS objectives: outcome per objective, per unfinished project CARRY / BACKLOG / DONE /
+  CANCELLED, then `SprintAfterAction`. "Pending" = COMPLETED sprint with IN_PROGRESS objectives, no
+  extra flag. Planning Wizard shows a banner linking to it. Logic verified with a throwaway tsx
+  script on a temp user; not yet clicked through in the browser.
 - Nutrition "sets" redesign (2026-08-14): 7 daily plans → 7 "sets" cooked once, eaten across
   2 calendar days each (14-day rotation instead of 7). New `cycle.ts` module (fixed epoch,
   `14 % 7 === 0` so the set↔real-weekday-pair mapping never drifts, first set starts Sunday).
