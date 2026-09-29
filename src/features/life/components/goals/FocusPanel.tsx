@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Crosshair, Pencil, X } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { clearYearFocusAction } from "@/features/life/actions/year-focus-actions";
@@ -90,6 +91,12 @@ export function FocusPanel({ year, spheres, goals, focus }: FocusPanelProps) {
                 </span>
               </div>
               <GoalProgressBar goal={leverGoal} />
+              <Link
+                href={`/life/planning/playbook?goal=${leverGoal.id}`}
+                className="text-[11px] text-accent-life hover:underline self-start"
+              >
+                Open the 12-step playbook →
+              </Link>
             </div>
           )}
           {focus.leverReason && (

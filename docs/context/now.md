@@ -11,6 +11,12 @@ Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS
 
 ## Recently shipped
 
+- Goal Playbook (2026-09-29): the 12-step system per yearly goal at `/life/planning/playbook`
+  (`GoalPlaybook` + `GoalPhase`, `Project.goalId`). Steps 2-8 and 12 are stored on the playbook;
+  9-11 are derived from projects linked to the goal (current phase, this week's atoms, atoms
+  without `hasPlannedTime`). The pedal creates today's frog task via `createPedalTask`. Step
+  completion is computed in `goal-playbook-service.getStepDone`. Entry points: Focus panel, goal
+  row icon, Planning nav.
 - Year focus (2026-09-29): `YearFocus` = the ONE sphere of the year (unique per user+year) with an
   optional lever goal (a `SphereGoal` of that sphere), a "why" and an "imperfect on purpose" note.
   Set on `/life/planning/goals` (FocusPanel); highlighted on the goals page, the wall and the sprint

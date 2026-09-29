@@ -20,6 +20,7 @@ import {
   BarChart3,
   FolderKanban,
   Target,
+  ListChecks,
 } from "lucide-react";
 
 export interface PageLink {
@@ -73,6 +74,7 @@ export const DOMAINS: Domain[] = [
           { href: "/life/planning/mission", label: "Mission", icon: Compass },
           { href: "/life/planning/spheres", label: "Life Spheres", icon: LayoutGrid },
           { href: "/life/planning/goals", label: "Life Goals", icon: Target },
+          { href: "/life/planning/playbook", label: "Goal Playbook", icon: ListChecks },
           { href: "/life/planning", label: "Inbox Thoughts", icon: Lightbulb },
           { href: "/life/planning/wizard", label: "Planning Wizard", icon: Sparkles },
           { href: "/life/sprint", label: "Sprint Dashboard", icon: FolderKanban },

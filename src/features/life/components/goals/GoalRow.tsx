@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { ListChecks, Pencil, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import {
@@ -70,6 +71,13 @@ export function GoalRow({ goal, onEdit, isLever = false }: GoalRowProps) {
         </div>
         <div className="flex items-center gap-1 shrink-0">
           <span className="text-xs font-mono text-zinc-300 mr-1">{formatGoalProgress(goal)}</span>
+          <Link
+            href={`/life/planning/playbook?goal=${goal.id}`}
+            title="12-step playbook"
+            className="p-1.5 rounded-md text-zinc-500 hover:text-accent-life hover:bg-white/5 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-colors"
+          >
+            <ListChecks size={12} />
+          </Link>
           <Button
             variant="ghost-accent"
             size="icon-sm"
