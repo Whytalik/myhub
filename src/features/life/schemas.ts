@@ -69,8 +69,16 @@ export const sphereGoalSchema = z
     startValue: z.number().finite().optional(),
     targetValue: z.number().finite(),
     habitId: z.string().nullable().optional(),
+    deadline: z.string().nullable().optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.deadline && Number.isNaN(new Date(data.deadline).getTime())) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Invalid deadline",
+        path: ["deadline"],
+      });
+    }
     if (data.type === "VALUE" && data.habitId) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

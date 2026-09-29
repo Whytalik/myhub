@@ -11,11 +11,17 @@ function getYearBounds(year: number) {
   return { from: new Date(Date.UTC(year, 0, 1)), to: new Date(Date.UTC(year + 1, 0, 1)) };
 }
 
-function getExpectedPercent(year: number): number | null {
-  const { from, to } = getYearBounds(year);
+// Share of the goal's period that has passed. A goal with a deadline is measured from
+// when it was set (never before the start of its year) to that deadline.
+function getExpectedPercent(year: number, deadline: Date | null, createdAt: Date): number | null {
+  const yearBounds = getYearBounds(year);
+  const from = deadline
+    ? Math.max(createdAt.getTime(), yearBounds.from.getTime())
+    : yearBounds.from.getTime();
+  const to = deadline ? deadline.getTime() : yearBounds.to.getTime();
   const now = Date.now();
-  if (now < from.getTime() || now >= to.getTime()) return null;
-  return ((now - from.getTime()) / (to.getTime() - from.getTime())) * 100;
+  if (to <= from || now < from || now >= to) return null;
+  return ((now - from) / (to - from)) * 100;
 }
 
 function getProgressPercent(start: number, target: number, current: number): number {
@@ -43,14 +49,22 @@ function mapGoal(row: SphereGoalRow, completionsByHabit: Map<string, number>): S
     isAutoTracked,
     habitId: row.habitId,
     habitName: row.habit?.name ?? null,
+    deadline: row.deadline ? row.deadline.toISOString().slice(0, 10) : null,
     order: row.order,
     progressPercent: getProgressPercent(row.startValue, row.targetValue, currentValue),
-    expectedPercent: getExpectedPercent(row.year),
+    expectedPercent: getExpectedPercent(row.year, row.deadline, row.createdAt),
   };
 }
 
 async function mapGoals(rows: SphereGoalRow[], year: number): Promise<SphereGoalData[]> {
-  const { from, to } = getYearBounds(year);
+  // Habit days are counted from the earliest goal year to the latest year or deadline.
+  const firstYear = Math.min(year, ...rows.map((row) => row.year));
+  const lastMoment = Math.max(
+    getYearBounds(year).to.getTime(),
+    ...rows.map((row) => (row.deadline ? row.deadline.getTime() + 24 * 60 * 60 * 1000 : 0)),
+  );
+  const from = getYearBounds(firstYear).from;
+  const to = new Date(lastMoment);
   const habitIds = [...new Set(rows.flatMap((row) => (row.habitId ? [row.habitId] : [])))];
   const completions = await sphereGoalRepository.countHabitCompletions(habitIds, from, to);
   return rows.map((row) => mapGoal(row, completions));
@@ -74,6 +88,10 @@ export async function upsertGoal(
     startValue: input.startValue ?? existing?.startValue ?? 0,
     targetValue: input.targetValue ?? existing?.targetValue ?? 0,
     habitId: input.habitId !== undefined ? input.habitId : (existing?.habitId ?? null),
+    deadline:
+      input.deadline !== undefined
+        ? input.deadline
+        : (existing?.deadline?.toISOString().slice(0, 10) ?? null),
   };
   const parsed = sphereGoalSchema.safeParse(merged);
   if (!parsed.success) throw new Error(parsed.error.issues[0].message);
@@ -91,6 +109,7 @@ export async function upsertGoal(
     startValue,
     targetValue: goal.targetValue,
     habitId: goal.habitId ?? null,
+    deadline: goal.deadline ? new Date(goal.deadline) : null,
   };
 
   if (existing) {
@@ -150,7 +169,9 @@ const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
 // Default share of a yearly goal for one sprint: what is left of the goal,
 // spread evenly over the sprints that still fit in the year.
 function getDefaultSliceTarget(goal: SphereGoalData, sprintStart: Date, year: number): number {
-  const yearEnd = getYearBounds(year).to.getTime();
+  const yearEnd = goal.deadline
+    ? new Date(goal.deadline).getTime()
+    : getYearBounds(year).to.getTime();
   const weeksLeft = Math.max(1, (yearEnd - sprintStart.getTime()) / MS_PER_WEEK);
   const sprintsLeft = Math.max(1, Math.ceil(weeksLeft / WEEKS_PER_SPRINT));
   const remaining = goal.targetValue - goal.currentValue;

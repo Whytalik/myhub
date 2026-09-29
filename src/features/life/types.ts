@@ -50,6 +50,8 @@ export interface SphereGoalData {
   isAutoTracked: boolean;
   habitId: string | null;
   habitName: string | null;
+  // ISO date or null.
+  deadline: string | null;
   order: number;
   // 0-100, how much of the way from startValue to targetValue is done.
   progressPercent: number;
@@ -308,6 +310,8 @@ export interface UpsertSphereGoalInput {
   startValue?: number;
   targetValue?: number;
   habitId?: string | null;
+  // ISO date (yyyy-mm-dd) or null to clear.
+  deadline?: string | null;
 }
 
 export interface TaskData {

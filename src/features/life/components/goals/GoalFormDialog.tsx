@@ -39,6 +39,7 @@ export function GoalFormDialog({
   const [startValue, setStartValue] = useState(String(goal?.startValue ?? 0));
   const [targetValue, setTargetValue] = useState(goal ? String(goal.targetValue) : "");
   const [habitId, setHabitId] = useState(goal?.habitId ?? "");
+  const [deadline, setDeadline] = useState(goal?.deadline ?? "");
 
   const isValueGoal = type === "VALUE";
   const parsedTarget = Number(targetValue);
@@ -60,6 +61,7 @@ export function GoalFormDialog({
         startValue: isValueGoal ? parsedStart : 0,
         targetValue: parsedTarget,
         habitId: isValueGoal ? null : habitId || null,
+        deadline: deadline || null,
       }),
       {
         successMessage: isEditing ? "Goal updated" : "Goal added",
@@ -139,6 +141,13 @@ export function GoalFormDialog({
             />
           </FormField>
         </div>
+
+        <FormField
+          label="Deadline"
+          hint="Optional. Set it when the goal ends outside this year, e.g. mid-next-year; pace is then measured up to this date."
+        >
+          <Input type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
+        </FormField>
 
         {!isValueGoal && (
           <FormField

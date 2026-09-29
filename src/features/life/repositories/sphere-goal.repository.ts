@@ -10,7 +10,11 @@ export type SphereGoalRow = Prisma.SphereGoalGetPayload<{ include: typeof GOAL_I
 export const sphereGoalRepository = {
   findByYear(userId: string, year: number) {
     return prisma.sphereGoal.findMany({
-      where: { userId, year },
+      where: {
+        userId,
+        // Goals from earlier years stay visible until their deadline has passed.
+        OR: [{ year }, { year: { lt: year }, deadline: { gte: new Date(Date.UTC(year, 0, 1)) } }],
+      },
       include: GOAL_INCLUDE,
       orderBy: [{ order: "asc" }, { createdAt: "asc" }],
     });

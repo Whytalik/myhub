@@ -67,6 +67,7 @@ export function GoalRow({ goal, onEdit, isLever = false }: GoalRowProps) {
           <span className="text-[10px] font-mono text-zinc-500 uppercase">
             {GOAL_TYPE_LABELS[goal.type]}
             {goal.habitName ? ` · ${goal.habitName}` : ""}
+            {goal.deadline ? ` · until ${goal.deadline}` : ""}
           </span>
         </div>
         <div className="flex items-center gap-1 shrink-0">

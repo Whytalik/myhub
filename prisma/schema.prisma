@@ -214,6 +214,8 @@ model SphereGoal {
   startValue   Float             @default(0)
   targetValue  Float
   currentValue Float             @default(0)
+  // Optional target date; pace is measured up to it instead of the end of the year.
+  deadline     DateTime?
   habitId      String?
   order        Int               @default(0)
   createdAt    DateTime          @default(now())
