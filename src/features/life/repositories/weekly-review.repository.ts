@@ -83,6 +83,17 @@ export const weeklyReviewRepository = {
     });
   },
 
+  countOverdueAtoms(userId: string, before: Date) {
+    return prisma.task.count({
+      where: {
+        userId,
+        ...ATOM_FILTER,
+        status: { in: ["TODO", "IN_PROGRESS"] },
+        plannedDate: { lt: before },
+      },
+    });
+  },
+
   countInboxThoughts(userId: string, statusNames: string[]) {
     return prisma.thought.count({
       where: {

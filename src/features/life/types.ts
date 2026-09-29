@@ -285,6 +285,19 @@ export interface WeeklyReviewSettings {
   time: string;
 }
 
+// The "what to do now" home screen.
+export interface NowSummary {
+  focus: FocusSummary | null;
+  setup: SetupProgress;
+  reviewDue: { isDue: boolean; weekStart: string };
+  sprint: { number: number; weekNumber: number; daysLeft: number };
+  todayTasks: { id: string; title: string; status: TaskStatus; isFrog: boolean }[];
+  todayOpenCount: number;
+  overdueCount: number;
+  priorities: string[];
+  inboxCount: number;
+}
+
 export interface UpsertSphereGoalInput {
   id?: string;
   sphereId?: string;

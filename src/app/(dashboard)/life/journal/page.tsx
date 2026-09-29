@@ -9,8 +9,6 @@ import * as sphereService from "@/features/life/services/sphere-service";
 import * as habitService from "@/features/life/services/habit-service";
 import * as thoughtService from "@/features/life/services/thought-service";
 import { getFocusSummary } from "@/features/life/services/goal-playbook-service";
-import * as weeklyReviewService from "@/features/life/services/weekly-review-service";
-import { ReviewDueBanner } from "@/features/life/components/review/ReviewDueBanner";
 import { FocusJournalCard } from "@/features/life/components/goals/FocusJournalCard";
 import { getScheduleByDate } from "@/features/life/services/schedule-service";
 import { DailyEntryForm } from "@/features/life/components/DailyEntryForm";
@@ -58,29 +56,18 @@ export default async function JournalPage({
   const [y, m, d] = dateStr.split("-").map(Number);
   const yesterday = new Date(y, m - 1, d - 1);
 
-  const [
-    raw,
-    yesterdayRaw,
-    tasks,
-    allTasks,
-    spheres,
-    habits,
-    schedule,
-    board,
-    focusSummary,
-    reviewDue,
-  ] = await Promise.all([
-    getEntryByDate(userId, date),
-    getEntryByDate(userId, yesterday),
-    taskService.getTasksByDate(userId, date),
-    taskService.getAllTasks(userId),
-    sphereService.getAllSpheres(userId),
-    habitService.getActiveHabits(userId),
-    getScheduleByDate(userId, date),
-    thoughtService.getBoard(userId),
-    isPast ? Promise.resolve(null) : getFocusSummary(userId),
-    isPast ? Promise.resolve(null) : weeklyReviewService.getReviewDueState(userId),
-  ]);
+  const [raw, yesterdayRaw, tasks, allTasks, spheres, habits, schedule, board, focusSummary] =
+    await Promise.all([
+      getEntryByDate(userId, date),
+      getEntryByDate(userId, yesterday),
+      taskService.getTasksByDate(userId, date),
+      taskService.getAllTasks(userId),
+      sphereService.getAllSpheres(userId),
+      habitService.getActiveHabits(userId),
+      getScheduleByDate(userId, date),
+      thoughtService.getBoard(userId),
+      isPast ? Promise.resolve(null) : getFocusSummary(userId),
+    ]);
 
   const inboxThoughtCount = board
     .filter((status) => {
@@ -167,7 +154,6 @@ export default async function JournalPage({
         </div>
       )}
 
-      {reviewDue?.isDue && <ReviewDueBanner weekStart={reviewDue.weekStart} />}
       {focusSummary && <FocusJournalCard summary={focusSummary} />}
 
       <DailyEntryForm

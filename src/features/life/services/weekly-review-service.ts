@@ -55,6 +55,10 @@ function average(values: (number | null)[]): number | null {
   return Math.round((present.reduce((sum, value) => sum + value, 0) / present.length) * 10) / 10;
 }
 
+export function readPriorities(value: unknown): string[] {
+  return readExtras(value).priorities;
+}
+
 function readExtras(value: unknown): WeeklyReviewExtras {
   const raw = (value ?? {}) as Partial<WeeklyReviewExtras>;
   const missedReasons: Record<string, MissedReason> = {};
@@ -71,9 +75,9 @@ function readExtras(value: unknown): WeeklyReviewExtras {
   };
 }
 
-function getWeekNumber(sprintStart: Date, weekStart: Date): number {
+export function getWeekNumber(sprintStart: Date, date: Date): number {
   const firstWeek = startOfWeek(new Date(sprintStart), WEEK_OPTIONS);
-  return differenceInCalendarWeeks(weekStart, firstWeek, WEEK_OPTIONS) + 1;
+  return differenceInCalendarWeeks(date, firstWeek, WEEK_OPTIONS) + 1;
 }
 
 function resolveWeekStart(weekStart?: string): Date {

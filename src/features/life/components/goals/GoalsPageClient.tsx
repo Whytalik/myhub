@@ -111,12 +111,20 @@ export function GoalsPageClient({ spheres, goals, habits, year, focus }: GoalsPa
           {year} · {goals.length} goal{goals.length !== 1 ? "s" : ""}. The white tick on a bar is
           where you should be by now.
         </p>
-        <Link
-          href="/life/planning/goals/wall"
-          className="inline-flex items-center gap-1.5 text-xs text-zinc-300 hover:text-zinc-100 border border-white/[0.08] rounded-lg px-2.5 py-1.5 transition-colors duration-150 shrink-0"
-        >
-          <Monitor size={13} /> Wall view
-        </Link>
+        <div className="flex items-center gap-2 shrink-0">
+          <Link
+            href="/life/planning/goals/wall"
+            className="inline-flex items-center gap-1.5 text-xs text-zinc-300 hover:text-zinc-100 border border-white/[0.08] rounded-lg px-2.5 py-1.5 transition-colors duration-150 shrink-0"
+          >
+            <Monitor size={13} /> Wall view
+          </Link>
+          <Link
+            href="/life/planning/spheres"
+            className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-200 border border-white/[0.08] rounded-lg px-2.5 py-1.5 transition-colors duration-150 shrink-0"
+          >
+            Manage spheres
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
