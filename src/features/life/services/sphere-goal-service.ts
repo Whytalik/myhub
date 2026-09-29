@@ -50,6 +50,7 @@ function mapGoal(row: SphereGoalRow, completionsByHabit: Map<string, number>): S
     habitId: row.habitId,
     habitName: row.habit?.name ?? null,
     deadline: row.deadline ? row.deadline.toISOString().slice(0, 10) : null,
+    createdAt: row.createdAt.toISOString(),
     order: row.order,
     progressPercent: getProgressPercent(row.startValue, row.targetValue, currentValue),
     expectedPercent: getExpectedPercent(row.year, row.deadline, row.createdAt),
@@ -141,6 +142,9 @@ export async function upsertGoal(
     currentValue: startValue,
     ...data,
   });
+  // A goal added mid-sprint gets its sprint slice right away, so the baseline is exact.
+  const activeSprint = await sphereGoalRepository.findActiveSprint(userId);
+  if (activeSprint) await ensureSprintSlices(userId, activeSprint);
   return (await mapGoals([saved], year))[0];
 }
 
@@ -163,26 +167,38 @@ export async function deleteGoal(userId: string, id: string): Promise<void> {
   await sphereGoalRepository.delete(id, userId);
 }
 
-const WEEKS_PER_SPRINT = 12;
 const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-// Default share of a yearly goal for one sprint: what is left of the goal,
-// spread evenly over the sprints that still fit in the year.
-function getDefaultSliceTarget(goal: SphereGoalData, sprintStart: Date, year: number): number {
-  const yearEnd = goal.deadline
-    ? new Date(goal.deadline).getTime()
-    : getYearBounds(year).to.getTime();
-  const weeksLeft = Math.max(1, (yearEnd - sprintStart.getTime()) / MS_PER_WEEK);
-  const sprintsLeft = Math.max(1, Math.ceil(weeksLeft / WEEKS_PER_SPRINT));
-  const remaining = goal.targetValue - goal.currentValue;
-  const share = remaining / sprintsLeft;
-  return goal.type === "VALUE" ? share : Math.max(0, share);
+// The end of a goal's period: its deadline (inclusive) or the end of its year.
+function getGoalEnd(goal: SphereGoalData): Date {
+  return goal.deadline
+    ? new Date(new Date(goal.deadline).getTime() + MS_PER_DAY)
+    : getYearBounds(goal.year).to;
 }
 
-type SprintRef = { id: string; startDate: Date; year: number };
+// The sprint's share of a goal is proportional to the time the sprint covers out
+// of the time the goal still has, from when it started counting in this sprint.
+function getDefaultSliceTarget(
+  goal: SphereGoalData,
+  windowStart: Date,
+  sprintEnd: Date,
+  baseline: number,
+): number {
+  const goalEnd = getGoalEnd(goal).getTime();
+  const total = Math.max(goalEnd - windowStart.getTime(), MS_PER_DAY);
+  const window = Math.min(sprintEnd.getTime(), goalEnd) - windowStart.getTime();
+  const share = Math.max(0, Math.min(1, window / total));
+  const target = (goal.targetValue - baseline) * share;
+  return goal.type === "VALUE" ? target : Math.max(0, Math.round(target * 10) / 10);
+}
 
-// Creates a slice for every yearly goal that doesn't have one in this sprint
-// yet (goals added mid-sprint get one on the next visit). Idempotent.
+type SprintRef = { id: string; startDate: Date; endDate: Date; year: number };
+
+// Creates a slice for every yearly goal that doesn't have one in this sprint yet.
+// Called when a sprint starts and when a goal is added. Habit-tracked goals get an
+// exact baseline (completions before the slice's start); manual goals get their
+// current value. Idempotent.
 export async function ensureSprintSlices(userId: string, sprint: SprintRef): Promise<void> {
   const [goals, slices] = await Promise.all([
     getGoalsForYear(userId, sprint.year),
@@ -192,14 +208,29 @@ export async function ensureSprintSlices(userId: string, sprint: SprintRef): Pro
   const missing = goals.filter((goal) => !sliced.has(goal.id));
   if (missing.length === 0) return;
 
-  await sphereGoalRepository.createSlices(
-    missing.map((goal) => ({
-      goalId: goal.id,
-      sprintId: sprint.id,
-      targetValue: getDefaultSliceTarget(goal, new Date(sprint.startDate), sprint.year),
-      baselineValue: goal.currentValue,
-    })),
+  const rows = await Promise.all(
+    missing.map(async (goal) => {
+      const windowStart = new Date(
+        Math.max(new Date(sprint.startDate).getTime(), new Date(goal.createdAt).getTime()),
+      );
+      let baseline = goal.currentValue;
+      if (goal.isAutoTracked && goal.habitId) {
+        const counted = await sphereGoalRepository.countHabitCompletions(
+          [goal.habitId],
+          getYearBounds(goal.year).from,
+          windowStart,
+        );
+        baseline = counted.get(goal.habitId) ?? 0;
+      }
+      return {
+        goalId: goal.id,
+        sprintId: sprint.id,
+        targetValue: getDefaultSliceTarget(goal, windowStart, new Date(sprint.endDate), baseline),
+        baselineValue: baseline,
+      };
+    }),
   );
+  await sphereGoalRepository.createSlices(rows);
 }
 
 export async function getSprintGoalProgress(
@@ -212,14 +243,17 @@ export async function getSprintGoalProgress(
     sphereGoalRepository.findSlices(sprint.id),
   ]);
   const sliceByGoal = new Map(slices.map((slice) => [slice.goalId, slice]));
+  const weeksLeft = (new Date(sprint.endDate).getTime() - Date.now()) / MS_PER_WEEK;
 
   return goals.flatMap((goal) => {
     const slice = sliceByGoal.get(goal.id);
     if (!slice) return [];
 
     const sprintValue = goal.currentValue - slice.baselineValue;
+    const leftInSlice = slice.targetValue - sprintValue;
     return [
       {
+        sliceId: slice.id,
         goalId: goal.id,
         sphereId: goal.sphereId,
         title: goal.title,
@@ -233,10 +267,26 @@ export async function getSprintGoalProgress(
               ? 100
               : 0
             : Math.max(0, Math.min(100, (sprintValue / slice.targetValue) * 100)),
+        perWeekNeeded:
+          weeksLeft <= 0
+            ? null
+            : Math.round((Math.max(0, leftInSlice) / Math.max(weeksLeft, 1)) * 10) / 10,
         yearlyCurrent: goal.currentValue,
         yearlyTarget: goal.targetValue,
         yearlyPercent: goal.progressPercent,
       },
     ];
   });
+}
+
+export async function setSliceTarget(
+  userId: string,
+  sliceId: string,
+  targetValue: number,
+): Promise<void> {
+  if (!Number.isFinite(targetValue)) throw new Error("Invalid value");
+  if (!(await sphereGoalRepository.findSliceForUser(sliceId, userId))) {
+    throw new Error("Slice not found");
+  }
+  await sphereGoalRepository.updateSliceTarget(sliceId, targetValue);
 }

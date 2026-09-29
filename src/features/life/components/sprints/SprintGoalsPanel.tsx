@@ -1,4 +1,10 @@
-import { Target } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { Pencil, Target } from "lucide-react";
+import { Input } from "@/components/ui/inputs/input";
+import { setSprintGoalSliceTargetAction } from "@/features/life/actions/sphere-goal-actions";
+import { useServerAction } from "@/lib/hooks/use-server-action";
 import { SPHERE_ICONS } from "@/features/life/components/tasks/lucide-icons-map";
 import { formatGoalNumber } from "@/features/life/logic/sphere-goals";
 import type { LifeSphereData, SprintGoalProgress, YearFocusData } from "@/features/life/types";
@@ -13,6 +19,56 @@ function formatSprintProgress(goal: SprintGoalProgress): string {
   const unit = goal.unit ? ` ${goal.unit}` : "";
   const sign = goal.sprintValue > 0 && goal.type === "VALUE" ? "+" : "";
   return `${sign}${formatGoalNumber(goal.sprintValue)} / ${formatGoalNumber(goal.sprintTarget)}${unit}`;
+}
+
+function SliceTargetEditor({ goal }: { goal: SprintGoalProgress }) {
+  const { run, isPending } = useServerAction();
+  const [isEditing, setIsEditing] = useState(false);
+  const [draft, setDraft] = useState(formatGoalNumber(goal.sprintTarget));
+  const parsed = Number(draft);
+  const canSave = draft.trim() !== "" && Number.isFinite(parsed) && !isPending;
+
+  const handleSave = () => {
+    if (!canSave) return;
+    run(setSprintGoalSliceTargetAction(goal.sliceId, parsed), {
+      errorMessage: "Failed to update the sprint target",
+      onSuccess: () => setIsEditing(false),
+    });
+  };
+
+  if (!isEditing) {
+    return (
+      <button
+        type="button"
+        onClick={() => setIsEditing(true)}
+        className="p-0.5 rounded text-zinc-600 hover:text-zinc-300 transition-colors"
+        title="Change this sprint's target"
+      >
+        <Pencil size={10} />
+      </button>
+    );
+  }
+
+  return (
+    <span className="inline-flex items-center gap-1">
+      <Input
+        type="number"
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSave()}
+        className="h-6 w-16 text-[11px] px-1.5 py-0"
+        aria-label="Sprint target"
+      />
+      <button
+        type="button"
+        onClick={handleSave}
+        disabled={!canSave}
+        className="text-[10px] font-mono text-accent-life disabled:opacity-40"
+      >
+        Save
+      </button>
+    </span>
+  );
 }
 
 export function SprintGoalsPanel({ goals, spheres, focus }: SprintGoalsPanelProps) {
@@ -60,8 +116,9 @@ export function SprintGoalsPanel({ goals, spheres, focus }: SprintGoalsPanelProp
                         )}
                         {goal.title}
                       </span>
-                      <span className="text-[11px] font-mono text-zinc-400 shrink-0">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-zinc-400 shrink-0">
                         {formatSprintProgress(goal)}
+                        <SliceTargetEditor goal={goal} />
                       </span>
                     </div>
                     <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
@@ -70,6 +127,12 @@ export function SprintGoalsPanel({ goals, spheres, focus }: SprintGoalsPanelProp
                         style={{ width: `${goal.sprintPercent}%` }}
                       />
                     </div>
+                    {goal.perWeekNeeded !== null && goal.perWeekNeeded > 0 && (
+                      <span className="text-[10px] font-mono text-amber-400">
+                        Need {formatGoalNumber(goal.perWeekNeeded)}
+                        {goal.unit ? ` ${goal.unit}` : ""} per week to hit this sprint&apos;s target
+                      </span>
+                    )}
                     <span className="text-[10px] font-mono text-zinc-500">
                       Year: {formatGoalNumber(goal.yearlyCurrent)} /{" "}
                       {formatGoalNumber(goal.yearlyTarget)} ({Math.round(goal.yearlyPercent)}%)

@@ -32,3 +32,13 @@ export async function deleteSphereGoalAction(id: string): Promise<ActionResult<v
     invalidateSphereGoalCache(userId);
   });
 }
+
+export async function setSprintGoalSliceTargetAction(
+  sliceId: string,
+  targetValue: number,
+): Promise<ActionResult<void>> {
+  return withAction(async (userId) => {
+    await sphereGoalService.setSliceTarget(userId, sliceId, targetValue);
+    invalidateSphereGoalCache(userId);
+  });
+}

@@ -7,6 +7,7 @@ import type {
   TaskStatus,
 } from "@/features/life/types";
 import { Prisma } from "@/app/generated/prisma";
+import * as sphereGoalService from "./sphere-goal-service";
 import { isProjectComplete } from "@/features/life/logic/project-completion";
 
 const sprintObjectivesInclude = {
@@ -74,12 +75,28 @@ async function rollOverExpiredSprint(userId: string, expiredSprint: { id: string
     return createSprint(userId, nextStart, transaction);
   });
 
-  if (rolledOver) return rolledOver;
+  if (rolledOver) {
+    await startSprintSlices(userId, rolledOver);
+    return rolledOver;
+  }
 
   return prisma.sprint.findFirstOrThrow({
     where: { userId, status: "ACTIVE" },
     include: { ...sprintObjectivesInclude },
   });
+}
+
+// The first day of a sprint: give every yearly goal its slice with an exact baseline.
+async function startSprintSlices(
+  userId: string,
+  sprint: { id: string; startDate: Date; endDate: Date; year: number },
+) {
+  try {
+    await sphereGoalService.ensureSprintSlices(userId, sprint);
+  } catch (error) {
+    // Slices are also created on demand, so a failure here must not block the sprint.
+    console.error("Failed to create sprint goal slices", error);
+  }
 }
 
 async function getOrCreateActiveSprint(userId: string) {
@@ -88,7 +105,11 @@ async function getOrCreateActiveSprint(userId: string) {
     include: { ...sprintObjectivesInclude },
   });
 
-  if (!activeSprint) return createSprint(userId, new Date());
+  if (!activeSprint) {
+    const created = await createSprint(userId, new Date());
+    await startSprintSlices(userId, created);
+    return created;
+  }
   if (new Date(activeSprint.endDate) < new Date()) {
     return rollOverExpiredSprint(userId, activeSprint);
   }

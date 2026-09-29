@@ -55,6 +55,21 @@ export const sphereGoalRepository = {
     return prisma.sprintGoalSlice.findMany({ where: { sprintId } });
   },
 
+  findSliceForUser(sliceId: string, userId: string) {
+    return prisma.sprintGoalSlice.findFirst({ where: { id: sliceId, goal: { userId } } });
+  },
+
+  updateSliceTarget(sliceId: string, targetValue: number) {
+    return prisma.sprintGoalSlice.update({ where: { id: sliceId }, data: { targetValue } });
+  },
+
+  findActiveSprint(userId: string) {
+    return prisma.sprint.findFirst({
+      where: { userId, status: "ACTIVE" },
+      select: { id: true, startDate: true, endDate: true, year: true },
+    });
+  },
+
   createSlices(data: Prisma.SprintGoalSliceCreateManyInput[]) {
     return prisma.sprintGoalSlice.createMany({ data, skipDuplicates: true });
   },

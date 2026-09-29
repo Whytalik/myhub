@@ -454,6 +454,11 @@ export function FocusStage({ data }: StageProps) {
           {data.goals.map((goal) => (
             <div key={goal.goalId} className="flex items-center gap-3 text-sm">
               <span className="flex-1 text-zinc-300 break-words">{goal.title}</span>
+              {goal.perWeekNeeded !== null && goal.perWeekNeeded > 0 && (
+                <span className="text-[10px] font-mono text-amber-400">
+                  need {formatGoalNumber(goal.perWeekNeeded)}/wk
+                </span>
+              )}
               <span className="text-[11px] font-mono text-zinc-400">
                 {Math.round(goal.sprintPercent)}%
               </span>

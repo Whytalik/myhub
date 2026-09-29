@@ -52,6 +52,7 @@ export interface SphereGoalData {
   habitName: string | null;
   // ISO date or null.
   deadline: string | null;
+  createdAt: string;
   order: number;
   // 0-100, how much of the way from startValue to targetValue is done.
   progressPercent: number;
@@ -62,6 +63,7 @@ export interface SphereGoalData {
 // A yearly goal seen through the current sprint: the sprint's share of the
 // target and how much of it has been done since the sprint started.
 export interface SprintGoalProgress {
+  sliceId: string;
   goalId: string;
   sphereId: string;
   title: string;
@@ -70,6 +72,8 @@ export interface SprintGoalProgress {
   sprintTarget: number;
   sprintValue: number;
   sprintPercent: number;
+  // What has to be done per remaining week of the sprint to reach the sprint target.
+  perWeekNeeded: number | null;
   yearlyCurrent: number;
   yearlyTarget: number;
   yearlyPercent: number;
