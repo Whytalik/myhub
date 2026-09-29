@@ -15,6 +15,9 @@ interface DialogProps {
   maxWidth?: string;
   bare?: boolean;
   noScroll?: boolean;
+  // When false the dialog can only be left through its own footer actions:
+  // no close button, backdrop clicks are ignored.
+  dismissible?: boolean;
 }
 
 export function Dialog({
@@ -27,6 +30,7 @@ export function Dialog({
   maxWidth,
   bare,
   noScroll,
+  dismissible = true,
 }: DialogProps) {
   const [mounted, setMounted] = React.useState(false);
 
@@ -52,7 +56,10 @@ export function Dialog({
       className="fixed inset-0 z-[8000] flex items-end sm:items-center justify-center p-3 sm:p-4"
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onClick={dismissible ? onClose : undefined}
+      />
 
       <div className="relative w-full" style={contentStyle}>
         <div className="glass-elevated overflow-hidden">
@@ -63,9 +70,11 @@ export function Dialog({
                   {title && <h3 className="text-panel-title">{title}</h3>}
                   {description && <p className="text-caption">{description}</p>}
                 </div>
-                <Button variant="ghost" size="icon" onClick={onClose}>
-                  <X size={18} />
-                </Button>
+                {dismissible && (
+                  <Button variant="ghost" size="icon" onClick={onClose}>
+                    <X size={18} />
+                  </Button>
+                )}
               </div>
             )}
 
