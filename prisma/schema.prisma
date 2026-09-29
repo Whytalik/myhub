@@ -430,6 +430,14 @@ model DailyEntry {
   @@unique([userId, date])
 }
 
+// WEEKLY uses scheduledWeekdays. MONTHLY is due on the last scheduled weekday of the
+// month; QUARTERLY in the week that contains the quarter end.
+enum HabitRecurrence {
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+}
+
 enum SphereLevel {
   MINIMUM
   MEDIUM
@@ -448,6 +456,7 @@ model Habit {
   order        Int               @default(0)
   archived          Boolean      @default(false)
   scheduledWeekdays Int[]        @default([0, 1, 2, 3, 4, 5, 6])
+  recurrence   HabitRecurrence   @default(WEEKLY)
   sphereLevel  SphereLevel?
   subcategory  String?
   ifThenPlan        String?

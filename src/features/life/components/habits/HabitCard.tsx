@@ -10,6 +10,8 @@ import {
 import { useServerAction } from "@/lib/hooks/use-server-action";
 import {
   calculateStreak,
+  calculatePeriodStreak,
+  getNextDueDate,
   getThisWeekCount,
   getScheduledCountThisWeek,
   WEEKDAY_ORDER,
@@ -89,7 +91,14 @@ export function HabitCard({
   const activeDateStr = getISODateString(activeDate);
 
   const isAvoidance = habit.type === "avoidance";
-  const isWeekly = habit.scheduledWeekdays.length < 7;
+  const isPeriodic = habit.recurrence !== "WEEKLY";
+  const isWeekly = !isPeriodic && habit.scheduledWeekdays.length < 7;
+  const nextDue = getNextDueDate(habit.recurrence, habit.scheduledWeekdays);
+  const recurrenceLabel = `${habit.recurrence === "MONTHLY" ? "Щомісяця" : "Щокварталу"}${
+    nextDue
+      ? `, наступна ${nextDue.toLocaleDateString("uk-UA", { day: "numeric", month: "short" })}`
+      : ""
+  }`;
   const scheduledDaysLabel = WEEKDAY_ORDER.filter((d) => habit.scheduledWeekdays.includes(d))
     .map((d) => WEEKDAY_LABELS[d])
     .join(" ");
@@ -98,7 +107,9 @@ export function HabitCard({
     (c) => new Date(c.date).toISOString().slice(0, 10) === activeDateStr,
   );
 
-  const streak = calculateStreak(habit.completions, habit.scheduledWeekdays);
+  const streak = isPeriodic
+    ? calculatePeriodStreak(habit.completions, habit.recurrence)
+    : calculateStreak(habit.completions, habit.scheduledWeekdays);
   const scheduledCountThisWeek = isWeekly ? getScheduledCountThisWeek(habit.scheduledWeekdays) : 0;
   const thisWeekCount = isWeekly ? getThisWeekCount(habit.completions) : 0;
   const isWeeklyTargetMet = isWeekly && thisWeekCount >= scheduledCountThisWeek;
@@ -192,10 +203,25 @@ export function HabitCard({
               </div>
             )}
 
+            {isPeriodic && (
+              <div className={metaChipClass}>
+                <CalendarDays size={10} />
+                <span>{recurrenceLabel}</span>
+              </div>
+            )}
+
             {streak > 0 && (
               <div className={metaChipClass}>
                 <Flame size={10} />
-                <span>{streak} day streak</span>
+                <span>
+                  {streak}{" "}
+                  {habit.recurrence === "MONTHLY"
+                    ? "month"
+                    : habit.recurrence === "QUARTERLY"
+                      ? "quarter"
+                      : "day"}{" "}
+                  streak
+                </span>
               </div>
             )}
           </div>

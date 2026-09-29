@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@/components/ui/overlays/dialog";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
+import { Select } from "@/components/ui/inputs/select";
 import { FormField } from "@/components/ui/display/form-field";
 import { upsertHabitAction } from "@/features/life/actions/habit-actions";
 import { habitSchema, type HabitFormData } from "@/features/life/schemas";
@@ -86,6 +87,7 @@ export function HabitFormDialog({
       celebration: habit?.celebration ?? "",
       archived: habit?.archived ?? false,
       scheduledWeekdays: habit?.scheduledWeekdays ?? [0, 1, 2, 3, 4, 5, 6],
+      recurrence: habit?.recurrence ?? "WEEKLY",
       sphereId: habit?.sphereId ?? null,
       chainId: habit?.chainId ?? null,
       identityStatement: habit?.identityStatement ?? "",
@@ -94,6 +96,7 @@ export function HabitFormDialog({
   });
 
   const habitType = useWatch({ control, name: "type" });
+  const recurrence = useWatch({ control, name: "recurrence" }) ?? "WEEKLY";
   const _selectedSphereId = useWatch({ control, name: "sphereId" });
   const isAvoidance = habitType === "avoidance";
 
@@ -106,7 +109,11 @@ export function HabitFormDialog({
         action: data.action?.trim() || "",
         celebration: data.celebration?.trim() || null,
         archived: data.archived ?? false,
-        scheduledWeekdays: data.scheduledWeekdays ?? [0, 1, 2, 3, 4, 5, 6],
+        scheduledWeekdays:
+          data.recurrence && data.recurrence !== "WEEKLY"
+            ? (data.scheduledWeekdays ?? [6]).slice(0, 1)
+            : (data.scheduledWeekdays ?? [0, 1, 2, 3, 4, 5, 6]),
+        recurrence: data.recurrence ?? "WEEKLY",
         sphereId: data.sphereId ?? null,
         chainId: data.chainId ?? null,
         identityStatement: data.identityStatement?.trim() || null,
@@ -243,6 +250,28 @@ export function HabitFormDialog({
           </div>
         </div>
 
+        {/* Recurrence */}
+        <Controller
+          name="recurrence"
+          control={control}
+          render={({ field }) => (
+            <div className="flex flex-col gap-1.5">
+              <span className="text-label">Повторення</span>
+              <Select
+                value={field.value ?? "WEEKLY"}
+                onChange={(event) => {
+                  field.onChange(event.target.value);
+                  if (event.target.value !== "WEEKLY") setValue("scheduledWeekdays", [6]);
+                }}
+              >
+                <option value="WEEKLY">Щотижня (обрані дні)</option>
+                <option value="MONTHLY">Щомісяця (останній обраний день місяця)</option>
+                <option value="QUARTERLY">Щокварталу (обраний день тижня кінця кварталу)</option>
+              </Select>
+            </div>
+          )}
+        />
+
         {/* Frequency */}
         <Controller
           name="scheduledWeekdays"
@@ -250,13 +279,22 @@ export function HabitFormDialog({
           render={({ field }) => {
             const selected: number[] = field.value ?? [];
             const isEveryDay = selected.length === 7;
-            const frequencyLabel = isEveryDay
-              ? "Щодня"
-              : selected.length === 0
-                ? "Оберіть хоча б один день"
-                : `${selected.length}× на тиждень`;
+            const frequencyLabel =
+              recurrence === "MONTHLY"
+                ? "Раз на місяць"
+                : recurrence === "QUARTERLY"
+                  ? "Раз на квартал"
+                  : isEveryDay
+                    ? "Щодня"
+                    : selected.length === 0
+                      ? "Оберіть хоча б один день"
+                      : `${selected.length}× на тиждень`;
 
             const toggleDay = (day: number) => {
+              if (recurrence !== "WEEKLY") {
+                field.onChange([day]);
+                return;
+              }
               const next = selected.includes(day)
                 ? selected.filter((d) => d !== day)
                 : [...selected, day];
@@ -269,7 +307,7 @@ export function HabitFormDialog({
                   <span className="text-label">Частота</span>
                   <div className="flex items-center gap-2">
                     <span className="text-caption">{frequencyLabel}</span>
-                    {!isEveryDay && (
+                    {!isEveryDay && recurrence === "WEEKLY" && (
                       <button
                         type="button"
                         onClick={() => field.onChange([0, 1, 2, 3, 4, 5, 6])}

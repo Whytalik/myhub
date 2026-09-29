@@ -22,6 +22,7 @@ import { distributeTasksAction } from "../actions/task-actions";
 import { TaskGrid } from "./tasks/TaskGrid";
 import { TaskFormDialog } from "./tasks/TaskFormDialog";
 import { HabitCard } from "./habits/HabitCard";
+import { isHabitDueOnDate } from "../logic/habit-utils";
 import { DayGreeting } from "./DayGreeting";
 import { DayComplete } from "./DayComplete";
 import type {
@@ -241,7 +242,7 @@ export function DailyEntryForm({
   const dayOfWeek = localDate.getDay();
 
   const todaysHabits = habits.filter((habit) => {
-    const isScheduled = habit.scheduledWeekdays.includes(dayOfWeek);
+    const isScheduled = isHabitDueOnDate(habit.recurrence, habit.scheduledWeekdays, localDate);
     const isCompletedToday = habit.completions.some(
       (c) => new Date(c.date).toISOString().slice(0, 10) === todayStr,
     );

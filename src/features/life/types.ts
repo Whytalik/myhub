@@ -508,6 +508,7 @@ export interface DailyVector {
 }
 
 export type SphereLevel = "MINIMUM" | "MEDIUM" | "DESIRED";
+export type HabitRecurrence = "WEEKLY" | "MONTHLY" | "QUARTERLY";
 
 export interface HabitData {
   id: string;
@@ -522,6 +523,7 @@ export interface HabitData {
   archived: boolean;
   order: number;
   scheduledWeekdays: number[];
+  recurrence: HabitRecurrence;
   sphereId?: string | null;
   sphereLevel?: SphereLevel | null;
   subcategory?: string | null;
@@ -684,6 +686,7 @@ export interface UpsertHabitInput {
   order?: number;
   archived?: boolean;
   scheduledWeekdays?: number[];
+  recurrence?: HabitRecurrence;
   sphereId?: string | null;
   chainId?: string | null;
   identityStatement?: string | null;

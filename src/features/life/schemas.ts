@@ -10,6 +10,7 @@ export const habitSchema = z
 
     archived: z.boolean().optional(),
     scheduledWeekdays: z.array(z.number().int().min(0).max(6)).min(1).optional(),
+    recurrence: z.enum(["WEEKLY", "MONTHLY", "QUARTERLY"]).optional(),
     sphereId: z.string().nullable().optional(),
     chainId: z.string().nullable().optional(),
     identityStatement: z.string().optional(),
