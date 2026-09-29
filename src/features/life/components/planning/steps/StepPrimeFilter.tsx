@@ -34,7 +34,6 @@ export function StepPrimeFilter({
   setFilterIndex,
   setStep,
   missionContent,
-  activeThoughts,
 }: {
   inboxThoughts: ThoughtItem[];
   decomposableThoughts: ThoughtItem[];
@@ -61,7 +60,6 @@ export function StepPrimeFilter({
   setFilterIndex: (value: number | ((previous: number) => number)) => void;
   setStep: (step: number) => void;
   missionContent?: string | null;
-  activeThoughts: ThoughtItem[];
 }) {
   return (
     <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6 items-center max-w-2xl mx-auto w-full">
@@ -249,20 +247,6 @@ export function StepPrimeFilter({
                 <p className="text-sm font-mono text-zinc-300 text-center uppercase tracking-wider font-semibold">
                   ❓ Does this conflict with my mission or values?
                 </p>
-                {activeThoughts.length > 0 && (
-                  <div className="flex flex-col gap-1.5 w-full text-left">
-                    <span className="text-label text-zinc-500">
-                      Вже прийнято ({activeThoughts.length})
-                    </span>
-                    <div className="flex flex-col gap-1 max-h-40 overflow-y-auto rounded-lg bg-white/[0.02] border border-white/[0.06] p-2">
-                      {activeThoughts.map((thought) => (
-                        <p key={thought.id} className="text-caption truncate">
-                          {thought.content}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 <div className="grid grid-cols-2 gap-3 w-full">
                   <Button
                     type="button"

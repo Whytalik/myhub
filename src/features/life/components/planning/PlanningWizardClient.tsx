@@ -337,21 +337,6 @@ export function PlanningWizardClient({
   >([]);
   const [wantType, setWantType] = useState<"want" | "must" | null>(null);
 
-  // Accepted thoughts shown as reference context for the "does this conflict
-  // with something I already committed to?" step (same statuses as the
-  // decomposition pickup, but unfiltered by sphere).
-  const activeThoughts = useMemo(
-    () =>
-      thoughts.filter(
-        (currentThought) =>
-          currentThought.status.name === "Хочу" ||
-          currentThought.status.name === "Повинен" ||
-          currentThought.status.name === "Want" ||
-          currentThought.status.name === "Must",
-      ),
-    [thoughts],
-  );
-
   // Step 3: Decompose states
   const decomposableThoughts = useMemo(() => {
     const baseThoughts = thoughts.filter(
@@ -1396,7 +1381,6 @@ export function PlanningWizardClient({
           setFilterIndex={setFilterIndex}
           setStep={setStep}
           missionContent={missionContent}
-          activeThoughts={activeThoughts}
         />
       )}
 
