@@ -12,6 +12,13 @@ journal shows the focus. Design system is **macOS Sonoma Minimalist** (`docs/des
 
 ## Recently shipped
 
+- Weekly Review (2026-09-29): `/life/planning/review` replaces the old sprint-dashboard dialog.
+  Five stages (scoreboard, get clear, reflect, focus check, plan next week) + closing score, all
+  prefilled by `weekly-review-service.getWeeklyReviewData` (execution %, missed/overdue atoms,
+  journal notes, inbox, goal progress). Saved into `SprintReview` (structured extras in
+  `kaizenVector`: executionPercent, missedReasons, priorities). Review slot (`User.weeklyReviewDay`
+  / `weeklyReviewTime`, default Sun 20:00) with an .ics export and a due banner on Journal and
+  Sprint Dashboard. No push notifications exist, so the banner + calendar event is the reminder.
 - System review fixes (2026-09-29): `Objective.goalId` (objective serves a yearly goal; projects
   inherit it via `assignProjectToObjective` / `setObjectiveGoal`, carried objectives keep it);
   Journal `FocusJournalCard` (focus, lever progress, pedal); Life Goals "Getting started"

@@ -64,25 +64,6 @@ export async function createSprintObjectiveAction(
   });
 }
 
-export async function saveSprintReviewAction(
-  sprintId: string,
-  weekNumber: number,
-  dateString: string,
-  data: {
-    score?: number;
-    wins?: string;
-    challenges?: string;
-    adjustments?: string;
-    kaizenVector?: Parameters<typeof sprintService.saveSprintReview>[4]["kaizenVector"];
-  },
-) {
-  return withAction(async (userId) => {
-    const date = new Date(dateString);
-    const review = await sprintService.saveSprintReview(userId, sprintId, weekNumber, date, data);
-    return review;
-  });
-}
-
 export async function updateProjectAction(projectId: string, title: string, description?: string) {
   return withAction(async (userId) => {
     const project = await sprintService.updateProject(

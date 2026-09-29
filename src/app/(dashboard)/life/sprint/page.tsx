@@ -7,6 +7,8 @@ import * as sprintService from "@/features/life/services/sprint-service";
 import * as sphereService from "@/features/life/services/sphere-service";
 import * as yearFocusService from "@/features/life/services/year-focus-service";
 import * as sphereGoalService from "@/features/life/services/sphere-goal-service";
+import * as weeklyReviewService from "@/features/life/services/weekly-review-service";
+import { ReviewDueBanner } from "@/features/life/components/review/ReviewDueBanner";
 import { SprintClosureDialog } from "@/features/life/components/sprints/SprintClosureDialog";
 
 type SprintKanbanClientProps = React.ComponentProps<typeof SprintKanbanClient>;
@@ -27,9 +29,10 @@ export default async function SprintPage() {
     sprintService.getPendingSprintClosure(userId),
   ]);
 
-  const [sprintGoals, focus] = await Promise.all([
+  const [sprintGoals, focus, reviewDue] = await Promise.all([
     sphereGoalService.getSprintGoalProgress(userId, dashboard.sprint),
     yearFocusService.getFocus(userId, dashboard.sprint.year),
+    weeklyReviewService.getReviewDueState(userId),
   ]);
 
   return (
@@ -40,6 +43,7 @@ export default async function SprintPage() {
         description="Analyze goal progress, evaluate weeks (W1-W12), and coordinate tactical plans."
       />
       {pendingClosure && <SprintClosureDialog closure={pendingClosure} />}
+      {reviewDue.isDue && <ReviewDueBanner weekStart={reviewDue.weekStart} />}
       <SprintKanbanClient
         sprint={dashboard.sprint as unknown as SprintKanbanClientProps["sprint"]}
         allTasks={dashboard.allTasks as unknown as SprintKanbanClientProps["allTasks"]}

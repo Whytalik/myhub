@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { addDays, format, endOfWeek, isWithinInterval } from "date-fns";
 import { Button } from "@/components/ui/actions/button";
 import { WeeklyStatusBoard } from "./WeeklyStatusBoard";
-import { WeeklyReviewDialog } from "./WeeklyReviewDialog";
 import { SprintGoalsPanel } from "./SprintGoalsPanel";
 import type {
   TaskData,
@@ -80,12 +80,15 @@ export function SprintKanbanClient({
 
   const [selectedWeekIndex, setSelectedWeekIndex] = useState<number>(initialWeekIndex);
   const [activeTab, setActiveTab] = useState<"board" | "goals" | "scorecard">("board");
-  const [reviewOpen, setReviewOpen] = useState(false);
+  const router = useRouter();
 
   const weekStart = useMemo(
     () => addDays(sprintStart, selectedWeekIndex * 7),
     [sprintStart, selectedWeekIndex],
   );
+
+  const openWeeklyReview = () =>
+    router.push(`/life/planning/review?week=${format(weekStart, "yyyy-MM-dd")}`);
 
   const weekButtons = useMemo(
     () =>
@@ -481,7 +484,7 @@ export function SprintKanbanClient({
                 size="sm"
                 variant="ghost"
                 className="text-xs flex items-center gap-1"
-                onClick={() => setReviewOpen(true)}
+                onClick={openWeeklyReview}
               >
                 Review W{selectedWeekIndex + 1} <ArrowRight size={13} />
               </Button>
@@ -500,7 +503,7 @@ export function SprintKanbanClient({
                   size="sm"
                   variant="ghost"
                   className="text-xs flex items-center gap-1"
-                  onClick={() => setReviewOpen(true)}
+                  onClick={openWeeklyReview}
                 >
                   Edit Review <ArrowRight size={13} />
                 </Button>
@@ -569,12 +572,7 @@ export function SprintKanbanClient({
                 <p className="text-caption text-zinc-500 italic">
                   Review for W{selectedWeekIndex + 1} has not been filled yet.
                 </p>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  className="text-xs"
-                  onClick={() => setReviewOpen(true)}
-                >
+                <Button size="sm" variant="primary" className="text-xs" onClick={openWeeklyReview}>
                   Fill Weekly Review
                 </Button>
               </div>
@@ -582,16 +580,6 @@ export function SprintKanbanClient({
           </div>
         </div>
       )}
-
-      <WeeklyReviewDialog
-        isOpen={reviewOpen}
-        onClose={() => setReviewOpen(false)}
-        sprintId={sprint.id}
-        weekNumber={selectedWeekIndex + 1}
-        weekStart={weekStart}
-        review={selectedWeekReview ?? null}
-        tasks={allTasks}
-      />
     </div>
   );
 }
