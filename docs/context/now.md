@@ -11,6 +11,13 @@ Cyber-Craft Acrylic → macOS Sonoma Desktop → Linear Calm Density → **macOS
 
 ## Recently shipped
 
+- Life Goals (2026-09-29): yearly measurable goals per life sphere (`SphereGoal`, 3-5 per sphere,
+  types COUNTER / DAYS / VALUE). COUNTER/DAYS can be tracked by a habit (progress = year's
+  `HabitCompletion` count, computed on read, so goals are deliberately not `unstable_cache`d).
+  Pages: `/life/planning/goals` (scorecard) and `/life/planning/goals/wall` (print A4 + fullscreen).
+  `SprintGoalSlice` = a sprint's share of a yearly goal, created lazily on the sprint dashboard
+  (`ensureSprintSlices`), shown in the Sprint Goals tab. Slice targets aren't editable yet.
+  Unused legacy models still in the schema: `KeyResult`, `Tactic`, `Milestone`, `AnnualCompass`.
 - Sprint closure (2026-09-29): an expired ACTIVE sprint is closed lazily (`getOrCreateActiveSprint` →
   `rollOverExpiredSprint`, race-safe via `updateMany` on status) and the next 12-week sprint starts.
   `/life/sprint` shows a blocking `SprintClosureDialog` while a COMPLETED sprint still has

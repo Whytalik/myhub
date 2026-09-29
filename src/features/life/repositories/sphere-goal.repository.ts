@@ -47,6 +47,14 @@ export const sphereGoalRepository = {
     return new Map(rows.map((row) => [row.habitId, row._count._all]));
   },
 
+  findSlices(sprintId: string) {
+    return prisma.sprintGoalSlice.findMany({ where: { sprintId } });
+  },
+
+  createSlices(data: Prisma.SprintGoalSliceCreateManyInput[]) {
+    return prisma.sprintGoalSlice.createMany({ data, skipDuplicates: true });
+  },
+
   findHabitForUser(habitId: string, userId: string) {
     return prisma.habit.findFirst({ where: { id: habitId, userId }, select: { id: true } });
   },

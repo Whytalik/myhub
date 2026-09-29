@@ -80,6 +80,22 @@ export interface SphereGoalData {
   expectedPercent: number | null;
 }
 
+// A yearly goal seen through the current sprint: the sprint's share of the
+// target and how much of it has been done since the sprint started.
+export interface SprintGoalProgress {
+  goalId: string;
+  sphereId: string;
+  title: string;
+  type: SphereGoalType;
+  unit: string | null;
+  sprintTarget: number;
+  sprintValue: number;
+  sprintPercent: number;
+  yearlyCurrent: number;
+  yearlyTarget: number;
+  yearlyPercent: number;
+}
+
 export interface UpsertSphereGoalInput {
   id?: string;
   sphereId?: string;
