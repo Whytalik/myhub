@@ -1,9 +1,35 @@
-import { ChevronRight, Pencil, Plus, Trash2 } from "lucide-react";
+import { ChevronRight, Pencil, Plus, Target, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Textarea } from "@/components/ui/inputs/textarea";
+import { SPHERE_ICONS } from "@/features/life/components/tasks/lucide-icons-map";
 import type { LifeSphereData } from "@/features/life/types";
 import type { SprintData, SprintObjective, SprintProject } from "../types";
+
+function AssignObjectiveButton({
+  objective,
+  disabled,
+  onAssign,
+}: {
+  objective: SprintObjective;
+  disabled: boolean;
+  onAssign: () => void;
+}) {
+  const ObjectiveIcon = (objective.sphere && SPHERE_ICONS[objective.sphere.icon]) || Target;
+  const iconColor = objective.sphere?.color;
+
+  return (
+    <button
+      type="button"
+      onClick={onAssign}
+      disabled={disabled}
+      className="flex items-start gap-2 w-full text-left text-[11px] bg-white/[0.03] hover:bg-accent/15 hover:text-accent border border-white/[0.06] rounded-md px-2 py-1.5 text-zinc-300 transition-colors duration-150 disabled:opacity-50"
+    >
+      <ObjectiveIcon size={13} className="shrink-0 mt-px" style={{ color: iconColor }} />
+      <span className="break-words min-w-0">{objective.title}</span>
+    </button>
+  );
+}
 
 export function StepSprintObjectives({
   showAddObjectiveForm,
@@ -238,7 +264,7 @@ export function StepSprintObjectives({
           className="h-8 text-xs"
         />
 
-        <div className="flex flex-col gap-2 max-h-[350px] overflow-y-auto pr-1">
+        <div className="flex flex-col gap-2">
           {backlogProjects.filter((p) =>
             p.title.toLowerCase().includes(backlogSearch.toLowerCase()),
           ).length === 0 ? (
@@ -286,18 +312,14 @@ export function StepSprintObjectives({
                       <span className="text-[8px] font-mono text-zinc-500 uppercase">
                         Assign to Objective:
                       </span>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-col gap-1">
                         {(sprint.objectives || []).map((obj: SprintObjective) => (
-                          <button
+                          <AssignObjectiveButton
                             key={obj.id}
-                            type="button"
-                            onClick={() => handleAssignProject(p.id, obj.id)}
-                            className="text-[9px] font-mono bg-white/[0.03] hover:bg-accent/15 hover:text-accent border border-white/[0.06] rounded px-1.5 py-0.5 text-zinc-300 transition-colors duration-150 truncate max-w-[100px]"
-                            title={obj.title}
+                            objective={obj}
                             disabled={isActionPending}
-                          >
-                            {obj.title}
-                          </button>
+                            onAssign={() => handleAssignProject(p.id, obj.id)}
+                          />
                         ))}
                       </div>
                     </div>
