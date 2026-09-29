@@ -304,6 +304,15 @@ export interface NowSummary {
   inboxCount: number;
 }
 
+// How a sphere is treated in a year. FOCUS is derived from the year focus.
+export type SphereRole = "FOCUS" | "ACTIVE" | "MINIMUM" | "OFF";
+
+export interface SphereRoleData {
+  sphereId: string;
+  role: SphereRole;
+  plank: string | null;
+}
+
 export interface UpsertSphereGoalInput {
   id?: string;
   sphereId?: string;

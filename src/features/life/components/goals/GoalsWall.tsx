@@ -13,6 +13,7 @@ interface GoalsWallProps {
   year: number;
   mission: string | null;
   focus: YearFocusData | null;
+  minimums: { name: string; plank: string }[];
 }
 
 type WallTheme = "dark" | "light";
@@ -45,7 +46,7 @@ function WallGoal({ goal, isLever }: { goal: SphereGoalData; isLever: boolean })
   );
 }
 
-export function GoalsWall({ spheres, goals, year, mission, focus }: GoalsWallProps) {
+export function GoalsWall({ spheres, goals, year, mission, focus, minimums }: GoalsWallProps) {
   const wallRef = useRef<HTMLDivElement>(null);
   const [theme, setTheme] = useState<WallTheme>("dark");
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -158,6 +159,21 @@ export function GoalsWall({ spheres, goals, year, mission, focus }: GoalsWallPro
             );
           })}
         </div>
+      )}
+      {minimums.length > 0 && (
+        <section className="flex flex-col gap-2 pt-4 border-t border-[var(--wall-line)]">
+          <h3 className="text-xs font-mono uppercase tracking-wider text-[color:var(--wall-muted)]">
+            Minimum this year
+          </h3>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-1">
+            {minimums.map((entry) => (
+              <li key={entry.name} className="text-sm text-[color:var(--wall-fg)]">
+                <span className="font-semibold">{entry.name}:</span>{" "}
+                <span className="text-[color:var(--wall-muted)]">{entry.plank}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </div>
   );

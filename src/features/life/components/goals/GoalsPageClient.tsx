@@ -10,11 +10,14 @@ import {
   MIN_GOALS_PER_SPHERE,
   type LifeSphereData,
   type SphereGoalData,
+  type SphereRoleData,
   type YearFocusData,
 } from "@/features/life/types";
 import { FocusPanel } from "./FocusPanel";
 import { GoalFormDialog } from "./GoalFormDialog";
 import { GoalRow } from "./GoalRow";
+import { SphereRolePicker } from "./SphereRolePicker";
+import { SphereRolesPanel } from "./SphereRolesPanel";
 
 interface GoalsPageClientProps {
   spheres: LifeSphereData[];
@@ -22,6 +25,7 @@ interface GoalsPageClientProps {
   habits: { id: string; name: string }[];
   year: number;
   focus: YearFocusData | null;
+  roles: SphereRoleData[];
 }
 
 interface DialogState {
@@ -35,6 +39,8 @@ function SphereGoalsCard({
   isFocus,
   isMuted,
   leverGoalId,
+  year,
+  role,
   onAdd,
   onEdit,
 }: {
@@ -43,6 +49,8 @@ function SphereGoalsCard({
   isFocus: boolean;
   isMuted: boolean;
   leverGoalId: string | null;
+  year: number;
+  role: SphereRoleData["role"];
   onAdd: () => void;
   onEdit: (goal: SphereGoalData) => void;
 }) {
@@ -64,9 +72,12 @@ function SphereGoalsCard({
           {isFocus && <span className="text-label text-accent-life">Focus</span>}
           {isMuted && <span className="text-label">Maintenance</span>}
         </div>
-        <span className={countClassName}>
-          {goals.length}/{MAX_GOALS_PER_SPHERE}
-        </span>
+        <div className="flex items-center gap-3 shrink-0">
+          <span className={countClassName}>
+            {goals.length}/{MAX_GOALS_PER_SPHERE}
+          </span>
+          <SphereRolePicker year={year} sphereId={sphere.id} role={role} />
+        </div>
       </div>
 
       {goals.length === 0 ? (
@@ -90,21 +101,35 @@ function SphereGoalsCard({
   );
 }
 
-export function GoalsPageClient({ spheres, goals, habits, year, focus }: GoalsPageClientProps) {
+export function GoalsPageClient({
+  spheres,
+  goals,
+  habits,
+  year,
+  focus,
+  roles,
+}: GoalsPageClientProps) {
   const [dialog, setDialog] = useState<DialogState | null>(null);
 
   const goalsBySphere = (sphereId: string) => goals.filter((goal) => goal.sphereId === sphereId);
   const closeDialog = () => setDialog(null);
+  const roleOf = (sphereId: string) =>
+    roles.find((entry) => entry.sphereId === sphereId)?.role ?? "ACTIVE";
+  const selectableSpheres = spheres.filter((sphere) => roleOf(sphere.id) !== "OFF");
+  const workingSpheres = spheres.filter((sphere) => {
+    const role = roleOf(sphere.id);
+    return role === "FOCUS" || role === "ACTIVE";
+  });
   const orderedSpheres = focus
-    ? [...spheres].sort(
+    ? [...workingSpheres].sort(
         (first, second) =>
           Number(second.id === focus.sphereId) - Number(first.id === focus.sphereId),
       )
-    : spheres;
+    : workingSpheres;
 
   return (
     <div className="flex flex-col gap-4">
-      <FocusPanel year={year} spheres={spheres} goals={goals} focus={focus} />
+      <FocusPanel year={year} spheres={selectableSpheres} goals={goals} focus={focus} />
 
       <div className="flex items-center justify-between gap-3">
         <p className="text-caption">
@@ -136,11 +161,15 @@ export function GoalsPageClient({ spheres, goals, habits, year, focus }: GoalsPa
             isFocus={focus?.sphereId === sphere.id}
             isMuted={!!focus && focus.sphereId !== sphere.id}
             leverGoalId={focus?.sphereId === sphere.id ? focus.leverGoalId : null}
+            year={year}
+            role={roleOf(sphere.id)}
             onAdd={() => setDialog({ sphere, goal: null })}
             onEdit={(goal) => setDialog({ sphere, goal })}
           />
         ))}
       </div>
+
+      <SphereRolesPanel year={year} spheres={spheres} roles={roles} />
 
       {dialog && (
         <GoalFormDialog

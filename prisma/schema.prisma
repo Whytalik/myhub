@@ -30,6 +30,7 @@ model User {
   sphereGoals             SphereGoal[]
   yearFocuses             YearFocus[]
   goalPlaybooks           GoalPlaybook[]
+  sphereRoles             SphereYearRole[]
   pushSubscriptions       PushSubscription[]
   sessions                Session[]
   sprints                 Sprint[]
@@ -195,6 +196,7 @@ model LifeSphere {
   tasks      Task[]
   thoughts   Thought[]
   goals      SphereGoal[]
+  yearRoles  SphereYearRole[]
   yearFocuses YearFocus[]
 
   @@index([userId])
@@ -270,6 +272,31 @@ model GoalPhase {
   playbook   GoalPlaybook @relation(fields: [playbookId], references: [id], onDelete: Cascade)
 
   @@index([playbookId])
+}
+
+// How a life sphere is treated in a given year. The focus sphere is derived from
+// YearFocus, so it is never stored here. No row means ACTIVE.
+model SphereYearRole {
+  id        String     @id @default(cuid())
+  userId    String
+  sphereId  String
+  year      Int
+  role      SphereRole
+  // For MINIMUM: what is kept even in the worst week.
+  plank     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sphere    LifeSphere @relation(fields: [sphereId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sphereId, year])
+  @@index([userId, year])
+}
+
+enum SphereRole {
+  ACTIVE
+  MINIMUM
+  OFF
 }
 
 // The ONE sphere a user commits to for a year. Everything else runs in

@@ -7,6 +7,7 @@ import * as sphereService from "@/features/life/services/sphere-service";
 import * as sphereGoalService from "@/features/life/services/sphere-goal-service";
 import * as goalPlaybookService from "@/features/life/services/goal-playbook-service";
 import { SetupChecklist } from "@/features/life/components/goals/SetupChecklist";
+import * as sphereRoleService from "@/features/life/services/sphere-role-service";
 import * as yearFocusService from "@/features/life/services/year-focus-service";
 import * as habitService from "@/features/life/services/habit-service";
 
@@ -28,6 +29,12 @@ export default async function GoalsPage() {
     yearFocusService.getFocus(userId, year),
   ]);
 
+  const activeSpheres = spheres.filter((sphere) => sphere.isActive);
+  const roles = await sphereRoleService.getRolesForYear(
+    userId,
+    year,
+    activeSpheres.map((sphere) => sphere.id),
+  );
   const setupProgress = await goalPlaybookService.getSetupProgress(
     userId,
     goals.length,
@@ -47,13 +54,14 @@ export default async function GoalsPage() {
       />
       <SetupChecklist progress={setupProgress} />
       <GoalsPageClient
-        spheres={spheres.filter((sphere) => sphere.isActive)}
+        spheres={activeSpheres}
         goals={goals}
         habits={habits
           .filter((habit) => !habit.archived)
           .map((habit) => ({ id: habit.id, name: habit.name }))}
         year={year}
         focus={focus}
+        roles={roles}
       />
     </div>
   );
