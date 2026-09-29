@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/actions/button";
+import { announceIdentityVote } from "@/features/life/components/goals/identity-vote";
 import {
   toggleHabitCompletionAction,
   toggleHabitArchivedAction,
@@ -107,6 +108,7 @@ export function HabitCard({
       errorMessage: "Failed to update habit",
       onSuccess: () => {
         if (!isCompletedOnDate) {
+          void announceIdentityVote({ habitId: habit.id });
           toast.success(
             isAvoidance
               ? "Still clean. Keep going."
@@ -258,6 +260,18 @@ export function HabitCard({
             <div className="min-w-0">
               <span className="text-label">Strategy</span>
               <p className="text-caption italic">Avoid and log daily resistance</p>
+            </div>
+          </div>
+        )}
+
+        {habit.minimalThreshold && (
+          <div className={noteCardClass}>
+            <div className={noteIconWrapClass}>
+              <Shield size={14} />
+            </div>
+            <div className="min-w-0">
+              <span className="text-label">Minimum version</span>
+              <p className="text-caption italic truncate">{habit.minimalThreshold}</p>
             </div>
           </div>
         )}

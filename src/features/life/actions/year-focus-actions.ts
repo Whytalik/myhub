@@ -21,3 +21,10 @@ export async function clearYearFocusAction(year: number): Promise<ActionResult<v
     invalidateSphereGoalCache(userId);
   });
 }
+
+export async function getVoteMomentAction(source: {
+  taskId?: string;
+  habitId?: string;
+}): Promise<ActionResult<{ identity: string; total: number } | null>> {
+  return withAction((userId) => yearFocusService.getVoteMoment(userId, source));
+}

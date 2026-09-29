@@ -278,6 +278,16 @@ export function ReflectStage({
         </div>
       )}
 
+      {data.identity && (
+        <p className="text-sm text-zinc-200 p-3 rounded-xl border border-accent-life/30 bg-black/10">
+          “{data.identity.statement}”
+          <span className="block text-caption mt-1">
+            {data.identity.votesWeek} votes this week, {data.identity.votesTotal} in total. Did you
+            act like this person? Where did you not?
+          </span>
+        </p>
+      )}
+
       <div className="flex flex-col gap-1.5">
         <span className="text-label">What worked</span>
         <Textarea

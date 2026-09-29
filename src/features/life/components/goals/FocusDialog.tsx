@@ -23,6 +23,7 @@ export function FocusDialog({ isOpen, onClose, year, spheres, goals, focus }: Fo
   const { run, isPending } = useServerAction();
 
   const [sphereId, setSphereId] = useState(focus?.sphereId ?? "");
+  const [identity, setIdentity] = useState(focus?.identity ?? "");
   const [leverGoalId, setLeverGoalId] = useState(focus?.leverGoalId ?? "");
   const [leverReason, setLeverReason] = useState(focus?.leverReason ?? "");
   const [allowImperfect, setAllowImperfect] = useState(focus?.allowImperfect ?? "");
@@ -42,6 +43,7 @@ export function FocusDialog({ isOpen, onClose, year, spheres, goals, focus }: Fo
       setYearFocusAction({
         year,
         sphereId,
+        identity,
         leverGoalId: leverGoalId || null,
         leverReason,
         allowImperfect,
@@ -89,6 +91,18 @@ export function FocusDialog({ isOpen, onClose, year, spheres, goals, focus }: Fo
               </option>
             ))}
           </Select>
+        </FormField>
+
+        <FormField
+          label="Who are you becoming?"
+          hint='Present tense, believable, about who you are, not what you want. e.g. "I am becoming someone who trades by the system." For things you avoid: "I don&apos;t…", not "I can&apos;t…".'
+        >
+          <Textarea
+            value={identity}
+            onChange={(e) => setIdentity(e.target.value)}
+            placeholder="I am becoming someone who…"
+            rows={2}
+          />
         </FormField>
 
         <FormField

@@ -68,6 +68,10 @@ export const goalPlaybookRepository = {
     });
   },
 
+  findGoalSphere(goalId: string) {
+    return prisma.sphereGoal.findUnique({ where: { id: goalId }, select: { sphereId: true } });
+  },
+
   findSphere(sphereId: string) {
     return prisma.lifeSphere.findUnique({
       where: { id: sphereId },

@@ -190,10 +190,18 @@ export async function getFocusSummary(userId: string): Promise<FocusSummary | nu
     ? await goalPlaybookRepository.findTask(playbook.pedalTaskId, userId)
     : null;
 
+  const [votes, minimumAction] = await Promise.all([
+    focus.identity ? yearFocusService.getIdentityVotes(userId, focus.sphereId) : null,
+    yearFocusService.getMinimumAction(userId, focus.sphereId),
+  ]);
+
   return {
     sphere,
     leverGoal: goals.find((goal) => goal.id === focus.leverGoalId) ?? null,
     pedalTask,
+    identity: focus.identity,
+    votes,
+    minimumAction,
   };
 }
 
@@ -292,10 +300,14 @@ export async function createPedalTask(
   const title = playbook.pedalAction?.trim();
   if (!title) throw new Error("Write the 5-minute action first");
 
+  const goalSphere = await goalPlaybookRepository.findGoalSphere(goalId);
+  // A pedal is an atom of the goal's sphere, so finishing it counts as an identity vote.
   const task = await taskService.upsertTask(userId, {
     title,
     plannedDate: startOfDay(new Date()).toISOString(),
     priority: "HIGH",
+    resistance: 1,
+    sphereId: goalSphere?.sphereId ?? null,
   });
   const hasOpenFrog = (await taskRepository.findOpenFrog(userId)) !== null;
   if (!hasOpenFrog) await taskService.setTaskAsFrog(userId, task.id);

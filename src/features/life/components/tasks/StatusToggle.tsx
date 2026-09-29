@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { Check, Play, Circle, XCircle, HelpCircle, LucideIcon, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { updateTaskStatusAction } from "@/features/life/actions/task-actions";
+import { announceIdentityVote } from "@/features/life/components/goals/identity-vote";
 import type { TaskStatus } from "@/features/life/types";
 import { useDynamicPositioning } from "@/lib/hooks/use-dynamic-positioning";
 import { createPortal } from "react-dom";
@@ -92,6 +93,8 @@ export function StatusToggle({
         setCurrentStatus(initialStatus);
         onStatusChange?.(taskId, initialStatus);
         toast.error(result.error || "Failed to update status");
+      } else if (newStatus === "DONE") {
+        void announceIdentityVote({ taskId });
       }
     });
   };

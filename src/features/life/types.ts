@@ -100,14 +100,24 @@ export interface YearFocusData {
   id: string;
   year: number;
   sphereId: string;
+  identity: string | null;
   leverGoalId: string | null;
   leverReason: string | null;
   allowImperfect: string | null;
 }
 
+// "Votes" for the identity: completed habit days and finished atoms in the focus sphere.
+export interface IdentityVotes {
+  total: number;
+  week: number;
+  today: number;
+  yesterday: number;
+}
+
 export interface SetYearFocusInput {
   year: number;
   sphereId: string;
+  identity?: string | null;
   leverGoalId?: string | null;
   leverReason?: string | null;
   allowImperfect?: string | null;
@@ -194,6 +204,10 @@ export interface FocusSummary {
   sphere: { name: string; color: string; icon: string };
   leverGoal: SphereGoalData | null;
   pedalTask: { id: string; title: string; status: TaskStatus } | null;
+  identity: string | null;
+  votes: IdentityVotes | null;
+  // A tiny version of a habit to fall back on, shown after a missed day.
+  minimumAction: string | null;
 }
 
 export interface SetupProgress {
@@ -250,6 +264,7 @@ export interface WeeklyReviewData {
   manualGoals: SphereGoalData[];
   leverGoal: SphereGoalData | null;
   pedalTask: { id: string; title: string; status: TaskStatus } | null;
+  identity: { statement: string; votesWeek: number; votesTotal: number } | null;
   journal: {
     entries: {
       date: string;

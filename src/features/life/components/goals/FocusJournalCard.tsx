@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Crosshair } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { updateTaskStatusAction } from "@/features/life/actions/task-actions";
+import { announceIdentityVote } from "./identity-vote";
 import { formatGoalProgress } from "@/features/life/logic/sphere-goals";
 import type { FocusSummary } from "@/features/life/types";
 import { useServerAction } from "@/lib/hooks/use-server-action";
@@ -11,7 +12,9 @@ import { GoalProgressBar } from "./GoalProgressBar";
 
 export function FocusJournalCard({ summary }: { summary: FocusSummary }) {
   const { run, isPending } = useServerAction();
-  const { sphere, leverGoal, pedalTask } = summary;
+  const { sphere, leverGoal, pedalTask, identity, votes, minimumAction } = summary;
+  // No vote yesterday or so far today: fall back to the minimum, never miss twice.
+  const isAtRisk = !!votes && votes.yesterday === 0 && votes.today === 0;
   const leverHref = leverGoal
     ? `/life/planning/playbook?goal=${leverGoal.id}`
     : "/life/planning/goals";
@@ -28,6 +31,24 @@ export function FocusJournalCard({ summary }: { summary: FocusSummary }) {
           {leverGoal ? "Playbook →" : "Choose a lever →"}
         </Link>
       </div>
+
+      {identity && (
+        <div className="flex flex-col gap-0.5">
+          <p className="text-sm font-medium text-zinc-100 whitespace-pre-wrap">“{identity}”</p>
+          {votes && (
+            <span className="text-[11px] font-mono text-zinc-400">
+              {votes.total} votes for this identity · {votes.week} this week · {votes.today} today
+            </span>
+          )}
+        </div>
+      )}
+
+      {isAtRisk && (
+        <p className="text-xs text-amber-400">
+          No vote since the day before yesterday. Cast one now
+          {minimumAction ? `: ${minimumAction}` : " with the smallest version"}. Never miss twice.
+        </p>
+      )}
 
       {leverGoal && (
         <div className="flex flex-col gap-1">
@@ -52,6 +73,7 @@ export function FocusJournalCard({ summary }: { summary: FocusSummary }) {
               run(updateTaskStatusAction(pedalTask.id, "DONE"), {
                 successMessage: "Pedal pressed",
                 errorMessage: "Failed to update task",
+                onSuccess: () => void announceIdentityVote({ taskId: pedalTask.id }),
               })
             }
           >

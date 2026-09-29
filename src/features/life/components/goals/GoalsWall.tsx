@@ -84,6 +84,11 @@ export function GoalsWall({ spheres, goals, year, mission, focus }: GoalsWallPro
           <h2 className="text-3xl font-semibold tracking-tight text-[color:var(--wall-fg)]">
             {year}
           </h2>
+          {focus?.identity && (
+            <p className="text-xl font-medium text-[color:var(--wall-fg)] max-w-3xl whitespace-pre-wrap">
+              “{focus.identity}”
+            </p>
+          )}
           {mission && (
             <p className="text-sm text-[color:var(--wall-muted)] whitespace-pre-wrap max-w-3xl">
               {mission}

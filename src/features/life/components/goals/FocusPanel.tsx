@@ -79,6 +79,11 @@ export function FocusPanel({ year, spheres, goals, focus }: FocusPanelProps) {
 
       {focus ? (
         <div className="flex flex-col gap-3">
+          {focus.identity && (
+            <p className="text-base font-medium text-zinc-100 whitespace-pre-wrap">
+              “{focus.identity}”
+            </p>
+          )}
           {leverGoal && (
             <div className="flex flex-col gap-1.5 p-3 rounded-xl border border-white/[0.06] bg-black/10">
               <div className="flex items-baseline justify-between gap-3">

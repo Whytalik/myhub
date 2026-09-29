@@ -162,6 +162,18 @@ export async function getWeeklyReviewData(
     manualGoals: allGoals.filter((goal) => !goal.isAutoTracked),
     leverGoal: focusSummary?.leverGoal ?? null,
     pedalTask: focusSummary?.pedalTask ?? null,
+    identity: focus?.identity
+      ? {
+          statement: focus.identity,
+          votesWeek: await yearFocusService.countVotes(
+            userId,
+            focus.sphereId,
+            weekStart,
+            addDays(weekEnd, 1),
+          ),
+          votesTotal: focusSummary?.votes?.total ?? 0,
+        }
+      : null,
     journal: {
       entries: entries.map((entry) => ({
         date: entry.date.toISOString().slice(0, 10),

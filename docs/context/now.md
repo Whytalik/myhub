@@ -12,6 +12,11 @@ journal shows the focus. Design system is **macOS Sonoma Minimalist** (`docs/des
 
 ## Recently shipped
 
+- Identity (2026-09-29): `YearFocus.identity` ("I am becoming...") with derived "votes" = habit days
+  + finished atoms of the focus sphere (`year-focus-service.getIdentityVotes`, no new table). The
+  playbook pedal is now an atom of the goal's sphere so it counts. Surfaces: focus dialog/panel,
+  Journal focus card (votes + "never miss twice" nudge with the habit's minimum version), the wall,
+  weekly review prompt, and a toast after finishing a habit/task (`announceIdentityVote`).
 - Weekly Review (2026-09-29): `/life/planning/review` replaces the old sprint-dashboard dialog.
   Five stages (scoreboard, get clear, reflect, focus check, plan next week) + closing score, all
   prefilled by `weekly-review-service.getWeeklyReviewData` (execution %, missed/overdue atoms,
