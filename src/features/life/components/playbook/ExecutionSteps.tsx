@@ -148,7 +148,12 @@ export function WeekPlanStep({ goalId, playbook }: StepProps) {
   );
 }
 
-function ScheduleRow({ atom }: { atom: PlaybookAtom }) {
+export type ScheduleAtom = Pick<
+  PlaybookAtom,
+  "id" | "title" | "plannedDate" | "hasPlannedTime" | "plannedEndDate"
+>;
+
+export function ScheduleRow({ atom }: { atom: ScheduleAtom }) {
   const { run, isPending } = useServerAction();
   const plannedStart = atom.plannedDate ? new Date(atom.plannedDate) : null;
   const plannedEnd = atom.plannedEndDate ? new Date(atom.plannedEndDate) : null;

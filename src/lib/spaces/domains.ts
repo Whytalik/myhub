@@ -21,6 +21,7 @@ import {
   FolderKanban,
   Target,
   ListChecks,
+  ClipboardCheck,
 } from "lucide-react";
 
 export interface PageLink {
@@ -78,6 +79,7 @@ export const DOMAINS: Domain[] = [
           { href: "/life/planning", label: "Inbox Thoughts", icon: Lightbulb },
           { href: "/life/planning/wizard", label: "Planning Wizard", icon: Sparkles },
           { href: "/life/sprint", label: "Sprint Dashboard", icon: FolderKanban },
+          { href: "/life/planning/review", label: "Weekly Review", icon: ClipboardCheck },
         ],
       },
     ],
