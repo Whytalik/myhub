@@ -26,6 +26,7 @@ import {
 import { upsertTaskAction, deleteTaskAction } from "@/features/life/actions/task-actions";
 import type { LifeSphereData } from "@/features/life/types";
 import type { ThoughtUrgencyLevel } from "@/features/life/logic/filter-outcomes";
+import type { RetriageChoice } from "./steps/StepDecomposition";
 import { THOUGHT_TYPE_CONFIGS, type ThoughtType } from "@/features/life/logic/thought-types";
 import { ThoughtDetailDialog } from "@/features/life/components/thoughts/ThoughtDetailDialog";
 import { ConfirmationDialog, Dialog } from "@/components/ui/overlays/dialog";
@@ -357,6 +358,7 @@ export function PlanningWizardClient({
     );
   }, [thoughts, activeFilterSphereId]);
   const [decomposeIndex, setDecomposeIndex] = useState(0);
+  const followedThoughtIdRef = useRef<string | null>(null);
 
   const getQuestionStep = () => {
     switch (filterStage) {
@@ -505,6 +507,18 @@ export function PlanningWizardClient({
   }, [decomposableThoughts.length, decomposeIndex]);
 
   useEffect(() => {
+    const followedThoughtId = followedThoughtIdRef.current;
+    if (!followedThoughtId) return;
+    const followedIndex = decomposableThoughts.findIndex(
+      (currentThought) => currentThought.id === followedThoughtId,
+    );
+    if (followedIndex >= 0) {
+      setDecomposeIndex(followedIndex);
+      followedThoughtIdRef.current = null;
+    }
+  }, [decomposableThoughts]);
+
+  useEffect(() => {
     if (step === 2) {
       if (initialFilterCount === null || initialFilterCount < inboxThoughts.length) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -547,7 +561,9 @@ export function PlanningWizardClient({
     urgency: ThoughtUrgencyLevel | null = null,
   ) => {
     const previousThoughts = [...thoughts];
-    const isLastThought = inboxThoughts.length <= 1;
+    const isLastThought =
+      inboxThoughts.length <= 1 &&
+      inboxThoughts.some((inboxThought) => inboxThought.id === thoughtId);
 
     const statusNameMap = {
       KEEP_WANT: "Want",
@@ -583,6 +599,23 @@ export function PlanningWizardClient({
         toast.error(result.error || "Failed to filter thought");
       }
     });
+  };
+
+  // Re-triage an already accepted thought from the Decomposition step without
+  // re-running the whole Prime Filter questionnaire.
+  const handleRetriageThought = (thoughtId: string, choice: RetriageChoice) => {
+    const thought = thoughts.find((currentThought) => currentThought.id === thoughtId);
+    if (!thought) return;
+
+    if (choice === "DELEGATE" || choice === "SOMEDAY") {
+      handleFilterThought(thoughtId, choice);
+      return;
+    }
+
+    const isMust = thought.status.name === "Must" || thought.status.name === "Повинен";
+    // Setting urgency re-sorts the queue; keep the card on screen.
+    followedThoughtIdRef.current = thoughtId;
+    handleFilterThought(thoughtId, isMust ? "KEEP_MUST" : "KEEP_WANT", choice);
   };
 
   const handleDeleteThought = (thoughtId: string) => {
@@ -1405,6 +1438,7 @@ export function PlanningWizardClient({
           DecomposeThoughtIcon={DecomposeThoughtIcon}
           handleEditClick={handleEditClick}
           setDeleteThoughtId={deleteThoughtId.open}
+          handleRetriageThought={handleRetriageThought}
           isActionPending={isActionPending}
           startActionTransition={startActionTransition}
           router={router}

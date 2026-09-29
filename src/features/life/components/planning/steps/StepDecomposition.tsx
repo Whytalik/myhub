@@ -20,6 +20,31 @@ import type { ThoughtItem } from "../types";
 
 type Router = ReturnType<typeof useRouter>;
 
+export type RetriageChoice = "URGENT" | "SOON" | "DELEGATE" | "SOMEDAY";
+
+const RETRIAGE_OPTIONS: { choice: RetriageChoice; label: string; activeClassName: string }[] = [
+  {
+    choice: "URGENT",
+    label: "🔥 Urgent",
+    activeClassName: "bg-rose-500/10 border-rose-500/30 text-rose-400",
+  },
+  {
+    choice: "SOON",
+    label: "⏳ ASAP",
+    activeClassName: "bg-amber-500/10 border-amber-500/30 text-amber-400",
+  },
+  {
+    choice: "DELEGATE",
+    label: "🤝 Delegate",
+    activeClassName: "bg-sky-500/10 border-sky-500/30 text-sky-400",
+  },
+  {
+    choice: "SOMEDAY",
+    label: "💤 Someday",
+    activeClassName: "bg-purple-500/10 border-purple-500/30 text-purple-400",
+  },
+];
+
 export function StepDecomposition({
   decomposableThoughts,
   currentDecomposeThought,
@@ -30,6 +55,7 @@ export function StepDecomposition({
   DecomposeThoughtIcon,
   handleEditClick,
   setDeleteThoughtId,
+  handleRetriageThought,
   isActionPending,
   startActionTransition,
   router,
@@ -63,6 +89,7 @@ export function StepDecomposition({
   DecomposeThoughtIcon: LucideIcon | null;
   handleEditClick: (thoughtItem: ThoughtItem) => void;
   setDeleteThoughtId: (id: string | null) => void;
+  handleRetriageThought: (thoughtId: string, choice: RetriageChoice) => void;
   isActionPending: boolean;
   startActionTransition: (callback: () => Promise<void> | void) => void;
   router: Router;
@@ -92,6 +119,8 @@ export function StepDecomposition({
   setResistance: (value: number) => void;
   handleDecompose: (thoughtId: string) => void;
 }) {
+  const currentUrgency = currentDecomposeThought?.urgency ?? null;
+
   return (
     <div className="glass-card p-6 md:p-8 bg-black/15 border border-white/[0.04] rounded-2xl flex flex-col gap-6">
       <div className="w-full flex items-center justify-between border-b border-white/[0.04] pb-3 mb-2">
@@ -201,6 +230,35 @@ export function StepDecomposition({
                   <Pencil size={13} />
                 </button>
               )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wide">
+                Re-triage:
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {RETRIAGE_OPTIONS.map((option) => {
+                  const isActive = option.choice === currentUrgency;
+                  const optionClassName = `px-2 py-1.5 rounded-lg border text-[11px] font-mono transition-colors duration-150 disabled:opacity-50 ${
+                    isActive
+                      ? option.activeClassName
+                      : "bg-white/[0.01] border-white/[0.06] text-zinc-400 hover:bg-white/[0.03]"
+                  }`;
+                  return (
+                    <button
+                      key={option.choice}
+                      type="button"
+                      disabled={isActionPending}
+                      onClick={() =>
+                        handleRetriageThought(currentDecomposeThought.id, option.choice)
+                      }
+                      className={optionClassName}
+                    >
+                      {option.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {currentDecomposeThought?.type && (
