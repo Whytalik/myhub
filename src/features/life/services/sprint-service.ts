@@ -95,6 +95,11 @@ async function getOrCreateActiveSprint(userId: string) {
   return activeSprint;
 }
 
+// The running sprint (rolled over when expired) without the dashboard payload.
+export async function getActiveSprint(userId: string) {
+  return getOrCreateActiveSprint(userId);
+}
+
 export async function getSprintDashboard(userId: string) {
   const sprint = await getOrCreateActiveSprint(userId);
 

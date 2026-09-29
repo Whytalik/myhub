@@ -203,6 +203,96 @@ export interface SetupProgress {
   hasLinkedObjectives: boolean;
 }
 
+export type MissedReason = "NO_TIME" | "RESISTANCE" | "UNCLEAR" | "BLOCKED" | "NOT_IMPORTANT";
+
+export const WEEKLY_EXECUTION_TARGET = 85;
+
+export interface WeeklyReviewAtom {
+  id: string;
+  title: string;
+  status: TaskStatus;
+  plannedDate: string | null;
+  hasPlannedTime: boolean;
+  plannedEndDate: string | null;
+  sphereId: string | null;
+  projectId: string | null;
+  projectTitle: string | null;
+  carryOverReason: string | null;
+}
+
+// Structured extras stored in SprintReview.kaizenVector.
+export interface WeeklyReviewExtras {
+  executionPercent: number | null;
+  missedReasons: Record<string, MissedReason>;
+  priorities: string[];
+}
+
+export interface WeeklyReviewData {
+  sprint: { id: string; number: number };
+  weekNumber: number;
+  weekStart: string;
+  weekEnd: string;
+  nextWeekStart: string;
+  execution: {
+    planned: number;
+    done: number;
+    percent: number | null;
+    bySphere: { sphereId: string | null; planned: number; done: number }[];
+    focusSphereId: string | null;
+    focusPlanned: number;
+    focusDone: number;
+  };
+  // Planned this week but not finished.
+  missed: WeeklyReviewAtom[];
+  // Open atoms planned before today (carry-over candidates).
+  overdue: WeeklyReviewAtom[];
+  goals: SprintGoalProgress[];
+  manualGoals: SphereGoalData[];
+  leverGoal: SphereGoalData | null;
+  pedalTask: { id: string; title: string; status: TaskStatus } | null;
+  journal: {
+    entries: {
+      date: string;
+      winToday: string | null;
+      improveTomorrow: string | null;
+      frictionToday: string | null;
+      gratitude: string | null;
+    }[];
+    avgEnergy: number | null;
+    avgMood: number | null;
+    avgSleepHours: number | null;
+    entryCount: number;
+  };
+  inboxCount: number;
+  // Open atoms of the sprint that are unscheduled or fall in next week.
+  nextWeekAtoms: WeeklyReviewAtom[];
+  dailyBudget: number;
+  review: {
+    score: number | null;
+    wins: string;
+    challenges: string;
+    adjustments: string;
+    extras: WeeklyReviewExtras;
+  } | null;
+  previousKaizen: string | null;
+  streak: number;
+  history: { weekNumber: number; score: number | null; executionPercent: number | null }[];
+}
+
+export interface SaveWeeklyReviewInput {
+  weekStart: string;
+  score: number;
+  wins: string;
+  challenges: string;
+  adjustments: string;
+  extras: WeeklyReviewExtras;
+}
+
+export interface WeeklyReviewSettings {
+  day: number;
+  time: string;
+}
+
 export interface UpsertSphereGoalInput {
   id?: string;
   sphereId?: string;
