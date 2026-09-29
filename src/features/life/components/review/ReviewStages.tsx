@@ -200,6 +200,28 @@ function TriageRow({ atom, nextWeekStart }: { atom: WeeklyReviewAtom; nextWeekSt
 // 2. Get Clear: empty the inbox and decide what to do with everything overdue.
 export function ClearStage({ data }: StageProps) {
   const nextWeekStart = data.nextWeekStart;
+  const { run, isPending } = useServerAction();
+  const [isBulkDone, setIsBulkDone] = useState(false);
+
+  // Long overdue lists are triaged in one go; single rows below stay for exceptions.
+  const handleBulk = (kind: "next" | "backlog") => {
+    const actions = data.overdue.map((atom) =>
+      kind === "next"
+        ? upsertTaskAction({ id: atom.id, plannedDate: nextWeekStart, hasPlannedTime: false })
+        : upsertTaskAction({ id: atom.id, plannedDate: null, status: "BACKLOG" }),
+    );
+    run(
+      Promise.all(actions).then((results) => {
+        const failed = results.find((result) => !result.success);
+        return failed ?? { success: true as const };
+      }),
+      {
+        successMessage: kind === "next" ? "All moved to next week" : "All moved to the backlog",
+        errorMessage: "Some atoms could not be moved",
+        onSuccess: () => setIsBulkDone(true),
+      },
+    );
+  };
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-white/[0.06] bg-black/10">
@@ -216,8 +238,30 @@ export function ClearStage({ data }: StageProps) {
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="text-label">Overdue atoms ({data.overdue.length})</span>
-        {data.overdue.length === 0 ? (
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-label">Overdue atoms ({data.overdue.length})</span>
+          {data.overdue.length > 3 && !isBulkDone && (
+            <div className="flex gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={isPending}
+                onClick={() => handleBulk("next")}
+              >
+                All to next week
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={isPending}
+                onClick={() => handleBulk("backlog")}
+              >
+                All to backlog
+              </Button>
+            </div>
+          )}
+        </div>
+        {data.overdue.length === 0 || isBulkDone ? (
           <p className="text-caption">Nothing left over from before this week.</p>
         ) : (
           data.overdue.map((atom) => (
