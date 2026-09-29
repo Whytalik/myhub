@@ -70,7 +70,7 @@ export const DOMAINS: Domain[] = [
       {
         label: "Strategy Space",
         icon: Compass,
-        accent: "#fbbf24",
+        accent: "#a78bfa",
         href: "/life/planning/goals",
         pages: [
           { href: "/life/planning/mission", label: "Mission", icon: Compass },

@@ -6,6 +6,7 @@ export const SPACE_THEMES = {
   vault: { accent: "#a3a3a3", accentMuted: "#262626" },
 
   planning: { accent: "#fbbf24", accentMuted: "#2d2005" },
+  strategy: { accent: "#a78bfa", accentMuted: "#251b4a" },
   nutrition: { accent: "#ff8c00", accentMuted: "#2e1c0a" },
   training: { accent: "#e87d88", accentMuted: "#2a0d11" },
   life: { accent: "#6fbfbf", accentMuted: "#0b2222" },
@@ -18,6 +19,12 @@ export const SPACE_THEMES = {
 
   default: { accent: "#fbbf24", accentMuted: "#2d2005" },
 } as const;
+
+const STRATEGY_PATHS = [
+  "/life/planning/mission",
+  "/life/planning/goals",
+  "/life/planning/playbook",
+];
 
 export type SpaceKey = keyof typeof SPACE_THEMES;
 
@@ -33,6 +40,7 @@ export function getSpaceFromPath(pathname: string): SpaceKey {
   if (pathname.startsWith("/health/training")) return "training";
   if (pathname.startsWith("/health")) return "health";
   if (pathname.startsWith("/nutrition")) return "nutrition";
+  if (STRATEGY_PATHS.some((path) => pathname.startsWith(path))) return "strategy";
   if (pathname.startsWith("/life/planning")) return "planning";
   if (pathname.startsWith("/life/sprint")) return "planning";
   if (pathname.startsWith("/life")) return "life";
