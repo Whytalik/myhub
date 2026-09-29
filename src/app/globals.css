@@ -75,3 +75,52 @@ body {
 @utility text-label {
   @apply text-[11px] font-semibold font-mono uppercase tracking-wider text-zinc-500;
 }
+
+/* Goals wall: a self-contained surface that is dark on screen and always
+   light + isolated when printed. */
+.goals-wall {
+  --wall-bg: #1c1c1e;
+  --wall-fg: #f4f4f5;
+  --wall-muted: #a1a1aa;
+  --wall-track: rgba(255, 255, 255, 0.1);
+  --wall-line: rgba(255, 255, 255, 0.12);
+  --wall-tick: rgba(255, 255, 255, 0.7);
+}
+
+.goals-wall[data-theme="light"] {
+  --wall-bg: #ffffff;
+  --wall-fg: #18181b;
+  --wall-muted: #52525b;
+  --wall-track: rgba(0, 0, 0, 0.1);
+  --wall-line: rgba(0, 0, 0, 0.15);
+  --wall-tick: rgba(0, 0, 0, 0.7);
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .goals-wall,
+  .goals-wall * {
+    visibility: visible;
+  }
+
+  .goals-wall {
+    --wall-bg: #ffffff;
+    --wall-fg: #18181b;
+    --wall-muted: #52525b;
+    --wall-track: rgba(0, 0, 0, 0.1);
+    --wall-line: rgba(0, 0, 0, 0.15);
+    --wall-tick: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    inset: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
