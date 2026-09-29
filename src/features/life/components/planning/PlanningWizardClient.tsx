@@ -1367,6 +1367,7 @@ export function PlanningWizardClient({
           handleAddThought={handleAddThought}
           isActionPending={isActionPending}
           handleEditClick={handleEditClick}
+          setDeleteThoughtId={deleteThoughtId.open}
           inboxThoughts={inboxThoughts}
           setStep={setStep}
         />

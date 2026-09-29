@@ -1,10 +1,43 @@
-import { Pencil, ChevronRight } from "lucide-react";
+import { Pencil, Trash2, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/actions/button";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { ThoughtFields } from "@/features/life/components/thoughts/ThoughtFields";
 import type { ThoughtType } from "@/features/life/logic/thought-types";
 import type { LifeSphereData } from "@/features/life/types";
 import type { ThoughtItem } from "../types";
+
+function ThoughtActions({
+  thoughtItem,
+  onEdit,
+  onDelete,
+}: {
+  thoughtItem: ThoughtItem;
+  onEdit: (thoughtItem: ThoughtItem) => void;
+  onDelete: (thoughtId: string) => void;
+}) {
+  const actionClassName =
+    "p-1 rounded text-zinc-500 hover:bg-white/5 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity duration-150";
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => onEdit(thoughtItem)}
+        className={`${actionClassName} hover:text-zinc-400`}
+        title="Edit thought"
+      >
+        <Pencil size={12} />
+      </button>
+      <button
+        type="button"
+        onClick={() => onDelete(thoughtItem.id)}
+        className={`${actionClassName} hover:text-red-400`}
+        title="Delete thought"
+      >
+        <Trash2 size={12} />
+      </button>
+    </>
+  );
+}
 
 export function StepBrainDump({
   spheres,
@@ -27,6 +60,7 @@ export function StepBrainDump({
   handleAddThought,
   isActionPending,
   handleEditClick,
+  setDeleteThoughtId,
   inboxThoughts,
   setStep,
 }: {
@@ -54,6 +88,7 @@ export function StepBrainDump({
   handleAddThought: () => void;
   isActionPending: boolean;
   handleEditClick: (thoughtItem: ThoughtItem) => void;
+  setDeleteThoughtId: (thoughtId: string) => void;
   inboxThoughts: ThoughtItem[];
   setStep: (step: number) => void;
 }) {
@@ -218,14 +253,7 @@ export function StepBrainDump({
                           {thoughtItem.content}
                         </span>
                         <div className="flex items-center gap-1.5 shrink-0">
-                          <button
-                            type="button"
-                            onClick={() => handleEditClick(thoughtItem)}
-                            className="p-1 rounded text-zinc-500 hover:text-zinc-400 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-                            title="Edit thought"
-                          >
-                            <Pencil size={12} />
-                          </button>
+                          <ThoughtActions thoughtItem={thoughtItem} onEdit={handleEditClick} onDelete={setDeleteThoughtId} />
                           <span className="text-[9px] font-mono text-zinc-500 bg-white/[0.03] px-1.5 py-0.5 rounded h-fit">
                             {thoughtItem.status.name}
                           </span>
@@ -264,14 +292,7 @@ export function StepBrainDump({
                             {thoughtItem.content}
                           </span>
                           <div className="flex items-center gap-1.5 shrink-0">
-                            <button
-                              type="button"
-                              onClick={() => handleEditClick(thoughtItem)}
-                              className="p-1 rounded text-zinc-500 hover:text-zinc-400 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-                              title="Edit thought"
-                            >
-                              <Pencil size={12} />
-                            </button>
+                            <ThoughtActions thoughtItem={thoughtItem} onEdit={handleEditClick} onDelete={setDeleteThoughtId} />
                             <span className="text-[9px] font-mono text-zinc-500 bg-white/[0.03] px-1.5 py-0.5 rounded h-fit">
                               {thoughtItem.status.name}
                             </span>
@@ -300,14 +321,7 @@ export function StepBrainDump({
                       {thoughtItem.content}
                     </span>
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() => handleEditClick(thoughtItem)}
-                        className="p-1 rounded text-zinc-500 hover:text-zinc-400 hover:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-                        title="Edit thought"
-                      >
-                        <Pencil size={12} />
-                      </button>
+                      <ThoughtActions thoughtItem={thoughtItem} onEdit={handleEditClick} onDelete={setDeleteThoughtId} />
                       <span className="text-[9px] font-mono text-zinc-500 bg-white/[0.03] px-1.5 py-0.5 rounded h-fit">
                         {thoughtItem.status.name}
                       </span>
