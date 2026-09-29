@@ -39,18 +39,6 @@ export async function toggleGoalPhaseDoneAction(phaseId: string): Promise<Action
   });
 }
 
-export async function linkProjectToGoalAction(
-  goalId: string,
-  projectId: string,
-  isLinked: boolean,
-): Promise<ActionResult<void>> {
-  return withAction(async (userId) => {
-    await playbookService.linkProject(userId, goalId, projectId, isLinked);
-    invalidateSphereGoalCache(userId);
-    invalidateTaskCache(userId);
-  });
-}
-
 export async function createPedalTaskAction(
   goalId: string,
 ): Promise<ActionResult<{ isFrog: boolean }>> {

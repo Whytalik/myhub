@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/actions/button";
 import { Input } from "@/components/ui/inputs/input";
-import { Select } from "@/components/ui/inputs/select";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import {
   createPedalTaskAction,
-  linkProjectToGoalAction,
   savePlaybookAction,
 } from "@/features/life/actions/goal-playbook-actions";
 import { updateTaskStatusAction, upsertTaskAction } from "@/features/life/actions/task-actions";
@@ -53,97 +52,25 @@ export function MonthPlanStep({ playbook }: StepProps) {
   );
 }
 
-// Step 10: link projects to the goal and keep this week's atoms.
-export function WeekPlanStep({ goalId, playbook }: StepProps) {
-  const { run, isPending } = useServerAction();
-  const [title, setTitle] = useState("");
+// Step 10: the week's atoms are planned in the Planning Wizard; this is a read-only view.
+export function WeekPlanStep({ playbook }: StepProps) {
   const linkedProjects = playbook.projects.filter((project) => project.isLinked);
-  const [projectId, setProjectId] = useState(linkedProjects[0]?.id ?? "");
-  const canAdd = !!title.trim() && !!projectId && !isPending;
-
-  const handleAddAtom = () => {
-    if (!canAdd) return;
-    run(upsertTaskAction({ title: title.trim(), projectId, resistance: 2, status: "TODO" }), {
-      successMessage: "Atom added",
-      errorMessage: "Failed to add atom",
-      onSuccess: () => setTitle(""),
-    });
-  };
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
-        <span className="text-label">Projects serving this goal</span>
-        <span className="text-caption">
-          Projects of sprint objectives that serve this goal are linked automatically.
-        </span>
-        <div className="flex flex-wrap gap-1.5">
-          {playbook.projects
-            .filter(
-              (project) => !["DONE", "CANCELLED"].includes(project.status) || project.isLinked,
-            )
-            .map((project) => {
-              const chipClassName = `px-2.5 py-1 rounded-full border text-[11px] transition-colors duration-150 ${
-                project.isLinked
-                  ? "bg-accent-life/15 border-accent-life/40 text-accent-life"
-                  : "bg-white/[0.02] border-white/[0.06] text-zinc-400 hover:bg-white/[0.05]"
-              }`;
-              return (
-                <button
-                  key={project.id}
-                  type="button"
-                  disabled={isPending}
-                  onClick={() =>
-                    run(linkProjectToGoalAction(goalId, project.id, !project.isLinked), {
-                      errorMessage: "Failed to update project",
-                    })
-                  }
-                  className={chipClassName}
-                >
-                  📂 {project.title}
-                </button>
-              );
-            })}
-          {playbook.projects.length === 0 && (
-            <span className="text-caption">Create a project in the Planning Wizard first.</span>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-1.5">
-        <span className="text-label">This week ({playbook.weekAtoms.length})</span>
-        {playbook.weekAtoms.length === 0 ? (
-          <p className="text-caption">No open atoms yet. Add the first actions for this week.</p>
-        ) : (
-          playbook.weekAtoms.map((atom) => (
-            <div key={atom.id} className="text-sm text-zinc-300 break-words">
-              ○ {atom.title}
-              <span className="text-[10px] font-mono text-zinc-500 ml-2">{atom.projectTitle}</span>
-            </div>
-          ))
-        )}
-      </div>
-
-      {linkedProjects.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-[1fr_180px_auto] gap-2">
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleAddAtom()}
-            placeholder="A small action for this week…"
-          />
-          <Select value={projectId} onChange={(e) => setProjectId(e.target.value)}>
-            {linkedProjects.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.title}
-              </option>
-            ))}
-          </Select>
-          <Button variant="primary" size="sm" onClick={handleAddAtom} disabled={!canAdd}>
-            Add
-          </Button>
-        </div>
-      )}
+    <div className="flex flex-col gap-2">
+      <p className="text-sm text-zinc-200">
+        {playbook.weekAtoms.length} open atom{playbook.weekAtoms.length === 1 ? "" : "s"} this week
+        in {linkedProjects.length} project{linkedProjects.length === 1 ? "" : "s"} serving this
+        goal.
+      </p>
+      <p className="text-caption">
+        Projects join a goal through the sprint objective that serves it. Plan the week&apos;s atoms
+        in the{" "}
+        <Link href="/life/planning/wizard" className="text-accent-life hover:underline">
+          Planning Wizard
+        </Link>
+        .
+      </p>
     </div>
   );
 }
@@ -202,26 +129,29 @@ export function ScheduleRow({ atom }: { atom: ScheduleAtom }) {
   );
 }
 
-// Step 11: what has no clear time won't get done.
+// Step 11: scheduling happens in the Weekly Review; this is a read-only view.
 export function WeekScheduleStep({ playbook }: StepProps) {
   const unscheduledCount = playbook.weekAtoms.filter((atom) => !atom.hasPlannedTime).length;
+  const summaryClassName = `text-sm ${unscheduledCount > 0 ? "text-amber-400" : "text-emerald-400"}`;
 
   if (playbook.weekAtoms.length === 0) {
-    return <p className="text-caption">Add this week&apos;s atoms in step 10 first.</p>;
+    return <p className="text-caption">No atoms to schedule yet. Add them in step 10.</p>;
   }
 
   return (
     <div className="flex flex-col gap-2">
-      <p
-        className={`text-[11px] font-mono ${unscheduledCount > 0 ? "text-amber-400" : "text-emerald-400"}`}
-      >
+      <p className={summaryClassName}>
         {unscheduledCount > 0
           ? `${unscheduledCount} without a time. What has no time will not be done.`
           : "Every atom has a time slot."}
       </p>
-      {playbook.weekAtoms.map((atom) => (
-        <ScheduleRow key={atom.id} atom={atom} />
-      ))}
+      <p className="text-caption">
+        Give atoms a day and time in the{" "}
+        <Link href="/life/planning/review" className="text-accent-life hover:underline">
+          Weekly Review
+        </Link>{" "}
+        (stage &quot;Plan next week&quot;).
+      </p>
     </div>
   );
 }

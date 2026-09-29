@@ -276,19 +276,6 @@ export async function togglePhaseDone(userId: string, phaseId: string): Promise<
   await goalPlaybookRepository.updatePhase(phaseId, { done: !phase.done });
 }
 
-export async function linkProject(
-  userId: string,
-  goalId: string,
-  projectId: string,
-  isLinked: boolean,
-): Promise<void> {
-  await requireGoal(userId, goalId);
-  if (!(await goalPlaybookRepository.findProjectForUser(projectId, userId))) {
-    throw new Error("Project not found");
-  }
-  await goalPlaybookRepository.setProjectGoal(projectId, isLinked ? goalId : null);
-}
-
 // Step 12: the one 5-minute action to do right now, as today's frog task.
 // The frog is one per user: an unfinished frog is never replaced, the pedal task is
 // then a normal task for today. Returns whether the pedal became the frog.

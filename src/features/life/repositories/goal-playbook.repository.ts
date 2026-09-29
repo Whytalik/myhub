@@ -91,14 +91,6 @@ export const goalPlaybookRepository = {
     });
   },
 
-  findProjectForUser(projectId: string, userId: string) {
-    return prisma.project.findFirst({ where: { id: projectId, userId }, select: { id: true } });
-  },
-
-  setProjectGoal(projectId: string, goalId: string | null) {
-    return prisma.project.update({ where: { id: projectId }, data: { goalId } });
-  },
-
   // Open leaf tasks of the goal's projects that are unscheduled or fall in the range.
   findOpenLeafTasks(goalId: string, from: Date, to: Date) {
     return prisma.task.findMany({
