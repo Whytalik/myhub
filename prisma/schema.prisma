@@ -28,6 +28,7 @@ model User {
   directions              Direction[]
   sphereGoals             SphereGoal[]
   yearFocuses             YearFocus[]
+  goalPlaybooks           GoalPlaybook[]
   milestones              Milestone[]
   pushSubscriptions       PushSubscription[]
   sessions                Session[]
@@ -225,10 +226,50 @@ model SphereGoal {
   habit        Habit?            @relation(fields: [habitId], references: [id], onDelete: SetNull)
   slices       SprintGoalSlice[]
   focusLevers  YearFocus[]
+  playbook     GoalPlaybook?
+  projects     Project[]
 
   @@index([userId, year])
   @@index([sphereId])
   @@index([habitId])
+}
+
+// The 12-step plan for one yearly goal: path, behaviour change, assets,
+// obstacles with solutions, people, monthly phases and the 5-minute "pedal".
+// Weekly/monthly execution reuses Projects (Project.goalId) and Tasks.
+model GoalPlaybook {
+  id          String      @id @default(cuid())
+  userId      String
+  goalId      String      @unique
+  path        String?
+  keyChange   String?
+  assets      Json?
+  obstacles   Json?
+  people      Json?
+  pedalAction String?
+  pedalTaskId String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goal        SphereGoal  @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  phases      GoalPhase[]
+
+  @@index([userId])
+}
+
+model GoalPhase {
+  id         String       @id @default(cuid())
+  playbookId String
+  title      String
+  startMonth Int
+  endMonth   Int
+  outcome    String?
+  order      Int          @default(0)
+  done       Boolean      @default(false)
+  createdAt  DateTime     @default(now())
+  playbook   GoalPlaybook @relation(fields: [playbookId], references: [id], onDelete: Cascade)
+
+  @@index([playbookId])
 }
 
 // The ONE sphere a user commits to for a year. Everything else runs in
@@ -538,6 +579,7 @@ model Project {
   id          String     @id @default(cuid())
   userId      String
   objectiveId String?
+  goalId      String?
   title       String
   description String?
   startDate   DateTime?
@@ -547,10 +589,12 @@ model Project {
   updatedAt   DateTime   @updatedAt
   user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   objective   Objective? @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  goal        SphereGoal? @relation(fields: [goalId], references: [id], onDelete: SetNull)
   tasks       Task[]
 
   @@index([userId])
   @@index([objectiveId])
+  @@index([goalId])
 }
 
 model Tactic {

@@ -110,3 +110,32 @@ export const sphereGoalSchema = z
   });
 
 export type SphereGoalFormData = z.infer<typeof sphereGoalSchema>;
+
+export const goalPhaseSchema = z
+  .object({
+    title: z.string().trim().min(1, "Title is required"),
+    startMonth: z.number().int().min(1).max(12),
+    endMonth: z.number().int().min(1).max(12),
+    outcome: z.string().trim().nullable().optional(),
+  })
+  .refine((data) => data.startMonth <= data.endMonth, {
+    message: "The phase can't end before it starts",
+    path: ["endMonth"],
+  });
+
+const trimmedList = z.array(z.string().trim()).transform((items) => items.filter(Boolean));
+
+export const savePlaybookSchema = z.object({
+  path: z.string().trim().optional(),
+  keyChange: z.string().trim().optional(),
+  assets: trimmedList.optional(),
+  obstacles: z
+    .array(z.object({ obstacle: z.string().trim(), solution: z.string().trim() }))
+    .transform((items) => items.filter((item) => item.obstacle))
+    .optional(),
+  people: z
+    .array(z.object({ name: z.string().trim(), help: z.string().trim() }))
+    .transform((items) => items.filter((item) => item.name))
+    .optional(),
+  pedalAction: z.string().trim().optional(),
+});

@@ -113,6 +113,82 @@ export interface SetYearFocusInput {
   allowImperfect?: string | null;
 }
 
+export interface PlaybookObstacle {
+  obstacle: string;
+  solution: string;
+}
+
+export interface PlaybookPerson {
+  name: string;
+  help: string;
+}
+
+export interface GoalPhaseData {
+  id: string;
+  title: string;
+  startMonth: number;
+  endMonth: number;
+  outcome: string | null;
+  order: number;
+  done: boolean;
+}
+
+export interface PlaybookAtom {
+  id: string;
+  title: string;
+  status: TaskStatus;
+  plannedDate: string | null;
+  hasPlannedTime: boolean;
+  plannedEndDate: string | null;
+  projectId: string;
+  projectTitle: string;
+}
+
+export interface PlaybookProject {
+  id: string;
+  title: string;
+  status: TaskStatus;
+  isLinked: boolean;
+}
+
+export const PLAYBOOK_STEP_COUNT = 12;
+
+export interface GoalPlaybookData {
+  id: string;
+  goalId: string;
+  path: string;
+  keyChange: string;
+  assets: string[];
+  obstacles: PlaybookObstacle[];
+  people: PlaybookPerson[];
+  pedalAction: string;
+  pedalTask: { id: string; title: string; status: TaskStatus } | null;
+  phases: GoalPhaseData[];
+  currentPhaseId: string | null;
+  projects: PlaybookProject[];
+  monthAtoms: { done: number; total: number };
+  weekAtoms: PlaybookAtom[];
+  // One flag per step of the 12-step system, in order.
+  stepDone: boolean[];
+}
+
+export interface SavePlaybookInput {
+  path?: string;
+  keyChange?: string;
+  assets?: string[];
+  obstacles?: PlaybookObstacle[];
+  people?: PlaybookPerson[];
+  pedalAction?: string;
+}
+
+export interface UpsertGoalPhaseInput {
+  id?: string;
+  title: string;
+  startMonth: number;
+  endMonth: number;
+  outcome?: string | null;
+}
+
 export interface UpsertSphereGoalInput {
   id?: string;
   sphereId?: string;
