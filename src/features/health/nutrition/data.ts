@@ -59,43 +59,11 @@ export const SHOPPING_LIST: ShoppingCategory[] = [
         buyDay: "sun",
       },
       {
-        id: "meat-1",
-        food: "chickenHearts",
-        computedQty: { food: "chickenHearts", sets: [{ set: "set2" }], wastePercent: 15 },
-        price: 86,
-        buyDay: "sun",
-      },
-      {
-        id: "meat-2",
-        food: "porkTenderloin",
-        computedQty: { food: "porkTenderloin", sets: [{ set: "set7" }], wastePercent: 5 },
-        price: 220,
-        buyDay: "sun",
-      },
-      {
-        id: "meat-3",
-        food: "mackerel",
-        // свіжа, не заморожена — готується й заморожується сама в мілпрепі Нд;
-        // якщо купити вже заморожену, вийде другий цикл заморозки сирої риби.
-        qualifier: "свіжа",
-        qty: "1 шт (~800 г)",
-        price: 240,
-        buyDay: "sun",
-      },
-      {
         id: "meat-4",
         food: "chickenRollDobrov",
         computedQty: {
           food: "chickenRollDobrov",
-          sets: [
-            { set: "set1" },
-            { set: "set2" },
-            { set: "set3" },
-            { set: "set4" },
-            { set: "set5" },
-            { set: "set6" },
-            { set: "set7" },
-          ],
+          sets: [{ set: "set1" }, { set: "set4" }, { set: "set7" }],
         },
         price: 130,
         buyDay: "sun",

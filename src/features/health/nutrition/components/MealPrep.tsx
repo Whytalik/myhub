@@ -55,8 +55,9 @@ const proteinIngredients: RecipeIngredient[] = [
     },
   },
   {
-    food: "chickenHearts",
-    computedQty: { food: "chickenHearts", sets: [{ set: "set2" }], wastePercent: 15 },
+    food: "chickenMarinated",
+    qualifier: "для січеників з печерицями — Сет2",
+    computedQty: { food: "chickenMarinated", sets: [{ set: "set2" }], wastePercent: 5 },
   },
   {
     food: "porkTenderloin",
@@ -116,10 +117,10 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       marinade: "Йогуртово-лимонний",
     },
     {
-      food: "chickenHearts",
-      qualifier: "Сет2",
-      computedQty: { food: "chickenHearts", sets: [{ set: "set2" }] },
-      marinade: "Соєво-томатний",
+      food: "chickenMarinated",
+      qualifier: "січеники з печерицями — Сет2",
+      computedQty: { food: "chickenMarinated", sets: [{ set: "set2" }] },
+      marinade: "Часник, спеції (рубана курка)",
     },
     {
       food: "porkTenderloin",
@@ -147,8 +148,8 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
   const shashlikQty = formatGrams(
     sumMacroGramsForSetsMulti(["chickenMarinated"], [{ set: "set1" }], undefined, seasonOverride),
   );
-  const heartsQty = formatGrams(
-    sumMacroGramsForSetsMulti(["chickenHearts"], [{ set: "set2" }], undefined, seasonOverride),
+  const cutletsQty = formatGrams(
+    sumMacroGramsForSetsMulti(["chickenMarinated"], [{ set: "set2" }], undefined, seasonOverride),
   );
   const porkQty = formatGrams(
     sumMacroGramsForSetsMulti(["porkTenderloin"], [{ set: "set7" }], undefined, seasonOverride),
@@ -166,11 +167,10 @@ export function MealPrep({ seasonOverride }: MealPrepProps) {
       title: "Блок 1 — Маринування (~20 хв)",
       steps: [
         "Дістати все м'ясо з холодильника, розкласти на робочій поверхні. Підготувати 2 глибокі миски для маринування.",
-        `Очищення: курячі серця (${heartsQty}) промити у друшляку, натискаючи пальцями для видалення згустків крові.`,
+        `Нарізка: куряче філе для січеників (${cutletsQty}) дрібно порізати кубиками 0.5 см (або розфасувати для рубки в день готовності).`,
         `Нарізка: свинячу вирізку (${porkQty}) нарізати дрібними кубиками для боулів.`,
         `Нарізка: куряче філе для шашликів (${shashlikQty}) нарізати порційними шматочками розміром 2–3 см.`,
         `Миска 1 (Йогуртово-лимонний маринад): змішати 150 г грецького йогурту, сік ½ лимона (+ цедра), 2 зуб. часнику, 1 ч.л. паприки, ½ ч.л. прованських трав, 1 ст.л. оливкової олії, сіль і перець. Додати куряче філе для шашликів (${shashlikQty}) та перемішати.`,
-        `Миска 2 (Соєво-томатний маринад): змішати 3 ст.л. соєвого соусу, 1 ст.л. томатної пасти, 1 ст.л. олії, ½ ч.л. прованських трав, перець (без солі). Додати курячі серця (${heartsQty}) та перемішати.`,
         `Без миски (Спеції для вирізки): змішати сіль, перець, 2 зуб. часнику (або сухий), ½ ч.л. зіри та 1 ч.л. копченої паприки. Обваляти в них кубики вирізки (${porkQty}).`,
         "Скумбрія з лимоном: випотрошити 2 тушки, промити, зробити надрізи. Вставити півкружальця лимона (½ шт). Посолити та натерти приправою до риби (1 ч.л.). Щільно загорнути кожну тушку в фольгу.",
       ],
