@@ -71,13 +71,26 @@ export function dateForWeekdayInWeek(weekStartSunday: Date, day: Weekday): Date 
   return result;
 }
 
+import { getCurrentSeason, transformPlanForSeason, type Season } from "./seasonal-substitutions";
+
 /**
- * Повертає активний набір із 7 сетів. Сезонність (різні набори салатів по
- * порах року) прибрана — лишилась одна поточна менюшка, тому параметри нижче
- * зараз ігноруються. Сигнатура лишена незмінною, щоб не чіпати виклики
- * (ShoppingList/MealPrep/NutritionPageClient/quantities.ts далі передають
- * `seasonOverride` — він там ще працює для сезонності ЦІН, не меню).
+ * Повертає активний набір із 7 сетів з урахуванням сезонних заміни продуктів
+ * (наприклад, сливи/персики влітку → запечені яблука/груші восени під той самий макропрофіль).
  */
-export function getActiveSetPlan(_weekStart?: string | Date, _seasonOverride?: string): DayPlan[] {
-  return SET_PLAN;
+export function getActiveSetPlan(
+  weekStart?: string | Date,
+  seasonOverride?: string,
+): DayPlan[] {
+  const date = weekStart
+    ? typeof weekStart === "string"
+      ? new Date(weekStart)
+      : weekStart
+    : new Date();
+
+  const activeSeason: Season =
+    seasonOverride && ["summer", "autumn", "winter", "spring"].includes(seasonOverride)
+      ? (seasonOverride as Season)
+      : getCurrentSeason(date);
+
+  return transformPlanForSeason(SET_PLAN, activeSeason, date.getMonth());
 }

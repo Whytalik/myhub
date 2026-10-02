@@ -17,7 +17,10 @@ export function NutritionPageClient({ seasonOverride, macroOverrides }: Nutritio
 
   const [activeSetIndex, setActiveSetIndex] = useState(todayPos.setIndex);
   const [activeSubDay, setActiveSubDay] = useState<1 | 2>(todayPos.subDay);
-  const plan = getActiveSetPlan(undefined, seasonOverride);
+  const [selectedSeason, setSelectedSeason] = useState<string>(seasonOverride || "auto");
+
+  const activeSeasonParam = selectedSeason === "auto" ? undefined : selectedSeason;
+  const plan = getActiveSetPlan(undefined, activeSeasonParam);
 
   const entry = plan[activeSetIndex];
   const isTodaysSet = activeSetIndex === todayPos.setIndex && activeSubDay === todayPos.subDay;
@@ -37,8 +40,40 @@ export function NutritionPageClient({ seasonOverride, macroOverrides }: Nutritio
     setActiveSubDay(i === todayPos.setIndex ? todayPos.subDay : 1);
   }
 
+  const seasonOptions: { id: string; label: string }[] = [
+    { id: "auto", label: "Auto (Осінь 🍂)" },
+    { id: "autumn", label: "Осінь 🍂" },
+    { id: "winter", label: "Зима ❄️" },
+    { id: "spring", label: "Весна 🌸" },
+    { id: "summer", label: "Літо ☀️" },
+  ];
+
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Сезонність меню:</span>
+        </div>
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] overflow-x-auto">
+          {seasonOptions.map((opt) => {
+            const isActive = selectedSeason === opt.id;
+            return (
+              <button
+                key={opt.id}
+                onClick={() => setSelectedSeason(opt.id)}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors duration-150 shrink-0 ${
+                  isActive
+                    ? "bg-accent-nutrition text-white font-semibold"
+                    : "text-zinc-400 hover:text-zinc-100 hover:bg-white/5"
+                }`}
+              >
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/[0.06] w-fit overflow-x-auto">
         {plan.map((d, i) => {
           const isActive = i === activeSetIndex;
